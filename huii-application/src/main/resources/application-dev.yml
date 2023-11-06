@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.postgresql.Driver
+    username: root
+    password: root
+    url: jdbc:postgresql://192.168.24.77:5432/huii-pro?stringtype=unspecified
+    hikari:
+      auto-commit: true
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 60000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+  data:
+    redis:
+      host: 192.168.24.77
+      port: 6379
+      database: 0
+      password:
+      connect-timeout: 60000
+      cluster:
+        max-redirects: 6
+        nodes: 192.168.24.101:6381
+      lettuce:
+        pool:
+          min-idle: 0
+          max-idle: 10
+          max-active: 20
+          max-wait: 100000
