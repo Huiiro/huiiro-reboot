@@ -33,7 +33,7 @@ public @interface ExcelColumn {
      */
     boolean export() default true;
 
-    /**
-     * TODO 设置样式
-     */
+    //TODO
+    //设置样式
+
 }
