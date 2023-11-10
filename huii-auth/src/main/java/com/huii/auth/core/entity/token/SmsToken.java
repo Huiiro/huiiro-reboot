@@ -10,7 +10,7 @@ public class SmsToken extends TokenEntity {
         super(sms, code);
     }
 
-    public SmsToken(Object principal, Object credentials,  Collection<? extends GrantedAuthority> authorities) {
+    public SmsToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(principal, credentials, authorities);
     }
 }

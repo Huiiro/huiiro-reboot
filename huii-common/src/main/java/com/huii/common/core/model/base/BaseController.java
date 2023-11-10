@@ -4,8 +4,13 @@ package com.huii.common.core.model.base;
 import com.huii.common.core.model.R;
 import com.huii.common.enums.ResType;
 import com.huii.common.utils.MessageUtils;
+import com.huii.common.utils.SecurityUtils;
 
 public class BaseController {
+
+    public boolean isAdmin() {
+        return SecurityUtils.isAdmin();
+    }
 
     public <T> R<T> saveSuccess() {
         return saveSuccess(null);

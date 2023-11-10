@@ -10,7 +10,7 @@ public class EmailToken extends TokenEntity {
         super(email, code);
     }
 
-    public EmailToken(Object principal, Object credentials,  Collection<? extends GrantedAuthority> authorities) {
+    public EmailToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(principal, credentials, authorities);
     }
 }

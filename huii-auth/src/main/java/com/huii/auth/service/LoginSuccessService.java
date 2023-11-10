@@ -1,6 +1,9 @@
 package com.huii.auth.service;
 
+import com.huii.auth.core.entity.oauth2.Oauth2User;
 import com.huii.auth.core.entity.vo.LoginVo;
+import com.huii.common.core.domain.SysUser;
+import com.huii.common.core.domain.SysUserOauth;
 import com.huii.common.core.model.LoginUser;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -20,7 +23,7 @@ public interface LoginSuccessService {
     void updateUserLoginInfo(LoginUser loginUser, HttpServletRequest request);
 
     /**
-     * 根据授权对象颁发token
+     * 根据授权对象颁发 token
      *
      * @param loginUser loginUser
      * @return token...
@@ -35,4 +38,30 @@ public interface LoginSuccessService {
      * @return token...
      */
     LoginVo autoCreateToken(LoginUser loginUser, HttpServletRequest request);
+
+    /**
+     * 查询用户 oauth 登录信息
+     *
+     * @param oauth2User oauth2User
+     * @return SysUserOauth
+     */
+    SysUserOauth getOauthUserInfo(Oauth2User oauth2User);
+
+    /**
+     * 创建 SysUserOauth
+     *
+     * @param userId     userId
+     * @param oauth2User oauth2User
+     * @return SysUserOauth
+     */
+    SysUserOauth createUserOauthEntity(Long userId, Oauth2User oauth2User);
+
+    /**
+     * 创建 SysUser
+     *
+     * @param oauth2User oauth2User
+     * @return SysUser
+     */
+    SysUser createUserEntity(Oauth2User oauth2User);
+
 }

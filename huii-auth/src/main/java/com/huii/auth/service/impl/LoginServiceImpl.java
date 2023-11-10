@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.huii.auth.core.entity.LoginEntity;
 import com.huii.auth.core.entity.dto.AccountDto;
 import com.huii.auth.core.entity.dto.EmailDto;
+import com.huii.auth.core.entity.dto.Oauth2Dto;
 import com.huii.auth.core.entity.dto.SmsDto;
 import com.huii.auth.core.entity.vo.LoginVo;
 import com.huii.auth.factory.LoginStrategyFactory;
@@ -16,6 +17,7 @@ import com.huii.common.exception.ServiceException;
 import com.huii.common.utils.MessageUtils;
 import com.huii.system.mapper.SysUserMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
@@ -27,18 +29,30 @@ public class LoginServiceImpl implements LoginService {
     private final SysUserMapper sysUserMapper;
 
     @Override
-    public LoginVo accountLogin(AccountDto loginBody, HttpServletRequest request) {
-        return commonLogin(loginBody, request);
+    public LoginVo accountLogin(AccountDto dto, HttpServletRequest request) {
+        return commonLogin(dto, request);
     }
 
     @Override
-    public LoginVo emailLogin(EmailDto loginBody, HttpServletRequest request) {
-        return commonLogin(loginBody, request);
+    public LoginVo emailLogin(EmailDto dto, HttpServletRequest request) {
+        return commonLogin(dto, request);
     }
 
     @Override
-    public LoginVo smsLogin(SmsDto loginBody, HttpServletRequest request) {
-        return commonLogin(loginBody, request);
+    public LoginVo smsLogin(SmsDto dto, HttpServletRequest request) {
+        return commonLogin(dto, request);
+    }
+
+    @Override
+    public LoginVo oauth2Login(Oauth2Dto dto, HttpServletRequest request) {
+        return commonLogin(dto, request);
+    }
+
+    @Override
+    public void defaultOauth2LoginResponse(LoginVo loginVo, HttpServletResponse response) {
+        String redirectUrl = "http://localhost:8081/oauth/redirect?token=" + loginVo.getAccessToken();
+        response.setStatus(HttpServletResponse.SC_FOUND);
+        response.setHeader("Location", redirectUrl);
     }
 
     @Override

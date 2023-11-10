@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("public.sys_dept")
+@TableName("sys_dept")
 public class SysDept extends TreeEntity<SysDept> {
 
     @TableId(value = "dept_id", type = IdType.AUTO)

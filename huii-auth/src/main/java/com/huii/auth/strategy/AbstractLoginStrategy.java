@@ -15,6 +15,13 @@ import org.springframework.security.core.Authentication;
  */
 public abstract class AbstractLoginStrategy implements LoginStrategy {
 
+    /**
+     * 登录抽象接口
+     *
+     * @param loginEntity loginEntity
+     * @param request     request
+     * @return loginVo
+     */
     @Override
     public abstract LoginVo login(LoginEntity loginEntity, HttpServletRequest request);
 

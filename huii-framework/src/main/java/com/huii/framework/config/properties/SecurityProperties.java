@@ -30,8 +30,8 @@ import java.util.regex.Pattern;
  *
  * @author huii
  */
-@Configuration
 @SuppressWarnings("all")
+@Configuration
 @RequiredArgsConstructor
 public class SecurityProperties implements InitializingBean, ApplicationContextAware {
 

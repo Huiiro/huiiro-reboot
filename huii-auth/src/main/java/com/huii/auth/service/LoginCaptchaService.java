@@ -48,9 +48,6 @@ public interface LoginCaptchaService {
      */
     Captcha createSlideCaptcha(Captcha captcha, Integer minute);
 
-    //TODO
-    //click captcha
-
     /**
      * 获取手机登录验证码
      *

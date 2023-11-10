@@ -10,7 +10,7 @@ public class AccountToken extends TokenEntity {
         super(username, password);
     }
 
-    public AccountToken(Object principal, Object credentials,  Collection<? extends GrantedAuthority> authorities) {
+    public AccountToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(principal, credentials, authorities);
     }
 }

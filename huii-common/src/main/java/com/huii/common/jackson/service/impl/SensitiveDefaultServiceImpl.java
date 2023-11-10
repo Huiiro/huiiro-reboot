@@ -1,6 +1,7 @@
 package com.huii.common.jackson.service.impl;
 
 import com.huii.common.jackson.service.SensitiveService;
+import com.huii.common.utils.SecurityUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,8 +14,6 @@ public class SensitiveDefaultServiceImpl implements SensitiveService {
 
     @Override
     public boolean isSensitive() {
-        //TODO
-        //admin return false else return true
-        return true;
+        return !SecurityUtils.isAdmin();
     }
 }

@@ -4,7 +4,7 @@ import com.huii.common.enums.LoginType;
 import lombok.Data;
 
 /**
- * login dto实体
+ * login entity
  *
  * @author huii
  */

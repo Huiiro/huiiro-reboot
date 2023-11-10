@@ -2,7 +2,7 @@ package com.huii.auth.utils;
 
 import com.huii.auth.core.entity.Captcha;
 import com.huii.common.exception.ServiceException;
-import org.apache.commons.lang3.RandomUtils;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,12 +15,14 @@ import java.util.Base64;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 图片验证码生成工具
  *
  * @author huii
  */
+@Slf4j
 public class CaptchaGenerator {
 
     private final static String IMG_PATH = "C:/Temp/wallpaper/%s.jpg";
@@ -146,10 +148,12 @@ public class CaptchaGenerator {
     private static int[][] getBlockData(int blockWidth, int blockHeight, int blockRadius) {
         int[][] data = new int[blockWidth][blockHeight];
         double po = Math.pow(blockRadius, 2);
-        int face1 = RandomUtils.nextInt(0, 4);
+        //int face1 = RandomUtils.nextInt(0, 4);
+        int face1 = ThreadLocalRandom.current().nextInt(0, 4);
         int face2;
         do {
-            face2 = RandomUtils.nextInt(0, 4);
+            //face2 = RandomUtils.nextInt(0, 4);
+            face2 = ThreadLocalRandom.current().nextInt(0, 4);
         } while (face1 == face2);
         int[] circle1 = getCircleCoords(face1, blockWidth, blockHeight, blockRadius);
         int[] circle2 = getCircleCoords(face2, blockWidth, blockHeight, blockRadius);

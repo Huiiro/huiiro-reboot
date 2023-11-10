@@ -6,6 +6,7 @@ import com.huii.auth.handler.AuthenticationEntryPointHandler;
 import com.huii.auth.handler.LogoutSuccessHandler;
 import com.huii.auth.provider.AccountAuthenticationProvider;
 import com.huii.auth.provider.EmailAuthenticationProvider;
+import com.huii.auth.provider.Oauth2AuthenticationProvider;
 import com.huii.auth.provider.SmsAuthenticationProvider;
 import com.huii.framework.config.properties.SecurityProperties;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class SecurityConfig {
     private final AccountAuthenticationProvider accountAuthenticationProvider;
     private final SmsAuthenticationProvider smsAuthenticationProvider;
     private final EmailAuthenticationProvider emailAuthenticationProvider;
+    private final Oauth2AuthenticationProvider oauth2AuthenticationProvider;
     private final LogoutSuccessHandler logoutSuccessHandler;
     private final AuthenticationEntryPointHandler authenticationEntryPointHandler;
     private final AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler;
@@ -105,6 +107,7 @@ public class SecurityConfig {
         authenticationManagerBuilder.authenticationProvider(accountAuthenticationProvider);
         authenticationManagerBuilder.authenticationProvider(smsAuthenticationProvider);
         authenticationManagerBuilder.authenticationProvider(emailAuthenticationProvider);
+        authenticationManagerBuilder.authenticationProvider(oauth2AuthenticationProvider);
         authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider());
         return authenticationManagerBuilder.build();
     }

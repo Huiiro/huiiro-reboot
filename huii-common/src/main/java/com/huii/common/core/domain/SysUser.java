@@ -28,9 +28,10 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_user")
+@KeySequence(value = "sys_user_id_seq", dbType = DbType.POSTGRE_SQL)
 public class SysUser extends BaseEntity {
 
-    @TableId(value = "user_id", type = IdType.AUTO)
+    @TableId(value = "user_id", type = IdType.INPUT)
     @ExcelColumn(value = "用户ID")
     private Long userId;
 

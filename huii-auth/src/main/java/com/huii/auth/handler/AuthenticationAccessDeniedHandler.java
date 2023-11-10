@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 public class AuthenticationAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception) {
-        log.error("Access Denied, {}", exception.getMessage());
         R<Object> result = R.failed(ResType.STATUS_FORBIDDEN.getCode(), ResType.getI18nMessage(ResType.STATUS_FORBIDDEN), null);
         JsonWriteUtils.writeOptJson(response, HttpServletResponse.SC_FORBIDDEN, result);
     }

@@ -24,6 +24,16 @@ public class LoginVo {
     private String refreshToken;
 
     /**
+     * loginType
+     */
+    private String loginType;
+
+    /**
+     * needBind
+     */
+    private Boolean needBind;
+
+    /**
      * 用户信息
      * userId
      * username

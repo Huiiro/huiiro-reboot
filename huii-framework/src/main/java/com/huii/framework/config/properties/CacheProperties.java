@@ -18,7 +18,7 @@ public class CacheProperties {
     /**
      * 缓存时间
      */
-    private Integer cacheHours = 24 * 2;
+    private Integer cacheHours = 48;
 
     /**
      * 启用Redis缓存

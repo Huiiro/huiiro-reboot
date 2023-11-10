@@ -12,5 +12,12 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public interface LoginStrategy extends InitializingBean {
 
+    /**
+     * 登录接口
+     *
+     * @param loginEntity loginEntity
+     * @param request     request
+     * @return loginVo
+     */
     LoginVo login(LoginEntity loginEntity, HttpServletRequest request);
 }

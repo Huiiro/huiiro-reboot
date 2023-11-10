@@ -36,6 +36,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
         return loadUser("email", email);
     }
 
+    public UserDetails loadUserByUserId(Long id) {
+        return loadUser("user_id", id);
+    }
+
     public UserDetails loadUser(String col, Object val) throws UsernameNotFoundException {
         SysUser sysUser = sysUserMapper.selectOne(new QueryWrapper<SysUser>()
                 .eq(col, val).last("limit 1"));

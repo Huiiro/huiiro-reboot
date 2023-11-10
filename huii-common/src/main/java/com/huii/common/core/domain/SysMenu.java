@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("public.sys_menu")
+@TableName("sys_menu")
 public class SysMenu extends TreeEntity<SysMenu> {
 
     @TableId(value = "menu_id", type = IdType.AUTO)

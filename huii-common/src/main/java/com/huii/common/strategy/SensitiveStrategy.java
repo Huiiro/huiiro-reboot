@@ -24,7 +24,12 @@ public enum SensitiveStrategy {
     /**
      * 电话
      */
-    PHONE("phone", SensitiveStrategyImpl::desensitizePhone);
+    PHONE("phone", SensitiveStrategyImpl::desensitizePhone),
+
+    /**
+     * 身份证
+     */
+    ID_CARD("idCard", SensitiveStrategyImpl::desensitizeIdCard);
 
     private final String name;
     private final Function<String, String> desensitized;

@@ -58,3 +58,40 @@ mybatis-plus:
       insertStrategy: NOT_NULL
       updateStrategy: NOT_NULL
       where-strategy: NOT_NULL
+
+config:
+  jwt:
+    key: MIBIjANgiG9w0BaQwFwAOsC1AvQ8AMICgKEA5pWuE8OAGlsLq76doiXhzSTKieCxp7YqD32jcs5pzaRxPBlVKL8a8Rsi7RyEJ57
+
+oauth2-key:
+  clients:
+    - provider: github
+      clientId: c673ed05ca8d98032a1e
+      clientSecret: 21e176e17b1c39c73a13232a656e2c395531f63b
+      redirectUri: http://localhost:8080/callback/github
+      authorizationUri: https://github.com/login/oauth/authorize
+      tokenUri: https://github.com/login/oauth/access_token
+      userInfoUri: https://api.github.com/user
+      scope:
+        - read:user
+      responseType: code
+    - provider: gitee
+      clientId: a69c6d6902bb792281a5897ba02d8a5ee2cb7e8f8a6b3a5e5cb1b6a809893ee5
+      clientSecret: 9e70df4b139741cd4594bb9d592371936b2de19da349a477ffd4f1ef319498d5
+      redirectUri: http://localhost:8080/callback/gitee
+      authorizationUri: https://gitee.com/oauth/authorize
+      tokenUri: https://gitee.com/oauth/token
+      userInfoUri: https://gitee.com/api/v5/user
+      scope:
+        - user_info
+      grantType: authorization_code
+      responseType: code
+
+security:
+  remember: nXDRsRRGaG3QJ9t7lH4hOhnSDm2+06ImuKaGfCdIDaU1T2Sjh7Pa21NBL8abW9GrZqAgUblOUxt09nqM0c4WvFR+iVIdOfP3si+U
+  allows:
+    /swagger-ui/**,
+    /swagger-resources/**,
+    /profile/**,
+    /v3/**,
+    /druid/**

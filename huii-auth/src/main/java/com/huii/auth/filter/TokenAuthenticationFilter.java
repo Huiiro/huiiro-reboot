@@ -19,6 +19,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * token filter
+ *
+ * @author huii
+ */
+@SuppressWarnings("all")
 @Component
 @RequiredArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
@@ -27,12 +33,12 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private final JwtProperties jwtProperties;
     private final RedisTemplateUtils redisTemplateUtils;
 
-    @SuppressWarnings("all")
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("Authorization");
         if (StringUtils.isEmpty(token)) {
+            //token为空 直接放行
             filterChain.doFilter(request, response);
             return;
         }

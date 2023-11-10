@@ -24,6 +24,7 @@ public class LoginUser implements UserDetails {
     private String principle;
     private LoginType type;
     private List<String> stringAuthorities;
+    private String bindStatus = SystemConstants.STATUS_1;
     @JSONField(serialize = false)
     private List<SimpleGrantedAuthority> authorities;
 
@@ -51,7 +52,7 @@ public class LoginUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.getUserStatus().equals(SystemConstants.STATUS_1.toString());
+        return user.getUserStatus().equals(SystemConstants.STATUS_1);
     }
 
     @Override

@@ -25,7 +25,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@TableName("public.sys_role")
+@TableName("sys_role")
 public class SysRole extends BaseEntity {
 
     @TableId(value = "role_id", type = IdType.AUTO)

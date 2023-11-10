@@ -16,9 +16,6 @@ public class LoginStrategyFactory {
 
     private static final Map<String, LoginStrategy> map = new HashMap<>();
 
-    /**
-     * 注册策略
-     */
     public static void register(String key, LoginStrategy loginStrategy) {
         if (StringUtils.isEmpty(key) && null == loginStrategy) {
             return;
@@ -26,9 +23,6 @@ public class LoginStrategyFactory {
         map.put(key, loginStrategy);
     }
 
-    /**
-     * 获取策略
-     */
     public static LoginStrategy getStrategy(String key) {
         return map.get(key);
     }

@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("public.sys_post")
+@TableName("sys_post")
 public class SysPost extends BaseEntity {
 
     @TableId(value = "post_id", type = IdType.AUTO)

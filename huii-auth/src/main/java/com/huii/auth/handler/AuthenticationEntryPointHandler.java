@@ -22,7 +22,6 @@ import org.springframework.stereotype.Component;
 public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
-        log.error("Authentication Fail, {}", exception.getMessage());
         R<Object> result = R.failed(ResType.STATUS_UNAUTHORIZED.getCode(), ResType.getI18nMessage(ResType.STATUS_UNAUTHORIZED), null);
         if (exception instanceof BasicAuthenticationException) {
             result.setMessage(exception.getMessage());

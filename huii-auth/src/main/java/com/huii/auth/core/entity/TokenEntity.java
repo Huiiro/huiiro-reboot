@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 /**
- * token实体
+ * token entity
  *
  * @author huii
  */
@@ -17,7 +17,7 @@ public class TokenEntity extends AbstractAuthenticationToken {
     private Object principal;
     private Object credentials;
 
-    public TokenEntity(String principal, String credentials) {
+    public TokenEntity(Object principal, Object credentials) {
         super(null);
         this.principal = principal;
         this.credentials = credentials;

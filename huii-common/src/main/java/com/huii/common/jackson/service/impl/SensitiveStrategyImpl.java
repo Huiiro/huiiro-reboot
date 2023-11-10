@@ -38,7 +38,10 @@ public class SensitiveStrategyImpl {
      * 身份证脱敏策略
      */
     public static String desensitizeIdCard(String originStr) {
-        //TODO
-        return "";
+        if (StringUtils.isBlank(originStr)) {
+            return "";
+        } else {
+            return DeSensitiveUtils.hideStr(originStr, 4, originStr.length() - 4);
+        }
     }
 }
