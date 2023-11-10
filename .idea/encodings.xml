@@ -9,8 +9,10 @@
     <file url="file://$PROJECT_DIR$/huii-common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/huii-framework/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/huii-framework/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/huii-message/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/huii-oss/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/huii-system/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/huii-system/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
   </component>
 </project>

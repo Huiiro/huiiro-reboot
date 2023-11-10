@@ -19,9 +19,6 @@ spring:
       database: 0
       password:
       connect-timeout: 60000
-      cluster:
-        max-redirects: 6
-        nodes: 192.168.24.101:6381
       lettuce:
         pool:
           min-idle: 0

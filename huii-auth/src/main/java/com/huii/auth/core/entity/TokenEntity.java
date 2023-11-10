@@ -6,19 +6,24 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
+/**
+ * token实体
+ *
+ * @author huii
+ */
 @Setter
-public class BasicToken extends AbstractAuthenticationToken {
+public class TokenEntity extends AbstractAuthenticationToken {
 
     private Object principal;
     private Object credentials;
 
-    public BasicToken(String principal, String credentials) {
+    public TokenEntity(String principal, String credentials) {
         super(null);
         this.principal = principal;
         this.credentials = credentials;
     }
 
-    public BasicToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+    public TokenEntity(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;

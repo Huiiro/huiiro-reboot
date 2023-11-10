@@ -14,6 +14,10 @@
     <dependencies>
         <dependency>
             <groupId>com.huii</groupId>
+            <artifactId>huii-auth</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.huii</groupId>
             <artifactId>huii-framework</artifactId>
         </dependency>
     </dependencies>

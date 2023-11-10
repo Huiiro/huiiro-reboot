@@ -15,6 +15,7 @@
         <module>huii-framework</module>
         <module>huii-system</module>
         <module>huii-oss</module>
+        <module>huii-message</module>
     </modules>
 
     <profiles>
@@ -308,6 +309,13 @@
             <dependency>
                 <groupId>com.huii</groupId>
                 <artifactId>huii-common</artifactId>
+                <version>${huii.version}</version>
+            </dependency>
+
+            <!-- 消息模块 -->
+            <dependency>
+                <groupId>com.huii</groupId>
+                <artifactId>huii-message</artifactId>
                 <version>${huii.version}</version>
             </dependency>
 

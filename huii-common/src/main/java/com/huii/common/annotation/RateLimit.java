@@ -27,7 +27,7 @@ public @interface RateLimit {
     /**
      * 限流策略
      */
-    LimitStrategy strategy();
+    LimitStrategy strategy() default LimitStrategy.DEFAULT;
 
     /**
      * 错误提示信息
