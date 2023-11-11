@@ -1,6 +1,8 @@
 package com.huii.auth.core.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huii.auth.core.entity.Captcha;
+import com.huii.auth.core.entity.PointDto;
 import com.huii.auth.service.LoginCaptchaService;
 import com.huii.common.annotation.Anonymous;
 import com.huii.common.annotation.RateLimit;
@@ -9,9 +11,12 @@ import com.huii.common.core.model.base.BaseController;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Validated
@@ -48,9 +53,9 @@ public class CaptchaController extends BaseController {
      * 获取滑动图片验证码
      */
     @RateLimit
-    @PostMapping("/gen/slide")
+    @RequestMapping("/gen/slide")
     public R<Captcha> getSlideCaptcha(@RequestBody Captcha captcha) {
-        return R.ok(loginCaptchaService.createSlideCaptcha(captcha, DEFAULT_MINUTE));
+        return R.ok(loginCaptchaService.createSlideCaptcha(new Captcha(), DEFAULT_MINUTE));
     }
 
     /**
@@ -62,6 +67,31 @@ public class CaptchaController extends BaseController {
         loginCaptchaService.checkSlideCode(imageKey, imageCode);
         return R.ok();
     }
+
+    /**
+     * 获取点击文字图片验证码
+     */
+    @RateLimit
+    @PostMapping("/gen/click/text")
+    public R<Captcha> getClickTextCaptcha(@RequestBody Captcha captcha) {
+        return R.ok(loginCaptchaService.createClickTextCaptcha(new Captcha(), DEFAULT_MINUTE));
+    }
+
+    /**
+     * 校验点击文字图片验证码
+     */
+    @SneakyThrows
+    @PostMapping("/check/click/text")
+    public R<Void> checkClickTextCaptcha(@NotBlank @RequestParam String imageKey,
+                                         @NotNull @RequestParam String clickValue) {
+        String decoded = URLDecoder.decode(clickValue, StandardCharsets.UTF_8);
+        ObjectMapper objectMapper = new ObjectMapper();
+        PointDto[] points = objectMapper.readValue(decoded, PointDto[].class);
+
+        loginCaptchaService.checkClickTextCode(imageKey, points);
+        return R.ok();
+    }
+
 
     /**
      * 短信验证码模板

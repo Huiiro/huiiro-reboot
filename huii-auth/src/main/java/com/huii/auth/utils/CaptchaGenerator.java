@@ -1,20 +1,22 @@
 package com.huii.auth.utils;
 
 import com.huii.auth.core.entity.Captcha;
+import com.huii.auth.core.entity.RectangleDto;
 import com.huii.common.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Base64;
-import java.util.Objects;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -27,6 +29,14 @@ public class CaptchaGenerator {
 
     private final static String IMG_PATH = "C:/Temp/wallpaper/%s.jpg";
     private final static String IMG_URL = "https://loyer.wang/view/ftp/wallpaper/%s.jpg";
+
+    private static final List<Character> letters = new ArrayList<>();
+
+    static {
+        for (char ch = 'A'; ch <= 'Z'; ch++) {
+            letters.add(ch);
+        }
+    }
 
     public static String createRandom(int length) {
         Random random = new Random(System.currentTimeMillis());
@@ -42,6 +52,15 @@ public class CaptchaGenerator {
         Random random = new Random(System.currentTimeMillis());
         return random.nextInt(end - start + 1) + start;
     }
+
+    public static int createRandom(Random random, int start, int end) {
+        return random.nextInt(end - start + 1) + start;
+    }
+
+    private static int createRandom(Random random, int start, int end, int gap) {
+        return random.nextInt((end - start - gap) / gap + 1) * gap + start;
+    }
+
 
     public static String createUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
@@ -64,12 +83,32 @@ public class CaptchaGenerator {
         cutByTemplate(canvasImage, blockImage, blockWidth, blockHeight, blockRadius, blockX, blockY);
 
         String nonceStr = UUID.randomUUID().toString().replace("-", "");
-
         captcha.setNonceStr(nonceStr);
         captcha.setBlockY(blockY);
         captcha.setBlockX(blockX);
         captcha.setBlockSrc(toBase64(blockImage, "png"));
         captcha.setCanvasSrc(toBase64(canvasImage, "png"));
+
+        return captcha;
+    }
+
+    public static Captcha createClickTextCaptcha(Captcha captcha) {
+        checkCaptcha(captcha);
+        int canvasWidth = captcha.getCanvasWidth();
+        int canvasHeight = captcha.getCanvasHeight();
+
+        BufferedImage canvasImage = getBufferedImage(captcha.getPlace());
+        Set<Rectangle> occupiedAreas = new LinkedHashSet<>();
+        String text = textBuilder();
+
+        canvasImage = clickImgBuilder(canvasImage, String.valueOf(text), occupiedAreas, canvasWidth, canvasHeight);
+
+        String nonceStr = UUID.randomUUID().toString().replace("-", "");
+        captcha.setNonceStr(nonceStr);
+        captcha.setClickText("请依次点击" + text.substring(0, 5));
+        captcha.setClickSrc(toBase64(canvasImage, "png"));
+        captcha.setRectangles(occupiedAreas.stream().map(RectangleDto::new)
+                .toArray(RectangleDto[]::new));
 
         return captcha;
     }
@@ -192,6 +231,71 @@ public class CaptchaGenerator {
         graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.8f));
         graphics2D.drawImage(blockImage, x, y, null);
         graphics2D.dispose();
+    }
+
+
+    private static String textBuilder() {
+        Collections.shuffle(letters);
+        StringBuilder text = new StringBuilder();
+        for (int i = 0; i < 5; i++) {
+            text.append(letters.get(i)).append(",");
+        }
+        return String.valueOf(text);
+    }
+
+    private static Font createRandomFont(Random random) {
+        int fontSize = random.nextInt(14) + 20;
+        int fontWeight = random.nextBoolean() ? Font.BOLD : Font.PLAIN;
+        return new Font("Arial", fontWeight, fontSize);
+    }
+
+    private static boolean isOverlapping(Rectangle newArea, Set<Rectangle> occupiedAreas) {
+        for (Rectangle occupiedArea : occupiedAreas) {
+            if (newArea.intersects(occupiedArea)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static BufferedImage clickImgBuilder(BufferedImage canvasImage, String text, Set<Rectangle> occupiedAreas, int canvasWidth, int canvasHeight) {
+        canvasImage = imageResize(canvasImage, canvasWidth, canvasHeight);
+        Graphics2D g2d = canvasImage.createGraphics();
+        Random random = new Random(System.currentTimeMillis());
+        for (String s : text.split(",")) {
+            Font font = createRandomFont(random);
+            FontRenderContext frc = g2d.getFontRenderContext();
+            Rectangle2D textBounds = font.getStringBounds(s, frc);
+
+            int textWidth = (int) textBounds.getWidth();
+            int textHeight = (int) textBounds.getHeight();
+
+            int x, y;
+            Rectangle textArea;
+            do {
+                x = createRandom(random, textWidth + 20, canvasWidth - 20, 48);
+                y = createRandom(random, textHeight + 20, canvasHeight - 20, 24);
+                textArea = new Rectangle(x - textWidth / 2, y - textHeight / 2, textWidth, textHeight);
+            } while (isOverlapping(textArea, occupiedAreas));
+
+            Color textColor = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+            int rotationAngle = random.nextInt(360);
+
+            AffineTransform affineTransform = new AffineTransform();
+            affineTransform.rotate(Math.toRadians(rotationAngle), x, y);
+
+            g2d.setTransform(affineTransform);
+            g2d.setColor(textColor);
+            g2d.setFont(font);
+
+            g2d.drawString(s, x - textWidth / 2, y - textHeight / 2);
+            g2d.setTransform(new AffineTransform());
+
+            occupiedAreas.add(textArea);
+        }
+
+        g2d.dispose();
+        return canvasImage;
     }
 
     public static String toBase64(BufferedImage bufferedImage, String type) {

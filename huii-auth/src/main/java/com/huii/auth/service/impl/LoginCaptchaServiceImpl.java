@@ -5,6 +5,8 @@ import com.google.code.kaptcha.Producer;
 import com.huii.auth.config.properties.LoginProperties;
 import com.huii.auth.core.entity.Captcha;
 import com.huii.auth.core.entity.LoginEntity;
+import com.huii.auth.core.entity.PointDto;
+import com.huii.auth.core.entity.RectangleDto;
 import com.huii.auth.kaptcha.KaptchaService;
 import com.huii.auth.service.LoginCaptchaService;
 import com.huii.auth.utils.CaptchaGenerator;
@@ -24,6 +26,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -67,6 +70,7 @@ public class LoginCaptchaServiceImpl implements LoginCaptchaService {
     @Override
     public void checkSlideCode(String key, Integer value) {
         Integer text = redisTemplateUtils.getCacheObject(CacheConstants.VERIFY_CODE + key);
+
         if (ObjectUtils.isEmpty(text)) {
             ResType rs = ResType.USER_CAPTCHA_EXPIRED;
             throw new ServiceException(rs.getCode(), MessageUtils.message(rs.getI18n()));
@@ -74,6 +78,28 @@ public class LoginCaptchaServiceImpl implements LoginCaptchaService {
         if (Math.abs(text - value) > KAPTCHA_ALLOW_DEVIATION) {
             ResType rs = ResType.USER_CAPTCHA_NOT_PASS;
             throw new ServiceException(rs.getCode(), MessageUtils.message(rs.getI18n()));
+        }
+    }
+
+    @Override
+    public void checkClickTextCode(String key, PointDto[] points) {
+        RectangleDto[] dto = redisTemplateUtils.getCacheObject(CacheConstants.VERIFY_CODE + key);
+        if (dto.length != points.length || points.length <= 3) {
+            ResType rs = ResType.USER_CAPTCHA_NOT_PASS;
+            throw new ServiceException(rs.getCode(), MessageUtils.message(rs.getI18n()));
+        }
+        boolean flag = false;
+        for (int i = 0; i < dto.length; i++) {
+            if (Math.abs(dto[i].getX() - Math.floor(points[i].getX())) <= (double) dto[i].getWidth() / 2 + 41) {
+                flag = true;
+            }
+            if (Math.abs(dto[i].getY() - Math.floor(points[i].getY())) <= (double) dto[i].getHeight() / 2 + 31) {
+                flag = true;
+            }
+            if (flag) {
+                ResType rs = ResType.USER_CAPTCHA_NOT_PASS;
+                throw new ServiceException(rs.getCode(), MessageUtils.message(rs.getI18n()));
+            }
         }
     }
 
@@ -105,6 +131,14 @@ public class LoginCaptchaServiceImpl implements LoginCaptchaService {
         saveCode(captcha.getNonceStr(), captcha.getBlockX(), minute);
         slideCaptcha.setBlockX(null);
         return slideCaptcha;
+    }
+
+    @Override
+    public Captcha createClickTextCaptcha(Captcha captcha, Integer minute) {
+        Captcha clickCaptcha = CaptchaGenerator.createClickTextCaptcha(captcha);
+        saveCode(captcha.getNonceStr(), captcha.getRectangles(), minute);
+        captcha.setRectangles(null);
+        return clickCaptcha;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.huii.auth.service;
 
 import com.huii.auth.core.entity.Captcha;
 import com.huii.auth.core.entity.LoginEntity;
+import com.huii.auth.core.entity.PointDto;
 
 import java.util.Map;
 
@@ -23,6 +24,13 @@ public interface LoginCaptchaService {
      */
     void checkSlideCode(String key, Integer value);
 
+    /**
+     * 校验点击文字验证码
+     *
+     * @param key   key
+     * @param points PointDto[]
+     */
+    void checkClickTextCode(String key, PointDto[] points);
     /**
      * 获取文字验证码
      *
@@ -47,6 +55,15 @@ public interface LoginCaptchaService {
      * @return captcha
      */
     Captcha createSlideCaptcha(Captcha captcha, Integer minute);
+
+    /**
+     * 获取点击文字验证码
+     *
+     * @param captcha captcha
+     * @param minute  minute
+     * @return captcha
+     */
+    Captcha createClickTextCaptcha(Captcha captcha, Integer minute);
 
     /**
      * 获取手机登录验证码

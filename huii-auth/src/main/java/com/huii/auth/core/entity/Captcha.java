@@ -2,13 +2,19 @@ package com.huii.auth.core.entity;
 
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * captcha entity
  *
  * @author huii
  */
 @Data
-public class Captcha {
+public class Captcha implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * 随机字符串
@@ -66,7 +72,23 @@ public class Captcha {
     private Integer blockY;
 
     /**
+     * 生成的画布的base64
+     **/
+    private String clickSrc;
+
+    /**
+     * 提示值
+     */
+    private String clickText;
+
+    /**
+     * 点击坐标
+     */
+    private RectangleDto[] rectangles;
+
+    /**
      * 图片获取位置
      **/
     private Integer place;
+
 }
