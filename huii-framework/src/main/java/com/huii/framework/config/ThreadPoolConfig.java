@@ -21,8 +21,8 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Slf4j
 @Configuration
-@EnableAsync(proxyTargetClass = true)
 @RequiredArgsConstructor
+@EnableAsync(proxyTargetClass = true)
 public class ThreadPoolConfig {
 
     private final ThreadPoolProperties threadPoolProperties;

@@ -42,7 +42,7 @@ public class SensitiveTextUtils {
     public static HashMap sensitiveWordMap;
 
     /**
-     * 初始化敏感词库，构建DFA算法模型
+     * 初始化敏感词库
      */
     @PostConstruct
     private synchronized void init() {
@@ -50,29 +50,29 @@ public class SensitiveTextUtils {
         Set<String> sensitiveWordSet = new HashSet<>();
 
         try {
-            log.info("正在初始化敏感词库....{}", SENSITIVE_WORD_PATH);
+            log.info("init sensitiveWords database....{}", SENSITIVE_WORD_PATH);
             File wordFileDir = new File(SENSITIVE_WORD_PATH);
             File[] wordFiles = wordFileDir.listFiles();
             assert wordFiles != null;
             for (File wordFile : wordFiles) {
-                log.info("加载词库：{}", wordFile.getName());
+                log.info("init sensitiveWords file：{}", wordFile.getName());
                 BufferedReader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(wordFile.toPath()), StandardCharsets.UTF_8));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     sensitiveWordSet.add(line);
-                    log.trace("加载字段：{}", line);
+                    log.trace("init sensitiveWords line：{}", line);
                 }
                 reader.close();
             }
         } catch (IOException e) {
-            log.error("初始化敏感词库失败，未加载字库....");
+            log.error("init sensitiveWords fail....");
         }
-        log.info("加载完成，共{}个敏感字段", sensitiveWordSet.size());
+        log.info("init sensitiveWords complete，count: {}", sensitiveWordSet.size());
         initSensitiveWordMap(sensitiveWordSet);
     }
 
     /**
-     * 初始化敏感词库，构建DFA算法模型
+     * 初始化敏感词库
      */
     private static void initSensitiveWordMap(Set<String> sensitiveWordSet) {
         sensitiveWordMap = new HashMap(sensitiveWordSet.size());
@@ -196,12 +196,7 @@ public class SensitiveTextUtils {
      * 获取替换字符串
      */
     private static String getReplaceChars(char replaceChar, int length) {
-        StringBuilder resultReplace = new StringBuilder(String.valueOf(replaceChar));
-        for (int i = 1; i < length; i++) {
-            resultReplace.append(replaceChar);
-        }
-
-        return resultReplace.toString();
+        return replaceChar + String.valueOf(replaceChar).repeat(Math.max(0, length - 1));
     }
 
     /**

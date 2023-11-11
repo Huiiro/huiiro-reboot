@@ -29,6 +29,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
+/**
+ * security安全配置
+ *
+ * @author huii
+ */
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -76,18 +81,6 @@ public class SecurityConfig {
     }
 
     /**
-     * 使用自定义AuthenticationProvider时，DaoAuthenticationProvider不会被注入
-     * 需要手动创建bean，注入到AuthenticationManager中
-     */
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        return authenticationProvider;
-    }
-
-    /**
      * rememberMeService
      */
     @Bean
@@ -98,6 +91,18 @@ public class SecurityConfig {
         rememberMeServices.setCookieName("remember");
         rememberMeServices.setParameter("rememberMe");
         return rememberMeServices;
+    }
+
+    /**
+     * 使用自定义AuthenticationProvider时，DaoAuthenticationProvider不会被注入
+     * 需要手动创建bean，注入到AuthenticationManager中
+     */
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        return authenticationProvider;
     }
 
     /**

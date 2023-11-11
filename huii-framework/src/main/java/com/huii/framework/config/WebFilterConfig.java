@@ -19,7 +19,6 @@ import java.util.Map;
  *
  * @author huii
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -28,6 +27,7 @@ public class WebFilterConfig {
     private final FilterProperties filterProperties;
 
     @Bean
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @ConditionalOnProperty(value = "config.filter.enableXss", havingValue = "true")
     public FilterRegistrationBean xssFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
@@ -43,6 +43,7 @@ public class WebFilterConfig {
     }
 
     @Bean
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @ConditionalOnProperty(value = "config.filter.enableRepeat", havingValue = "true")
     public FilterRegistrationBean repeatSubmitRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();

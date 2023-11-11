@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.huii.common.annotation.RepeatSubmit;
 import com.huii.common.constants.CacheConstants;
 import com.huii.common.core.model.R;
+import com.huii.common.enums.ResType;
 import com.huii.common.filter.wrapper.RepeatedlyRequestWrapper;
 import com.huii.common.utils.JsonWriteUtils;
 import com.huii.common.utils.MessageUtils;
@@ -42,9 +43,7 @@ public class RepeatSubmitInterceptor implements HandlerInterceptor {
             RepeatSubmit annotation = handlerMethod.getMethodAnnotation(RepeatSubmit.class);
             if (annotation != null) {
                 if (this.isRepeatSubmit(request, annotation)) {
-                    R<String> result = R.failed(MessageUtils.message(annotation.message()));
-                    JsonWriteUtils.writeOptJson(response, HttpServletResponse.SC_OK, result);
-                    return false;
+                    return printErrorInfo(response, annotation.message());
                 }
             }
         }
@@ -95,5 +94,12 @@ public class RepeatSubmitInterceptor implements HandlerInterceptor {
         long time1 = (Long) nowMap.get(REPEAT_TIME);
         long time2 = (Long) preMap.get(REPEAT_TIME);
         return (time1 - time2) < interval;
+    }
+
+    private boolean printErrorInfo(HttpServletResponse response, String msg) {
+        R<String> result = R.failed(ResType.ANNOTATION_REPEAT_SUBMIT_DEFAULT.getCode(),
+                MessageUtils.message(msg));
+        JsonWriteUtils.writeOptJson(response, 200, result);
+        return false;
     }
 }

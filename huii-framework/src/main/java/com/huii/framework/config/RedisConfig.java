@@ -23,6 +23,11 @@ import org.springframework.integration.redis.util.RedisLockRegistry;
 
 import java.time.Duration;
 
+/**
+ * redis 配置
+ *
+ * @author huii
+ */
 @EnableCaching
 @Configuration
 @RequiredArgsConstructor
@@ -58,7 +63,7 @@ public class RedisConfig {
     @ConditionalOnProperty(value = "config.cache.enableCache", havingValue = "true", matchIfMissing = true)
     public RedisCacheManager redisCacheManager() {
         RedisCacheWriter writer;
-        if("true".equals(cacheProperties.getCacheWriterWithLock())) {
+        if ("true".equals(cacheProperties.getCacheWriterWithLock())) {
             writer = RedisCacheWriter.lockingRedisCacheWriter(factory);
         } else {
             writer = RedisCacheWriter.nonLockingRedisCacheWriter(factory);
@@ -82,7 +87,7 @@ public class RedisConfig {
 
     @Bean
     @ConditionalOnProperty(value = "config.cache.enableLock", havingValue = "true")
-    public RedisLockRegistry redisLockRegistry(RedisConnectionFactory factory){
+    public RedisLockRegistry redisLockRegistry(RedisConnectionFactory factory) {
         return new RedisLockRegistry(factory, cacheProperties.getLockName(), cacheProperties.getLockExpire());
     }
 }

@@ -44,18 +44,23 @@ public class ForbiddenIpInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+                             @NonNull Object handler) {
         String ipAddress = IpAddressUtils.getIp(request);
         if (!ips.isEmpty() && StringUtils.isNotEmpty(ipAddress)) {
             for (String s : ips) {
                 if (s.equals(ipAddress)) {
-                    ResType rs = ResType.USER_NOT_ALLOW_IP;
-                    R<Object> result = R.failed(rs.getCode(), MessageUtils.message(rs.getI18n()));
-                    JsonWriteUtils.writeOptJson(response, HttpServletResponse.SC_FORBIDDEN, result);
-                    return false;
+                    return printErrorInfo(response);
                 }
             }
         }
         return true;
+    }
+
+    private boolean printErrorInfo(HttpServletResponse response) {
+        R<String> result = R.failed(ResType.USER_NOT_ALLOW_IP.getCode(),
+                MessageUtils.message(ResType.USER_NOT_ALLOW_IP.getI18n()));
+        JsonWriteUtils.writeOptJson(response, 403, result);
+        return false;
     }
 }

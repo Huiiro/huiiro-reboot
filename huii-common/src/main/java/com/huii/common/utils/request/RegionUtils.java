@@ -24,7 +24,7 @@ public class RegionUtils {
         if (!FileUtil.exist(existFile)) {
             ClassPathResource fileStream = new ClassPathResource(path);
             if (ObjectUtil.isEmpty(fileStream.getStream())) {
-                throw new RuntimeException("ip2region初始化失败，原因：db获取失败");
+                throw new RuntimeException("ip2region init fail, reason for: db load fail");
             }
             FileUtil.writeFromStream(fileStream.getStream(), existFile);
         }
@@ -33,12 +33,12 @@ public class RegionUtils {
         try {
             cBuff = Searcher.loadContentFromFile(dbPath);
         } catch (Exception e) {
-            throw new RuntimeException("ip2region初始化失败，原因：xdb加载失败" + e.getMessage());
+            throw new RuntimeException("ip2region init fail, reason for: xdb load fail" + e.getMessage());
         }
         try {
             SEARCHER = Searcher.newWithBuffer(cBuff);
         } catch (Exception e) {
-            throw new RuntimeException("ip2region初始化失败，原因：" + e.getMessage());
+            throw new RuntimeException("ip2region init fail, reason for: " + e.getMessage());
         }
     }
 
@@ -47,7 +47,7 @@ public class RegionUtils {
             String region = SEARCHER.search(ip.trim());
             return region.replace("0|", "").replace("|0", "");
         } catch (Exception e) {
-            log.error("IP地址离线获取城市异常 {}", ip);
+            log.error("ip2region query offline ip fail {}", ip);
             return null;
         }
     }

@@ -40,7 +40,7 @@ public class SensitiveColumnSerializer extends JsonSerializer<String> implements
                 jsonGenerator.writeString(s);
             }
         } catch (BeansException e) {
-            log.error("脱敏实现类获取失败, {}", e.getMessage());
+            log.error("SensitiveService Bean get fail, {}", e.getMessage());
             jsonGenerator.writeString(s);
         }
     }

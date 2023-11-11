@@ -17,7 +17,6 @@ import java.util.Locale;
  *
  * @author huii
  */
-@SuppressWarnings("all")
 @Configuration
 public class I18nConfig {
 
@@ -26,7 +25,7 @@ public class I18nConfig {
         return new I18nLocaleResolver();
     }
 
-
+    @SuppressWarnings("all")
     static class I18nLocaleResolver implements LocaleResolver {
 
         @SneakyThrows

@@ -25,7 +25,8 @@ public class MybatisMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         try {
-            if (ObjectUtils.isNotEmpty(metaObject) && metaObject.getOriginalObject() instanceof BaseEntity baseEntity) {
+            if (ObjectUtils.isNotEmpty(metaObject) &&
+                    metaObject.getOriginalObject() instanceof BaseEntity baseEntity) {
                 LocalDateTime create = ObjectUtils.isNotEmpty(baseEntity.getCreateTime())
                         ? baseEntity.getCreateTime() : LocalDateTime.now();
                 baseEntity.setCreateTime(create);
@@ -37,14 +38,15 @@ public class MybatisMetaObjectHandler implements MetaObjectHandler {
                 baseEntity.setUpdateBy(username);
             }
         } catch (Exception e) {
-            throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), "自动注入异常");
+            throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "自动注入异常");
         }
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         try {
-            if (ObjectUtils.isNotEmpty(metaObject) && metaObject.getOriginalObject() instanceof BaseEntity baseEntity) {
+            if (ObjectUtils.isNotEmpty(metaObject) &&
+                    metaObject.getOriginalObject() instanceof BaseEntity baseEntity) {
                 baseEntity.setUpdateTime(LocalDateTime.now());
 
                 String username = getLoginUsername();
@@ -53,7 +55,7 @@ public class MybatisMetaObjectHandler implements MetaObjectHandler {
                 }
             }
         } catch (Exception e) {
-            throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), "自动注入异常");
+            throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "自动注入异常");
         }
     }
 
