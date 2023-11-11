@@ -22,10 +22,23 @@ import org.springframework.stereotype.Component;
 public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
-        R<Object> result = R.failed(ResType.STATUS_UNAUTHORIZED.getCode(), ResType.getI18nMessage(ResType.STATUS_UNAUTHORIZED), null);
-        if (exception instanceof BasicAuthenticationException) {
-            result.setMessage(exception.getMessage());
+        int status = response.getStatus();
+        R<Object> result;
+        ResType type;
+        if (status == 408) {
+            type = ResType.STATUS_REQUEST_TIMEOUT;
+            result = R.failed(type.getCode(), ResType.getI18nMessage(type), null);
+        } else if (status == 429) {
+            type = ResType.STATUS_TOO_MANY_REQUESTS;
+            result = R.failed(type.getCode(), ResType.getI18nMessage(type), null);
+        } else {
+            status = HttpServletResponse.SC_UNAUTHORIZED;
+            type = ResType.STATUS_UNAUTHORIZED;
+            result = R.failed(type.getCode(), ResType.getI18nMessage(type), null);
+            if (exception instanceof BasicAuthenticationException) {
+                result.setMessage(exception.getMessage());
+            }
         }
-        JsonWriteUtils.writeOptJson(response, HttpServletResponse.SC_UNAUTHORIZED, result);
+        JsonWriteUtils.writeOptJson(response, status, result);
     }
 }

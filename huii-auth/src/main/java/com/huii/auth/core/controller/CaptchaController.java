@@ -6,6 +6,7 @@ import com.huii.auth.core.entity.PointDto;
 import com.huii.auth.service.LoginCaptchaService;
 import com.huii.common.annotation.Anonymous;
 import com.huii.common.annotation.RateLimit;
+import com.huii.common.constants.CacheConstants;
 import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import jakarta.validation.constraints.NotBlank;
@@ -27,7 +28,6 @@ import java.util.Map;
 public class CaptchaController extends BaseController {
 
     private final LoginCaptchaService loginCaptchaService;
-    private final Integer DEFAULT_MINUTE = 10;
 
     /**
      * 生成文本验证码
@@ -35,7 +35,7 @@ public class CaptchaController extends BaseController {
     @RateLimit
     @GetMapping("/gen/text")
     public R<Map<String, Object>> getTextKaptcha() {
-        Map<String, Object> map = loginCaptchaService.createTextCaptcha(DEFAULT_MINUTE);
+        Map<String, Object> map = loginCaptchaService.createTextCaptcha(CacheConstants.DEFAULT_CACHE_TIME);
         return R.ok(map);
     }
 
@@ -45,7 +45,7 @@ public class CaptchaController extends BaseController {
     @RateLimit
     @GetMapping("/gen/calc")
     public R<Map<String, Object>> getCalcKaptcha() {
-        Map<String, Object> map = loginCaptchaService.createCalcCaptcha(DEFAULT_MINUTE);
+        Map<String, Object> map = loginCaptchaService.createCalcCaptcha(CacheConstants.DEFAULT_CACHE_TIME);
         return R.ok(map);
     }
 
@@ -53,9 +53,9 @@ public class CaptchaController extends BaseController {
      * 获取滑动图片验证码
      */
     @RateLimit
-    @RequestMapping("/gen/slide")
+    @PostMapping("/gen/slide")
     public R<Captcha> getSlideCaptcha(@RequestBody Captcha captcha) {
-        return R.ok(loginCaptchaService.createSlideCaptcha(new Captcha(), DEFAULT_MINUTE));
+        return R.ok(loginCaptchaService.createSlideCaptcha(new Captcha(), CacheConstants.DEFAULT_CACHE_TIME));
     }
 
     /**
@@ -74,7 +74,7 @@ public class CaptchaController extends BaseController {
     @RateLimit
     @PostMapping("/gen/click/text")
     public R<Captcha> getClickTextCaptcha(@RequestBody Captcha captcha) {
-        return R.ok(loginCaptchaService.createClickTextCaptcha(new Captcha(), DEFAULT_MINUTE));
+        return R.ok(loginCaptchaService.createClickTextCaptcha(new Captcha(), CacheConstants.DEFAULT_CACHE_TIME));
     }
 
     /**
@@ -98,7 +98,7 @@ public class CaptchaController extends BaseController {
      */
     @GetMapping("/gen/sms")
     public R<Void> getSmsCaptcha(@NotBlank(message = "{user.phone.not.blank}") String phone, @NotBlank String template) {
-        loginCaptchaService.createLoginSmsCode(phone, template, DEFAULT_MINUTE);
+        loginCaptchaService.createLoginSmsCode(phone, template, CacheConstants.DEFAULT_CACHE_TIME);
         return sendSuccess();
     }
 
@@ -107,7 +107,7 @@ public class CaptchaController extends BaseController {
      */
     @GetMapping("/gen/mail")
     public R<Void> getMailCaptcha(@NotBlank(message = "{user.email.not.blank}") String email, @NotBlank String template) {
-        loginCaptchaService.createLoginEmailCode(email, template, DEFAULT_MINUTE);
+        loginCaptchaService.createLoginEmailCode(email, template, CacheConstants.DEFAULT_CACHE_TIME);
         return sendSuccess();
     }
 }

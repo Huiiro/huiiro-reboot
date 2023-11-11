@@ -12,6 +12,7 @@ import com.huii.auth.service.LoginCaptchaService;
 import com.huii.auth.utils.CaptchaGenerator;
 import com.huii.auth.utils.ExpressionGenerator;
 import com.huii.common.constants.CacheConstants;
+import com.huii.common.constants.CaptchaConstants;
 import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
 import com.huii.common.utils.MessageUtils;
@@ -37,8 +38,6 @@ import java.util.concurrent.TimeUnit;
 public class LoginCaptchaServiceImpl implements LoginCaptchaService {
 
     static final String BASE64_PREFIX = "data:image/jpeg;base64,";
-    static final Integer KAPTCHA_ALLOW_DEVIATION = 3;
-
     private final LoginProperties loginProperties;
     private final RedisTemplateUtils redisTemplateUtils;
     private final KaptchaService kaptchaService;
@@ -75,7 +74,7 @@ public class LoginCaptchaServiceImpl implements LoginCaptchaService {
             ResType rs = ResType.USER_CAPTCHA_EXPIRED;
             throw new ServiceException(rs.getCode(), MessageUtils.message(rs.getI18n()));
         }
-        if (Math.abs(text - value) > KAPTCHA_ALLOW_DEVIATION) {
+        if (Math.abs(text - value) > CaptchaConstants.CAPTCHA_SLIDE_ALLOW_DEVIATION) {
             ResType rs = ResType.USER_CAPTCHA_NOT_PASS;
             throw new ServiceException(rs.getCode(), MessageUtils.message(rs.getI18n()));
         }
@@ -90,10 +89,12 @@ public class LoginCaptchaServiceImpl implements LoginCaptchaService {
         }
         boolean flag = false;
         for (int i = 0; i < dto.length; i++) {
-            if (Math.abs(dto[i].getX() - Math.floor(points[i].getX())) <= (double) dto[i].getWidth() / 2 + 41) {
+            if (Math.abs(dto[i].getX() - Math.floor(points[i].getX())) <=
+                    (double) dto[i].getWidth() / 2 + CaptchaConstants.CAPTCHA_CLICK_ALLOW_WIDTH_DEVIATION) {
                 flag = true;
             }
-            if (Math.abs(dto[i].getY() - Math.floor(points[i].getY())) <= (double) dto[i].getHeight() / 2 + 31) {
+            if (Math.abs(dto[i].getY() - Math.floor(points[i].getY())) <=
+                    (double) dto[i].getHeight() / 2 + CaptchaConstants.CAPTCHA_CLICK_ALLOW_HEIGHT_DEVIATION) {
                 flag = true;
             }
             if (flag) {

@@ -1,5 +1,10 @@
 package com.huii.common.utils;
 
+/**
+ * 敏感字替换工具
+ *
+ * @author huii
+ */
 public class DeSensitiveUtils {
 
     private static final char ReplaceChar = '*';

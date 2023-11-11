@@ -13,13 +13,15 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * json书写工具
+ *
  * @author huii
  */
 @Slf4j
 @Component
 public class JsonWriteUtils {
 
-    public static void writePrintJson(HttpServletResponse response, int status, Object obj)  {
+    public static void writePrintJson(HttpServletResponse response, int status, Object obj) {
         try {
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json;charset=UTF-8");

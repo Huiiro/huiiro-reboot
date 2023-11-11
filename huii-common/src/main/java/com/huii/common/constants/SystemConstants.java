@@ -1,5 +1,8 @@
 package com.huii.common.constants;
 
+/**
+ * @author huii
+ */
 public interface SystemConstants {
 
     String STATUS_1 = "1";

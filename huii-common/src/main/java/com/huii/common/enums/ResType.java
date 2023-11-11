@@ -14,7 +14,12 @@ import lombok.Getter;
 public enum ResType {
     STATUS_UNAUTHORIZED(401, "status.unauthorized", "登录信息失效，请重新登录"),
     STATUS_FORBIDDEN(403, "status.forbidden", "未持有相关权限，请联系管理员"),
+    STATUS_NOT_FOUND(404, "status.not.found", "您访问的页面或资源不存在"),
+    STATUS_METHOD_NOT_ALLOWED(405, "status.method.not.allowed", "不支持的访问方法"),
     STATUS_TOKEN_EXPIRED(407, "status.token.expired", "登录信息失效，请重新登录"),
+    STATUS_REQUEST_TIMEOUT(408, "status.request.timeout", "请求超时"),
+    STATUS_UNSUPPORTED_MEDIA_TYPE(415, "status.unsupported.media.type", "不支持的媒体类型"),
+    STATUS_TOO_MANY_REQUESTS(429, "status.too.many.requests", "请求频繁，请稍后尝试"),
     STATUS_SERVER_ERROR(500, "status.server.error", "服务器繁忙，请稍后尝试"),
     STATUS_UNKNOWN_ERROR(501, "status.unknown.error", "遇到未知问题了，请稍后再试吧"),
 
@@ -73,6 +78,7 @@ public enum ResType {
     COMMON_REQUEST_SUCCESS(0, "common.request.success", "请求成功"),
     COMMON_GENERATE_SUCCESS(0, "common.generate.success", "生成成功"),
     ;
+
     private final Integer code;
     private final String i18n;
     private final String message;

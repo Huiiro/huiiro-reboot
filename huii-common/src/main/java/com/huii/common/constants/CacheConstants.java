@@ -1,5 +1,8 @@
 package com.huii.common.constants;
 
+/**
+ * @author huii
+ */
 public interface CacheConstants {
 
     /**
@@ -31,4 +34,24 @@ public interface CacheConstants {
      * 登录错误次数
      */
     String ERROR_TIMES = "verify_error_times:";
+
+    /**
+     * 防止重复提交
+     */
+    String REPEAT_SUBMIT = "repeat_submit:";
+
+    /**
+     * 接口限流
+     */
+    String RATE_LIMIT = "rate_limit:";
+
+    /**
+     * 系统配置
+     */
+    String SYS_CONFIG = "sys_config:";
+
+    /**
+     * 默认缓存时间，10min
+     */
+    Integer DEFAULT_CACHE_TIME = 10;
 }

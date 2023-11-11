@@ -1,5 +1,6 @@
 package com.huii.framework.config;
 
+import com.huii.auth.filter.ResourceExistenceFilter;
 import com.huii.auth.filter.TokenAuthenticationFilter;
 import com.huii.auth.handler.AuthenticationAccessDeniedHandler;
 import com.huii.auth.handler.AuthenticationEntryPointHandler;
@@ -42,6 +43,7 @@ public class SecurityConfig {
     private final AuthenticationEntryPointHandler authenticationEntryPointHandler;
     private final AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler;
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
+    private final ResourceExistenceFilter resourceExistenceFilter;
 
     /**
      * security配置链
@@ -56,11 +58,12 @@ public class SecurityConfig {
                 .formLogin(FormLoginConfigurer::disable)
                 .logout((l) -> l.logoutUrl("/logout")
                         .logoutSuccessHandler(logoutSuccessHandler))
-                .authorizeHttpRequests((a) -> a.requestMatchers(securityProperties.getUrls()).permitAll()
+                .authorizeHttpRequests((a) -> a.requestMatchers(securityProperties.getAllows()).permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(e -> e.authenticationEntryPoint(authenticationEntryPointHandler)
                         .accessDeniedHandler(authenticationAccessDeniedHandler))
-                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(resourceExistenceFilter, TokenAuthenticationFilter.class);
         return http.build();
     }
 

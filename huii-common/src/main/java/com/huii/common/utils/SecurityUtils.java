@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.List;
 
 /**
+ * security工具
+ *
  * @author huii
  */
 @Slf4j
@@ -58,8 +60,8 @@ public class SecurityUtils {
      */
     public static LoginUser getPrincipal() {
         Authentication authentication = getAuthentication();
-        if(authentication.getPrincipal() instanceof String str) {
-            if(str.equals("anonymousUser")) {
+        if (authentication.getPrincipal() instanceof String str) {
+            if (str.equals("anonymousUser")) {
                 throw new BasicAuthenticationException("获取登录信息失败，请重新登录");
             }
         }

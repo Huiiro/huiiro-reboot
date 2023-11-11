@@ -18,6 +18,12 @@ spring:
   messages:
     encoding: UTF-8
     basename: i18n/messages
+  mail:
+    default-encoding: utf-8
+    host:
+    port:
+    username:
+    password:
   servlet:
     multipart:
       max-file-size: 100MB
@@ -59,10 +65,6 @@ mybatis-plus:
       updateStrategy: NOT_NULL
       where-strategy: NOT_NULL
 
-config:
-  jwt:
-    key: MIBIjANgiG9w0BaQwFwAOsC1AvQ8AMICgKEA5pWuE8OAGlsLq76doiXhzSTKieCxp7YqD32jcs5pzaRxPBlVKL8a8Rsi7RyEJ57
-
 oauth2-key:
   clients:
     - provider: github
@@ -95,3 +97,7 @@ security:
     /profile/**,
     /v3/**,
     /druid/**
+
+config:
+  jwt:
+    key: MIBIjANgiG9w0BaQwFwAOsC1AvQ8AMICgKEA5pWuE8OAGlsLq76doiXhzSTKieCxp7YqD32jcs5pzaRxPBlVKL8a8Rsi7RyEJ57

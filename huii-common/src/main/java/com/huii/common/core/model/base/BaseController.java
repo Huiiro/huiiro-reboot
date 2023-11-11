@@ -12,6 +12,10 @@ public class BaseController {
         return SecurityUtils.isAdmin();
     }
 
+    public Long getUserId() {
+        return SecurityUtils.getUserId();
+    }
+
     public <T> R<T> saveSuccess() {
         return saveSuccess(null);
     }

@@ -36,20 +36,25 @@ import java.util.regex.Pattern;
 public class SecurityProperties implements InitializingBean, ApplicationContextAware {
 
     private static final Pattern PATTERN = Pattern.compile("\\{(.*?)\\}");
+    private String rememberMeKey = "rememberMeKey";
+    private final Set<String> allows = new HashSet<>();
+    private final Set<String> forbiddens = new HashSet<>();
     private ApplicationContext applicationContext;
     private final Environment env;
-    private String rememberMeKey = "rememberMeKey";
-    private final Set<String> urls = new HashSet<>();
 
     @PostConstruct
     public void init() {
         String[] allowsArray = env.getProperty("security.allows", String[].class);
         if (allowsArray != null) {
-            urls.addAll(Arrays.asList(allowsArray));
+            allows.addAll(Arrays.asList(allowsArray));
         }
-        String rememberMeKey = env.getProperty("security.remember", String.class);
-        if(StringUtils.isNoneEmpty(rememberMeKey)) {
-            this.rememberMeKey = rememberMeKey;
+        String[] forbiddensArray = env.getProperty("security.forbiddens", String[].class);
+        if (forbiddensArray != null) {
+            forbiddens.addAll(Arrays.asList(forbiddensArray));
+        }
+        String rememberMe = env.getProperty("security.remember", String.class);
+        if(StringUtils.isNoneEmpty(rememberMe)) {
+            rememberMeKey = rememberMe;
         }
     }
 
@@ -66,20 +71,24 @@ public class SecurityProperties implements InitializingBean, ApplicationContextA
             HandlerMethod handlerMethod = map.get(i);
             Anonymous method = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), Anonymous.class);
             if (method != null && i.getPathPatternsCondition() != null) {
-                i.getPathPatternsCondition().getPatterns().forEach(url -> urls.add(RegExUtils.replaceAll(url.getPatternString(), PATTERN, "**")));
+                i.getPathPatternsCondition().getPatterns().forEach(url -> allows.add(RegExUtils.replaceAll(url.getPatternString(), PATTERN, "**")));
             }
             Anonymous controller = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), Anonymous.class);
             if (controller != null && i.getPathPatternsCondition() != null) {
                 RequestMapping requestMap = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), RequestMapping.class);
                 if (requestMap != null) {
-                    Arrays.stream(requestMap.path()).forEach(req -> urls.add(processSecurityPath(req)));
+                    Arrays.stream(requestMap.path()).forEach(req -> allows.add(processSecurityPath(req)));
                 }
             }
         });
     }
 
-    public String[] getUrls() {
-        return urls.toArray(new String[0]);
+    public String[] getAllows() {
+        return allows.toArray(new String[0]);
+    }
+
+    public String[] getForbiddens() {
+        return forbiddens.toArray(new String[0]);
     }
 
     private static String processSecurityPath(String path) {
