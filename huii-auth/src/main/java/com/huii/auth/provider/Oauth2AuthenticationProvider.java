@@ -10,7 +10,7 @@ import com.huii.auth.service.LoginSuccessService;
 import com.huii.auth.service.impl.UserDetailServiceImpl;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysUser;
-import com.huii.common.core.domain.SysUserOauth;
+import com.huii.system.domain.SysUserOauth;
 import com.huii.common.core.model.LoginUser;
 import com.huii.common.exception.BasicAuthenticationException;
 import jakarta.annotation.PostConstruct;
@@ -42,7 +42,7 @@ public class Oauth2AuthenticationProvider implements AuthenticationProvider {
     @PostConstruct
     public void initializeClients() {
         clients.addAll(oauth2ClientProperties.getClients());
-        log.info("load oauth2 configuration:{}", clients.size());
+        log.debug("load oauth2 configuration:{}", clients.size());
     }
 
     @Override

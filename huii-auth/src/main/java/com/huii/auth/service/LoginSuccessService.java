@@ -3,7 +3,7 @@ package com.huii.auth.service;
 import com.huii.auth.core.entity.oauth2.Oauth2User;
 import com.huii.auth.core.entity.vo.LoginVo;
 import com.huii.common.core.domain.SysUser;
-import com.huii.common.core.domain.SysUserOauth;
+import com.huii.system.domain.SysUserOauth;
 import com.huii.common.core.model.LoginUser;
 import jakarta.servlet.http.HttpServletRequest;
 

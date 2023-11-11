@@ -17,6 +17,7 @@ public class TreeEntity<T> extends BaseEntity {
     @ExcelColumn(export = false)
     private static final long serialVersionUID = 1L;
 
+    @ExcelColumn(value = "父ID")
     private Long parentId;
 
     @ExcelColumn(export = false)

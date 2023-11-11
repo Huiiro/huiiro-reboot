@@ -67,7 +67,7 @@ public class SysUser extends BaseEntity {
     private String email;
 
     @ExcelColumn(value = "用户性别", convert = "1=男,2=女,3=未知")
-    private Integer sexual;
+    private String sexual;
 
     @ExcelColumn(value = "用户头像", export = false)
     private String avatar;
@@ -82,10 +82,10 @@ public class SysUser extends BaseEntity {
     @ExcelColumn(value = "账号是否删除", export = false)
     private String deleteFlag;
 
-    @ExcelColumn(value = "状态", convert = "0=禁用,1=正常")
+    @ExcelColumn(value = "用户状态", convert = "0=禁用,1=正常")
     private String userStatus;
 
-    @ExcelColumn(value = "备注")
+    @ExcelColumn(value = "用户备注")
     private String remark;
 
     @ExcelColumn(export = false)

@@ -1,4 +1,4 @@
-package com.huii.common.core.domain;
+package com.huii.system.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;

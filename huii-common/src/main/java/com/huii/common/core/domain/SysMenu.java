@@ -1,8 +1,6 @@
 package com.huii.common.core.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.huii.common.annotation.ExcelColumn;
 import com.huii.common.core.model.base.TreeEntity;
 import jakarta.validation.constraints.NotBlank;
@@ -20,9 +18,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_menu")
+@KeySequence(value = "sys_menu_id_seq", dbType = DbType.POSTGRE_SQL)
 public class SysMenu extends TreeEntity<SysMenu> {
 
-    @TableId(value = "menu_id", type = IdType.AUTO)
+    @TableId(value = "menu_id", type = IdType.INPUT)
     @ExcelColumn(value = "菜单ID")
     private Long menuId;
 
@@ -66,10 +65,10 @@ public class SysMenu extends TreeEntity<SysMenu> {
 
     @NotNull(message = "请选择是否展示在菜单中")
     @ExcelColumn(value = "是否展示在菜单中", convert = "0=隐藏,1=显示")
-    private Integer menuVisible;
+    private String menuVisible;
 
     @ExcelColumn(value = "菜单状态", convert = "0=禁用,1=正常")
-    private Integer menuStatus;
+    private String menuStatus;
 
     @ExcelColumn("路由参数")
     private String queryParam;

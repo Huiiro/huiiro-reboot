@@ -1,9 +1,6 @@
 package com.huii.common.core.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.huii.common.annotation.ExcelColumn;
 import com.huii.common.core.model.base.BaseEntity;
 import jakarta.validation.constraints.NotBlank;
@@ -26,9 +23,10 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_role")
+@KeySequence(value = "sys_role_id_seq", dbType = DbType.POSTGRE_SQL)
 public class SysRole extends BaseEntity {
 
-    @TableId(value = "role_id", type = IdType.AUTO)
+    @TableId(value = "role_id", type = IdType.INPUT)
     @ExcelColumn(value = "角色ID")
     private Long roleId;
 
@@ -61,7 +59,7 @@ public class SysRole extends BaseEntity {
     private Integer roleSeq;
 
     @ExcelColumn(value = "角色状态", convert = "0=禁用,1=正常")
-    private Integer roleStatus;
+    private String roleStatus;
 
     @ExcelColumn(value = "角色备注")
     private String remark;

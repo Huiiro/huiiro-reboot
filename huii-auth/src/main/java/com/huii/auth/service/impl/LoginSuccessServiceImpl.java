@@ -9,9 +9,8 @@ import com.huii.auth.utils.JwtUtils;
 import com.huii.common.constants.CacheConstants;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysUser;
-import com.huii.common.core.domain.SysUserOauth;
+import com.huii.system.domain.SysUserOauth;
 import com.huii.common.core.model.LoginUser;
-import com.huii.common.enums.LoginType;
 import com.huii.common.utils.redis.RedisTemplateUtils;
 import com.huii.common.utils.request.IpAddressUtils;
 import com.huii.system.mapper.SysUserMapper;
@@ -19,7 +18,6 @@ import com.huii.system.mapper.SysUserOauthMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -100,7 +98,7 @@ public class LoginSuccessServiceImpl implements LoginSuccessService {
     @Override
     public SysUserOauth getOauthUserInfo(Oauth2User oauth2User) {
         return sysUserOauthMapper.selectOne(new LambdaQueryWrapper<SysUserOauth>()
-                .eq(SysUserOauth::getOauthUserName, oauth2User.getType())
+                .eq(SysUserOauth::getOauthProvider, oauth2User.getType())
                 .eq(SysUserOauth::getOauthIdentify, oauth2User.getId())
                 .last("limit 1"));
     }

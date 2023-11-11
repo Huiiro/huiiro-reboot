@@ -1,5 +1,6 @@
 package com.huii.common.core.model;
 
+import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysMenu;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,7 +47,7 @@ public class Route {
         route.setComponent(sysMenu.getMenuComponent());
         route.setQueryParam(sysMenu.getQueryParam());
         route.setIcon(sysMenu.getMenuIcon());
-        route.setVisible(sysMenu.getMenuVisible() == 1);
+        route.setVisible(sysMenu.getMenuVisible().equals(SystemConstants.STATUS_1));
         route.setChildrenFlag(false);
         HashMap<String, Object> map = new HashMap<>();
         map.put("breadcrumb", true);
