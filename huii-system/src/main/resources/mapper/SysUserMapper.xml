@@ -2,4 +2,85 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huii.system.mapper.SysUserMapper">
 
+    <sql id="selectUser">
+        select u.user_id,
+               u.dept_id,
+               u.user_name,
+               u.nick_name,
+               u.password,
+               u.phone,
+               u.email,
+               u.sexual,
+               u.avatar,
+               u.login_ip,
+               u.login_time,
+               u.delete_flag,
+               u.user_status,
+               u.remark,
+               u.create_time
+        from sys_user u
+    </sql>
+
+    <sql id="selectUserVo">
+        select u.user_id,
+               u.dept_id,
+               u.user_name,
+               u.nick_name,
+               u.password,
+               u.phone,
+               u.email,
+               u.sexual,
+               u.avatar,
+               u.login_ip,
+               u.login_time,
+               u.delete_flag,
+               u.user_status,
+               u.remark,
+               u.create_time,
+               u.update_time,
+               d.dept_id,
+               d.parent_id,
+               d.dept_name,
+               d.dept_leader,
+               d.dept_seq,
+               d.dept_status,
+               r.role_id,
+               r.role_name,
+               r.role_key,
+               r.role_scope,
+               r.role_seq,
+               r.role_status
+        from sys_user u
+                 left join sys_dept d on u.dept_id = d.dept_id
+                 left join sys_user_role ur on u.user_id = ur.user_id
+                 left join sys_role r on r.role_id = ur.role_id
+    </sql>
+
+    <select id="selectAuthsByUserId" resultType="java.lang.String">
+        select distinct m.menu_auth
+        from sys_user_role ur
+                 left join sys_role r on ur.role_id = r.role_id
+                 left join sys_role_menu rm on ur.role_id = rm.role_id
+                 left join sys_menu m on m.menu_id = rm.menu_id
+        where user_id = #{userId}
+    </select>
+
+    <select id="selectAuthsByRoleId" resultType="java.lang.String">
+        select distinct m.menu_auth
+        from sys_role_menu rm
+                 left join sys_menu m on rm.menu_id = m.menu_id
+        where rm.role_id = #{roleId}
+    </select>
+
+    <select id="selectUsersByRoleId" resultType="com.huii.common.core.domain.SysUser">
+        <include refid="selectUser"></include>
+        left join sys_user_role ur on u.user_id = ur.user_id
+        where ur.role_id = #{roleId}
+    </select>
+
+    <select id="selectUserVoById" resultType="com.huii.common.core.domain.SysUser">
+        <include refid="selectUserVo"></include>
+        where u.delete_flag = '0' and u.user_id = #{userId}
+    </select>
+
 </mapper>

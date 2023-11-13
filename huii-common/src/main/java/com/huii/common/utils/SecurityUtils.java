@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * security工具
@@ -44,7 +45,7 @@ public class SecurityUtils {
     /**
      * 获取用户权限字段
      */
-    public static List<String> getUserAuths() {
+    public static Set<String> getUserAuths() {
         return getPrincipal().getStringAuthorities();
     }
 

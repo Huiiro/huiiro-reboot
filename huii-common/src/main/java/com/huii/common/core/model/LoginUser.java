@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
@@ -23,12 +24,12 @@ public class LoginUser implements UserDetails {
     private SysUser user;
     private String principle;
     private LoginType type;
-    private List<String> stringAuthorities;
+    private Set<String> stringAuthorities;
     private String bindStatus = SystemConstants.STATUS_1;
     @JSONField(serialize = false)
     private List<SimpleGrantedAuthority> authorities;
 
-    public LoginUser(SysUser user, List<String> authorities) {
+    public LoginUser(SysUser user, Set<String> authorities) {
         this.user = user;
         this.stringAuthorities = authorities;
     }

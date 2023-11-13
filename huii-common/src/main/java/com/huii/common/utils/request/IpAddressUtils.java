@@ -2,6 +2,7 @@ package com.huii.common.utils.request;
 
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -59,6 +60,7 @@ public class IpAddressUtils {
      * @return position
      */
     public static String getAddr(String ip) {
-        return RegionUtils.query(ip);
+        String query = RegionUtils.query(ip);
+        return ObjectUtils.isEmpty(query) ? "" : query;
     }
 }

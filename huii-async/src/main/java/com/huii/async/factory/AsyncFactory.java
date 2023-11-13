@@ -36,14 +36,13 @@ public class AsyncFactory {
                     String ip = IpAddressUtils.getIp(request);
                     String addr = IpAddressUtils.getAddr(ip);
 
-                    SysLogLogin log = new SysLogLogin(null, username, ip, addr, LocalDateTime.now(),
+                    SysLogLogin sysLogLogin = new SysLogLogin(null, username, ip, addr, LocalDateTime.now(),
                             browser, system, type, status, message, null);
-                    SpringUtils.getBean(SysLogLoginMapper.class).insert(log);
-                } catch (Exception e) {
-                    log.error(e.getMessage());
-                } finally {
+                    SpringUtils.getBean(SysLogLoginMapper.class).insert(sysLogLogin);
                     log.info("登录用户：{},登陆凭证：{},登录类型：{},登陆结果：{},登录信息：{}",
                             username, principal, LoginType.getLoginType(type), status, message);
+                } catch (Exception e) {
+                    log.error(e.getMessage());
                 }
             }
         };

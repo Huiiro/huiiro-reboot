@@ -107,7 +107,7 @@ public class LoginProviderServiceImpl implements LoginProviderService {
     public void loginSuccessPreHandler(LoginUser loginUser) {
         redisTemplateUtils.deleteObject(CacheConstants.VERIFY_TIMES + loginUser.getUsername());
         redisTemplateUtils.deleteObject(CacheConstants.ERROR_TIMES + loginUser.getUsername());
-        sendAsyncMsg(loginUser, SystemConstants.STATUS_0, ResType.USER_LOGIN_SUCCESS.getMessage());
+        sendAsyncMsg(loginUser, SystemConstants.STATUS_1, ResType.USER_LOGIN_SUCCESS.getMessage());
     }
 
     @Override

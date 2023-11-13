@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * userDetail Service
@@ -46,8 +49,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (ObjectUtils.isEmpty(sysUser)) {
             throw new UsernameNotFoundException(ResType.getI18nMessage(ResType.USER_NOT_EXIST));
         }
-        //TODO
-        //查询权限
-        return new LoginUser(sysUser, new ArrayList<>());
+        List<String> auths = sysUserMapper.selectAuthsByUserId(sysUser.getUserId());
+        return new LoginUser(sysUser, new HashSet<>(auths));
     }
 }
