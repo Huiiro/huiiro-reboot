@@ -1,4 +1,4 @@
-package com.huii.framework.config;
+package com.huii.async.config;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

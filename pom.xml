@@ -16,6 +16,7 @@
         <module>huii-system</module>
         <module>huii-oss</module>
         <module>huii-message</module>
+        <module>huii-async</module>
     </modules>
 
     <profiles>
@@ -302,6 +303,13 @@
             <dependency>
                 <groupId>com.huii</groupId>
                 <artifactId>huii-auth</artifactId>
+                <version>${huii.version}</version>
+            </dependency>
+
+            <!-- 异步模块 -->
+            <dependency>
+                <groupId>com.huii</groupId>
+                <artifactId>huii-async</artifactId>
                 <version>${huii.version}</version>
             </dependency>
 

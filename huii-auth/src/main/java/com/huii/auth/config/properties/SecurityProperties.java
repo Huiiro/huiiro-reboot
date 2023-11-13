@@ -1,4 +1,4 @@
-package com.huii.framework.config.properties;
+package com.huii.auth.config.properties;
 
 import com.huii.common.annotation.Anonymous;
 import jakarta.annotation.PostConstruct;

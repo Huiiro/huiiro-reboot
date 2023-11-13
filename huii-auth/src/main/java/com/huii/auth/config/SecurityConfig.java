@@ -1,4 +1,4 @@
-package com.huii.framework.config;
+package com.huii.auth.config;
 
 import com.huii.auth.filter.ResourceExistenceFilter;
 import com.huii.auth.filter.TokenAuthenticationFilter;
@@ -9,7 +9,7 @@ import com.huii.auth.provider.AccountAuthenticationProvider;
 import com.huii.auth.provider.EmailAuthenticationProvider;
 import com.huii.auth.provider.Oauth2AuthenticationProvider;
 import com.huii.auth.provider.SmsAuthenticationProvider;
-import com.huii.framework.config.properties.SecurityProperties;
+import com.huii.auth.config.properties.SecurityProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

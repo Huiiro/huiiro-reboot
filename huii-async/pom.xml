@@ -9,25 +9,29 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>huii-auth</artifactId>
+    <artifactId>huii-async</artifactId>
+
 
     <dependencies>
-        <!--async-->
+        <!--system-->
         <dependency>
             <groupId>com.huii</groupId>
-            <artifactId>huii-async</artifactId>
+            <artifactId>huii-system</artifactId>
         </dependency>
 
-        <!--message-->
+        <!--web-->
         <dependency>
-            <groupId>com.huii</groupId>
-            <artifactId>huii-message</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
+
+
 
 </project>

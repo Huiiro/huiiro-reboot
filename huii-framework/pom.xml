@@ -36,16 +36,16 @@
             <artifactId>oshi-core</artifactId>
         </dependency>
 
-        <!--system-->
-        <dependency>
-            <groupId>com.huii</groupId>
-            <artifactId>huii-system</artifactId>
-        </dependency>
-
         <!--auth-->
         <dependency>
             <groupId>com.huii</groupId>
             <artifactId>huii-auth</artifactId>
+        </dependency>
+
+        <!--system-->
+        <dependency>
+            <groupId>com.huii</groupId>
+            <artifactId>huii-system</artifactId>
         </dependency>
     </dependencies>
 </project>

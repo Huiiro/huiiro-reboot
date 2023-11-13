@@ -1,8 +1,11 @@
 package com.huii.auth.service.impl;
 
+import com.huii.async.AsyncManager;
+import com.huii.async.factory.AsyncFactory;
 import com.huii.auth.config.properties.LoginProperties;
 import com.huii.auth.service.LoginProviderService;
 import com.huii.common.constants.CacheConstants;
+import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.model.LoginUser;
 import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
@@ -27,7 +30,7 @@ public class LoginProviderServiceImpl implements LoginProviderService {
         if (!loginUser.isEnabled() || !loginUser.isAccountNonLocked() ||
                 !loginUser.isAccountNonExpired() || !loginUser.isCredentialsNonExpired()) {
             ResType type = ResType.USER_BANNED;
-            sendAsyncMsg(loginUser, 0, type.getMessage());
+            sendAsyncMsg(loginUser, SystemConstants.STATUS_0, type.getMessage());
             throw new ServiceException(type.getCode(), ResType.getI18nMessage(type));
         }
     }
@@ -36,7 +39,7 @@ public class LoginProviderServiceImpl implements LoginProviderService {
     public void checkLoginPassword(LoginUser loginUser, String password) {
         if (!SecurityUtils.matchesPassword(password, loginUser.getPassword())) {
             ResType type = ResType.USER_LOGIN_PASSWORD_ERROR;
-            sendAsyncMsg(loginUser, 0, type.getMessage());
+            sendAsyncMsg(loginUser, SystemConstants.STATUS_0, type.getMessage());
             saveErrorTriedTimes(loginUser.getUsername());
             throw new ServiceException(type.getCode(), ResType.getI18nMessage(type));
         }
@@ -47,12 +50,12 @@ public class LoginProviderServiceImpl implements LoginProviderService {
         String cacheCode = redisTemplateUtils.getCacheObject(key);
         if (ObjectUtils.isEmpty(cacheCode)) {
             ResType type = ResType.USER_CAPTCHA_EXPIRED;
-            sendAsyncMsg(loginUser, 0, type.getMessage());
+            sendAsyncMsg(loginUser, SystemConstants.STATUS_0, type.getMessage());
             throw new ServiceException(type.getCode(), ResType.getI18nMessage(type));
         }
         if (!cacheCode.equals(code)) {
             ResType type = ResType.USER_CAPTCHA_ERROR;
-            sendAsyncMsg(loginUser, 0, type.getMessage());
+            sendAsyncMsg(loginUser, SystemConstants.STATUS_0, type.getMessage());
             throw new ServiceException(type.getCode(), ResType.getI18nMessage(type));
         }
     }
@@ -104,11 +107,12 @@ public class LoginProviderServiceImpl implements LoginProviderService {
     public void loginSuccessPreHandler(LoginUser loginUser) {
         redisTemplateUtils.deleteObject(CacheConstants.VERIFY_TIMES + loginUser.getUsername());
         redisTemplateUtils.deleteObject(CacheConstants.ERROR_TIMES + loginUser.getUsername());
-        sendAsyncMsg(loginUser, 1, ResType.USER_LOGIN_SUCCESS.getMessage());
+        sendAsyncMsg(loginUser, SystemConstants.STATUS_0, ResType.USER_LOGIN_SUCCESS.getMessage());
     }
 
     @Override
-    public void sendAsyncMsg(LoginUser loginUser, Integer status, String msg) {
-        //TODO
+    public void sendAsyncMsg(LoginUser loginUser, String status, String msg) {
+        AsyncManager.manager().execute(AsyncFactory.loginLogger(
+                loginUser.getUsername(), loginUser.getPrinciple(), loginUser.getType().getId(), status, msg));
     }
 }

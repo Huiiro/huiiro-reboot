@@ -22,4 +22,16 @@ public enum LoginType {
     private final Integer id;
     private final String name;
     private final String key;
+
+    public static LoginType getLoginType(Integer id) {
+        if (id < 0) {
+            return null;
+        }
+        for (LoginType type : values()) {
+            if (type.getId().equals(id)) {
+                return type;
+            }
+        }
+        return null;
+    }
 }

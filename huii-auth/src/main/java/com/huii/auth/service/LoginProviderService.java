@@ -75,5 +75,5 @@ public interface LoginProviderService {
      * @param status    status
      * @param msg       msg
      */
-    void sendAsyncMsg(LoginUser loginUser, Integer status, String msg);
+    void sendAsyncMsg(LoginUser loginUser, String status, String msg);
 }

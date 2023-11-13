@@ -1,4 +1,4 @@
-package com.huii.framework.config.properties;
+package com.huii.async.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

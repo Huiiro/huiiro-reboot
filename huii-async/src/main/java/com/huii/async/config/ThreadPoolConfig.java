@@ -1,7 +1,7 @@
-package com.huii.framework.config;
+package com.huii.async.config;
 
 import com.huii.common.utils.ThreadPoolUtils;
-import com.huii.framework.config.properties.ThreadPoolProperties;
+import com.huii.async.config.properties.ThreadPoolProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;

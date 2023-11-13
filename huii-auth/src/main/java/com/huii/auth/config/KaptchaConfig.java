@@ -1,4 +1,4 @@
-package com.huii.framework.config;
+package com.huii.auth.config;
 
 import com.huii.auth.kaptcha.KaptchaService;
 import org.springframework.context.annotation.Bean;

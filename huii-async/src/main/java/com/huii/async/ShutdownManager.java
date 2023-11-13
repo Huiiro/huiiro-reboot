@@ -1,4 +1,4 @@
-package com.huii.framework.async;
+package com.huii.async;
 
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
