@@ -2,7 +2,7 @@ package com.huii.framework.config;
 
 import com.huii.common.utils.redis.RedisTemplateUtils;
 import com.huii.framework.config.properties.FilterProperties;
-import com.huii.framework.handler.ForbiddenIpInterceptor;
+import com.huii.framework.interceptor.ForbiddenIpInterceptor;
 import com.huii.framework.interceptor.RateLimitInterceptor;
 import com.huii.framework.interceptor.RepeatSubmitInterceptor;
 import lombok.RequiredArgsConstructor;

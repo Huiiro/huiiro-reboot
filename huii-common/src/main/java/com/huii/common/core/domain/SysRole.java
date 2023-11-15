@@ -51,7 +51,7 @@ public class SysRole extends BaseEntity {
     @NotBlank(message = "角色数据权限不为空")
     @ExcelColumn(value = "角色数据权限",
             convert = "1=所有数据权限,2=自定义数据权限,3=本部门数据权限,4=本部门及以下数据权限,5=仅本人数据权限")
-    private Integer roleScope;
+    private String roleScope;
 
     @NotNull(message = "角色顺序不能为空")
     @Size(min = 0, max = 999, message = "角色顺序应在{min}-{max}之间")

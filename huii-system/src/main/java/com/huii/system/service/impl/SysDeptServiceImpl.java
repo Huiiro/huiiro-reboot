@@ -4,8 +4,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.core.domain.SysDept;
 import com.huii.system.mapper.SysDeptMapper;
 import com.huii.system.service.SysDeptService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 @Service
+@RequiredArgsConstructor
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
+
+    private final SysDeptMapper sysDeptMapper;
+
 }

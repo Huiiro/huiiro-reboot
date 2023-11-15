@@ -1,8 +1,8 @@
 package com.huii.framework.aspect;
 
 import com.alibaba.fastjson2.JSON;
-import com.huii.async.AsyncManager;
 import com.huii.async.factory.AsyncFactory;
+import com.huii.async.manager.AsyncManager;
 import com.huii.common.annotation.Log;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysUser;

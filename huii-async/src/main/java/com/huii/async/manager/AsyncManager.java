@@ -1,4 +1,4 @@
-package com.huii.async;
+package com.huii.async.manager;
 
 import com.huii.common.utils.SpringUtils;
 import com.huii.common.utils.ThreadPoolUtils;

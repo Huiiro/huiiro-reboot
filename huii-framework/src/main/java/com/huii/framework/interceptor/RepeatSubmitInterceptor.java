@@ -38,7 +38,8 @@ public class RepeatSubmitInterceptor implements HandlerInterceptor {
     private final RedisTemplateUtils redisTemplateUtils;
 
     @Override
-    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+                             @NonNull Object handler) {
         if (handler instanceof HandlerMethod handlerMethod) {
             RepeatSubmit annotation = handlerMethod.getMethodAnnotation(RepeatSubmit.class);
             if (annotation != null) {

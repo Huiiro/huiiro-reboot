@@ -5,6 +5,7 @@ import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -74,8 +75,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = RuntimeException.class)
     public R<Object> runtimeExceptionHandler(RuntimeException e, HttpServletRequest request) {
-        log.error("RuntimeException:请求地址'{}',运行异常'{}' =>", request.getRequestURI(), e.getMessage());
-        return R.failed(500, e.getMessage());
+        String errMsg = ObjectUtils.isEmpty(e.getMessage()) ? e.getCause().getMessage() : e.getMessage();
+        log.error("RuntimeException:请求地址'{}',运行异常'{}' =>", request.getRequestURI(), errMsg);
+        return R.failed(500, errMsg);
     }
 
     /**
@@ -88,8 +90,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = NullPointerException.class)
     public R<Object> nullPointerExceptionHandler(NullPointerException e, HttpServletRequest request) {
-        log.error("NullPointerException:请求地址'{}',空指针异常'{}' =>", request.getRequestURI(), e.getMessage(), e);
-        return R.failed(9999,"系统异常，请联系管理员");
+        String errMsg = ObjectUtils.isEmpty(e.getMessage()) ? e.getCause().getMessage() : e.getMessage();
+        log.error("NullPointerException:请求地址'{}',空指针异常'{}' =>", request.getRequestURI(), errMsg);
+        return R.failed(9999, "系统异常，请联系管理员");
     }
 
     /**
@@ -102,7 +105,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     public R<Object> exceptionHandler(Exception e, HttpServletRequest request) {
-        log.error("Exception:请求地址:'{}',系统异常:'{}' =>", request.getRequestURI(), e.getMessage(), e);
-        return R.failed(1000,"系统异常，请稍后尝试");
+        String errMsg = ObjectUtils.isEmpty(e.getMessage()) ? e.getCause().getMessage() : e.getMessage();
+        log.error("Exception:请求地址:'{}',系统异常:'{}' =>", request.getRequestURI(), errMsg);
+        return R.failed(1000, "系统异常，请稍后尝试");
     }
 }

@@ -24,6 +24,18 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class MybatisPlusConfig {
 
     /**
+     * 拦截器配置
+     */
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(dataPermissionInterceptor());
+        interceptor.addInnerInterceptor(paginationInnerInterceptor());
+        interceptor.addInnerInterceptor(optimisticLockerInnerInterceptor());
+        return interceptor;
+    }
+
+    /**
      * postgresSQL 自增ID
      */
     @Bean
@@ -37,18 +49,6 @@ public class MybatisPlusConfig {
     @Bean
     public MetaObjectHandler metaObjectHandler() {
         return new MybatisMetaObjectHandler();
-    }
-
-    /**
-     * 拦截器配置
-     */
-    @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(dataPermissionInterceptor());
-        interceptor.addInnerInterceptor(paginationInnerInterceptor());
-        interceptor.addInnerInterceptor(optimisticLockerInnerInterceptor());
-        return interceptor;
     }
 
     /**
