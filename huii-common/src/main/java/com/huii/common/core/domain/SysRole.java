@@ -1,7 +1,9 @@
 package com.huii.common.core.domain;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;
-import com.huii.common.annotation.ExcelColumn;
+import com.huii.common.annotation.ExcelData;
+import com.huii.common.convert.ExcelDataConvert;
 import com.huii.common.core.model.base.BaseEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,17 +29,17 @@ import java.util.List;
 public class SysRole extends BaseEntity {
 
     @TableId(value = "role_id", type = IdType.INPUT)
-    @ExcelColumn(value = "角色ID")
+    @ExcelProperty(value = "角色ID")
     private Long roleId;
 
     @NotBlank(message = "角色名称不为空")
     @Size(min = 0, max = 50, message = "角色名称长度不能超过{max}个字符")
-    @ExcelColumn("角色名称")
+    @ExcelProperty("角色名称")
     private String roleName;
 
     @NotBlank(message = "角色权限字符不为空")
     @Size(min = 0, max = 50, message = "角色权限字符长度不能超过{max}个字符")
-    @ExcelColumn("角色权限字符")
+    @ExcelProperty("角色权限字符")
     private String roleKey;
 
     /**
@@ -49,22 +51,22 @@ public class SysRole extends BaseEntity {
      * 5：仅本人数据权限
      */
     @NotBlank(message = "角色数据权限不为空")
-    @ExcelColumn(value = "角色数据权限",
-            convert = "1=所有数据权限,2=自定义数据权限,3=本部门数据权限,4=本部门及以下数据权限,5=仅本人数据权限")
+    @ExcelProperty(value = "角色数据权限", converter = ExcelDataConvert.class)
+    @ExcelData(readConverterExp = "1=所有数据权限,2=自定义数据权限,3=本部门数据权限,4=本部门及以下数据权限,5=仅本人数据权限")
     private String roleScope;
 
     @NotNull(message = "角色顺序不能为空")
     @Size(min = 0, max = 999, message = "角色顺序应在{min}-{max}之间")
-    @ExcelColumn("角色顺序")
+    @ExcelProperty("角色顺序")
     private Integer roleSeq;
 
-    @ExcelColumn(value = "角色状态", convert = "0=禁用,1=正常")
+    @ExcelProperty(value = "角色状态", converter = ExcelDataConvert.class)
+    @ExcelData(readConverterExp = "0=禁用,1=正常")
     private String roleStatus;
 
-    @ExcelColumn(value = "角色备注")
+    @ExcelProperty(value = "角色备注")
     private String remark;
 
     @TableField(exist = false)
-    @ExcelColumn(export = false)
     private List<Long> menuIdList = new ArrayList<>();
 }

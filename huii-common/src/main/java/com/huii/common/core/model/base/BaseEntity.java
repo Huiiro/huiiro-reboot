@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.huii.common.annotation.ExcelColumn;
 import lombok.Data;
 
 import java.io.Serial;
@@ -21,7 +20,6 @@ import java.util.Map;
 public class BaseEntity implements Serializable {
 
     @Serial
-    @ExcelColumn(export = false)
     private static final long serialVersionUID = 1L;
 
     /**
@@ -29,14 +27,12 @@ public class BaseEntity implements Serializable {
      */
     @JsonIgnore
     @TableField(exist = false)
-    @ExcelColumn(export = false)
     private String searchValue;
 
     /**
      * 创建者
      */
     @TableField(fill = FieldFill.INSERT)
-    @ExcelColumn(export = false)
     private String createBy;
 
     /**
@@ -44,14 +40,12 @@ public class BaseEntity implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(fill = FieldFill.INSERT)
-    @ExcelColumn(export = false)
     private LocalDateTime createTime;
 
     /**
      * 更新者
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    @ExcelColumn(export = false)
     private String updateBy;
 
     /**
@@ -59,7 +53,6 @@ public class BaseEntity implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    @ExcelColumn(export = false)
     private LocalDateTime updateTime;
 
     /**
@@ -67,6 +60,5 @@ public class BaseEntity implements Serializable {
      */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @TableField(exist = false)
-    @ExcelColumn(export = false)
     private Map<String, Object> params = new HashMap<>();
 }

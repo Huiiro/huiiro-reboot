@@ -1,8 +1,8 @@
 package com.huii.system.domain;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.huii.common.annotation.ExcelColumn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,23 +20,22 @@ import java.time.LocalDateTime;
 public class SysUserOauth implements Serializable {
 
     @TableId(type = IdType.INPUT)
-    @ExcelColumn(value = "用户ID")
+    @ExcelProperty(value = "用户ID")
     private Long userId;
 
-    @ExcelColumn(value = "第三方应用名称")
+    @ExcelProperty(value = "第三方应用名称")
     private String oauthProvider;
 
-    @ExcelColumn(value = "第三方应用身份凭证")
+    @ExcelProperty(value = "第三方应用身份凭证")
     private Long oauthIdentify;
 
-    @ExcelColumn(value = "第三方应用名称")
+    @ExcelProperty(value = "第三方应用名称")
     private String oauthUserName;
 
-    @ExcelColumn(value = "第三方应用头像")
+    @ExcelProperty(value = "第三方应用头像")
     private String oauthUserAvatar;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(fill = FieldFill.INSERT)
-    @ExcelColumn(export = false)
     private LocalDateTime createTime;
 }

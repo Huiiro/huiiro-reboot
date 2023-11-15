@@ -1,9 +1,10 @@
 package com.huii.system.domain;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;
-import com.huii.common.annotation.ExcelColumn;
+import com.huii.common.annotation.ExcelData;
 import com.huii.common.annotation.Xss;
-
+import com.huii.common.convert.ExcelDataConvert;
 import com.huii.common.core.model.base.BaseEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -24,24 +25,25 @@ import lombok.EqualsAndHashCode;
 public class SysNotice extends BaseEntity {
 
     @TableId(value = "notice_id", type = IdType.INPUT)
-    @ExcelColumn(value = "公告ID")
+    @ExcelProperty(value = "公告ID")
     private Long noticeId;
 
     @Xss(message = "公告标题不能包含脚本字符")
     @NotBlank(message = "公告标题不能为空")
     @Size(min = 0, max = 255, message = "公告标题不能超过{max}个字符")
-    @ExcelColumn(value = "公告标题")
+    @ExcelProperty(value = "公告标题")
     private String noticeTitle;
 
-    @ExcelColumn(value = "公告内容")
+    @ExcelProperty(value = "公告内容")
     private String noticeContent;
 
-    @ExcelColumn(value = "公告类型")
+    @ExcelProperty(value = "公告类型")
     private Integer noticeType;
 
-    @ExcelColumn(value = "公告状态")
+    @ExcelProperty(value = "公告状态", converter = ExcelDataConvert.class)
+    @ExcelData(readConverterExp = "0=关闭,1=开启")
     private String noticeStatus;
 
-    @ExcelColumn("公告备注")
+    @ExcelProperty("公告备注")
     private String remark;
 }

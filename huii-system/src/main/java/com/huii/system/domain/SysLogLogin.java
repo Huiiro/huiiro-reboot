@@ -1,7 +1,9 @@
 package com.huii.system.domain;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;
-import com.huii.common.annotation.ExcelColumn;
+import com.huii.common.annotation.ExcelData;
+import com.huii.common.convert.ExcelDataConvert;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,38 +31,38 @@ public class SysLogLogin implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "login_id", type = IdType.INPUT)
-    @ExcelColumn(value = "登录日志ID")
+    @ExcelProperty(value = "登录日志ID")
     private Long loginId;
 
-    @ExcelColumn(value = "用户名称")
+    @ExcelProperty(value = "用户名称")
     private String loginUserName;
 
-    @ExcelColumn(value = "登录IP")
+    @ExcelProperty(value = "登录IP")
     private String loginIp;
 
-    @ExcelColumn(value = "登录地点")
+    @ExcelProperty(value = "登录地点")
     private String loginAddress;
 
-    @ExcelColumn(value = "登录时间")
+    @ExcelProperty(value = "登录时间")
     private LocalDateTime loginTime;
 
-    @ExcelColumn(value = "浏览器")
+    @ExcelProperty(value = "浏览器")
     private String loginBrowser;
 
-    @ExcelColumn(value = "操作系统")
+    @ExcelProperty(value = "操作系统")
     private String loginOs;
 
-    @ExcelColumn(value = "登录方式", convert = "1=账号登录,2=邮箱登录," +
-            "3=手机登录,4=Github登录,5=Gitee登录")
+    @ExcelProperty(value = "登录方式", converter = ExcelDataConvert.class)
+    @ExcelData(readConverterExp = "1=账号登录,2=邮箱登录,3=手机登录,4=Github登录,5=Gitee登录")
     private Integer loginType;
 
-    @ExcelColumn(value = "登陆结果", convert = "0=失败,1=成功")
+    @ExcelProperty(value = "登陆结果", converter = ExcelDataConvert.class)
+    @ExcelData(readConverterExp = "0=失败,1=成功")
     private String loginStatus;
 
-    @ExcelColumn(value = "登录信息")
+    @ExcelProperty(value = "登录信息")
     private String loginMessage;
 
-    @ExcelColumn(export = false)
     @TableField(exist = false)
     private Map<String, Object> params = new HashMap<>();
 }

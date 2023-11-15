@@ -1,7 +1,9 @@
 package com.huii.common.core.domain;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;
-import com.huii.common.annotation.ExcelColumn;
+import com.huii.common.annotation.ExcelData;
+import com.huii.common.convert.ExcelDataConvert;
 import com.huii.common.core.model.base.TreeEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,26 +25,27 @@ import lombok.EqualsAndHashCode;
 public class SysDept extends TreeEntity<SysDept> {
 
     @TableId(value = "dept_id", type = IdType.INPUT)
-    @ExcelColumn(value = "部门ID")
+    @ExcelProperty(value = "部门ID")
     private Long deptId;
 
     @NotBlank(message = "部门名称不为空")
     @Size(min = 0, max = 50, message = "部门名称长度不能超过{max}个字符")
-    @ExcelColumn("部门名称")
+    @ExcelProperty("部门名称")
     private String deptName;
 
     @Size(min = 0, max = 255, message = "部门负责人信息长度不能超过{max}个字符")
-    @ExcelColumn(value = "部门负责人信息")
+    @ExcelProperty(value = "部门负责人信息")
     private String deptLeader;
 
     @NotNull(message = "部门顺序不为空")
     @Size(min = 0, max = 999, message = "部门顺序应在{min}-{max}之间")
-    @ExcelColumn("部门顺序")
+    @ExcelProperty("部门顺序")
     private Integer deptSeq;
 
-    @ExcelColumn(value = "部门状态", convert = "0=禁用,1=正常")
+    @ExcelProperty(value = "部门状态", converter = ExcelDataConvert.class)
+    @ExcelData(readConverterExp = "0=禁用,1=正常")
     private String deptStatus;
 
-    @ExcelColumn(value = "部门备注")
+    @ExcelProperty(value = "部门备注")
     private String remark;
 }

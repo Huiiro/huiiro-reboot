@@ -1,11 +1,13 @@
 package com.huii.common.core.domain;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.huii.common.annotation.ExcelColumn;
+import com.huii.common.annotation.ExcelData;
 import com.huii.common.annotation.SensitiveColumn;
 import com.huii.common.annotation.Xss;
+import com.huii.common.convert.ExcelDataConvert;
 import com.huii.common.core.model.base.BaseEntity;
 import com.huii.common.strategy.SensitiveStrategy;
 import jakarta.validation.constraints.Email;
@@ -32,79 +34,74 @@ import java.util.List;
 public class SysUser extends BaseEntity {
 
     @TableId(value = "user_id", type = IdType.INPUT)
-    @ExcelColumn(value = "用户ID")
+    @ExcelProperty(value = "用户ID")
     private Long userId;
 
-    @ExcelColumn(value = "部门ID")
+    @ExcelProperty(value = "部门ID")
     private Long deptId;
 
     @Xss(message = "账号名含有非法字符")
     @NotBlank(message = "用户名不能为空")
     @Size(min = 2, max = 20, message = "账号名长度应在{min}-{max}个字符之间")
-    @ExcelColumn(value = "用户名")
+    @ExcelProperty(value = "用户名")
     private String userName;
 
     @Xss(message = "用户名含有非法字符")
     @Size(min = 2, max = 20, message = "用户名长度应在{min}-{max}个字符之间")
-    @ExcelColumn(value = "用户姓名")
+    @ExcelProperty(value = "用户姓名")
     private String nickName;
 
     @TableField(insertStrategy = FieldStrategy.NOT_EMPTY,
             updateStrategy = FieldStrategy.NOT_EMPTY,
             whereStrategy = FieldStrategy.NOT_EMPTY)
-    @ExcelColumn(value = "用户密码", export = false)
     private String password;
 
     @SensitiveColumn(strategy = SensitiveStrategy.PHONE)
     @Size(min = 0, max = 20, message = "电话号码长度不超过{max}个字符")
-    @ExcelColumn(value = "用户电话")
+    @ExcelProperty(value = "用户电话")
     private String phone;
 
     @SensitiveColumn(strategy = SensitiveStrategy.EMAIL)
     @Email(message = "邮箱格式不正确")
     @Size(min = 0, max = 40, message = "邮箱长度不超过{max}个字符")
-    @ExcelColumn(value = "用户邮箱")
+    @ExcelProperty(value = "用户邮箱")
     private String email;
 
-    @ExcelColumn(value = "用户性别", convert = "1=男,2=女,3=未知")
+    @ExcelProperty(value = "用户性别", converter = ExcelDataConvert.class)
+    @ExcelData(readConverterExp = "1=男,2=女,3=未知")
     private String sexual;
 
-    @ExcelColumn(value = "用户头像", export = false)
+    @ExcelProperty(value = "用户头像")
     private String avatar;
 
-    @ExcelColumn(value = "上次登录IP")
+    @ExcelProperty(value = "上次登录IP")
     private String loginIp;
 
-    @ExcelColumn(value = "上次登录时间")
+    @ExcelProperty(value = "上次登录时间")
     private LocalDateTime loginTime;
 
     @TableLogic
-    @ExcelColumn(value = "账号是否删除", export = false)
     private String deleteFlag;
 
-    @ExcelColumn(value = "用户状态", convert = "0=禁用,1=正常")
+    @ExcelProperty(value = "用户状态", converter = ExcelDataConvert.class)
+    @ExcelData(readConverterExp = "0=禁用,1=正常")
     private String userStatus;
 
-    @ExcelColumn(value = "用户备注")
+    @ExcelProperty(value = "用户备注")
     private String remark;
 
-    @ExcelColumn(export = false)
     @TableField(exist = false)
     private SysDept dept;
 
-    @ExcelColumn(export = false)
     @TableField(exist = false)
     private List<SysRole> roles;
 
-    @ExcelColumn(export = false)
     @TableField(exist = false)
     private Long roleId;
 
-    @ExcelColumn(export = false)
     @TableField(exist = false)
     private Long[] roleIds;
 
-    @ExcelColumn(export = false)
     @TableField(exist = false)
     private Long[] postIds;
 

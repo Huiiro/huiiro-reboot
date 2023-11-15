@@ -1,9 +1,9 @@
 package com.huii.system.domain;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.huii.common.annotation.ExcelColumn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,9 +22,9 @@ import java.io.Serializable;
 public class SysRoleDept implements Serializable {
 
     @TableId(type = IdType.INPUT)
-    @ExcelColumn(value = "角色ID")
+    @ExcelProperty(value = "角色ID")
     private Long roleId;
 
-    @ExcelColumn(value = "部门ID")
+    @ExcelProperty(value = "部门ID")
     private Long deptId;
 }
