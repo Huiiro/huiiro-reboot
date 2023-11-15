@@ -10,7 +10,7 @@ import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import com.huii.common.annotation.ExcelData;
-import com.huii.common.core.service.DictService;
+import com.huii.common.core.service.DicService;
 import com.huii.common.utils.SpringUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -36,7 +36,7 @@ public class ExcelDataConvert implements Converter<Object> {
         if (StringUtils.isBlank(type)) {
             value = reverseByExp(label, excelData.readConverterExp(), excelData.separator());
         } else {
-            value = SpringUtils.getBean(DictService.class).getDictValue(type, label, excelData.separator());
+            value = SpringUtils.getBean(DicService.class).getDicValue(type, label, excelData.separator());
         }
         return Convert.convert(contentProperty.getField().getType(), value);
     }
@@ -53,7 +53,7 @@ public class ExcelDataConvert implements Converter<Object> {
         if (StringUtils.isBlank(type)) {
             label = convertByExp(value, excelData.readConverterExp(), excelData.separator());
         } else {
-            label = SpringUtils.getBean(DictService.class).getDictLabel(type, value, excelData.separator());
+            label = SpringUtils.getBean(DicService.class).getDicLabel(type, value, excelData.separator());
         }
         return new WriteCellData<>(label);
     }

@@ -77,6 +77,8 @@ public enum ResType {
     COMMON_PUBLISH_SUCCESS(0, "common.publish.success", "发表成功"),
     COMMON_REQUEST_SUCCESS(0, "common.request.success", "请求成功"),
     COMMON_GENERATE_SUCCESS(0, "common.generate.success", "生成成功"),
+    COMMON_IMPORT_ERROR(7001, "common.import.error", "导入失败"),
+    COMMON_EXPORT_ERROR(7002, "common.export.error", "导出失败"),
     ;
 
     private final Integer code;

@@ -3,7 +3,7 @@ package com.huii.system.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.core.domain.SysDicData;
 import com.huii.common.core.domain.SysDicType;
-import com.huii.common.core.service.DictService;
+import com.huii.common.core.service.DicService;
 import com.huii.common.utils.StreamUtils;
 import com.huii.system.mapper.SysDicDataMapper;
 import com.huii.system.mapper.SysDicTypeMapper;
@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SysDicTypeServiceImpl extends ServiceImpl<SysDicTypeMapper, SysDicType>
-        implements SysDicTypeService, DictService {
+        implements SysDicTypeService, DicService {
 
     private final SysDicTypeMapper sysDicTypeMapper;
     private final SysDicDataMapper sysDicDataMapper;
 
     @Override
-    public String getDictValue(String type, String label, String separator) {
+    public String getDicValue(String type, String label, String separator) {
         Map<String, String> map = StreamUtils.toMap(loadExcelCastData(type), SysDicData::getDataLabel, SysDicData::getDataValue);
         if (StringUtils.containsAny(label, separator)) {
             return Arrays.stream(label.split(separator))
@@ -39,7 +39,7 @@ public class SysDicTypeServiceImpl extends ServiceImpl<SysDicTypeMapper, SysDicT
     }
 
     @Override
-    public String getDictLabel(String type, String value, String separator) {
+    public String getDicLabel(String type, String value, String separator) {
         Map<String, String> map = StreamUtils.toMap(loadExcelCastData(type), SysDicData::getDataValue, SysDicData::getDataLabel);
         if (StringUtils.containsAny(value, separator)) {
             return Arrays.stream(value.split(separator))
