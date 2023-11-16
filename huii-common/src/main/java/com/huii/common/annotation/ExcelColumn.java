@@ -8,6 +8,8 @@ import java.lang.annotation.Target;
 /**
  * excel字段
  *
+ *
+ * @deprecated using alibaba.excel.annotation.ExcelProperty instead
  * @author huii
  */
 @Deprecated
