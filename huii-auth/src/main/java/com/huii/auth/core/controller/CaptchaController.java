@@ -1,6 +1,6 @@
 package com.huii.auth.core.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson2.JSON;
 import com.huii.auth.core.entity.Captcha;
 import com.huii.auth.core.entity.PointDto;
 import com.huii.auth.service.LoginCaptchaService;
@@ -54,7 +54,7 @@ public class CaptchaController extends BaseController {
      */
     @RateLimit
     @PostMapping("/gen/slide")
-    public R<Captcha> getSlideCaptcha(@RequestBody Captcha captcha) {
+    public R<Captcha> getSlideCaptcha(@RequestBody(required = false) Captcha captcha) {
         return R.ok(loginCaptchaService.createSlideCaptcha(new Captcha(), CacheConstants.DEFAULT_CACHE_TIME));
     }
 
@@ -73,7 +73,7 @@ public class CaptchaController extends BaseController {
      */
     @RateLimit
     @PostMapping("/gen/click/text")
-    public R<Captcha> getClickTextCaptcha(@RequestBody Captcha captcha) {
+    public R<Captcha> getClickTextCaptcha(@RequestBody(required = false) Captcha captcha) {
         return R.ok(loginCaptchaService.createClickTextCaptcha(new Captcha(), CacheConstants.DEFAULT_CACHE_TIME));
     }
 
@@ -85,9 +85,7 @@ public class CaptchaController extends BaseController {
     public R<Void> checkClickTextCaptcha(@NotBlank @RequestParam String imageKey,
                                          @NotNull @RequestParam String clickValue) {
         String decoded = URLDecoder.decode(clickValue, StandardCharsets.UTF_8);
-        ObjectMapper objectMapper = new ObjectMapper();
-        PointDto[] points = objectMapper.readValue(decoded, PointDto[].class);
-
+        PointDto[] points = JSON.parseArray(decoded).toArray(PointDto.class);
         loginCaptchaService.checkClickTextCode(imageKey, points);
         return R.ok();
     }

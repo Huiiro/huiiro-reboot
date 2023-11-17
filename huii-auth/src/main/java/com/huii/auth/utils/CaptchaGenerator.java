@@ -2,6 +2,7 @@ package com.huii.auth.utils;
 
 import com.huii.auth.core.entity.Captcha;
 import com.huii.auth.core.entity.RectangleDto;
+import com.huii.common.constants.CaptchaConstants;
 import com.huii.common.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,8 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -105,7 +106,7 @@ public class CaptchaGenerator {
 
         String nonceStr = UUID.randomUUID().toString().replace("-", "");
         captcha.setNonceStr(nonceStr);
-        captcha.setClickText("请依次点击" + text.substring(0, 5));
+        captcha.setClickText("请依次点击" + text.substring(0, CaptchaConstants.CAPTCHA_CLICK_TEXT_GEN_EFFECT * 2 - 1));
         captcha.setClickSrc(toBase64(canvasImage, "png"));
         captcha.setRectangles(occupiedAreas.stream().map(RectangleDto::new)
                 .toArray(RectangleDto[]::new));
@@ -237,14 +238,14 @@ public class CaptchaGenerator {
     private static String textBuilder() {
         Collections.shuffle(letters);
         StringBuilder text = new StringBuilder();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < CaptchaConstants.CAPTCHA_CLICK_TEXT_GEN_ALL; i++) {
             text.append(letters.get(i)).append(",");
         }
         return String.valueOf(text);
     }
 
     private static Font createRandomFont(Random random) {
-        int fontSize = random.nextInt(14) + 20;
+        int fontSize = random.nextInt(16) + 26;
         int fontWeight = random.nextBoolean() ? Font.BOLD : Font.PLAIN;
         return new Font("Arial", fontWeight, fontSize);
     }
@@ -273,8 +274,8 @@ public class CaptchaGenerator {
             int x, y;
             Rectangle textArea;
             do {
-                x = createRandom(random, textWidth + 20, canvasWidth - 20, 48);
-                y = createRandom(random, textHeight + 20, canvasHeight - 20, 24);
+                x = createRandom(random, textWidth + 24, canvasWidth - 24, 46);
+                y = createRandom(random, textHeight + 16, canvasHeight - 16, 34);
                 textArea = new Rectangle(x - textWidth / 2, y - textHeight / 2, textWidth, textHeight);
             } while (isOverlapping(textArea, occupiedAreas));
 

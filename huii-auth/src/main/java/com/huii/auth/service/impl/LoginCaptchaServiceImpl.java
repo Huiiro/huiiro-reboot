@@ -27,10 +27,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -82,18 +79,20 @@ public class LoginCaptchaServiceImpl implements LoginCaptchaService {
 
     @Override
     public void checkClickTextCode(String key, PointDto[] points) {
-        RectangleDto[] dto = redisTemplateUtils.getCacheObject(CacheConstants.VERIFY_CODE + key);
-        if (dto.length != points.length || points.length <= 3) {
+        String str = redisTemplateUtils.getCacheObject(CacheConstants.VERIFY_CODE + key);
+        RectangleDto[] dto = parseClickData(str);
+        if (dto.length != CaptchaConstants.CAPTCHA_CLICK_TEXT_GEN_ALL ||
+                points.length != CaptchaConstants.CAPTCHA_CLICK_TEXT_GEN_EFFECT) {
             ResType rs = ResType.USER_CAPTCHA_NOT_PASS;
             throw new ServiceException(rs.getCode(), MessageUtils.message(rs.getI18n()));
         }
         boolean flag = false;
-        for (int i = 0; i < dto.length; i++) {
-            if (Math.abs(dto[i].getX() - Math.floor(points[i].getX())) <=
+        for (int i = 0; i < points.length; i++) {
+            if (Math.abs(dto[i].getX() - Math.floor(points[i].getX())) >=
                     (double) dto[i].getWidth() / 2 + CaptchaConstants.CAPTCHA_CLICK_ALLOW_WIDTH_DEVIATION) {
                 flag = true;
             }
-            if (Math.abs(dto[i].getY() - Math.floor(points[i].getY())) <=
+            if (Math.abs(dto[i].getY() - Math.floor(points[i].getY())) >=
                     (double) dto[i].getHeight() / 2 + CaptchaConstants.CAPTCHA_CLICK_ALLOW_HEIGHT_DEVIATION) {
                 flag = true;
             }
@@ -137,7 +136,8 @@ public class LoginCaptchaServiceImpl implements LoginCaptchaService {
     @Override
     public Captcha createClickTextCaptcha(Captcha captcha, Integer minute) {
         Captcha clickCaptcha = CaptchaGenerator.createClickTextCaptcha(captcha);
-        saveCode(captcha.getNonceStr(), captcha.getRectangles(), minute);
+        List<RectangleDto> list = Arrays.stream(captcha.getRectangles()).toList();
+        saveCode(captcha.getNonceStr(), buildClickData(list), minute);
         captcha.setRectangles(null);
         return clickCaptcha;
     }
@@ -180,4 +180,28 @@ public class LoginCaptchaServiceImpl implements LoginCaptchaService {
     private void saveCode(String keySuffix, Object value, Integer minutes) {
         redisTemplateUtils.setCacheObject(CacheConstants.VERIFY_CODE + keySuffix, value, minutes, TimeUnit.MINUTES);
     }
+
+    private String buildClickData(List<RectangleDto> list) {
+        StringBuilder sb = new StringBuilder();
+        for (RectangleDto dto : list) {
+            sb.append(dto.getX()).append(".").append(dto.getY()).append(".")
+                    .append(dto.getWidth()).append(".").append(dto.getHeight()).append(",");
+        }
+        return sb.substring(0, sb.length() - 1);
+    }
+
+    private RectangleDto[] parseClickData(String str) {
+        String[] split = str.split(",");
+        RectangleDto[] dto = new RectangleDto[split.length];
+        int i = 0;
+        for (String s : split) {
+            String[] data = s.split("\\.");
+            RectangleDto rectangleDto = new RectangleDto(Integer.parseInt(data[0]), Integer.parseInt(data[1]),
+                    Integer.parseInt(data[2]), Integer.parseInt(data[3]));
+            dto[i] = rectangleDto;
+            i++;
+        }
+        return dto;
+    }
+
 }

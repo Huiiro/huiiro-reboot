@@ -110,7 +110,7 @@ public class JwtUtils {
         if (StringUtils.isEmpty(token)) {
             return null;
         }
-        return (Long) getClaimsItem(token, jwtProperties.getKeyword());
+        return Long.valueOf(getClaimsItem(token, jwtProperties.getKeyword()).toString());
     }
 
     /**

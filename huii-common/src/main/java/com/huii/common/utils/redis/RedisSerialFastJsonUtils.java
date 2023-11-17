@@ -1,6 +1,9 @@
 package com.huii.common.utils.redis;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONWriter;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
@@ -10,19 +13,19 @@ import java.nio.charset.StandardCharsets;
 /**
  * Redis Serializer
  * redis序列化工具
- * 从fastjson升级为jackson
  *
  * @author huii
  **/
-public class RedisSerialUtils<T> implements RedisSerializer<T> {
+public class RedisSerialFastJsonUtils<T> implements RedisSerializer<T> {
+
+    public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     private final Class<T> clazz;
-    private final ObjectMapper objectMapper;
 
-    public RedisSerialUtils(Class<T> clazz, ObjectMapper objectMapper) {
+
+    public RedisSerialFastJsonUtils(Class<T> clazz) {
         super();
         this.clazz = clazz;
-        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -30,11 +33,7 @@ public class RedisSerialUtils<T> implements RedisSerializer<T> {
         if (t == null) {
             return new byte[0];
         }
-        try {
-            return objectMapper.writeValueAsBytes(t);
-        } catch (Exception e) {
-            throw new SerializationException("Error serializing object to byte[]", e);
-        }
+        return JSON.toJSONString(t, JSONWriter.Feature.WriteClassName).getBytes(DEFAULT_CHARSET);
     }
 
     @Override
@@ -42,10 +41,12 @@ public class RedisSerialUtils<T> implements RedisSerializer<T> {
         if (bytes == null || bytes.length == 0) {
             return null;
         }
-        try {
-            return objectMapper.readValue(bytes, clazz);
-        } catch (Exception e) {
-            throw new SerializationException("Error deserializing object from byte[]", e);
-        }
+        String str = new String(bytes, DEFAULT_CHARSET);
+
+        return JSON.parseObject(str, clazz);
+    }
+
+    protected JavaType getJavaType(Class<?> clazz) {
+        return TypeFactory.defaultInstance().constructType(clazz);
     }
 }

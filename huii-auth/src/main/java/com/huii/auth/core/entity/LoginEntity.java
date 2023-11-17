@@ -3,13 +3,15 @@ package com.huii.auth.core.entity;
 import com.huii.common.enums.LoginType;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * login entity
  *
  * @author huii
  */
 @Data
-public class LoginEntity {
+public class LoginEntity implements Serializable {
 
     /**
      * 登录类型

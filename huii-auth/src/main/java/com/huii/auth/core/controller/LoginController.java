@@ -9,6 +9,8 @@ import com.huii.auth.service.LoginService;
 import com.huii.common.annotation.Anonymous;
 import com.huii.common.core.model.R;
 import com.huii.common.enums.LoginType;
+import com.huii.common.enums.ResType;
+import com.huii.common.utils.MessageUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -36,7 +38,7 @@ public class LoginController {
         dto.setUsername(username);
         loginCaptchaService.checkVerifyCode(username, dto);
         LoginVo loginVo = loginService.accountLogin(dto, request);
-        return R.ok(loginVo);
+        return R.ok(MessageUtils.message(ResType.USER_LOGIN_SUCCESS.getI18n()), loginVo);
     }
 
     /**
@@ -46,7 +48,7 @@ public class LoginController {
     public R<LoginVo> accountLogin(@RequestBody @Validated EmailDto dto, HttpServletRequest request) {
         dto.setLoginType(LoginType.EMAIL);
         LoginVo loginVo = loginService.emailLogin(dto, request);
-        return R.ok(loginVo);
+        return R.ok(MessageUtils.message(ResType.USER_LOGIN_SUCCESS.getI18n()), loginVo);
     }
 
     /**
@@ -56,7 +58,7 @@ public class LoginController {
     public R<LoginVo> accountLogin(@RequestBody @Validated SmsDto dto, HttpServletRequest request) {
         dto.setLoginType(LoginType.SMS);
         LoginVo loginVo = loginService.smsLogin(dto, request);
-        return R.ok(loginVo);
+        return R.ok(MessageUtils.message(ResType.USER_LOGIN_SUCCESS.getI18n()), loginVo);
     }
 
     /**
