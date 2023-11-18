@@ -5,6 +5,7 @@ import com.huii.auth.core.entity.dto.EmailDto;
 import com.huii.auth.core.entity.dto.SmsDto;
 import com.huii.auth.core.entity.vo.LoginVo;
 import com.huii.auth.service.LoginCaptchaService;
+import com.huii.auth.service.LoginSecurityService;
 import com.huii.auth.service.LoginService;
 import com.huii.common.annotation.Anonymous;
 import com.huii.common.core.model.R;
@@ -27,6 +28,7 @@ public class LoginController {
 
     private final LoginService loginService;
     private final LoginCaptchaService loginCaptchaService;
+    private final LoginSecurityService loginSecurityService;
 
     /**
      * 账号密码登录
@@ -36,6 +38,8 @@ public class LoginController {
         dto.setLoginType(LoginType.ACCOUNT);
         String username = loginService.getUsername(dto.getUsername());
         dto.setUsername(username);
+        String password = loginSecurityService.decrypt(dto.getPassword());
+        dto.setPassword(password);
         loginCaptchaService.checkVerifyCode(username, dto);
         LoginVo loginVo = loginService.accountLogin(dto, request);
         return R.ok(MessageUtils.message(ResType.USER_LOGIN_SUCCESS.getI18n()), loginVo);

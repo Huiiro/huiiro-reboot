@@ -27,6 +27,6 @@ public class AccountDto extends LoginEntity {
      * 用户密码
      */
     @NotBlank(message = "{user.password.not.blank}")
-    @Length(min = 2, max = 20, message = "{user.password.length.valid}")
+    @Length(min = 2, max = 256, message = "{user.password.length.valid}")
     private String password;
 }
