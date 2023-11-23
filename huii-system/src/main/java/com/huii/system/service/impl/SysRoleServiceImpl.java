@@ -1,11 +1,139 @@
 package com.huii.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.core.domain.SysRole;
+import com.huii.common.core.model.Page;
+import com.huii.common.core.model.PageParam;
+import com.huii.common.enums.DataScopeType;
+import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.PageParamUtils;
+import com.huii.system.domain.SysRoleDept;
+import com.huii.system.domain.SysRoleMenu;
+import com.huii.system.domain.SysUserRole;
+import com.huii.system.mapper.SysRoleDeptMapper;
 import com.huii.system.mapper.SysRoleMapper;
+import com.huii.system.mapper.SysRoleMenuMapper;
+import com.huii.system.mapper.SysUserRoleMapper;
 import com.huii.system.service.SysRoleService;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 @Service
-public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole>  implements SysRoleService {
+@RequiredArgsConstructor
+public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
+
+    private final SysRoleMapper sysRoleMapper;
+    private final SysRoleMenuMapper sysRoleMenuMapper;
+    private final SysRoleDeptMapper sysRoleDeptMapper;
+    private final SysUserRoleMapper sysUserRoleMapper;
+
+    @Override
+    public Page selectRoleList(SysRole sysRole, PageParam pageParam) {
+        IPage<SysRole> iPage = new PageParamUtils<SysRole>().getPageInfo(pageParam);
+        return new Page(this.page(iPage, wrapperBuilder(sysRole)));
+    }
+
+    @Override
+    public SysRole selectRoleById(Long id) {
+        return sysRoleMapper.selectById(id);
+    }
+
+    @Override
+    public void checkInsert(SysRole sysRole) {
+        if (sysRoleMapper.exists(new LambdaQueryWrapper<SysRole>()
+                .eq(SysRole::getRoleName, sysRole.getRoleName()))) {
+            throw new ServiceException("角色名称重复");
+        }
+        if (sysRoleMapper.exists(new LambdaQueryWrapper<SysRole>()
+                .eq(SysRole::getRoleKey, sysRole.getRoleKey()))) {
+            throw new ServiceException("角色编码重复");
+        }
+    }
+
+    @Override
+    public void insertRole(SysRole sysRole) {
+        sysRole.setRoleScope(DataScopeType.SELF.getCode());
+        sysRoleMapper.insert(sysRole);
+    }
+
+    @Override
+    public void checkUpdate(SysRole sysRole) {
+        SysRole oldOne = sysRoleMapper.selectById(sysRole.getRoleId());
+        if (!StringUtils.equals(sysRole.getRoleName(), oldOne.getRoleName())) {
+            if (sysRoleMapper.exists(new LambdaQueryWrapper<SysRole>()
+                    .eq(SysRole::getRoleName, sysRole.getRoleName()))) {
+                throw new ServiceException("角色名称重复");
+            }
+        }
+        if (!StringUtils.equals(sysRole.getRoleKey(), oldOne.getRoleKey())) {
+            if (sysRoleMapper.exists(new LambdaQueryWrapper<SysRole>()
+                    .eq(SysRole::getRoleKey, sysRole.getRoleKey()))) {
+                throw new ServiceException("角色编码重复");
+            }
+        }
+    }
+
+    @Override
+    public void updateRole(SysRole sysRole) {
+        sysRoleMapper.updateById(sysRole);
+        List<Long> menuIds = sysRole.getMenuIdList();
+        sysRoleMenuMapper.delete(new LambdaQueryWrapper<SysRoleMenu>()
+                .eq(SysRoleMenu::getRoleId, sysRole.getRoleId()));
+
+        List<SysRoleMenu> roleMenus = new ArrayList<>();
+        for (Long id : menuIds) {
+            SysRoleMenu sysRoleMenu = new SysRoleMenu();
+            sysRoleMenu.setMenuId(id);
+            sysRoleMenu.setRoleId(sysRole.getRoleId());
+            roleMenus.add(sysRoleMenu);
+        }
+        sysRoleMenuMapper.insertBatch(roleMenus);
+    }
+
+    @Override
+    public void updateRoleStatus(SysRole sysRole) {
+        sysRoleMapper.updateById(sysRole);
+    }
+
+    @Override
+    public void deleteRoles(Long[] ids) {
+        for (Long id : ids) {
+            boolean existUserInRole = sysUserRoleMapper.exists(new LambdaQueryWrapper<SysUserRole>()
+                    .eq(SysUserRole::getRoleId, id));
+            if (existUserInRole) {
+                SysRole sysRole = sysRoleMapper.selectOne(new LambdaQueryWrapper<SysRole>()
+                        .eq(SysRole::getRoleId, id));
+                throw new ServiceException(sysRole.getRoleName() + "角色下存在用户，不允许删除");
+            }
+        }
+
+        List<Long> roles = Arrays.asList(ids);
+        sysRoleMapper.deleteBatchIds(roles);
+        sysRoleMenuMapper.delete(new LambdaQueryWrapper<SysRoleMenu>()
+                .in(SysRoleMenu::getRoleId, roles));
+        sysRoleDeptMapper.delete(new LambdaQueryWrapper<SysRoleDept>()
+                .in(SysRoleDept::getRoleId, roles));
+    }
+
+    private LambdaQueryWrapper<SysRole> wrapperBuilder(SysRole role) {
+        Map<String, Object> params = role.getParams();
+        LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.isNotBlank(role.getRoleName()), SysRole::getRoleName, role.getRoleName())
+                .like(StringUtils.isNotBlank(role.getRoleKey()), SysRole::getRoleKey, role.getRoleKey())
+                .eq(ObjectUtils.isNotEmpty(role.getRoleStatus()), SysRole::getRoleStatus, role.getRoleStatus())
+                .between(params.get("beginTime") != null && params.get("endTime") != null,
+                        SysRole::getCreateTime, params.get("beginTime"), params.get("endTime"))
+                .orderByAsc(SysRole::getRoleSeq)
+                .orderByAsc(SysRole::getCreateTime);
+        return wrapper;
+    }
 }

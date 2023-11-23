@@ -6,6 +6,7 @@ import com.huii.async.manager.AsyncManager;
 import com.huii.common.annotation.Log;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysUser;
+import com.huii.common.exception.ServiceException;
 import com.huii.common.utils.SecurityUtils;
 import com.huii.common.utils.request.IpAddressUtils;
 import com.huii.system.domain.SysLogOp;
@@ -28,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Slf4j
 @Aspect
@@ -83,10 +85,15 @@ public class SysLogAspect {
             String opMessage = "";
             if (ObjectUtils.isNotEmpty(e)) {
                 opStatus = SystemConstants.STATUS_0;
-                opMessage = e.getMessage().length() > maxLength ?
-                        e.getMessage().substring(0, maxLength) : e.getMessage();
-            }
+                if (e instanceof ServiceException) {
+                    opMessage = ((ServiceException) e).getErrorMsg();
+                } else {
+                    opMessage = Optional.ofNullable(e.getMessage())
+                            .map(message -> message.length() > maxLength ? message.substring(0, maxLength) : message)
+                            .orElse(null);
 
+                }
+            }
             SysLogOp op = new SysLogOp(null, username, methodName, log.opType().getId(), LocalDateTime.now(), costTIme,
                     ip, address, requestMethod, methodName + className, requestParams, responseParams,
                     opStatus, "0", opMessage, null);

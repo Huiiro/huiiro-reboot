@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = ServiceException.class)
     public R<Object> serviceExceptionHandler(ServiceException e, HttpServletRequest request) {
-        log.error("ServiceException:请求地址:'{}',返回信息:'{}',业务异常:'{}' =>", request.getRequestURI(), e.toString(), e.getMessage());
+        log.error("ServiceException:请求地址:'{}',返回信息:'{}',业务异常:'{}' =>", request.getRequestURI(), e.toString(), e.getErrorMsg());
         return R.failed(e.getErrorCode(), e.getErrorMsg());
     }
 

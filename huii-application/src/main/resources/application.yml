@@ -101,3 +101,4 @@ security:
 config:
   jwt:
     key: MIBIjANgiG9w0BaQwFwAOsC1AvQ8AMICgKEA5pWuE8OAGlsLq76doiXhzSTKieCxp7YqD32jcs5pzaRxPBlVKL8a8Rsi7RyEJ57
+    enable-double-token: true

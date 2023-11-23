@@ -50,7 +50,7 @@ public class RegionUtils {
             String region = SEARCHER.search(ip.trim());
             return region.replace("0|", "").replace("|0", "");
         } catch (Exception e) {
-            log.error("ip2region query offline ip fail: {}", ip);
+            log.debug("ip2region query offline ip fail: {}", ip);
             return null;
         }
     }

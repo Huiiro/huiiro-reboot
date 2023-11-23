@@ -7,6 +7,7 @@ import com.huii.common.utils.JsonWriteUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -25,13 +26,20 @@ public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint
         int status = response.getStatus();
         R<Object> result;
         ResType type;
-        if (status == 408) {
+        if (ObjectUtils.isNotEmpty(request.getAttribute("tokenException"))) {
+            status = HttpServletResponse.SC_UNAUTHORIZED;
+            type = ResType.STATUS_TOKEN_EXPIRED;
+            result = R.failed(type.getCode(), ResType.getI18nMessage(type), null);
+        } else if (status == 408) {
+            //请求超时
             type = ResType.STATUS_REQUEST_TIMEOUT;
             result = R.failed(type.getCode(), ResType.getI18nMessage(type), null);
         } else if (status == 429) {
+            //请求限流
             type = ResType.STATUS_TOO_MANY_REQUESTS;
             result = R.failed(type.getCode(), ResType.getI18nMessage(type), null);
         } else {
+            //其他异常
             status = HttpServletResponse.SC_UNAUTHORIZED;
             type = ResType.STATUS_UNAUTHORIZED;
             result = R.failed(type.getCode(), ResType.getI18nMessage(type), null);

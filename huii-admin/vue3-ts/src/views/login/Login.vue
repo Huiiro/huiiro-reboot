@@ -1,10 +1,10 @@
 <template>
   <div class="login-container">
-    <div class="login-form">
-      <div class="left-content">
+    <div class="login-form" :class="{mobile: layoutStore.isMobile}">
+      <div class="left-content" v-if="!layoutStore.isMobile">
         Im Huang Wei Ming King
       </div>
-      <div>
+      <div v-if="!layoutStore.isMobile">
         <el-divider style="height: 100%" direction="vertical"/>
       </div>
       <div class="right-content">
@@ -70,12 +70,15 @@ import clickTextCaptcha from "@/components/captcha/ClickTextCaptcha.vue";
 import {Lock, User} from "@element-plus/icons-vue";
 import {nextTick, reactive, ref} from "vue";
 import {accountLogin} from "@/api/auth/login";
-import {useRouter} from "vue-router";
-import {setAccessToken, setUserInfo} from "@/utils/token.ts";
+import {useRoute, useRouter} from "vue-router";
+import {setAccessToken, setRefreshToken, setUserInfo} from "@/utils/token.ts";
 import {checkClickTextCaptcha} from "@/api/auth/captcha";
 import {encryptFiled} from "@/utils/encrypt.ts";
+import {useLayoutStore} from "@/store/modules/layout.ts";
 
+const layoutStore = useLayoutStore();
 let router = useRouter();
+let route = useRoute();
 let loginForm = reactive({username: '', password: '', rememberMe: false});
 let captchaForm = reactive({nonceStr: '', value: 0});
 
@@ -118,8 +121,12 @@ const handleRealLogin = () => {
         accountLogin(loginForm).then((res: any) => {
           if (res.code === 0) {
             setAccessToken(res.data.accessToken);
+            if (res.data.refreshToken) {
+              setRefreshToken(res.data.refreshToken);
+            }
             setUserInfo(res.data.userInfo);
-            router.push('/index');
+            let redirect: any = route.query.redirect;
+            router.push({path: redirect || "/index"});
           }
           loginForm.password = pwd
           loadingWait.value = false;
@@ -160,6 +167,10 @@ const handleOauthLogin = (type: String) => {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   width: 940px;
   display: flex;
+
+  &.mobile {
+    width: 420px;
+  }
 }
 
 .login-form-item {
@@ -229,4 +240,5 @@ const handleOauthLogin = (type: String) => {
   flex: 1;
   padding: 20px;
 }
+
 </style>

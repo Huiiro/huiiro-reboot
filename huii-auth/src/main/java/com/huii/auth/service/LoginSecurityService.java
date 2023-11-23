@@ -21,4 +21,12 @@ public interface LoginSecurityService {
      * @return decryptStr
      */
     String decrypt(String encryptStr);
+
+    /**
+     * 刷新accessToken
+     * @param refresh refresh
+     * @return new token
+     */
+    String createNewAccessToken(String refresh);
+
 }

@@ -1,5 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huii.system.mapper.SysMenuMapper">
-
+    <sql id="selectFields">
+        select distinct m.menu_id,
+                        m.parent_id,
+                        m.menu_type,
+                        m.menu_name,
+                        m.menu_auth,
+                        m.menu_icon,
+                        m.menu_path,
+                        m.menu_component,
+                        m.menu_seq,
+                        m.menu_visible,
+                        m.menu_status,
+                        m.query_param,
+                        m.remark,
+                        m.create_time
+        from sys_menu m
+                 left join sys_role_menu rm on m.menu_id = rm.menu_id
+                 left join sys_user_role ur on rm.role_id = ur.role_id
+                 left join sys_role r on ur.role_id = r.role_id
+                 left join sys_user u on ur.user_id = u.user_id
+    </sql>
+    <select id="selectListMenusByUserId" resultType="com.huii.common.core.domain.SysMenu">
+        <include refid="selectFields"></include>
+        where u.user_id = #{userId}
+        <if test="menu.menuName != null">
+            and m.menu_name = #{menu.menuName}
+        </if>
+        <if test="menu.menuVisible != null">
+            and m.menu_visible = #{menu.menuVisible}
+        </if>
+        <if test="menu.menuStatus != null">
+            and m.menu_status = #{menu.menuStatus}
+        </if>
+        order by m.parent_id asc, m.menu_seq asc
+    </select>
+    <select id="selectMenuIdsByRoleId" resultType="java.lang.Long">
+        SELECT menu_id
+        FROM sys_role_menu
+        WHERE role_id = #{roleId}
+    </select>
+    <select id="checkRoleHasAnyMenu" resultType="Boolean">
+        select exists(
+        select 1
+        from sys_role r
+        inner join sys_role_menu rm on r.role_id = rm.role_id
+        where rm.menu_id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        )
+    </select>
 </mapper>

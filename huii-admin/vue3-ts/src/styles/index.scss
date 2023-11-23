@@ -1,1 +1,57 @@
 @import "reset";
+@import "variable";
+
+/*居中样式*/
+.display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*搜索栏 输入框 item 样式*/
+.global-input-item {
+  font-weight: bold;
+}
+
+/*搜索栏 输入框样式*/
+.global-input {
+  width: 160px;
+}
+
+/*全局 分页器 样式*/
+.global-pagination {
+  padding: 15px 0;
+  float: right;
+}
+
+/*全局 table 样式*/
+.global-table {
+  width: 100%;
+}
+
+/*全局 table btn 样式*/
+.global-table-btn {
+  padding: 0
+}
+
+/*全局 table 下拉菜单 样式*/
+.global-table-dropdown {
+  font-size: 12px;
+  color: $elc-dropdown-color;
+  user-select: none;
+  cursor: pointer;
+}
+.global-table-dropdown:hover {
+  color: $elc-dropdown-color-hover;
+}
+
+/*全局 table 表头 样式*/
+:deep(.global-table-header) {
+  background-color: $elc-table-header-color !important;
+}
+
+/*全局 新增 更新 对话框样式*/
+.global-dialog-iu {
+  min-width: 460px;
+  max-width: 720px
+}

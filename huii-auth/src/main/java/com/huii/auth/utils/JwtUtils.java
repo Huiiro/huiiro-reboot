@@ -93,7 +93,7 @@ public class JwtUtils {
 
     public Object getClaimsItem(String token, String key) {
         Map<String, Object> map = parseTokenToMap(token);
-        if (map.isEmpty()) {
+        if (ObjectUtils.isEmpty(map)) {
             return null;
         }
         return map.get(key);
@@ -103,14 +103,16 @@ public class JwtUtils {
         if (StringUtils.isEmpty(token)) {
             return null;
         }
-        return (String) getClaimsItem(token, jwtProperties.getKeyword());
+        String str = (String) getClaimsItem(token, jwtProperties.getKeyword());
+        return ObjectUtils.isEmpty(str) ? null : str;
     }
 
     public Long getId(String token) {
         if (StringUtils.isEmpty(token)) {
             return null;
         }
-        return Long.valueOf(getClaimsItem(token, jwtProperties.getKeyword()).toString());
+        String str = (String) getClaimsItem(token, jwtProperties.getKeyword());
+        return ObjectUtils.isEmpty(str) ? null : Long.valueOf(str);
     }
 
     /**

@@ -3,6 +3,7 @@ package com.huii.auth.core.controller;
 import com.huii.auth.service.LoginSecurityService;
 import com.huii.common.annotation.Anonymous;
 import com.huii.common.core.model.R;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +24,20 @@ public class LoginSecurityController {
 
     @Anonymous
     @GetMapping("/key")
-    public R<Object> key() {
+    public R<Map<String, Object>> key() {
         String publicKey = loginSecurityService.getPublicKeyPem();
         Map<String, Object> map = new HashMap<>();
         map.put("publicKey", publicKey);
         return R.ok(map);
+    }
+
+    @Anonymous
+    @GetMapping("/refresh")
+    public R<Map<String, Object>> getNewAccessToken(@NotBlank @RequestParam String refresh) {
+        String token = loginSecurityService.createNewAccessToken(refresh);
+        Map<String, Object> map = new HashMap<>();
+        map.put("accessToken", token);
+        return token == null ? R.failed() : R.ok(map);
     }
 
     @Anonymous

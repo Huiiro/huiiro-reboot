@@ -15,6 +15,7 @@ import com.huii.common.utils.MessageUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +34,7 @@ public class LoginController {
     /**
      * 账号密码登录
      */
-    @RequestMapping("/account")
+    @PostMapping("/account")
     public R<LoginVo> accountLogin(@RequestBody @Validated AccountDto dto, HttpServletRequest request) {
         dto.setLoginType(LoginType.ACCOUNT);
         String username = loginService.getUsername(dto.getUsername());
@@ -48,7 +49,7 @@ public class LoginController {
     /**
      * 邮箱验证码登录
      */
-    @RequestMapping("/email")
+    @PostMapping("/email")
     public R<LoginVo> accountLogin(@RequestBody @Validated EmailDto dto, HttpServletRequest request) {
         dto.setLoginType(LoginType.EMAIL);
         LoginVo loginVo = loginService.emailLogin(dto, request);
@@ -58,7 +59,7 @@ public class LoginController {
     /**
      * 手机验证码登录
      */
-    @RequestMapping("/sms")
+    @PostMapping("/sms")
     public R<LoginVo> accountLogin(@RequestBody @Validated SmsDto dto, HttpServletRequest request) {
         dto.setLoginType(LoginType.SMS);
         LoginVo loginVo = loginService.smsLogin(dto, request);

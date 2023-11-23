@@ -46,7 +46,7 @@ public class SysLogOp implements Serializable {
     private Integer opType;
 
     @ExcelProperty(value = "请求时间")
-    private LocalDateTime opTIme;
+    private LocalDateTime opTime;
 
     @ExcelProperty(value = "接口耗时(ms)")
     private Long opCostTime;

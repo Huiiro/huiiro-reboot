@@ -51,9 +51,11 @@ public class Route implements Serializable {
         route.setVisible(sysMenu.getMenuVisible().equals(SystemConstants.STATUS_1));
         route.setChildrenFlag(false);
         HashMap<String, Object> map = new HashMap<>();
+        map.put("invisible", sysMenu.getMenuVisible());
         map.put("breadcrumb", true);
+        map.put("keepAlive", false);
         map.put("title", sysMenu.getMenuName());
-        map.put("icon",sysMenu.getMenuIcon());
+        map.put("icon", sysMenu.getMenuIcon());
         route.setMeta(map);
         return route;
     }

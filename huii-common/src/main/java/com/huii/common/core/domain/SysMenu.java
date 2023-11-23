@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.huii.common.annotation.ExcelData;
 import com.huii.common.convert.ExcelDataConvert;
 import com.huii.common.core.model.base.TreeEntity;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -62,7 +60,8 @@ public class SysMenu extends TreeEntity<SysMenu> {
     private String menuComponent;
 
     @NotNull(message = "菜单顺序不为空")
-    @Size(min = 0, max = 999, message = "菜单顺序应在{min}-{max}之间")
+    @Min(value = 0, message = "菜单顺序应大于等于 {value}")
+    @Max(value = 999, message = "菜单顺序应小于等于 {value}")
     @ExcelProperty("菜单顺序")
     private Integer menuSeq;
 

@@ -3,6 +3,38 @@
  * 定义全局变量
  */
 
-$global-color: #d2ffd8;
+/*组件*/
 
+/*logo组件高度*/
+$c-logo-height: 50px;
+/*tab组件高度*/
+$c-tab-height: 30px;
+/*header组件高度*/
+$c-header-height: 36px;
+/*侧边栏宽度*/
+$sidebar-width: 240px;
+/*侧边栏收缩后宽度*/
+$sidebar-min-width: 64px;
+/*导航栏高度*/
+$header-height: calc(#{$c-tab-height} + #{$c-header-height});
+
+$global-color: #d2ffd8;
 $global-hover-color: #409eff;
+$global-import-color: #ffd04b;
+
+/*侧边栏颜色*/
+$sidebar-color: #2b2d30;
+/*导航栏颜色*/
+$header-color: #fdfdfd;
+/*导航栏上半部分颜色*/
+$header-top-color: #ececec;
+/*导航栏字体颜色*/
+$header-font-color: #606266;
+/*主页面颜色*/
+$background-color: #fdfdfd;
+
+/*el-table header颜色*/
+$elc-table-header-color: #f6f6f7;
+/*dropdown 颜色*/
+$elc-dropdown-color: #409eff;
+$elc-dropdown-color-hover: #6ebdff;

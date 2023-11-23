@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.huii.common.annotation.ExcelData;
 import com.huii.common.convert.ExcelDataConvert;
 import com.huii.common.core.model.base.BaseEntity;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -52,7 +50,8 @@ public class SysDicData extends BaseEntity {
     private String dataLabel;
 
     @NotNull(message = "字典值顺序不为空")
-    @Size(min = 0, max = 999, message = "字典值顺序应在{min}-{max}之间")
+    @Min(value = 0, message = "字典值顺序应大于等于 {value}")
+    @Max(value = 999, message = "字典值顺序应小于等于 {value}")
     @ExcelProperty("字典值顺序")
     private Integer dataSeq;
 

@@ -1,5 +1,6 @@
 package com.huii.auth.filter;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.huii.auth.config.properties.JwtProperties;
 import com.huii.auth.utils.JwtUtils;
 import com.huii.common.constants.CacheConstants;
@@ -45,7 +46,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.isNotEmpty(token) && token.startsWith("Bearer ")) {
             token = token.replace("Bearer ", "");
             Long id = jwtUtils.getId(token);
-            if (id != null) {
+            if (id == null) {
+                request.setAttribute("tokenException", "e");
+            } else {
                 //单token情况是否验证redis中的token
                 if (jwtProperties.getEnableDev().equals("false") &&
                         jwtProperties.getEnableDoubleToken().equals("false") &&
@@ -66,7 +69,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
                 //获取用户信息
-                LoginUser loginUser = redisTemplateUtils.getCacheObject(CacheConstants.USER + id);
+                JSONObject object = redisTemplateUtils.getCacheObject(CacheConstants.USER + id);
+                LoginUser loginUser = object.toJavaObject(LoginUser.class);
                 if (ObjectUtils.isNotEmpty(loginUser)) {
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());

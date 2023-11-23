@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.huii.common.annotation.ExcelData;
 import com.huii.common.convert.ExcelDataConvert;
 import com.huii.common.core.model.base.BaseEntity;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -56,7 +54,8 @@ public class SysRole extends BaseEntity {
     private String roleScope;
 
     @NotNull(message = "角色顺序不能为空")
-    @Size(min = 0, max = 999, message = "角色顺序应在{min}-{max}之间")
+    @Min(value = 0, message = "角色顺序应大于等于 {value}")
+    @Max(value = 999, message = "角色顺序应小于等于 {value}")
     @ExcelProperty("角色顺序")
     private Integer roleSeq;
 
