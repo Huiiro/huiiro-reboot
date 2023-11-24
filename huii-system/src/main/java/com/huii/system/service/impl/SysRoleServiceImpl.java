@@ -12,14 +12,13 @@ import com.huii.common.utils.PageParamUtils;
 import com.huii.system.domain.SysRoleDept;
 import com.huii.system.domain.SysRoleMenu;
 import com.huii.system.domain.SysUserRole;
-import com.huii.system.mapper.SysRoleDeptMapper;
-import com.huii.system.mapper.SysRoleMapper;
-import com.huii.system.mapper.SysRoleMenuMapper;
-import com.huii.system.mapper.SysUserRoleMapper;
+import com.huii.system.event.RoleUpdatedEvent;
+import com.huii.system.mapper.*;
 import com.huii.system.service.SysRoleService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,6 +34,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     private final SysRoleMenuMapper sysRoleMenuMapper;
     private final SysRoleDeptMapper sysRoleDeptMapper;
     private final SysUserRoleMapper sysUserRoleMapper;
+    private final SysUserMapper sysUserMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public Page selectRoleList(SysRole sysRole, PageParam pageParam) {
@@ -85,6 +86,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public void updateRole(SysRole sysRole) {
         sysRoleMapper.updateById(sysRole);
+    }
+
+    @Override
+    public void updateRoleStatus(SysRole sysRole) {
+        sysRoleMapper.updateById(sysRole);
+    }
+
+    @Override
+    public void updateRoleAuths(SysRole sysRole) {
         List<Long> menuIds = sysRole.getMenuIdList();
         sysRoleMenuMapper.delete(new LambdaQueryWrapper<SysRoleMenu>()
                 .eq(SysRoleMenu::getRoleId, sysRole.getRoleId()));
@@ -97,11 +107,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             roleMenus.add(sysRoleMenu);
         }
         sysRoleMenuMapper.insertBatch(roleMenus);
-    }
-
-    @Override
-    public void updateRoleStatus(SysRole sysRole) {
-        sysRoleMapper.updateById(sysRole);
     }
 
     @Override
@@ -122,6 +127,16 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .in(SysRoleMenu::getRoleId, roles));
         sysRoleDeptMapper.delete(new LambdaQueryWrapper<SysRoleDept>()
                 .in(SysRoleDept::getRoleId, roles));
+    }
+
+    @Override
+    public void clearUserInfoByRoleId(Long roleId) {
+        List<Long> userIdList = sysUserRoleMapper.selectList(new LambdaQueryWrapper<SysUserRole>()
+                        .eq(SysUserRole::getRoleId, roleId))
+                .stream().map(SysUserRole::getUserId).toList();
+        List<String> auths = sysUserMapper.selectAuthsByRoleId(roleId);
+        RoleUpdatedEvent event = new RoleUpdatedEvent(this, roleId, auths);
+        eventPublisher.publishEvent(event);
     }
 
     private LambdaQueryWrapper<SysRole> wrapperBuilder(SysRole role) {

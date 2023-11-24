@@ -33,9 +33,10 @@ public interface SysMenuService {
     /**
      * 构建下拉树
      * @param menus menus
+     * @param addHeadNode addHeadNode
      * @return tree
      */
-    List<Tree> buildSelect(List<SysMenu> menus);
+    List<Tree> buildSelect(List<SysMenu> menus, Boolean addHeadNode);
 
     /**
      * 查询角色已经分配的菜单id

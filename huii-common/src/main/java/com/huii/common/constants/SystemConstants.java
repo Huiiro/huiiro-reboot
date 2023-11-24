@@ -9,5 +9,9 @@ public interface SystemConstants {
 
     String STATUS_0 = "0";
 
+    String TRUE = "true";
+
+    String FALSE = "false";
+
     Long ADMIN_ID = 1L;
 }

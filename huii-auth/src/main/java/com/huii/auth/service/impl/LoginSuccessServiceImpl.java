@@ -9,10 +9,10 @@ import com.huii.auth.utils.JwtUtils;
 import com.huii.common.constants.CacheConstants;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysUser;
-import com.huii.system.domain.SysUserOauth;
 import com.huii.common.core.model.LoginUser;
 import com.huii.common.utils.redis.RedisTemplateUtils;
 import com.huii.common.utils.request.IpAddressUtils;
+import com.huii.system.domain.SysUserOauth;
 import com.huii.system.mapper.SysUserMapper;
 import com.huii.system.mapper.SysUserOauthMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +35,7 @@ public class LoginSuccessServiceImpl implements LoginSuccessService {
     private final SysUserOauthMapper sysUserOauthMapper;
     private final JwtUtils jwtUtils;
     private final JwtProperties jwtProperties;
-    private final RedisTemplateUtils RedisTemplateUtils;
+    private final RedisTemplateUtils redisTemplateUtils;
 
     @Override
     @SneakyThrows
@@ -50,31 +50,31 @@ public class LoginSuccessServiceImpl implements LoginSuccessService {
     public LoginVo createToken(LoginUser loginUser) {
         Long id = loginUser.getUser().getUserId();
         LoginVo vo = new LoginVo();
-        if ("true".equals(jwtProperties.getEnableDev())) {
+        if (SystemConstants.TRUE.equals(jwtProperties.getEnableDev())) {
             //dev token
             String token = jwtUtils.createToken(String.valueOf(id), (long) jwtProperties.getDev() * 24 * 60 * 60 * 1000);
-            RedisTemplateUtils.setCacheObject(CacheConstants.USER + id, loginUser, jwtProperties.getDev(), TimeUnit.DAYS);
-            RedisTemplateUtils.setCacheObject(CacheConstants.TOKEN + id, token, jwtProperties.getDev(), TimeUnit.DAYS);
-        } else if ("true".equals(jwtProperties.getEnableDoubleToken())) {
+            redisTemplateUtils.setCacheObject(CacheConstants.USER + id, loginUser, jwtProperties.getDev(), TimeUnit.DAYS);
+            redisTemplateUtils.setCacheObject(CacheConstants.TOKEN + id, token, jwtProperties.getDev(), TimeUnit.DAYS);
+        } else if (SystemConstants.TRUE.equals(jwtProperties.getEnableDoubleToken())) {
             //access && refresh
             String accessToken = jwtUtils.createAccessToken(id);
             String refreshToken = jwtUtils.createRefreshToken(id);
-            RedisTemplateUtils.setCacheObject(CacheConstants.USER + id, loginUser, jwtUtils.getRefresh(), TimeUnit.HOURS);
+            redisTemplateUtils.setCacheObject(CacheConstants.USER + id, loginUser, jwtUtils.getRefresh(), TimeUnit.HOURS);
             //是否保存accessToken至redis，默认不保存
             if (Objects.equals(jwtProperties.getSaveToken(), Boolean.TRUE.toString())) {
-                RedisTemplateUtils.setCacheObject(CacheConstants.TOKEN + id, accessToken, jwtUtils.getAccess(), TimeUnit.HOURS);
+                redisTemplateUtils.setCacheObject(CacheConstants.TOKEN + id, accessToken, jwtUtils.getAccess(), TimeUnit.HOURS);
             }
-            RedisTemplateUtils.setCacheObject(CacheConstants.REFRESH + id, refreshToken, jwtUtils.getRefresh(), TimeUnit.HOURS);
+            redisTemplateUtils.setCacheObject(CacheConstants.REFRESH + id, refreshToken, jwtUtils.getRefresh(), TimeUnit.HOURS);
 
             vo.setAccessToken(accessToken);
             vo.setRefreshToken(refreshToken);
         } else {
             //only access
             String token = jwtUtils.createSingleToken(id);
-            RedisTemplateUtils.setCacheObject(CacheConstants.USER + id, loginUser, jwtUtils.getSingle(), TimeUnit.HOURS);
+            redisTemplateUtils.setCacheObject(CacheConstants.USER + id, loginUser, jwtUtils.getSingle(), TimeUnit.HOURS);
             //是否保存单token至redis，默认保存
             if (Objects.equals(jwtProperties.getSaveToken(), Boolean.TRUE.toString())) {
-                RedisTemplateUtils.setCacheObject(CacheConstants.TOKEN + id, token, jwtUtils.getSingle(), TimeUnit.HOURS);
+                redisTemplateUtils.setCacheObject(CacheConstants.TOKEN + id, token, jwtUtils.getSingle(), TimeUnit.HOURS);
             }
             vo.setAccessToken(token);
         }
@@ -87,6 +87,20 @@ public class LoginSuccessServiceImpl implements LoginSuccessService {
             vo.setNeedBind(true);
         }
         return vo;
+    }
+
+    @Override
+    public void updateUserAuthsInfo(LoginUser loginUser) {
+        Long id = loginUser.getUser().getUserId();
+        if (SystemConstants.TRUE.equals(jwtProperties.getSaveToken()) &&
+                SystemConstants.FALSE.equals(jwtProperties.getEnableDoubleToken())) {
+            //只开启单Token时 并且开启Redis验证
+            redisTemplateUtils.setCacheObject(CacheConstants.USER + id, loginUser, jwtUtils.getSingle(), TimeUnit.HOURS);
+        } else if(jwtProperties.getEnableDoubleToken().equals(SystemConstants.TRUE) &&
+                jwtProperties.getSaveAccessToken().equals(SystemConstants.TRUE)) {
+            //双Token时 并且开启Redis验证
+            redisTemplateUtils.setCacheObject(CacheConstants.USER + id, loginUser, jwtUtils.getRefresh(), TimeUnit.HOURS);
+        }
     }
 
     @Override

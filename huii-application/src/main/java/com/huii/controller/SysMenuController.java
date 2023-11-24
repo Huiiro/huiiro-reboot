@@ -51,7 +51,7 @@ public class SysMenuController extends BaseController {
     public R<List<Tree>> getTreeSelect(SysMenu sysMenu) {
         List<SysMenu> menus = sysMenuService.selectMenuList(sysMenu, getUserId());
         List<SysMenu> tree = sysMenuService.buildTree(menus);
-        List<Tree> list = sysMenuService.buildSelect(tree);
+        List<Tree> list = sysMenuService.buildSelect(tree, true);
         return R.ok(list);
     }
 
@@ -61,8 +61,9 @@ public class SysMenuController extends BaseController {
     @GetMapping("/select/role/{roleId}")
     public R<Map<String, Object>> getTreeSelectByRole(@PathVariable Long roleId) {
         List<SysMenu> menus = sysMenuService.selectMenuList(new SysMenu(), getUserId());
+        List<SysMenu> tree = sysMenuService.buildTree(menus);
         Map<String, Object> map = new HashMap<>();
-        map.put("tree", sysMenuService.buildSelect(menus));
+        map.put("tree", sysMenuService.buildSelect(tree, false));
         map.put("keys", sysMenuService.selectMenuIdsByRoleId(roleId));
         return R.ok(map);
     }

@@ -20,4 +20,9 @@ public class AuthenticationPermissionService {
         }
         return loginUser.getStringAuthorities().contains(auth);
     }
+
+    public boolean hasRole(String... role) {
+        //TODO
+        return true;
+    }
 }

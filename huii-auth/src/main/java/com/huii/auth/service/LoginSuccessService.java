@@ -3,8 +3,8 @@ package com.huii.auth.service;
 import com.huii.auth.core.entity.oauth2.Oauth2User;
 import com.huii.auth.core.entity.vo.LoginVo;
 import com.huii.common.core.domain.SysUser;
-import com.huii.system.domain.SysUserOauth;
 import com.huii.common.core.model.LoginUser;
+import com.huii.system.domain.SysUserOauth;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -29,6 +29,13 @@ public interface LoginSuccessService {
      * @return token...
      */
     LoginVo createToken(LoginUser loginUser);
+
+    /**
+     * 更新用户权限信息后处理redis信息
+     *
+     * @param loginUser loginUser
+     */
+    void updateUserAuthsInfo(LoginUser loginUser);
 
     /**
      * 自动登录方法 包含更新用户信息和授权

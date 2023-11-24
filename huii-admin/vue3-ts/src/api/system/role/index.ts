@@ -11,6 +11,7 @@ enum API {
     GET_ONE = prefix + "/",
     INSERT_ONE = prefix + "/insert",
     UPDATE_ONE = prefix + "/update",
+    UPDATE_AUTH = prefix + "/update/auths",
     DELETE_ONE = prefix + "/delete",
 }
 
@@ -34,6 +35,11 @@ export const insertRole = (role: role) => request.post(API.INSERT_ONE, role);
  * 更新角色
  */
 export const updateRole = (role: role) => request.post(API.UPDATE_ONE, role);
+
+/**
+ * 更新角色
+ */
+export const updateRoleAuth = (role: role) => request.post(API.UPDATE_AUTH, role);
 
 /**
  * 删除菜单

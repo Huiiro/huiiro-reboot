@@ -54,7 +54,6 @@ public class SysRoleController extends BaseController {
         }
         sysRoleService.checkUpdate(sysRole);
         sysRoleService.updateRole(sysRole);
-        //permissionService.clearUserAuthorityInfoByRoleId(sysRole.getId());
         return updateSuccess();
     }
 
@@ -66,6 +65,16 @@ public class SysRoleController extends BaseController {
             return R.failed("无法禁用管理员角色");
         }
         sysRoleService.updateRoleStatus(sysRole);
+        return updateSuccess();
+    }
+
+    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PostMapping("/update/auths")
+    @Log(value = "更新角色权限", opType = OpType.UPDATE)
+    @Transactional(rollbackFor = RuntimeException.class)
+    public R<SysRole> updateRoleAuths(@Validated @RequestBody SysRole sysRole) {
+        sysRoleService.updateRoleAuths(sysRole);
+        sysRoleService.clearUserInfoByRoleId(sysRole.getRoleId());
         return updateSuccess();
     }
 

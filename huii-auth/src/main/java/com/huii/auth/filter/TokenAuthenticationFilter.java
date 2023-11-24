@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.huii.auth.config.properties.JwtProperties;
 import com.huii.auth.utils.JwtUtils;
 import com.huii.common.constants.CacheConstants;
+import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.model.LoginUser;
 import com.huii.common.utils.redis.RedisTemplateUtils;
 import jakarta.servlet.FilterChain;
@@ -50,9 +51,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 request.setAttribute("tokenException", "e");
             } else {
                 //单token情况是否验证redis中的token
-                if (jwtProperties.getEnableDev().equals("false") &&
-                        jwtProperties.getEnableDoubleToken().equals("false") &&
-                        jwtProperties.getSaveToken().equals("true")) {
+                if (SystemConstants.FALSE.equals(jwtProperties.getEnableDoubleToken()) &&
+                        SystemConstants.TRUE.equals(jwtProperties.getSaveToken())) {
                     String redisToken = redisTemplateUtils.getCacheObject(CacheConstants.TOKEN + id);
                     if (ObjectUtils.isEmpty(redisToken) || !token.equals(redisToken)) {
                         filterChain.doFilter(request, response);
@@ -60,8 +60,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
                 //双token情况是否验证redis中的token
-                if (jwtProperties.getEnableDoubleToken().equals("true") &&
-                        jwtProperties.getSaveAccessToken().equals("true")) {
+                if (SystemConstants.TRUE.equals(jwtProperties.getEnableDoubleToken()) &&
+                        SystemConstants.TRUE.equals(jwtProperties.getSaveAccessToken())) {
                     String redisToken = redisTemplateUtils.getCacheObject(CacheConstants.TOKEN + id);
                     if (ObjectUtils.isEmpty(redisToken) || !token.equals(redisToken)) {
                         filterChain.doFilter(request, response);

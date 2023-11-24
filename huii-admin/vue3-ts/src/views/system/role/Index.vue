@@ -118,8 +118,11 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item :icon="Lock">分配菜单权限</el-dropdown-item>
-                  <el-dropdown-item :icon="Lock">分配数据权限</el-dropdown-item>
+                  <el-dropdown-item :icon="Lock" @click="handleMenuPermission(scope.$index, scope.row)">分配菜单权限
+                  </el-dropdown-item>
+                  <el-dropdown-item :icon="Lock" @click="handleDataScopePermission(scope.$index, scope.row)">
+                    分配数据权限
+                  </el-dropdown-item>
                   <el-dropdown-item :icon="User">分配用户</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -201,16 +204,45 @@
       <el-button type="primary" @click="handleSubmitForm(formRuleRef)">确 定</el-button>
     </template>
   </el-dialog>
+
+  <el-drawer class="global-drawer-iu" v-model="menuDrawer" title="菜单权限管理" :before-close="beforeCloseMenuDrawer">
+    <el-tree
+        ref="menuTreeRef"
+        show-checkbox
+        node-key="id"
+        :check-strictly=false
+        :default-expand-all=false
+        :data="menuData"
+        :default-checked-keys="menuKeys"/>
+    <template #footer>
+      <div style="flex: auto">
+        <el-button @click="handleCloseMenuDrawer">返回</el-button>
+        <el-button type="primary" @click="confirmMenuDrawer">确认</el-button>
+      </div>
+    </template>
+  </el-drawer>
+
+  <el-drawer class="global-drawer-iu" v-model="dataScopeDrawer" title="数据权限管理"
+             :before-close="beforeCloseDataScopeDrawer">
+    <span>Hi there!</span>
+    <template #footer>
+      <div style="flex: auto">
+        <el-button @click="handleCloseDataScopeDrawer">返回</el-button>
+        <el-button type="primary" @click="confirmDataScopeDrawer">确认</el-button>
+      </div>
+    </template>
+  </el-drawer>
 </template>
 
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
 import {DArrowRight, Delete, Download, Edit, Lock, Plus, Refresh, Search, Upload, User} from "@element-plus/icons-vue";
-import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
-import {deleteRole, getRoleList, getRoleSingleton, insertRole, updateRole} from "@/api/system/role";
+import {ElMessage, ElMessageBox, ElTree, FormInstance} from "element-plus";
+import {deleteRole, getRoleList, getRoleSingleton, insertRole, updateRole, updateRoleAuth} from "@/api/system/role";
 import {roleDataScopeOptions, roleStatusOptions} from "./dictionary.ts";
 import {paramBuilder} from "@/utils/common.ts";
+import {getMenuSelectRole} from "@/api/system/menu";
 
 //store
 const layoutStore = useLayoutStore();
@@ -475,6 +507,65 @@ const handleImport = () => {
 const handleExport = () => {
 
 }
+
+/**
+ * more 菜单权限
+ */
+const menuDrawer = ref(false);
+const menuData = ref();
+const menuKeys = ref();
+const menuTempRowData = ref();
+const menuTreeRef = ref<InstanceType<typeof ElTree>>();
+//@ts-ignore
+const handleMenuPermission = (index, row) => {
+  menuDrawer.value = true;
+  getMenuSelectRole(row.roleId).then(res => {
+    menuData.value = res.data.tree;
+    menuKeys.value = res.data.keys;
+    menuTempRowData.value = row;
+  });
+};
+const beforeCloseMenuDrawer = () => {
+  ElMessageBox.confirm('确定要离开吗，离开该页面后数据不会保存！',
+      '提示', {confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning'})
+      .then(() => {
+        handleCloseMenuDrawer();
+      });
+};
+const handleCloseMenuDrawer = () => {
+  menuDrawer.value = false;
+};
+const confirmMenuDrawer = () => {
+  menuTempRowData.value.menuIdList = menuTreeRef.value!.getCheckedKeys(false);
+  updateRoleAuth(menuTempRowData.value).then(res => {
+    if (res.code === 0) {
+      menuTempRowData.value = null;
+      handleCloseMenuDrawer();
+    }
+  });
+};
+
+/**
+ * more 数据权限
+ */
+const dataScopeDrawer = ref(false);
+//@ts-ignore
+const handleDataScopePermission = (index, row) => {
+  dataScopeDrawer.value = true;
+};
+const beforeCloseDataScopeDrawer = () => {
+  ElMessageBox.confirm('确定要离开吗，离开该页面后数据不会保存！',
+      '提示', {confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning'})
+      .then(() => {
+        handleCloseDataScopeDrawer();
+      });
+};
+const handleCloseDataScopeDrawer = () => {
+  dataScopeDrawer.value = false;
+};
+const confirmDataScopeDrawer = () => {
+
+};
 </script>
 
 <style scoped lang="scss">
@@ -482,11 +573,13 @@ const handleExport = () => {
 .global-form-item-margin {
   margin-right: 10px;
 }
+
 /*按钮栏 右侧 item 样式*/
 .global-form-item-right {
   margin-right: 0;
   float: right;
 }
+
 .red {
   color: red;
 }

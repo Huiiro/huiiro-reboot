@@ -52,12 +52,15 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public List<Tree> buildSelect(List<SysMenu> menus) {
+    public List<Tree> buildSelect(List<SysMenu> menus, Boolean addHeadNode) {
         List<Tree> children = menus.stream().map(Tree::new).collect(Collectors.toList());
-        Tree tree = new Tree(0L, "顶级菜单",children);
-        List<Tree> list = new ArrayList<>(1);
-        list.add(tree);
-        return list;
+        if (addHeadNode) {
+            Tree tree = new Tree(0L, "顶级菜单", children);
+            List<Tree> list = new ArrayList<>(1);
+            list.add(tree);
+            return list;
+        }
+        return children;
     }
 
     @Override

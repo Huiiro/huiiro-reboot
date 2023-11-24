@@ -1,8 +1,8 @@
 package com.huii.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.huii.common.core.model.LoginUser;
 import com.huii.common.core.domain.SysUser;
+import com.huii.common.core.model.LoginUser;
 import com.huii.common.enums.ResType;
 import com.huii.system.mapper.SysUserMapper;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * userDetail Service
@@ -49,6 +47,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (ObjectUtils.isEmpty(sysUser)) {
             throw new UsernameNotFoundException(ResType.getI18nMessage(ResType.USER_NOT_EXIST));
         }
+        //TODO load user should with role permission
         List<String> auths = sysUserMapper.selectAuthsByUserId(sysUser.getUserId());
         return new LoginUser(sysUser, new HashSet<>(auths));
     }

@@ -57,10 +57,23 @@ public interface SysRoleService {
      */
     void updateRoleStatus(SysRole sysRole);
 
+
+    /**
+     * 修改角色权限
+     */
+    void updateRoleAuths(SysRole sysRole);
+
     /**
      * 删除角色
      *
      * @param ids ids
      */
     void deleteRoles(Long[] ids);
+
+    /**
+     * 根据角色ID清除登录信息
+     *
+     * @param roleId     roleId
+     */
+    void clearUserInfoByRoleId(Long roleId);
 }
