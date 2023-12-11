@@ -1,22 +1,39 @@
 package com.huii.system.service;
 
 import com.huii.common.core.domain.SysRole;
+import com.huii.common.core.model.Label;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
+
+import java.util.List;
 
 public interface SysRoleService {
 
     /**
-     * 获取分页查询角色信息
+     * 获取角色列表
      *
-     * @param sysRole      role
+     * @param sysRole   role
      * @param pageParam pageParam
      * @return page
      */
     Page selectRoleList(SysRole sysRole, PageParam pageParam);
 
     /**
-     * 根据id查询角色信息
+     * 获取全部角色
+     *
+     * @return list
+     */
+    List<Label> selectRolesAll();
+
+    /**
+     * 获取用户已分配的角色ID
+     *
+     * @return list
+     */
+    List<Long> selectUserRoleIds();
+
+    /**
+     * 获取角色
      *
      * @param id id
      * @return role
@@ -45,23 +62,33 @@ public interface SysRoleService {
     void checkUpdate(SysRole sysRole);
 
     /**
-     * 修改角色
+     * 更新角色
      *
      * @param sysRole sysRole
      */
     void updateRole(SysRole sysRole);
 
     /**
-     * 修改角色状态
+     * 更新角色状态
+     *
      * @param sysRole sysRole
      */
     void updateRoleStatus(SysRole sysRole);
 
 
     /**
-     * 修改角色权限
+     * 更新角色权限
+     *
+     * @param sysRole sysRole
      */
     void updateRoleAuths(SysRole sysRole);
+
+    /**
+     * 更新角色数据权限
+     *
+     * @param sysRole sysRole
+     */
+    void updateRoleDataScope(SysRole sysRole);
 
     /**
      * 删除角色
@@ -69,11 +96,4 @@ public interface SysRoleService {
      * @param ids ids
      */
     void deleteRoles(Long[] ids);
-
-    /**
-     * 根据角色ID清除登录信息
-     *
-     * @param roleId     roleId
-     */
-    void clearUserInfoByRoleId(Long roleId);
 }

@@ -32,7 +32,7 @@ export const genSlideCaptcha = () => request.post(API.GEN_SLIDE);
  * @param imageCode
  */
 export const checkSlideCaptcha = (imageKey: string, imageCode: number) =>
-    request.post(API.CHECK_SLIDE, {imageKey, imageCode});
+    request.post(API.CHECK_SLIDE, null, {params: {imageKey, imageCode}});
 
 /**
  * 获取点击文字验证码

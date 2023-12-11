@@ -1,11 +1,118 @@
 package com.huii.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.huii.common.constants.CacheConstants;
+import com.huii.common.core.model.Page;
+import com.huii.common.core.model.PageParam;
+import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.PageParamUtils;
+import com.huii.common.utils.TimeUtils;
+import com.huii.common.utils.redis.RedisTemplateUtils;
 import com.huii.system.domain.SysConfig;
 import com.huii.system.mapper.SysConfigMapper;
 import com.huii.system.service.SysConfigService;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 @Service
-public class SysConfigServiceImpl  extends ServiceImpl<SysConfigMapper, SysConfig> implements SysConfigService {
+@RequiredArgsConstructor
+public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig> implements SysConfigService {
+
+    private final SysConfigMapper sysConfigMapper;
+    private final RedisTemplateUtils redisTemplateUtils;
+
+    @Override
+    public void clearCache() {
+        Collection<String> keys = redisTemplateUtils.keys(CacheConstants.SYS_CONFIG + "*");
+        redisTemplateUtils.deleteObject(keys);
+    }
+
+    @Override
+    public void load() {
+        List<SysConfig> configs = sysConfigMapper.selectList(null);
+        configs.forEach(config -> {
+            redisTemplateUtils.setCacheObject(CacheConstants.SYS_CONFIG + config.getConfigKey(),
+                    config.getConfigValue());
+        });
+    }
+
+    @Override
+    public void refreshCache() {
+        clearCache();
+        load();
+    }
+
+    @Override
+    public Page selectConfigList(SysConfig sysConfig, PageParam pageParam) {
+        IPage<SysConfig> iPage = new PageParamUtils<SysConfig>().getPageInfo(pageParam);
+        return new Page(this.page(iPage, wrapperBuilder(sysConfig)));
+    }
+
+    @Override
+    public SysConfig selectConfigById(Long id) {
+        return sysConfigMapper.selectById(id);
+    }
+
+    @Override
+    public void checkInsert(SysConfig sysConfig) {
+        if (sysConfigMapper.exists(new LambdaQueryWrapper<SysConfig>()
+                .eq(SysConfig::getConfigName, sysConfig.getConfigName()))) {
+            throw new ServiceException("配置名称重复");
+        }
+        if (sysConfigMapper.exists(new LambdaQueryWrapper<SysConfig>()
+                .eq(SysConfig::getConfigKey, sysConfig.getConfigKey()))) {
+            throw new ServiceException("配置key重复");
+        }
+    }
+
+    @Override
+    public void insertConfig(SysConfig sysConfig) {
+        sysConfigMapper.insert(sysConfig);
+    }
+
+    @Override
+    public void checkUpdate(SysConfig sysConfig) {
+        SysConfig oldOne = sysConfigMapper.selectById(sysConfig.getConfigId());
+        if (!StringUtils.equals(sysConfig.getConfigName(), oldOne.getConfigName())) {
+            if (sysConfigMapper.exists(new LambdaQueryWrapper<SysConfig>()
+                    .eq(SysConfig::getConfigName, sysConfig.getConfigName()))) {
+                throw new ServiceException("配置名称重复");
+            }
+        }
+        if (!StringUtils.equals(sysConfig.getConfigKey(), oldOne.getConfigKey())) {
+            if (sysConfigMapper.exists(new LambdaQueryWrapper<SysConfig>()
+                    .eq(SysConfig::getConfigKey, sysConfig.getConfigKey()))) {
+                throw new ServiceException("配置key重复");
+            }
+        }
+    }
+
+    @Override
+    public void updateConfig(SysConfig sysConfig) {
+        sysConfigMapper.updateById(sysConfig);
+    }
+
+    @Override
+    public void deleteConfig(Long[] ids) {
+        sysConfigMapper.deleteBatchIds(Arrays.asList(ids));
+    }
+
+    private LambdaQueryWrapper<SysConfig> wrapperBuilder(SysConfig config) {
+        Map<String, Object> params = config.getParams();
+        LambdaQueryWrapper<SysConfig> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.isNotBlank(config.getConfigName()), SysConfig::getConfigName, config.getConfigName())
+                .between(ObjectUtils.isNotEmpty(params.get("beginTime")) && ObjectUtils.isNotEmpty(params.get("endTime")),
+                        SysConfig::getCreateTime, TimeUtils.stringToLocalDateTime((String) params.get("beginTime")),
+                        TimeUtils.stringToLocalDateTime((String) params.get("endTime")));
+        return wrapper;
+    }
 }

@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                     .orderByAsc(SysMenu::getParentId)
                     .orderByAsc(SysMenu::getMenuSeq));
         } else {
-            sysMenu.setMenuStatus(SystemConstants.STATUS_1);
             list = sysMenuMapper.selectListMenusByUserId(sysMenu, userId);
         }
         return list;
@@ -153,7 +153,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         List<Route> children = new ArrayList<>();
         for (SysMenu menu : list) {
             if (pid.equals(menu.getParentId())) {
-                Route route = Route.buildRoute(menu);
+                Route route = buildRoute(menu);
                 route.setChildrenFlag(false);
                 children.add(route);
             }
@@ -193,5 +193,26 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                 selectChildrenIds(ele.getMenuId(), list, ids);
             }
         }
+    }
+
+    private static Route buildRoute(SysMenu sysMenu) {
+        Route route = new Route();
+        route.setId(sysMenu.getMenuId());
+        route.setParentId(sysMenu.getParentId());
+        route.setName(sysMenu.getMenuName());
+        route.setPath(sysMenu.getMenuPath());
+        route.setComponent(sysMenu.getMenuComponent());
+        route.setQueryParam(sysMenu.getQueryParam());
+        route.setIcon(sysMenu.getMenuIcon());
+        route.setVisible(sysMenu.getMenuVisible().equals(SystemConstants.STATUS_1));
+        route.setChildrenFlag(false);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("invisible", sysMenu.getMenuVisible());
+        map.put("breadcrumb", true);
+        map.put("keepAlive", false);
+        map.put("title", sysMenu.getMenuName());
+        map.put("icon", sysMenu.getMenuIcon());
+        route.setMeta(map);
+        return route;
     }
 }

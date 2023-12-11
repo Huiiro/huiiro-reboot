@@ -1,5 +1,16 @@
 @import "reset";
 @import "variable";
+@import "scrollbar";
+
+body {
+  width: 100vw;
+}
+
+html {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 
 /*居中样式*/
 .display {
@@ -53,9 +64,11 @@
 /*全局 新增 更新 对话框样式*/
 .global-dialog-iu {
   min-width: 460px;
-  max-width: 720px
+  max-width: 720px;
+  padding: 4px;
 }
 .global-drawer-iu {
   min-width: 460px;
-  max-width: 800px
+  max-width: 800px;
+  padding: 4px;
 }

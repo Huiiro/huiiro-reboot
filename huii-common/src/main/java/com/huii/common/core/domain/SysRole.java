@@ -68,4 +68,7 @@ public class SysRole extends BaseEntity {
 
     @TableField(exist = false)
     private List<Long> menuIdList = new ArrayList<>();
+
+    @TableField(exist = false)
+    private List<Long> deptIdList = new ArrayList<>();
 }

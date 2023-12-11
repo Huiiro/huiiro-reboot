@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormalized, RouteRecordRaw} from "vue-router";
-import {constRoutes} from "@/router/routes.ts";
+import {checkInWhiteList, constRoutes} from "@/router/routes.ts";
 import {getAccessToken, removeAccessToken, setAccessToken} from "@/utils/token.ts";
 import {useUserStore} from '@/store/modules/user.ts';
 import {getRoutes} from "@/api/system/menu";
@@ -59,13 +59,9 @@ function generateRoutes(menuData: MenuItem[]): RouteRecordRaw[] {
 //@ts-ignore
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     nprocess.start();
-    const userStore = useUserStore();
-    if (to.meta.breadcrumb) {
-        userStore.addTab({
-            name: to.name,
-            title: to.meta.title,
-            icon: to.meta.icon
-        })
+    //放行白名单
+    if (checkInWhiteList(to.path)) {
+        next();
     }
     let token: any = getAccessToken();
     let queryToken: any = to.query.token;
@@ -78,6 +74,16 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
     }
     if (token && to.path === '/login') {
         next({path: "/index"});
+    }
+
+    const userStore = useUserStore();
+    if (to.meta.breadcrumb) {
+        userStore.addTab({
+            name: to.name,
+            title: to.meta.title,
+            icon: to.meta.icon,
+            params: to.params
+        })
     }
 
     const isLogin = userStore.isLogin;
@@ -109,7 +115,9 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
 router.afterEach((to: RouteLocationNormalized, from: RouteLocationNormalized) => {
     nprocess.done();
     if (typeof to.meta.title === 'string') {
-        document.title = to.meta.title;
+        document.title = settings.headerTitle + ' | ' + to.meta.title;
+    } else {
+        document.title = settings.headerTitle;
     }
 });
 

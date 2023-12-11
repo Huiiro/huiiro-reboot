@@ -3,22 +3,26 @@ package com.huii.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysRole;
+import com.huii.common.core.model.Label;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.enums.DataScopeType;
 import com.huii.common.exception.ServiceException;
 import com.huii.common.utils.PageParamUtils;
+import com.huii.common.utils.TimeUtils;
 import com.huii.system.domain.SysRoleDept;
 import com.huii.system.domain.SysRoleMenu;
 import com.huii.system.domain.SysUserRole;
-import com.huii.system.event.RoleUpdatedEvent;
-import com.huii.system.mapper.*;
+import com.huii.system.mapper.SysRoleDeptMapper;
+import com.huii.system.mapper.SysRoleMapper;
+import com.huii.system.mapper.SysRoleMenuMapper;
+import com.huii.system.mapper.SysUserRoleMapper;
 import com.huii.system.service.SysRoleService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,13 +38,24 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     private final SysRoleMenuMapper sysRoleMenuMapper;
     private final SysRoleDeptMapper sysRoleDeptMapper;
     private final SysUserRoleMapper sysUserRoleMapper;
-    private final SysUserMapper sysUserMapper;
-    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public Page selectRoleList(SysRole sysRole, PageParam pageParam) {
         IPage<SysRole> iPage = new PageParamUtils<SysRole>().getPageInfo(pageParam);
         return new Page(this.page(iPage, wrapperBuilder(sysRole)));
+    }
+
+    @Override
+    public List<Label> selectRolesAll() {
+        List<SysRole> roles = sysRoleMapper.selectList(null);
+        return roles.stream()
+                .filter(f -> SystemConstants.STATUS_1.equals(f.getRoleStatus()))
+                .map(m -> new Label(m.getRoleId(), m.getRoleName())).toList();
+    }
+
+    @Override
+    public List<Long> selectUserRoleIds() {
+        return null;
     }
 
     @Override
@@ -110,13 +125,34 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
+    public void updateRoleDataScope(SysRole sysRole) {
+        sysRoleMapper.updateById(sysRole);
+        sysRoleDeptMapper.delete(new LambdaQueryWrapper<SysRoleDept>()
+                .eq(SysRoleDept::getRoleId, sysRole.getRoleId()));
+        List<Long> ids = sysRole.getDeptIdList();
+        if (ids.isEmpty()) {
+            return;
+        }
+        if (!DataScopeType.CUSTOM.getCode().equals(sysRole.getRoleScope())) {
+            return;
+        }
+        List<SysRoleDept> list = new ArrayList<>();
+        for (Long id : ids) {
+            SysRoleDept roleDept = new SysRoleDept();
+            roleDept.setRoleId(sysRole.getRoleId());
+            roleDept.setDeptId(id);
+            list.add(roleDept);
+        }
+        sysRoleDeptMapper.insertBatch(list);
+    }
+
+    @Override
     public void deleteRoles(Long[] ids) {
         for (Long id : ids) {
             boolean existUserInRole = sysUserRoleMapper.exists(new LambdaQueryWrapper<SysUserRole>()
                     .eq(SysUserRole::getRoleId, id));
             if (existUserInRole) {
-                SysRole sysRole = sysRoleMapper.selectOne(new LambdaQueryWrapper<SysRole>()
-                        .eq(SysRole::getRoleId, id));
+                SysRole sysRole = selectRoleById(id);
                 throw new ServiceException(sysRole.getRoleName() + "角色下存在用户，不允许删除");
             }
         }
@@ -129,24 +165,16 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .in(SysRoleDept::getRoleId, roles));
     }
 
-    @Override
-    public void clearUserInfoByRoleId(Long roleId) {
-        List<Long> userIdList = sysUserRoleMapper.selectList(new LambdaQueryWrapper<SysUserRole>()
-                        .eq(SysUserRole::getRoleId, roleId))
-                .stream().map(SysUserRole::getUserId).toList();
-        List<String> auths = sysUserMapper.selectAuthsByRoleId(roleId);
-        RoleUpdatedEvent event = new RoleUpdatedEvent(this, roleId, auths);
-        eventPublisher.publishEvent(event);
-    }
-
     private LambdaQueryWrapper<SysRole> wrapperBuilder(SysRole role) {
         Map<String, Object> params = role.getParams();
         LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(role.getRoleName()), SysRole::getRoleName, role.getRoleName())
                 .like(StringUtils.isNotBlank(role.getRoleKey()), SysRole::getRoleKey, role.getRoleKey())
+                .eq(ObjectUtils.isNotEmpty(role.getRoleScope()), SysRole::getRoleScope, role.getRoleScope())
                 .eq(ObjectUtils.isNotEmpty(role.getRoleStatus()), SysRole::getRoleStatus, role.getRoleStatus())
-                .between(params.get("beginTime") != null && params.get("endTime") != null,
-                        SysRole::getCreateTime, params.get("beginTime"), params.get("endTime"))
+                .between(ObjectUtils.isNotEmpty(params.get("beginTime")) && ObjectUtils.isNotEmpty(params.get("endTime")),
+                        SysRole::getCreateTime, TimeUtils.stringToLocalDateTime((String) params.get("beginTime")),
+                        TimeUtils.stringToLocalDateTime((String) params.get("endTime")))
                 .orderByAsc(SysRole::getRoleSeq)
                 .orderByAsc(SysRole::getCreateTime);
         return wrapper;

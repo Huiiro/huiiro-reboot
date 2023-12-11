@@ -66,8 +66,4 @@ public class LoginController {
         return R.ok(MessageUtils.message(ResType.USER_LOGIN_SUCCESS.getI18n()), loginVo);
     }
 
-    /**
-     * TODO
-     * register
-     */
 }

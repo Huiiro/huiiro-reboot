@@ -10,6 +10,10 @@ export default defineConfig({
         symbolId: 'icon-[dir]-[name]',
     }), vue()],
     server: {
+        host: '0.0.0.0',
+        port: 5173,
+        cors: true,
+        open: true,
         proxy: {
             '/api': {
                 target: 'http://localhost:8080',

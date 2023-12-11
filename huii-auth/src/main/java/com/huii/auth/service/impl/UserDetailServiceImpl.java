@@ -1,6 +1,5 @@
 package com.huii.auth.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.huii.common.core.domain.SysUser;
 import com.huii.common.core.model.LoginUser;
 import com.huii.common.enums.ResType;
@@ -42,12 +41,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
     }
 
     public UserDetails loadUser(String col, Object val) throws UsernameNotFoundException {
-        SysUser sysUser = sysUserMapper.selectOne(new QueryWrapper<SysUser>()
-                .eq(col, val).last("limit 1"));
+        SysUser sysUser = sysUserMapper.selectLoginUser(col, val);
         if (ObjectUtils.isEmpty(sysUser)) {
             throw new UsernameNotFoundException(ResType.getI18nMessage(ResType.USER_NOT_EXIST));
         }
-        //TODO load user should with role permission
         List<String> auths = sysUserMapper.selectAuthsByUserId(sysUser.getUserId());
         return new LoginUser(sysUser, new HashSet<>(auths));
     }

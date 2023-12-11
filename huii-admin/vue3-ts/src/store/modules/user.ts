@@ -33,8 +33,11 @@ export const useUserStore = defineStore('user', {
                     this.tabList.push({
                         name: tab.name!,
                         title: tab.title || tab.name,
-                        icon: tab.icon
+                        icon: tab.icon,
+                        params: tab.params
                     })
+                } else {
+                    this.tabList[index].params = tab.params;
                 }
                 this.tabValue = tab.name
             }

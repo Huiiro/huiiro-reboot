@@ -19,8 +19,21 @@ export const paramBuilder = (data: any, page: pageParam, date: any) => {
     data.size = page.size;
     data.current = page.current;
     data.total = page.total;
-    console.log(date)
-    //data.params['beginTime'] = 'TODO';
-    //data.params['endTime'] = 'TODO';
+    data.params = {};
+    if (date) {
+        data.params['beginTime'] = formatDate(date[0]);
+        data.params['endTime'] = formatDate(date[1]);
+    }
     return data;
+}
+
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }

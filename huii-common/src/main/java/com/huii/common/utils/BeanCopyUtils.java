@@ -18,6 +18,9 @@ import java.util.Map;
 
 /**
  * bean深拷贝工具(基于 cglib 性能优异)
+ * <p></p>
+ * <P>jdk 9+ 需要在 VM options 添加以下参数来解决反射限制问题 </P>
+ * <p>--add-opens java.base/java.lang=ALL-UNNAMED</p>
  *
  * @author huii
  */

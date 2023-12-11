@@ -105,6 +105,9 @@ public class SysUser extends BaseEntity {
     @TableField(exist = false)
     private Long[] postIds;
 
+    @TableField(exist = false)
+    private String encrypt;
+
     @JsonIgnore
     @JsonProperty
     public String getPassword() {

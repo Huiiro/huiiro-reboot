@@ -1,0 +1,41 @@
+/* 全局滚动条样式 */
+
+$scrollbar-width: 6px;
+$scrollbar-radius: 6px;
+$scrollbar-color: #b4b4b4;
+$scrollbar-track-color: transparent;
+$scrollbar-hover-color: #a4a4a4;
+$scrollbar-hover-track-color: #f1f1f1;
+
+@mixin scrollbar-style($thumb-color: $scrollbar-color) {
+  width: $scrollbar-width;
+
+  &-thumb {
+    background-color: $thumb-color;
+    border-radius: $scrollbar-radius;
+
+    &:hover {
+      background-color: $scrollbar-hover-color;
+    }
+  }
+
+  &-track {
+    background-color: $scrollbar-track-color;
+
+    &:hover {
+      background-color: $scrollbar-hover-track-color;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  @include scrollbar-style();
+}
+
+::-moz-scrollbar {
+  @include scrollbar-style();
+}
+
+::-ms-scrollbar {
+  @include scrollbar-style();
+}

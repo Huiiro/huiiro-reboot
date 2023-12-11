@@ -91,11 +91,10 @@ public class SysLogAspect {
                     opMessage = Optional.ofNullable(e.getMessage())
                             .map(message -> message.length() > maxLength ? message.substring(0, maxLength) : message)
                             .orElse(null);
-
                 }
             }
             SysLogOp op = new SysLogOp(null, username, methodName, log.opType().getId(), LocalDateTime.now(), costTIme,
-                    ip, address, requestMethod, methodName + className, requestParams, responseParams,
+                    ip, address, requestMethod, className + methodName, requestParams, responseParams,
                     opStatus, "0", opMessage, null);
             AsyncManager.manager().execute(AsyncFactory.apiLogger(op));
         } catch (Exception ex) {

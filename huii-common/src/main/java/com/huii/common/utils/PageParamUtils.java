@@ -20,6 +20,18 @@ public class PageParamUtils<T> {
     private static final String SIZE = "size";
 
     public IPage<T> getPageInfo(Map<String, Object> params) {
+        return getPage(params);
+    }
+
+    public IPage<T> getPageInfo(String currentParam, String sizeParam) {
+        return getPage(currentParam, sizeParam);
+    }
+
+    public IPage<T> getPageInfo(PageParam pageParam) {
+        return getPage(pageParam);
+    }
+
+    public Page<T> getPage(Map<String, Object> params) {
         int current = 1;
         int pageSize = 10;
         if (params.get(CURRENT) != null) {
@@ -32,7 +44,7 @@ public class PageParamUtils<T> {
         return new Page<>(current, pageSize);
     }
 
-    public IPage<T> getPageInfo(String currentParam, String sizeParam) {
+    public Page<T> getPage(String currentParam, String sizeParam) {
         int current = 1;
         int pageSize = 10;
         if (StringUtils.isNotEmpty(currentParam)) {
@@ -45,7 +57,7 @@ public class PageParamUtils<T> {
         return new Page<>(current, pageSize);
     }
 
-    public IPage<T> getPageInfo(PageParam pageParam) {
+    public Page<T> getPage(PageParam pageParam) {
         int current = 1;
         int pageSize = 10;
         if (ObjectUtils.isNotEmpty(pageParam.getCurrent())) {

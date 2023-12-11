@@ -14,6 +14,11 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
+/**
+ * 密钥工厂类
+ *
+ * @author huii
+ */
 public class SecurityKeyPairFactory {
     private static KeyPair keyPair;
 
@@ -28,7 +33,7 @@ public class SecurityKeyPairFactory {
     }
 
     public static String getPublicKeyPem() {
-        return getKeyPair().getPrivateKeyPem();
+        return getKeyPair().getPublicKeyPem();
     }
 
     public static String getPrivateKeyPem() {

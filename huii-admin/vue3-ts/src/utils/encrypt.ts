@@ -6,10 +6,16 @@
 //@ts-ignore
 import JSEncrypt from 'jsencrypt/bin/jsencrypt'
 import {getServerPublicKey} from "@/api/auth/security";
+import {ref} from "vue";
 
+let publicKey = ref<string | null>(null);
 export const encryptFiled = async (field: string) => {
-    const res = await getServerPublicKey();
-    const encryptor = new JSEncrypt()
-    encryptor.setPublicKey(res.data.publicKey)
-    return encryptor.encrypt(field)
+    if (publicKey.value === null) {
+        const res = await getServerPublicKey();
+        publicKey.value = res.data.publicKey;
+    }
+
+    const encryptor = new JSEncrypt();
+    encryptor.setPublicKey(publicKey.value);
+    return encryptor.encrypt(field);
 };

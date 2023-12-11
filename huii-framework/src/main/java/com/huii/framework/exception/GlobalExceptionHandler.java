@@ -7,10 +7,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.stream.Collectors;
 
 /**
  * 全局异常处理
@@ -63,6 +68,17 @@ public class GlobalExceptionHandler {
     public R<Object> serviceExceptionHandler(ServiceException e, HttpServletRequest request) {
         log.error("ServiceException:请求地址:'{}',返回信息:'{}',业务异常:'{}' =>", request.getRequestURI(), e.toString(), e.getErrorMsg());
         return R.failed(e.getErrorCode(), e.getErrorMsg());
+    }
+
+    /**
+     * 参数校验
+     */
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public R<?> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e, HttpServletRequest request) {
+        log.error("IllegalArgumentException:请求地址'{}',参数校验失败'{}'", request.getRequestURI(), e.getMessage());
+        BindingResult bindingResult = e.getBindingResult();
+        String errorMsg = bindingResult.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(","));
+        return R.failed(1000, errorMsg);
     }
 
     /**

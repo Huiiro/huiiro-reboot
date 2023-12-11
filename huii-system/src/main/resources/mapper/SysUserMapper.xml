@@ -2,6 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huii.system.mapper.SysUserMapper">
 
+    <resultMap type="com.huii.common.core.domain.SysUser" id="UserResult">
+        <id property="userId" column="user_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="sexual" column="sexual"/>
+        <result property="avatar" column="avatar"/>
+        <result property="loginIp" column="login_ip"/>
+        <result property="loginTime" column="login_time"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="userStatus" column="user_status"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <association property="dept" javaType="com.huii.common.core.domain.SysDept" resultMap="DeptResult"/>
+        <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
+    </resultMap>
+
+    <resultMap type="com.huii.common.core.domain.SysDept" id="DeptResult">
+        <id property="deptId" column="dept_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="deptLeader" column="dept_leader"/>
+        <result property="deptSeq" column="dept_seq"/>
+        <result property="deptStatus" column="dept_status"/>
+    </resultMap>
+
+    <resultMap type="com.huii.common.core.domain.SysRole" id="RoleResult">
+        <id property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleKey" column="role_key"/>
+        <result property="roleScope" column="role_scope"/>
+        <result property="roleSeq" column="role_seq"/>
+        <result property="roleStatus" column="role_status"/>
+    </resultMap>
+
     <sql id="selectUser">
         select u.user_id,
                u.dept_id,
@@ -19,6 +60,28 @@
                u.remark,
                u.create_time
         from sys_user u
+    </sql>
+
+    <sql id="selectUserDept">
+        select u.user_id,
+               u.dept_id,
+               u.user_name,
+               u.nick_name,
+               u.password,
+               u.phone,
+               u.email,
+               u.sexual,
+               u.avatar,
+               u.login_ip,
+               u.login_time,
+               u.delete_flag,
+               u.user_status,
+               u.remark,
+               u.create_time,
+               u.update_time,
+               d.dept_name
+        from sys_user u
+                 left join sys_dept d on u.dept_id = d.dept_id
     </sql>
 
     <sql id="selectUserVo">
@@ -78,9 +141,48 @@
         where ur.role_id = #{roleId}
     </select>
 
-    <select id="selectUserVoById" resultType="com.huii.common.core.domain.SysUser">
+    <select id="selectLoginUser" resultMap="UserResult">
+        <include refid="selectUserVo"></include>
+        where u.delete_flag = '0'
+        <if test="col == 'user_id'">
+            and u.user_id = #{val}
+        </if>
+        <if test="col == 'user_name'">
+            and u.user_name = #{val}
+        </if>
+        <if test="col == 'email'">
+            and u.email = #{val}
+        </if>
+        <if test="col == 'phone'">
+            and u.phone = #{val}
+        </if>
+        limit 1
+    </select>
+
+    <select id="selectUserVoById" resultMap="UserResult">
         <include refid="selectUserVo"></include>
         where u.delete_flag = '0' and u.user_id = #{userId}
+    </select>
+
+    <select id="selectUserIdsByMenuId" resultType="java.lang.Long">
+        SELECT ur.user_id
+        FROM sys_user_role ur
+                 LEFT JOIN sys_role_menu rm ON ur.role_id = rm.role_id
+        WHERE rm.menu_id = #{id}
+    </select>
+
+    <select id="selectUserPageWithDept" resultType="com.huii.common.core.domain.SysUser">
+        <include refid="selectUserDept"></include>
+            ${ew.getCustomSqlSegment}
+    </select>
+
+    <select id="selectUserListWithDept" resultType="com.huii.common.core.domain.SysUser">
+        <include refid="selectUserDept"></include>
+        ${ew.getCustomSqlSegment}
+    </select>
+    <select id="selectUserByUserName" resultType="com.huii.common.core.domain.SysUser">
+        <include refid="selectUser"></include>
+        where u.user_name = #{username}
     </select>
 
 </mapper>

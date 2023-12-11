@@ -1,5 +1,7 @@
 export default {
+    baseUrl: '/',
     logoImg: '../../../assets/icons/logo/vite.svg',
     logoTitle: '坤坤程序员',
-    baseUrl: '/'
+    headerTitle: 'Huii Admin',
+    headerIcon : ''
 }

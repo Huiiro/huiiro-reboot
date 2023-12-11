@@ -63,23 +63,53 @@ public class MybatisDataPermissionHandler {
         return invalidCacheSet.contains(mappedStatementId);
     }
 
+    //TODO
+    //TO TEST
     private String buildSql(DataScope dataScope) {
         try {
             SysUser user = SecurityUtils.getUser();
             List<String> list = user.getRoles().stream().distinct().map(SysRole::getRoleScope).toList();
-            StringBuilder sqlString = new StringBuilder();
             if (list.contains(DataScopeType.ALL.getCode())) {
                 return "";
-            } else if (list.contains(DataScopeType.CUSTOM.getCode())) {
-                //TODO
-                return "";
-            } else if (list.contains(DataScopeType.DEPT_AND_CHILD.getCode())) {
-                //TODO
-                return sqlString.append(String.format(" %s.dept_id = %s ", dataScope.deptAlias(), user.getDeptId())).toString();
-            } else if (list.contains(DataScopeType.DEPT.getCode())) {
-                return sqlString.append(String.format(" %s.dept_id = %s ", dataScope.deptAlias(), user.getDeptId())).toString();
-            } else if (list.contains(DataScopeType.SELF.getCode())) {
-                return sqlString.append(String.format(" %s.user_id = %s ", dataScope.userAlias(), user.getUserId())).toString();
+            }
+            StringBuilder sqlString = new StringBuilder();
+            for (int i = 0; i < user.getRoles().size(); i++) {
+                if (i >= 1) {
+                    sqlString.append(" OR ");
+                }
+                user.setRoleId(user.getRoles().get(i).getRoleId());
+                String roleScope = user.getRoles().get(i).getRoleScope();
+                if (roleScope.equals(DataScopeType.CUSTOM.getCode())) {
+                    sqlString.append(String.format(" %s.dept_id IN (SELECT dept_id from sys_role_dept WHERE role_id = %s )",
+                            dataScope.deptAlias(), user.getRoleId()));
+                } else if (roleScope.equals(DataScopeType.DEPT.getCode())) {
+                    sqlString.append(String.format(" %s.dept_id = %s ",
+                            dataScope.deptAlias(), user.getDeptId()));
+                } else if (roleScope.equals(DataScopeType.DEPT_AND_CHILD.getCode())) {
+                    //pgsql
+                    sqlString.append(String.format(
+                            "%s.dept_id in (SELECT dept_id FROM sys_dept" +
+                                    "WHERE dept_id IN (" +
+                                    "    WITH RECURSIVE DeptHierarchy AS (" +
+                                    "        SELECT dept_id, parent_id" +
+                                    "        FROM sys_dept" +
+                                    "        WHERE dept_id = %s " +
+                                    "        UNION" +
+                                    "        SELECT d.dept_id, d.parent_id" +
+                                    "        FROM sys_dept d" +
+                                    "        JOIN DeptHierarchy h ON d.parent_id = h.dept_id" +
+                                    "    )" +
+                                    "    SELECT dept_id FROM DeptHierarchy" +
+                                    ")" +
+                                    ")",
+                            dataScope.deptAlias(), user.getDeptId()));
+                } else if (roleScope.equals(DataScopeType.SELF.getCode())) {
+                    sqlString.append(String.format(" %s.user_id = %s ",
+                            dataScope.userAlias(), user.getUserId()));
+                }
+            }
+            if (StringUtils.isNotBlank(sqlString)) {
+                return sqlString.toString();
             } else {
                 return "";
             }

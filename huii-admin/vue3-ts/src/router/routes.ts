@@ -1,3 +1,6 @@
+/**
+ * 静态路由
+ */
 export const constRoutes = [
     {
         name: '404',
@@ -15,9 +18,19 @@ export const constRoutes = [
         name: 'login',
         path: '/login',
         meta: {
+            keepAlive: false,
             breadcrumb: false
         },
         component: () => import('@/views/login/Login.vue')
+    },
+    {
+        name: 'register',
+        path: '/register',
+        meta: {
+            keepAlive: false,
+            breadcrumb: false
+        },
+        component: () => import('@/views/register/Register.vue')
     },
     {
         path: '/',
@@ -34,3 +47,17 @@ export const constRoutes = [
         ]
     },
 ]
+
+/**
+ * 放行白名单
+ * 不需要认证 token
+ */
+export const whiteList = ["/register"]
+
+/**
+ * 校验是否在白名单内
+ * @param next
+ */
+export const checkInWhiteList = (next: string) => {
+    return whiteList.includes(next);
+}

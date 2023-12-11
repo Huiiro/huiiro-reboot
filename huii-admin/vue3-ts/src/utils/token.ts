@@ -51,6 +51,7 @@ export async function refreshAccessToken() {
     let refreshToken = getRefreshToken();
     if (refreshToken) {
         const tokenResponse = await getNewAccessToken(refreshToken);
+        //@ts-ignore
         if (tokenResponse.code === 0) {
             let accessToken = tokenResponse.data.accessToken;
             setAccessToken(accessToken);

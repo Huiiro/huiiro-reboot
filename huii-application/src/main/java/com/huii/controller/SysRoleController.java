@@ -2,13 +2,16 @@ package com.huii.controller;
 
 import com.huii.common.annotation.Log;
 import com.huii.common.core.domain.SysRole;
+import com.huii.common.core.domain.SysUser;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.OpType;
 import com.huii.common.utils.SecurityUtils;
+import com.huii.system.service.SecurityContextService;
 import com.huii.system.service.SysRoleService;
+import com.huii.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,18 +26,29 @@ import org.springframework.web.bind.annotation.*;
 public class SysRoleController extends BaseController {
 
     private final SysRoleService sysRoleService;
+    private final SysUserService sysUserService;
+    private final SecurityContextService securityContextService;
 
+    /**
+     * 获取角色列表
+     */
     @GetMapping("/list")
     public R<Page> getList(SysRole sysRole, PageParam pageParam) {
         Page page = sysRoleService.selectRoleList(sysRole, pageParam);
         return R.ok(page);
     }
 
+    /**
+     * 获取角色
+     */
     @GetMapping(value = "/{id}")
-    public R<SysRole> getInfo(@PathVariable Long id) {
+    public R<SysRole> getRole(@PathVariable Long id) {
         return R.ok(sysRoleService.selectRoleById(id));
     }
 
+    /**
+     * 添加角色
+     */
     @PreAuthorize("@ap.hasAuth('system:all')")
     @PostMapping("/insert")
     @Log(value = "添加角色", opType = OpType.INSERT)
@@ -44,6 +58,9 @@ public class SysRoleController extends BaseController {
         return saveSuccess();
     }
 
+    /**
+     * 更新角色
+     */
     @PreAuthorize("@ap.hasAuth('system:all')")
     @PostMapping("/update")
     @Log(value = "更新角色", opType = OpType.UPDATE)
@@ -57,6 +74,9 @@ public class SysRoleController extends BaseController {
         return updateSuccess();
     }
 
+    /**
+     * 更新角色状态
+     */
     @PreAuthorize("@ap.hasAuth('system:all')")
     @PostMapping("/update/status")
     @Log(value = "更新角色状态", opType = OpType.UPDATE)
@@ -68,20 +88,34 @@ public class SysRoleController extends BaseController {
         return updateSuccess();
     }
 
+    /**
+     * 更新角色权限
+     */
     @PreAuthorize("@ap.hasAuth('system:all')")
     @PostMapping("/update/auths")
     @Log(value = "更新角色权限", opType = OpType.UPDATE)
     @Transactional(rollbackFor = RuntimeException.class)
     public R<SysRole> updateRoleAuths(@Validated @RequestBody SysRole sysRole) {
         sysRoleService.updateRoleAuths(sysRole);
-        sysRoleService.clearUserInfoByRoleId(sysRole.getRoleId());
+        securityContextService.clearUpdateAuthByRoleId(sysRole.getRoleId());
         return updateSuccess();
     }
 
-    //TODO
-    //update auth
-    //update dataScope ?
+    /**
+     * 更新角色数据权限
+     */
+    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PostMapping("/update/scope")
+    @Log(value = "更新角色数据权限", opType = OpType.UPDATE)
+    @Transactional(rollbackFor = RuntimeException.class)
+    public R<SysRole> updateRoleDataScope(@Validated @RequestBody SysRole sysRole) {
+        sysRoleService.updateRoleDataScope(sysRole);
+        return updateSuccess();
+    }
 
+    /**
+     * 删除角色
+     */
     @PreAuthorize("@ap.hasAuth('system:all')")
     @PostMapping("/delete")
     @Log(value = "删除角色", opType = OpType.DELETE)
@@ -92,5 +126,49 @@ public class SysRoleController extends BaseController {
         }
         sysRoleService.deleteRoles(ids);
         return deleteSuccess();
+    }
+
+    /**
+     * 查询未分配用户
+     */
+    @PreAuthorize("@ap.hasAuth('system:all')")
+    @GetMapping("/query/non")
+    public R<Page> queryNonAuthUser(SysUser sysUser, PageParam pageParam) {
+        Page page = sysUserService.queryNonAuthUser(sysUser, pageParam);
+        return R.ok(page);
+    }
+
+    /**
+     * 查询已分配用户
+     */
+    @PreAuthorize("@ap.hasAuth('system:all')")
+    @GetMapping("/query/auth")
+    public R<Page> queryAuthUser(SysUser sysUser, PageParam pageParam) {
+        Page page =  sysUserService.queryAuthUser(sysUser, pageParam);
+        return R.ok(page);
+    }
+
+    /**
+     * 授权用户
+     */
+    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PostMapping("/user/unauth/{roleId}")
+    @Transactional(rollbackFor = RuntimeException.class)
+    public R<Void> authUser(@PathVariable Long roleId, @RequestBody Long[] userIds) {
+        sysUserService.authUser(roleId, userIds);
+        securityContextService.clearGrantAuthByRoleId(roleId, userIds);
+        return R.ok();
+    }
+
+    /**
+     * 取消授权用户
+     */
+    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PostMapping("/user/auth/{roleId}")
+    @Transactional(rollbackFor = RuntimeException.class)
+    public R<Void> unauthUser(@PathVariable Long roleId, @RequestBody Long[] userIds) {
+        sysUserService.unauthUser(roleId, userIds);
+        securityContextService.clearGrantAuthByRoleId(roleId, userIds);
+        return R.ok();
     }
 }

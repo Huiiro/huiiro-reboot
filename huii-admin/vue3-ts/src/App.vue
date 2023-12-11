@@ -3,9 +3,6 @@
     <router-view v-slot="{ Component }">
       <transition name="fade">
           <component :is="Component"  :key="$route.name" v-if="refreshFlag"/>
-<!--        <keep-alive>-->
-<!--          <component :is="Component"  :key="$route.name" v-if="refreshFlag"/>-->
-<!--        </keep-alive>-->
       </transition>
     </router-view>
   </div>

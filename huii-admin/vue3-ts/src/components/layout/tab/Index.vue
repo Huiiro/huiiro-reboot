@@ -66,8 +66,9 @@ const removeTab = (tab: any) => {
 const clickTab = (tab: any) => {
   const name = tab.props.name;
   tabValue.value = name;
+  const find = tabList.value.find(i => i.name == name);
   if (router.currentRoute.name !== name) {
-    router.push({name: name});
+    router.push({name: name, params: find.params});
   }
 };
 
@@ -90,7 +91,7 @@ const clickTab = (tab: any) => {
 :deep(.el-tabs__item) {
   padding: 0 24px;
   height: calc($c-tab-height - 2px);
-  line-height:  calc($c-tab-height - 2px);
+  line-height: calc($c-tab-height - 2px);
   font-size: 14px;
 }
 

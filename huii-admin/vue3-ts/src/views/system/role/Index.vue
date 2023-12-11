@@ -17,6 +17,16 @@
               :value="item.value"/>
         </el-select>
       </el-form-item>
+      <el-form-item label="角色数据权限" class="global-input-item">
+        <el-select v-model="query.roleScope" placeholder="请选择角色数据权限"
+                   :size="size">
+          <el-option
+              v-for="item in roleDataScopeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"/>
+        </el-select>
+      </el-form-item>
       <!--fixed-->
       <el-form-item>
         <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
@@ -58,6 +68,8 @@
       </el-form-item>
       <!--right fixed-->
       <el-form-item class="global-form-item-right">
+        <!--显示/隐藏时间列-->
+        <el-button :size="size" :icon="Odometer" circle @click="handleExpandTime"/>
         <!--隐藏搜索栏按钮-->
         <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
         <!--刷新按钮-->
@@ -74,10 +86,10 @@
               stripe
               @selection-change="selectionChange">
       <el-table-column type="selection" width="55"/>
-      <el-table-column prop="roleName" label="角色名称" align="left" min-width="120"/>
-      <el-table-column prop="roleKey" label="角色权限字符" align="center" width="150"/>
-      <el-table-column prop="roleSeq" label="角色展示顺序" align="center" sortable width="120"/>
-      <el-table-column prop="roleScope" label="角色数据权限" align="center" width="150">
+      <el-table-column prop="roleName" label="角色名称" align="left" min-width="150"/>
+      <el-table-column prop="roleKey" label="角色权限字符" align="center" min-width="150"/>
+      <el-table-column prop="roleSeq" label="角色展示顺序" align="center" sortable width="140"/>
+      <el-table-column prop="roleScope" label="角色数据权限" align="center" width="160">
         <template #default="scope">
           <el-tag :size="size"
           >{{ getDataScope(scope.row.roleScope) }}
@@ -94,9 +106,9 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建日期" align="center" sortable width="150"/>
-      <el-table-column prop="updateTime" label="更新日期" align="center" sortable width="150"/>
-      <el-table-column label="角色操作" align="center" width="200" fixed="right">
+      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="180"/>
+      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="180"/>
+      <el-table-column label="角色操作" align="center" width="220" fixed="right">
         <template #default="scope">
           <div class="display">
             <el-button class="global-table-btn"
@@ -120,10 +132,10 @@
                 <el-dropdown-menu>
                   <el-dropdown-item :icon="Lock" @click="handleMenuPermission(scope.$index, scope.row)">分配菜单权限
                   </el-dropdown-item>
-                  <el-dropdown-item :icon="Lock" @click="handleDataScopePermission(scope.$index, scope.row)">
-                    分配数据权限
+                  <el-dropdown-item :icon="Lock" @click="handleDataScopePermission(scope.$index, scope.row)">分配数据权限
                   </el-dropdown-item>
-                  <el-dropdown-item :icon="User">分配用户</el-dropdown-item>
+                  <el-dropdown-item :icon="User" @click="handleAuthUserRole(scope.$index, scope.row)">分配用户
+                  </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -153,33 +165,33 @@
              ref="formRuleRef">
       <el-row>
         <el-col :span="11">
-          <el-form-item label="角色名称" prop="roleName">
+          <el-form-item label="角色名称" label-width="85" prop="roleName">
             <el-input v-model="form.roleName" autocomplete="off"/>
           </el-form-item>
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="角色编码" prop="roleKey">
+          <el-form-item label="角色编码" label-width="85" prop="roleKey">
             <el-input v-model="form.roleKey" autocomplete="off"/>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row v-show="isEdit">
         <el-col :span="11">
-          <el-form-item label="&nbsp;&nbsp;创建时间" prop="createTime">
+          <el-form-item label="创建时间" label-width="85" prop="createTime">
             <el-input v-model="form.createTime" autocomplete="off" readonly="readonly"/>
           </el-form-item>
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="&nbsp;&nbsp;更新时间" prop="updateTime">
+          <el-form-item label="更新时间" label-width="85" prop="updateTime">
             <el-input v-model="form.updateTime" autocomplete="off" readonly="readonly"/>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="角色顺序" prop="roleSeq">
+          <el-form-item label="角色顺序" label-width="85" prop="roleSeq">
             <el-input-number v-model="form.roleSeq"
                              :min="1" :max="99"
                              controls-position="right"
@@ -189,7 +201,7 @@
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="角色状态" prop="roleStatus">
+          <el-form-item label="角色状态" label-width="85" prop="roleStatus">
             <el-radio-group v-model="form.roleStatus">
               <el-radio v-for="option in roleStatusOptions" :key="option.value" :label="option.value">
                 {{ option.label }}
@@ -198,6 +210,15 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-form-item label="角色备注" label-width="85" prop="remark">
+        <el-input v-model="form.remark"
+                  autocomplete="off"
+                  type="textarea"
+                  show-word-limit
+                  maxlength="100"
+                  :rows="1"
+        />
+      </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="handleCloseForm">取 消</el-button>
@@ -205,15 +226,27 @@
     </template>
   </el-dialog>
 
-  <el-drawer class="global-drawer-iu" v-model="menuDrawer" title="菜单权限管理" :before-close="beforeCloseMenuDrawer">
-    <el-tree
-        ref="menuTreeRef"
-        show-checkbox
-        node-key="id"
-        :check-strictly=false
-        :default-expand-all=false
-        :data="menuData"
-        :default-checked-keys="menuKeys"/>
+  <el-drawer title="菜单权限管理"
+             class="global-drawer-iu"
+             v-model="menuDrawer"
+             :before-close="beforeCloseMenuDrawer">
+    <template #default>
+      <p class="p-header">
+        当前分配角色： <span class="p-i-header">{{ menuRoleName }}</span>
+      </p>
+      <p class="check-box">
+        <el-checkbox v-model="menuBtnCheckStrictly">父子联动</el-checkbox>
+        <el-divider class="d"/>
+      </p>
+      <el-tree ref="menuTreeRef"
+               show-checkbox
+               node-key="id"
+               :default-expand-all="true"
+               :data="menuData"
+               :default-checked-keys="menuKeys"
+               :check-strictly="!menuBtnCheckStrictly"
+      />
+    </template>
     <template #footer>
       <div style="flex: auto">
         <el-button @click="handleCloseMenuDrawer">返回</el-button>
@@ -222,9 +255,38 @@
     </template>
   </el-drawer>
 
-  <el-drawer class="global-drawer-iu" v-model="dataScopeDrawer" title="数据权限管理"
+  <el-drawer title="数据权限管理"
+             class="global-drawer-iu"
+             v-model="dataScopeDrawer"
              :before-close="beforeCloseDataScopeDrawer">
-    <span>Hi there!</span>
+    <template #default>
+      <div>
+        <p class="p-header">
+          当前分配角色： <span class="p-i-header">{{ dsRoleName }}</span>
+        </p>
+        <el-select v-model="selectScope" placeholder="请选择分配权限">
+          <el-option
+              v-for="item in roleDataScopeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"/>
+        </el-select>
+      </div>
+      <div v-show="selectScope == '2'">
+        <p class="check-box">
+          <el-checkbox v-model="dsBtnCheckStrictly">父子联动</el-checkbox>
+          <el-divider class="d"/>
+        </p>
+        <el-tree ref="dsTreeRef"
+                 show-checkbox
+                 node-key="id"
+                 :default-expand-all="true"
+                 :data="dsData"
+                 :default-checked-keys="dsKeys"
+                 :check-strictly="!dsBtnCheckStrictly"
+        />
+      </div>
+    </template>
     <template #footer>
       <div style="flex: auto">
         <el-button @click="handleCloseDataScopeDrawer">返回</el-button>
@@ -237,12 +299,34 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
-import {DArrowRight, Delete, Download, Edit, Lock, Plus, Refresh, Search, Upload, User} from "@element-plus/icons-vue";
+import {
+  DArrowRight,
+  Delete,
+  Download,
+  Edit,
+  Lock,
+  Odometer,
+  Plus,
+  Refresh,
+  Search,
+  Upload,
+  User
+} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, ElTree, FormInstance} from "element-plus";
-import {deleteRole, getRoleList, getRoleSingleton, insertRole, updateRole, updateRoleAuth} from "@/api/system/role";
+import {
+  deleteRole,
+  getRoleList,
+  getRoleSingleton,
+  insertRole,
+  updateRole,
+  updateRoleAuth,
+  updateRoleScope
+} from "@/api/system/role";
 import {roleDataScopeOptions, roleStatusOptions} from "./dictionary.ts";
 import {paramBuilder} from "@/utils/common.ts";
 import {getMenuSelectRole} from "@/api/system/menu";
+import {getDeptSelectRole} from "@/api/system/dept";
+import router from "@/router";
 
 //store
 const layoutStore = useLayoutStore();
@@ -260,8 +344,9 @@ onMounted(() => {
  * 获取 dataScope tag数据
  */
 const getDataScope = (scope: string | undefined) => {
-  let r = roleDataScopeOptions.find(i => i.value === scope);
-  return r.label;
+  let res = roleDataScopeOptions.find(i => i.value === scope);
+  if (res)
+    return res.label;
 };
 
 /**
@@ -275,6 +360,7 @@ const tableData = ref();
 const query = ref({
   roleName: '',
   roleStatus: '',
+  roleScope: ''
 });
 
 /**
@@ -298,6 +384,7 @@ const getData = () => {
 const handleReset = () => {
   query.value.roleName = '';
   query.value.roleStatus = '';
+  query.value.roleScope = '';
   getData();
 };
 
@@ -341,6 +428,14 @@ const selectionChange = (value: any) => {
 };
 
 /**
+ * 隐藏时间列
+ */
+const showTimeColumn = ref(false);
+const handleExpandTime = () => {
+  showTimeColumn.value = !showTimeColumn.value;
+};
+
+/**
  * 隐藏搜索按钮
  */
 //搜索按钮
@@ -368,6 +463,7 @@ const form = ref({
   roleScope: 1,
   roleSeq: 1,
   roleStatus: '',
+  remark: '',
   createTime: '',
   updateTime: ''
 });
@@ -442,11 +538,14 @@ const doInsert = () => {
 const handleInsert = (index, row) => {
   form.value = {
     roleId: 0,
-    roleKey: "",
-    roleName: "",
-    roleScope: 0,
-    roleSeq: 0,
-    roleStatus: ""
+    roleName: '',
+    roleKey: '',
+    roleScope: 1,
+    roleSeq: 1,
+    roleStatus: '',
+    remark: '',
+    createTime: '',
+    updateTime: ''
   };
   isEdit.value = false;
   dialogVisible.value = true;
@@ -493,7 +592,7 @@ const handleDelete = (index, row) => {
         getData();
       }
     });
-  });
+  }).catch();
 };
 /**
  * 导入数据
@@ -515,7 +614,9 @@ const menuDrawer = ref(false);
 const menuData = ref();
 const menuKeys = ref();
 const menuTempRowData = ref();
+const menuRoleName = ref();
 const menuTreeRef = ref<InstanceType<typeof ElTree>>();
+const menuBtnCheckStrictly = ref(false);
 //@ts-ignore
 const handleMenuPermission = (index, row) => {
   menuDrawer.value = true;
@@ -523,6 +624,7 @@ const handleMenuPermission = (index, row) => {
     menuData.value = res.data.tree;
     menuKeys.value = res.data.keys;
     menuTempRowData.value = row;
+    menuRoleName.value = menuTempRowData.value.roleName;
   });
 };
 const beforeCloseMenuDrawer = () => {
@@ -530,7 +632,7 @@ const beforeCloseMenuDrawer = () => {
       '提示', {confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning'})
       .then(() => {
         handleCloseMenuDrawer();
-      });
+      }).catch();
 };
 const handleCloseMenuDrawer = () => {
   menuDrawer.value = false;
@@ -549,23 +651,52 @@ const confirmMenuDrawer = () => {
  * more 数据权限
  */
 const dataScopeDrawer = ref(false);
+const dsData = ref();
+const dsKeys = ref();
+const dsTempRowData = ref();
+const dsRoleName = ref();
+const dsTreeRef = ref<InstanceType<typeof ElTree>>();
+const dsBtnCheckStrictly = ref(false);
+const selectScope = ref('2');
 //@ts-ignore
 const handleDataScopePermission = (index, row) => {
   dataScopeDrawer.value = true;
+  selectScope.value = row.roleScope;
+  getDeptSelectRole(row.roleId).then(res => {
+    dsData.value = res.data.tree;
+    dsKeys.value = res.data.keys;
+    dsTempRowData.value = row;
+    dsRoleName.value = dsTempRowData.value.roleName;
+  });
 };
 const beforeCloseDataScopeDrawer = () => {
   ElMessageBox.confirm('确定要离开吗，离开该页面后数据不会保存！',
       '提示', {confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning'})
       .then(() => {
         handleCloseDataScopeDrawer();
-      });
+      }).catch();
 };
 const handleCloseDataScopeDrawer = () => {
   dataScopeDrawer.value = false;
 };
 const confirmDataScopeDrawer = () => {
-
+  dsTempRowData.value.deptIdList = dsTreeRef.value!.getCheckedKeys(false);
+  dsTempRowData.value.roleScope = selectScope.value;
+  updateRoleScope(dsTempRowData.value).then(res => {
+    if (res.code === 0) {
+      dsTempRowData.value = null;
+      handleCloseDataScopeDrawer();
+    }
+  });
 };
+
+/**
+ * 分配角色至用户
+ */
+//@ts-ignore
+const handleAuthUserRole = (index, row) => {
+  router.push({name: '分配角色', params: {roleId: row.roleId}});
+}
 </script>
 
 <style scoped lang="scss">
@@ -582,5 +713,24 @@ const confirmDataScopeDrawer = () => {
 
 .red {
   color: red;
+}
+
+.p-header {
+  margin: -12px 0 20px;
+  color: #606266;
+  font-size: 16px;
+
+  .p-i-header {
+    color: #3d3d3d;
+  }
+}
+
+.check-box {
+  margin: 10px 0 18px;
+}
+
+.d {
+  padding: 0;
+  margin: 10px 0 0;
 }
 </style>

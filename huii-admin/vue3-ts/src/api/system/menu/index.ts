@@ -77,5 +77,4 @@ export const updateMenu = (menu: menu) => request.post(API.UPDATE_ONE, menu);
 /**
  * 删除菜单
  */
-export const deleteMenu = (allow: string, id: number) =>
-    request.post(API.DELETE_ONE + allow + "/" + id);
+export const deleteMenu = (allow: string, id: number) => request.post(API.DELETE_ONE + allow + "/" + id);

@@ -51,6 +51,11 @@ public interface CacheConstants {
     String SYS_CONFIG = "sys_config:";
 
     /**
+     * 系统字典
+     */
+    String SYS_DICT = "sys_dict:";
+
+    /**
      * 默认缓存时间，10min
      */
     Integer DEFAULT_CACHE_TIME = 10;

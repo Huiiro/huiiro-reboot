@@ -37,7 +37,7 @@ const userStore = useUserStore();
 const layoutStore = useLayoutStore();
 const handleClickMenu = (menu: any) => {
   if (router.currentRoute.name !== menu.name) {
-    userStore.addTab(index);
+    userStore.addTab(index.value);
     router.push({name: menu.name});
   }
 }

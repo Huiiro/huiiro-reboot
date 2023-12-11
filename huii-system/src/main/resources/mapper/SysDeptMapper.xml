@@ -2,4 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huii.system.mapper.SysDeptMapper">
 
+    <select id="selectDeptChildIdsByParentId" resultType="java.lang.Long">
+        WITH RECURSIVE DeptHierarchy AS (SELECT dept_id, parent_id
+                                         FROM sys_dept
+                                         WHERE dept_id = #{id}
+                                         UNION
+                                         SELECT d.dept_id, d.parent_id
+                                         FROM sys_dept d
+                                                  JOIN DeptHierarchy h ON d.parent_id = h.dept_id)
+        SELECT dept_id
+        FROM DeptHierarchy
+    </select>
 </mapper>

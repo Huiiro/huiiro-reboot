@@ -21,7 +21,7 @@ $header-height: calc(#{$c-tab-height} + #{$c-header-height});
 $global-color: #d2ffd8;
 $global-hover-color: #409eff;
 $global-import-color: #ffd04b;
-
+$global-success-color: #06b406;
 /*侧边栏颜色*/
 $sidebar-color: #2b2d30;
 /*导航栏颜色*/
@@ -38,3 +38,7 @@ $elc-table-header-color: #f6f6f7;
 /*dropdown 颜色*/
 $elc-dropdown-color: #409eff;
 $elc-dropdown-color-hover: #6ebdff;
+
+
+/*user page left dept part width*/
+$u-left-width: 260px;

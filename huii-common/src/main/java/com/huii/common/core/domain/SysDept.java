@@ -47,4 +47,5 @@ public class SysDept extends TreeEntity<SysDept> {
 
     @ExcelProperty(value = "部门备注")
     private String remark;
+
 }

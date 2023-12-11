@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface SysMenuService {
     /**
-     * 查询菜单list
+     * 获取菜单列表
      *
      * @param sysMenu sysMenu
      * @param userId  userId
@@ -17,36 +17,40 @@ public interface SysMenuService {
     List<SysMenu> selectMenuList(SysMenu sysMenu, Long userId);
 
     /**
-     * 构建前端所需route
+     * 获取路由 route
+     *
      * @param list list
      * @return routes
      */
     List<Route> buildRoutes(List<SysMenu> list);
 
     /**
-     * 查询菜单treeList
+     * 获取菜单树表
+     *
      * @param menus menu list
      * @return tree list
      */
     List<SysMenu> buildTree(List<SysMenu> menus);
 
     /**
-     * 构建下拉树
-     * @param menus menus
+     * 获取菜单下拉框选项
+     *
+     * @param menus       menus
      * @param addHeadNode addHeadNode
      * @return tree
      */
     List<Tree> buildSelect(List<SysMenu> menus, Boolean addHeadNode);
 
     /**
-     * 查询角色已经分配的菜单id
+     * 获取分配角色权限时的下拉框选项
+     *
      * @param roleId roleId
      * @return ids
      */
     List<Long> selectMenuIdsByRoleId(Long roleId);
 
     /**
-     * 查询菜单
+     * 获取菜单
      *
      * @param id id
      * @return menu
@@ -55,6 +59,7 @@ public interface SysMenuService {
 
     /**
      * 检查添加数据是否合法
+     *
      * @param sysMenu sysMenu
      */
     void checkInsert(SysMenu sysMenu);
@@ -68,6 +73,7 @@ public interface SysMenuService {
 
     /**
      * 检查修改的数据是否合法
+     *
      * @param sysMenu sysMenu
      */
     void checkUpdate(SysMenu sysMenu);
@@ -81,8 +87,9 @@ public interface SysMenuService {
 
     /**
      * 删除菜单
+     *
      * @param allow 是否允许删除子菜单
-     * @param id id
+     * @param id    id
      */
     void deleteMenu(String allow, Long id);
 }

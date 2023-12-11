@@ -2,4 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huii.system.mapper.SysDicTypeMapper">
 
+    <select id="selectByDicType" resultType="com.huii.common.core.domain.SysDicType">
+        select * from sys_dic_type where dic_type = #{typeName}
+    </select>
 </mapper>

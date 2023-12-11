@@ -5,8 +5,7 @@ import {useUserStore} from "@/store/modules/user.ts";
 import {useRouter} from "vue-router";
 
 let request = axios.create({
-    //baseURL: import.meta.env.VITE_BASE_URI,
-    baseURL: 'http://localhost:8080',
+    baseURL: import.meta.env.VITE_BASE_URL,
     timeout: 5000
 });
 
@@ -22,6 +21,13 @@ request.interceptors.request.use((config) => {
 });
 
 request.interceptors.response.use((response) => {
+
+    if (response.data instanceof Blob) {
+        //处理blob数据
+        return Promise.resolve(response);
+    }
+
+    //处理一般数据
     let code = response.data.code;
     let message = response.data.message;
 
@@ -36,6 +42,7 @@ request.interceptors.response.use((response) => {
 }, async (error) => {
     let status = error.response.status;
     let code = error.response.data.code;
+
     if (status === 401) {
         if (code === 407) {
             //自定义token异常 获取新accessToken

@@ -38,6 +38,8 @@
         </el-button>
         <!--折叠树形按钮 仅树表生效-->
         <el-button :size="size" :icon="Sort" circle @click="handleExpandAll"/>
+        <!--显示/隐藏时间列-->
+        <el-button :size="size" :icon="Odometer" circle @click="handleExpandTime"/>
         <!--隐藏搜索栏按钮-->
         <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
         <!--刷新按钮-->
@@ -59,8 +61,8 @@
       <!--TODO-->
       <el-table-column prop="huii" label="huii" align="left" min-width="150"/>
       <el-table-column prop="huii" label="huii" align="center" width="120"/>
-      <el-table-column prop="createTime" label="创建日期" align="center" sortable width="150"/>
-      <el-table-column prop="updateTime" label="更新日期" align="center" sortable width="150"/>
+      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="150"/>
+      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="150"/>
       <!--TODO-->
       <el-table-column label="huii操作" align="center" width="200" fixed="right">
         <template #default="scope">
@@ -97,7 +99,7 @@
       <el-row>
         <el-col :span="11">
           <!--TODO-->
-          <el-form-item label="huii" prop="huii">
+          <el-form-item label="huii" label-width="85" prop="huii">
             <el-input v-model="form.huii" autocomplete="off"/>
           </el-form-item>
         </el-col>
@@ -107,13 +109,13 @@
       </el-row>
       <el-row v-show="isEdit">
         <el-col :span="11">
-          <el-form-item label="&nbsp;&nbsp;创建时间" prop="createTime">
+          <el-form-item label="创建时间" label-width="85" prop="createTime">
             <el-input v-model="form.createTime" autocomplete="off" readonly="readonly"/>
           </el-form-item>
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="&nbsp;&nbsp;更新时间" prop="updateTime">
+          <el-form-item label="更新时间" label-width="85" prop="updateTime">
             <el-input v-model="form.updateTime" autocomplete="off" readonly="readonly"/>
           </el-form-item>
         </el-col>
@@ -129,7 +131,7 @@
 <script setup lang="ts">
 import {onMounted, ref, shallowRef} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
-import {Check, Close, Delete, Edit, Plus, Refresh, Search, Sort} from "@element-plus/icons-vue";
+import {Check, Close, Delete, Edit, Odometer, Plus, Refresh, Search, Sort} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 
 //store
@@ -209,6 +211,14 @@ const expandRowKeys = ref([1]);
 const handleExpandAll = () => {
   expandRowKeys.value = [1];
   expandTable.value = !expandTable.value;
+};
+
+/**
+ * 隐藏时间列
+ */
+const showTimeColumn = ref(false);
+const handleExpandTime = () => {
+  showTimeColumn.value = !showTimeColumn.value;
 };
 
 /**
@@ -337,7 +347,7 @@ const handleDelete = (index, row) => {
         getData();
       }
     });
-  });
+  }).catch();
 };
 </script>
 

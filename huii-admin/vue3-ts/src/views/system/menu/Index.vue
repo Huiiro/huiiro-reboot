@@ -41,6 +41,8 @@
         </el-button>
         <!--折叠树形按钮 仅树表生效-->
         <el-button :size="size" :icon="Sort" circle @click="handleExpandAll"/>
+        <!--显示/隐藏时间列-->
+        <el-button :size="size" :icon="Odometer" circle @click="handleExpandTime"/>
         <!--隐藏搜索栏按钮-->
         <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
         <!--刷新按钮-->
@@ -70,15 +72,15 @@
       <el-table-column prop="menuAuth" label="菜单权限字段" align="center" width="240"/>
       <el-table-column prop="menuPath" label="菜单路由地址" align="center" width="240"/>
       <el-table-column prop="menuComponent" label="菜单路由组件" align="center" width="240"/>
-      <el-table-column prop="menuSeq" label="菜单展示顺序" align="center" sortable width="120"/>
-      <el-table-column prop="menuType" label="菜单类型" align="center" width="100">
+      <el-table-column prop="menuSeq" label="菜单展示顺序" align="center" sortable width="140"/>
+      <el-table-column prop="menuType" label="菜单类型" align="center" width="120">
         <template #default="scope">
           <el-tag :size="size"
           >{{ getMenuType(scope.row.menuType) }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="menuVisible" label="是否展示" align="center" width="100">
+      <el-table-column prop="menuVisible" label="是否展示" align="center" width="120">
         <template #default="scope">
           <el-tag v-for="tag in menuVisibleOptions"
                   v-show="tag.value === scope.row.menuStatus"
@@ -88,7 +90,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="menuStatus" label="菜单状态" align="center" width="100">
+      <el-table-column prop="menuStatus" label="菜单状态" align="center" width="120">
         <template #default="scope">
           <el-tag v-for="tag in menuStatusOptions"
                   v-show="tag.value === scope.row.menuStatus"
@@ -98,9 +100,9 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建日期" align="center" sortable width="150"/>
-      <el-table-column prop="updateTime" label="更新日期" align="center" sortable width="150"/>
-      <el-table-column label="菜单操作" align="center" width="200" fixed="right">
+      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="180"/>
+      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="180"/>
+      <el-table-column label="菜单操作" align="center" width="220" fixed="right">
         <template #default="scope">
           <el-button class="global-table-btn"
                      size="small" type="primary" link :icon="Plus"
@@ -131,7 +133,7 @@
     <el-form :model="form"
              :rules="formRules"
              ref="formRuleRef">
-      <el-form-item label="父级菜单" prop="parentId">
+      <el-form-item label="父级菜单" label-width="85" prop="parentId">
         <el-tree-select v-model="form.parentId"
                         placeholder="请选择父级菜单"
                         :props="props"
@@ -141,13 +143,13 @@
       </el-form-item>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="菜单名称" prop="menuName">
+          <el-form-item label="菜单名称" label-width="85" prop="menuName">
             <el-input v-model="form.menuName" autocomplete="off"/>
           </el-form-item>
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="菜单顺序" prop="menuSeq">
+          <el-form-item label="菜单顺序" label-width="85" prop="menuSeq">
             <el-input-number v-model="form.menuSeq"
                              :min="1" :max="99"
                              controls-position="right"
@@ -158,44 +160,53 @@
       </el-row>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="权限字段" prop="menuAuth">
+          <el-form-item label="权限字段" label-width="85" prop="menuAuth">
             <el-input v-model="form.menuAuth" autocomplete="off"/>
           </el-form-item>
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="菜单路由" prop="menuPath">
+          <el-form-item label="菜单路由" label-width="85" prop="menuPath">
             <el-input v-model="form.menuPath" autocomplete="off"/>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="&nbsp;&nbsp;菜单图标" prop="menuIcon">
+          <el-form-item label="菜单图标" label-width="85" prop="menuIcon">
             <el-input v-model="form.menuIcon" autocomplete="off"/>
           </el-form-item>
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="&nbsp;&nbsp;菜单组件" prop="menuComponent">
+          <el-form-item label="菜单组件" label-width="85" prop="menuComponent">
             <el-input v-model="form.menuComponent" autocomplete="off"/>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row v-show="isEdit">
         <el-col :span="11">
-          <el-form-item label="&nbsp;&nbsp;创建时间" prop="createTime">
+          <el-form-item label="创建时间" label-width="85" prop="createTime">
             <el-input v-model="form.createTime" autocomplete="off" readonly="readonly"/>
           </el-form-item>
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="&nbsp;&nbsp;更新时间" prop="updateTime">
+          <el-form-item label="更新时间" label-width="85" prop="updateTime">
             <el-input v-model="form.updateTime" autocomplete="off" readonly="readonly"/>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="菜单类型" prop="menuType">
+      <el-form-item label="菜单备注" label-width="85" prop="remark">
+        <el-input v-model="form.remark"
+                  autocomplete="off"
+                  type="textarea"
+                  show-word-limit
+                  maxlength="100"
+                  :rows="1"
+        />
+      </el-form-item>
+      <el-form-item label="菜单类型" label-width="85" prop="menuType">
         <el-radio-group v-model="form.menuType">
           <el-radio v-for="option in menuTypeOptions" :key="option.value" :label="option.value">
             {{ option.label }}
@@ -204,7 +215,7 @@
       </el-form-item>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="是否可见" prop="menuVisible">
+          <el-form-item label="是否可见" label-width="85" prop="menuVisible">
             <el-radio-group v-model="form.menuVisible">
               <el-radio v-for="option in menuVisibleOptions" :key="option.value" :label="option.value">
                 {{ option.label }}
@@ -214,7 +225,7 @@
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="菜单状态" prop="menuStatus">
+          <el-form-item label="菜单状态" label-width="85" prop="menuStatus">
             <el-radio-group v-model="form.menuStatus">
               <el-radio v-for="option in menuStatusOptions" :key="option.value" :label="option.value">
                 {{ option.label }}
@@ -235,7 +246,7 @@
 import {deleteMenu, getMenuSelect, getMenuSingleton, getMenuTree, insertMenu, updateMenu} from "@/api/system/menu";
 import {onMounted, ref, shallowRef} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
-import {Check, Close, Delete, Edit, Plus, Refresh, Search, Sort} from "@element-plus/icons-vue";
+import {Check, Close, Delete, Edit, Odometer, Plus, Refresh, Search, Sort} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {menuStatusOptions, menuTypeOptions, menuVisibleOptions} from "./dictionary.ts";
 
@@ -346,6 +357,14 @@ const handleExpandAll = () => {
 };
 
 /**
+ * 隐藏时间列
+ */
+const showTimeColumn = ref(false);
+const handleExpandTime = () => {
+  showTimeColumn.value = !showTimeColumn.value;
+};
+
+/**
  * 隐藏搜索按钮
  */
 //搜索按钮
@@ -443,13 +462,16 @@ const doUpdate = () => {
     if (res.code === 0) {
       isEdit.value = false;
       dialogVisible.value = false;
+      getData();
     }
   });
 };
 const doInsert = () => {
   insertMenu(form.value).then((res) => {
     if (res.code === 0) {
+      isEdit.value = false;
       dialogVisible.value = false;
+      getData();
     }
   });
 };
@@ -473,7 +495,9 @@ const handleInsert = (index, row) => {
     createTime: "",
     updateTime: ""
   };
-  form.value.parentId = row.menuId;
+  if (row) {
+    form.value.parentId = row.menuId;
+  }
   isEdit.value = false;
   dialogVisible.value = true;
 };
@@ -502,7 +526,7 @@ const handleDelete = (index, row) => {
         getData();
       }
     });
-  });
+  }).catch();
 };
 </script>
 
@@ -511,11 +535,13 @@ const handleDelete = (index, row) => {
 .global-form-item-margin {
   margin-right: 10px;
 }
+
 /*按钮栏 右侧 item 样式*/
 .global-form-item-right {
   margin-right: 0;
   float: right;
 }
+
 .red {
   color: red;
 }
