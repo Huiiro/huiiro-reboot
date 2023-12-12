@@ -41,7 +41,7 @@ public class SysDicData extends BaseEntity {
     private String dataKey;
 
     @NotBlank(message = "字典值不能为空")
-    @Size(min = 0, max = 255, message = "字典键值长度不能超过{max}个字符")
+    @Size(min = 0, max = 500, message = "字典键值长度不能超过{max}个字符")
     @ExcelProperty(value = "字典值")
     private String dataValue;
 
@@ -55,9 +55,9 @@ public class SysDicData extends BaseEntity {
     @ExcelProperty("字典值顺序")
     private Integer dataSeq;
 
-    @Size(min = 0, max = 255, message = "字典默认值长度不能超过{max}个字符")
-    @ExcelProperty(value = "字典默认值")
-    private String dataDefault;
+    @Size(min = 0, max = 255, message = "字典警告类型长度不能超过{max}个字符")
+    @ExcelProperty(value = "字典警告类型")
+    private String dataTypeInfo;
 
     @ExcelProperty(value = "字典数据状态", converter = ExcelDataConvert.class)
     @ExcelData(readConverterExp = "0=禁用,1=正常")

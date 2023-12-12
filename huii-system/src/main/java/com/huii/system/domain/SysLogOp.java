@@ -49,7 +49,7 @@ public class SysLogOp implements Serializable {
     private LocalDateTime opTime;
 
     @ExcelProperty(value = "接口耗时(ms)")
-    private Long opCostTime;
+    private String opCostTime;
 
     @ExcelProperty(value = "请求IP")
     private String opIp;

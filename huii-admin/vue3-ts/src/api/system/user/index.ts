@@ -5,7 +5,24 @@ import qs from 'qs';
 const prefix = "/system/user";
 
 export interface user {
+    userId: number
+    deptId: number
     userName: string
+    nickName: string
+    password: string
+    phone: string
+    email: string
+    sexual: string
+    avatar: string
+    loginIp: string
+    loginTime: string
+    deleteFlag: string
+    userStatus: string
+    remark: string
+    createBy: string
+    createTime: string
+    updateBy: string
+    updateTime: string
 }
 
 enum API {

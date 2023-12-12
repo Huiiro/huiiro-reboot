@@ -50,6 +50,16 @@ public class SysDicTypeController extends BaseController {
     }
 
     /**
+     * 根据名称查询
+     */
+    @PreAuthorize("@ap.hasAuth('system:all')")
+    @GetMapping("/type")
+    public R<SysDicType> getDicTypeByType(@RequestParam String dicType) {
+        SysDicType sysDicType = sysDicTypeService.selectDicTypeByDicType(dicType);
+        return R.ok(sysDicType);
+    }
+
+    /**
      * 添加字典项
      */
     @PreAuthorize("@ap.hasAuth('system:all')")
@@ -67,6 +77,7 @@ public class SysDicTypeController extends BaseController {
     @PreAuthorize("@ap.hasAuth('system:all')")
     @PostMapping("/update")
     @Log(value = "更新字典项", opType = OpType.INSERT)
+    @Transactional(rollbackFor = RuntimeException.class)
     public R<Void> updateDicType(@Validated @RequestBody SysDicType sysDicType) {
         sysDicTypeService.checkUpdateDicType(sysDicType);
         sysDicTypeService.updateDicType(sysDicType);

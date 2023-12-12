@@ -133,7 +133,7 @@
     <el-form :model="form"
              :rules="formRules"
              ref="formRuleRef">
-      <el-form-item label="父级菜单" label-width="85" prop="parentId">
+      <el-form-item label="父级菜单" label-width="100" prop="parentId">
         <el-tree-select v-model="form.parentId"
                         placeholder="请选择父级菜单"
                         :props="props"
@@ -143,13 +143,13 @@
       </el-form-item>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="菜单名称" label-width="85" prop="menuName">
+          <el-form-item label="菜单名称" label-width="100" prop="menuName">
             <el-input v-model="form.menuName" autocomplete="off"/>
           </el-form-item>
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="菜单顺序" label-width="85" prop="menuSeq">
+          <el-form-item label="菜单顺序" label-width="100" prop="menuSeq">
             <el-input-number v-model="form.menuSeq"
                              :min="1" :max="99"
                              controls-position="right"
@@ -160,44 +160,88 @@
       </el-row>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="权限字段" label-width="85" prop="menuAuth">
+          <el-form-item label="权限字段" label-width="100" prop="menuAuth">
+            <template v-slot:label>
+              <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  content="字典权限字段，用于后端接口鉴权，唯一不可重复"
+                  placement="top-start"
+              >       <span>权限字段
+              <el-icon><QuestionFilled/></el-icon>
+            </span>
+              </el-tooltip>
+            </template>
             <el-input v-model="form.menuAuth" autocomplete="off"/>
           </el-form-item>
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="菜单路由" label-width="85" prop="menuPath">
+          <el-form-item label="菜单路由" label-width="100" prop="menuPath">
+            <template v-slot:label>
+              <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  content="字典路由字段，通过路由访问页面，参数设置格式为/url:param"
+                  placement="top-start"
+              >       <span>菜单路由
+              <el-icon><QuestionFilled/></el-icon>
+            </span>
+              </el-tooltip>
+            </template>
             <el-input v-model="form.menuPath" autocomplete="off"/>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="菜单图标" label-width="85" prop="menuIcon">
+          <el-form-item label="菜单图标" label-width="100" prop="menuIcon">
+            <template v-slot:label>
+              <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  content="字典图标字段，使用elementPlus-icon"
+                  placement="top-start"
+              >       <span>菜单图标
+              <el-icon><QuestionFilled/></el-icon>
+            </span>
+              </el-tooltip>
+            </template>
             <el-input v-model="form.menuIcon" autocomplete="off"/>
           </el-form-item>
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="菜单组件" label-width="85" prop="menuComponent">
+          <el-form-item label="菜单组件" label-width="100" prop="menuComponent">
+            <template v-slot:label>
+              <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  content="菜单组件字段，路径为'../views/**/**.vue'"
+                  placement="top-start"
+              >       <span>菜单组件
+              <el-icon><QuestionFilled/></el-icon>
+            </span>
+              </el-tooltip>
+            </template>
             <el-input v-model="form.menuComponent" autocomplete="off"/>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row v-show="isEdit">
         <el-col :span="11">
-          <el-form-item label="创建时间" label-width="85" prop="createTime">
+          <el-form-item label="创建时间" label-width="100" prop="createTime">
             <el-input v-model="form.createTime" autocomplete="off" readonly="readonly"/>
           </el-form-item>
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="更新时间" label-width="85" prop="updateTime">
+          <el-form-item label="更新时间" label-width="100" prop="updateTime">
             <el-input v-model="form.updateTime" autocomplete="off" readonly="readonly"/>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="菜单备注" label-width="85" prop="remark">
+      <el-form-item label="菜单备注" label-width="100" prop="remark">
         <el-input v-model="form.remark"
                   autocomplete="off"
                   type="textarea"
@@ -206,7 +250,7 @@
                   :rows="1"
         />
       </el-form-item>
-      <el-form-item label="菜单类型" label-width="85" prop="menuType">
+      <el-form-item label="菜单类型" label-width="100" prop="menuType">
         <el-radio-group v-model="form.menuType">
           <el-radio v-for="option in menuTypeOptions" :key="option.value" :label="option.value">
             {{ option.label }}
@@ -215,7 +259,7 @@
       </el-form-item>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="是否可见" label-width="85" prop="menuVisible">
+          <el-form-item label="是否可见" label-width="100" prop="menuVisible">
             <el-radio-group v-model="form.menuVisible">
               <el-radio v-for="option in menuVisibleOptions" :key="option.value" :label="option.value">
                 {{ option.label }}
@@ -225,7 +269,7 @@
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="菜单状态" label-width="85" prop="menuStatus">
+          <el-form-item label="菜单状态" label-width="100" prop="menuStatus">
             <el-radio-group v-model="form.menuStatus">
               <el-radio v-for="option in menuStatusOptions" :key="option.value" :label="option.value">
                 {{ option.label }}
@@ -246,7 +290,18 @@
 import {deleteMenu, getMenuSelect, getMenuSingleton, getMenuTree, insertMenu, updateMenu} from "@/api/system/menu";
 import {onMounted, ref, shallowRef} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
-import {Check, Close, Delete, Edit, Odometer, Plus, Refresh, Search, Sort} from "@element-plus/icons-vue";
+import {
+  Check,
+  Close,
+  Delete,
+  Edit,
+  Odometer,
+  Plus,
+  QuestionFilled,
+  Refresh,
+  Search,
+  Sort
+} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {menuStatusOptions, menuTypeOptions, menuVisibleOptions} from "./dictionary.ts";
 

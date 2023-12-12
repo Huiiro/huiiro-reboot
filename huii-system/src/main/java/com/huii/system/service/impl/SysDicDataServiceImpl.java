@@ -62,7 +62,7 @@ public class SysDicDataServiceImpl extends ServiceImpl<SysDicDataMapper, SysDicD
         Map<String, Object> params = data.getParams();
         LambdaQueryWrapper<SysDicData> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(data.getDataName()), SysDicData::getDataName, data.getDataName())
-                .like(StringUtils.isNotBlank(data.getDataType()), SysDicData::getDataType, data.getDataType())
+                .eq(StringUtils.isNotBlank(data.getDataType()), SysDicData::getDataType, data.getDataType())
                 .eq(ObjectUtils.isNotEmpty(data.getDataStatus()), SysDicData::getDataStatus, data.getDataStatus())
                 .between(ObjectUtils.isNotEmpty(params.get("beginTime")) && ObjectUtils.isNotEmpty(params.get("endTime")),
                         SysDicData::getCreateTime, TimeUtils.stringToLocalDateTime((String) params.get("beginTime")),

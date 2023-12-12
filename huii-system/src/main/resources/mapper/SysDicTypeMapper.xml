@@ -2,7 +2,53 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huii.system.mapper.SysDicTypeMapper">
 
-    <select id="selectByDicType" resultType="com.huii.common.core.domain.SysDicType">
-        select * from sys_dic_type where dic_type = #{typeName}
+    <resultMap type="com.huii.common.core.domain.SysDicType" id="SysDictType">
+        <id property="typeId" column="type_id"/>
+        <result property="typeName" column="type_name"/>
+        <result property="dicType" column="dic_type"/>
+        <result property="typeStatus" column="type_status"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <collection property="data" javaType="java.util.List" resultMap="SysDictData"/>
+    </resultMap>
+
+    <resultMap type="com.huii.common.core.domain.SysDicData" id="SysDictData">
+        <id property="dataId" column="data_id"/>
+        <result property="dataType" column="data_type"/>
+        <result property="dataName" column="data_name"/>
+        <result property="dataKey" column="data_key"/>
+        <result property="dataValue" column="data_value"/>
+        <result property="dataLabel" column="data_label"/>
+        <result property="dataSeq" column="data_seq"/>
+        <result property="dataTypeInfo" column="data_type_info"/>
+        <result property="dataStatus" column="data_status"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="selectByDicType" resultMap="SysDictType">
+        select dt.type_id,
+               dt.type_name,
+               dt.dic_type,
+               dt.type_status,
+               dt.remark,
+               dd.data_id,
+               dd.data_type,
+               dd.data_name,
+               dd.data_key,
+               dd.data_value,
+               dd.data_label,
+               dd.data_seq,
+               dd.data_type_info,
+               dd.data_status
+        from sys_dic_type dt
+                 left join sys_dic_data dd on dt.dic_type = dd.data_type
+        where dt.dic_type = #{typeName}
     </select>
 </mapper>

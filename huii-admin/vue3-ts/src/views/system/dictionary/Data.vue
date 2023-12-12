@@ -3,8 +3,8 @@
     <!--formSearch-->
     <el-form :inline="true" :size="size" v-show="showSearch">
       <!--searchParam-->
-      <el-form-item label="字典名称" class="global-input-item">
-        <el-input v-model="query.dicType" placeholder="请输入字典名称"
+      <el-form-item label="字典项名称" class="global-input-item">
+        <el-input v-model="query.dataName" placeholder="请输入字典项名称"
                   class="global-input" :size="size"/>
       </el-form-item>
       <!--fixed-->
@@ -19,25 +19,31 @@
       <!--add-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain>添加字典
+                   :color="layoutStore.BtnInsert" plain>添加字典项
         </el-button>
       </el-form-item>
       <!--edit-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改字典
+                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改字典项
         </el-button>
       </el-form-item>
       <!--delete-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除字典
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除字典项
+        </el-button>
+      </el-form-item>
+      <!--import-->
+      <el-form-item class="global-form-item-margin">
+        <el-button :size="size" :icon="Download" @click="handleImport"
+                   :color="layoutStore.BtnImport" plain>导入字典项
         </el-button>
       </el-form-item>
       <!--export-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出字典
+                   :color="layoutStore.BtnExport" plain>导出字典项
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -60,18 +66,32 @@
               stripe
               @selection-change="selectionChange">
       <el-table-column type="selection" width="55"/>
-      <el-table-column prop="typeName" label="字典名称" align="left" min-width="150"/>
-      <el-table-column prop="dicType" label="字典类型" align="center" width="160">
+      <el-table-column prop="dataName" label="字典项名称" align="left" min-width="120"/>
+      <el-table-column prop="dataType" label="字典项类型" align="center" width="160">
         <template #default="scope">
-          <el-tag style="cursor: pointer" type="info" @click="handleClickData(scope.row.dicType)">
-            {{ scope.row.dicType }}
+          <el-tag style="cursor: pointer" type="info">
+            {{ scope.row.dataType }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="typeStatus" label="字典状态" align="center" width="120">
+      <el-table-column prop="dataKey" label="字典键(key)" align="center" width="140"/>
+      <el-table-column prop="dataValue" label="字典值(value)" align="center" width="140"/>
+      <el-table-column prop="dataLabel" label="字典标签(label)" align="center" width="140"/>
+      <el-table-column prop="dataSeq" label="字典展示顺序" sortable align="center" width="160"/>
+      <el-table-column prop="dataTypeInfo" label="字典标签类型" align="center" width="160">
+        <template #default="scope">
+          <el-tag v-for="tag in dicLabelInfoOptions"
+                  v-show="tag.value === scope.row.dataTypeInfo"
+                  :size="size"
+                  :key="tag.value"
+                  :type="tag.type"> {{ tag.label }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="dataStatus" label="字典状态" align="center" width="120">
         <template #default="scope">
           <el-tag v-for="tag in dicStatusOptions"
-                  v-show="tag.value === scope.row.typeStatus"
+                  v-show="tag.value === scope.row.dataStatus"
                   :size="size"
                   :key="tag.value"
                   :type="tag.type"> {{ tag.label }}
@@ -80,7 +100,7 @@
       </el-table-column>
       <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="150"/>
       <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="150"/>
-      <el-table-column label="字典操作" align="center" width="200" fixed="right">
+      <el-table-column label="字典项操作" align="center" width="200" fixed="right">
         <template #default="scope">
           <div class="display">
             <el-button class="global-table-btn"
@@ -112,7 +132,7 @@
   </el-card>
 
   <el-dialog class="global-dialog-iu"
-             title="字典管理" v-model="dialogVisible"
+             title="字典项管理" v-model="dialogVisible"
              :close-on-click-modal="false"
              @close="handleCloseForm">
     <el-form :model="form"
@@ -120,42 +140,72 @@
              ref="formRuleRef">
       <el-row>
         <el-col :span="11">
-          <el-form-item label="字典名称" label-width="85" prop="typeName">
-            <el-input v-model="form.typeName" autocomplete="off"/>
+          <el-form-item label="字典项名称" label-width="110" prop="dataName">
+            <el-input v-model="form.dataName" autocomplete="off"/>
           </el-form-item>
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="字典类型" label-width="85" prop="dicType">
-            <el-input v-model="form.dicType" autocomplete="off"/>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row v-show="isEdit">
-        <el-col :span="11">
-          <el-form-item label="创建时间" label-width="85" prop="createTime">
-            <el-input v-model="form.createTime" autocomplete="off" readonly="readonly"/>
-          </el-form-item>
-        </el-col>
-        <el-col :span="2"/>
-        <el-col :span="11">
-          <el-form-item label="更新时间" label-width="85" prop="updateTime">
-            <el-input v-model="form.updateTime" autocomplete="off" readonly="readonly"/>
+          <el-form-item label="字典项类型" label-width="110" prop="dataType">
+            <el-input v-model="form.dataType" autocomplete="off" disabled/>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="字典状态" label-width="85" prop="typeStatus">
-            <el-radio-group v-model="form.typeStatus">
-              <el-radio v-for="option in dicStatusOptions" :key="option.value" :label="option.value">
-                {{ option.label }}
-              </el-radio>
-            </el-radio-group>
+          <el-form-item label="字典键" label-width="110" prop="dataKey">
+            <template v-slot:label>
+              <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  content="字典数据项的键(key)"
+                  placement="top-start"
+              >       <span>字典键
+              <el-icon><QuestionFilled/></el-icon>
+            </span>
+              </el-tooltip>
+            </template>
+            <el-input v-model="form.dataKey" autocomplete="off"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2"/>
+        <el-col :span="11">
+          <el-form-item label="字典标签" label-width="110" prop="dataLabel">
+            <template v-slot:label>
+              <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  content="字典数据项的标签(label)"
+                  placement="top-start"
+              >       <span>字典标签
+              <el-icon><QuestionFilled/></el-icon>
+            </span>
+              </el-tooltip>
+            </template>
+            <el-input v-model="form.dataLabel" autocomplete="off"/>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="字典备注" label-width="85" prop="remark">
+      <el-form-item label="字典值" label-width="110" prop="dataLabel">
+        <template v-slot:label>
+          <el-tooltip
+              class="box-item"
+              effect="dark"
+              content="字典数据项的值(value)"
+              placement="top-start"
+          >       <span>字典值
+              <el-icon><QuestionFilled/></el-icon>
+            </span>
+          </el-tooltip>
+        </template>
+        <el-input v-model="form.dataValue" autocomplete="off"
+                  type="textarea"
+                  show-word-limit
+                  maxlength="499"
+                  :rows="2"
+        />
+      </el-form-item>
+      <el-form-item label="字典备注" label-width="110" prop="remark">
         <el-input v-model="form.remark"
                   autocomplete="off"
                   type="textarea"
@@ -164,6 +214,54 @@
                   :rows="1"
         />
       </el-form-item>
+      <el-row v-show="isEdit">
+        <el-col :span="11">
+          <el-form-item label="创建时间" label-width="110" prop="createTime">
+            <el-input v-model="form.createTime" autocomplete="off" readonly="readonly"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2"/>
+        <el-col :span="11">
+          <el-form-item label="更新时间" label-width="110" prop="updateTime">
+            <el-input v-model="form.updateTime" autocomplete="off" readonly="readonly"/>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="字典值顺序" label-width="110" prop="roleSeq">
+            <el-input-number v-model="form.dataSeq"
+                             :min="1" :max="99"
+                             controls-position="right"
+                             autocomplete="off"
+                             style="width: 100%"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2"/>
+        <el-col :span="11">
+          <el-form-item label="字典标签类型" label-width="110" prop="dataTypeInfo">
+            <el-select v-model="form.dataTypeInfo" placeholder="请选择字典标签类型" size="default">
+              <el-option
+                  v-for="item in dicLabelInfoOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="字典状态" label-width="110" prop="dataStatus">
+            <el-radio-group v-model="form.dataStatus">
+              <el-radio v-for="option in dicStatusOptions" :key="option.value" :label="option.value">
+                {{ option.label }}
+              </el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
     <template #footer>
       <el-button @click="handleCloseForm">取 消</el-button>
@@ -175,12 +273,22 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
-import {Delete, Edit, Odometer, Plus, Refresh, Search, Upload,} from "@element-plus/icons-vue";
+import {
+  Delete,
+  Download,
+  Edit,
+  Odometer,
+  Plus,
+  QuestionFilled,
+  Refresh,
+  Search,
+  Upload,
+} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
-import {dicStatusOptions} from "@/views/system/dictionary/dictionary.ts";
-import {deleteDicType, getDicTypeList, getDicTypeSingleton, insertDicType, updateDicType} from "@/api/system/dic/type";
-import router from "@/router";
+import {dicLabelInfoOptions, dicStatusOptions} from "@/views/system/dictionary/dictionary.ts";
+import {deleteDicData, getDicDataList, getDicDataSingleton, insertDicData, updateDicData} from "@/api/system/dic/data";
+import {useRoute} from "vue-router";
 
 //store
 const layoutStore = useLayoutStore();
@@ -189,18 +297,15 @@ const size = layoutStore.tableSize;
 const pageLayoutSize = computed(() => {
   return size === 'small';
 });
+
+const dicTypeId = ref();
+const route = useRoute();
 //mounted
 onMounted(() => {
+  dicTypeId.value = route.params.typeId;
+  query.value.dataType = dicTypeId;
   getData();
 });
-
-/**
- *
- */
-const handleClickData = (typeId: any) => {
-  router.push({name: '字典详情', params: {typeId: typeId}});
-}
-
 
 /**
  * 查询参数
@@ -211,10 +316,10 @@ const loading = ref(false);
 const tableData = ref();
 //查询参数
 const query = ref({
-  typeName: '',
-  dicType: '',
-  typeStatus: '',
-  createTime: ''
+  dataType: '',
+  dataName: '',
+  dataKey: '',
+  dataStatus: ''
 });
 
 /**
@@ -222,7 +327,7 @@ const query = ref({
  */
 const getData = () => {
   loading.value = true;
-  getDicTypeList(paramBuilder(query.value, queryPage.value, null)).then(res => {
+  getDicDataList(paramBuilder(query.value, queryPage.value, null)).then(res => {
     const response = res.data;
     tableData.value = response.data;
     pageCurrent.value = response.current;
@@ -236,10 +341,10 @@ const getData = () => {
  * 重置查询参数按钮
  */
 const handleReset = () => {
-  query.value.typeName = '';
-  query.value.dicType = '';
-  query.value.typeStatus = '';
-  query.value.createTime = '';
+  query.value.dataType = '';
+  query.value.dataName = '';
+  query.value.dataKey = '';
+  query.value.dataStatus = '';
   getData();
 };
 
@@ -312,25 +417,45 @@ const handleRefresh = () => {
  */
 //表单数据
 const form = ref({
-  typeId: 0,
-  typeName: '',
-  dicType: '',
-  typeStatus: '',
+  dataId: 0,
+  dataType: '',
+  dataName: '',
+  dataKey: '',
+  dataValue: '',
+  dataLabel: '',
+  dataTypeInfo: '',
+  dataStatus: '',
+  dataSeq: '',
   remark: '',
   createTime: '',
   updateTime: ''
 });
 //表单数据校验规则
 const formRules = ref({
-  typeName: [
-    {required: true, message: '请输入字典名称', trigger: 'blur'},
-    {min: 1, max: 20, message: '字典名称在 1 至 20 个字符之间', trigger: 'blur'}
+  dataName: [
+    {required: true, message: '请输入数据项名称', trigger: 'blur'},
+    {min: 1, max: 20, message: '数据项名称长度在 1 至 20 个字符之间', trigger: 'blur'}
   ],
-  dicType: [
-    {required: true, message: '请输入字典类型', trigger: 'blur'},
-    {min: 1, max: 20, message: '字典类型在 1 至 20 个字符之间', trigger: 'blur'}
+  dataKey: [
+    {required: true, message: '请输入字典键(key)', trigger: 'blur'},
+    {min: 1, max: 20, message: '字典键(key)长度在 1 至 20 个字符之间', trigger: 'blur'}
   ],
-  typeStatus: [
+  dataValue: [
+    {required: true, message: '请输入字典值(value)', trigger: 'blur'},
+    {min: 1, max: 20, message: '字典值(value)长度在 1 至 20 个字符之间', trigger: 'blur'}
+  ],
+  dataLabel: [
+    {required: true, message: '请输入字典标签(label)', trigger: 'blur'},
+    {min: 1, max: 20, message: '字典标签(label)长度在 1 至 20 个字符之间', trigger: 'blur'}
+  ],
+  dataTypeInfo: [
+    {required: true, message: '请输入字典标签类型', trigger: 'blur'},
+    {min: 1, max: 20, message: '字典标签类型长度在 1 至 20 个字符之间', trigger: 'blur'}
+  ],
+  dataSeq: [
+    {required: true, message: '请选择字典顺序', trigger: 'blur'},
+  ],
+  dataStatus: [
     {required: true, message: '请选择字典状态', trigger: 'blur'},
   ]
 });
@@ -364,7 +489,7 @@ const handleSubmitForm = async (fr: FormInstance | undefined) => {
   });
 };
 const doUpdate = () => {
-  updateDicType(form.value).then((res) => {
+  updateDicData(form.value).then((res) => {
     if (res.code === 0) {
       isEdit.value = false;
       dialogVisible.value = false;
@@ -373,7 +498,7 @@ const doUpdate = () => {
   });
 };
 const doInsert = () => {
-  insertDicType(form.value).then((res) => {
+  insertDicData(form.value).then((res) => {
     if (res.code === 0) {
       isEdit.value = false;
       dialogVisible.value = false;
@@ -387,10 +512,15 @@ const doInsert = () => {
 //@ts-ignore
 const handleInsert = (index, row) => {
   form.value = {
-    typeId: 0,
-    typeName: "",
-    typeStatus: "",
-    dicType: "",
+    dataId: 0,
+    dataKey: "",
+    dataLabel: "",
+    dataName: "",
+    dataSeq: "",
+    dataStatus: "",
+    dataType: "",
+    dataTypeInfo: "",
+    dataValue: "",
     remark: "",
     createTime: "",
     updateTime: ""
@@ -405,11 +535,11 @@ const handleInsert = (index, row) => {
 const handleEdit = (index, row) => {
   let id;
   if (row == null) {
-    id = multiSelectData.value[0].typeId;
+    id = multiSelectData.value[0].dataId;
   } else {
-    id = row.typeId;
+    id = row.dataId;
   }
-  getDicTypeSingleton(id).then(res => {
+  getDicDataSingleton(id).then(res => {
     form.value = res.data;
     isEdit.value = true;
     dialogVisible.value = true;
@@ -420,23 +550,22 @@ const handleEdit = (index, row) => {
  */
 //@ts-ignore
 const handleDelete = (index, row) => {
-  //TODO
   let ids: any = [];
   let names: any = [];
   if (row == null) {
     multiSelectData.value.forEach(i => {
-      ids.push(i.typeId);
-      names.push(i.typeName);
+      ids.push(i.dataId);
+      names.push(i.dataName);
     })
   } else {
-    ids.push(row.typeId);
-    names.push(row.typeName);
+    ids.push(row.dataId);
+    names.push(row.dataName);
   }
   ElMessageBox.confirm(
-      '将删除字典名称为  \'' + names.toString().substring(0, 40) + '\'  的' + names.length + '项数据及其子数据，是否确认？',
+      '将删除数据字典项名称为  \'' + names.toString().substring(0, 40) + '\'  的' + names.length + '项数据，是否确认？',
       '提示', {confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning'}
   ).then(() => {
-    deleteDicType(ids).then((res) => {
+    deleteDicData(ids).then((res) => {
       if (res.code === 0) {
         getData();
       }
@@ -445,11 +574,15 @@ const handleDelete = (index, row) => {
 };
 
 /**
+ * 导入数据
+ */
+const handleImport = () => {
+}
+/**
  * 导出数据
  */
 const handleExport = () => {
 }
-
 </script>
 
 <style scoped lang="scss">

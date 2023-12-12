@@ -3,7 +3,17 @@ import request from '@/utils/request.ts';
 const prefix = "/system/dept";
 
 export interface dept {
+    deptId: number
+    parentId: number
     deptName: string
+    deptLeader: string
+    deptSeq: number
+    deptStatus: string
+    remark: string
+    createBy: string
+    createTime: string
+    updateBy: string
+    updateTime: string
 }
 
 enum API {

@@ -3,7 +3,17 @@ import request from '@/utils/request.ts';
 const prefix = "/system/post";
 
 export interface post {
+    postId: number
     postName: string
+    postKey: string
+    postDuty: string
+    postSeq: number
+    postStatus: string
+    remark: string
+    createBy: string
+    createTime: string
+    updateBy: string
+    updateTime: string
 }
 
 enum API {

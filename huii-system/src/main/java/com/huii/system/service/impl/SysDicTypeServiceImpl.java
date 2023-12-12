@@ -1,6 +1,7 @@
 package com.huii.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.constants.CacheConstants;
@@ -52,7 +53,9 @@ public class SysDicTypeServiceImpl extends ServiceImpl<SysDicTypeMapper, SysDicT
             List<SysDicData> dicData = sysDicDataMapper.selectList(new LambdaQueryWrapper<SysDicData>()
                     .eq(SysDicData::getDataType, type.getDicType())
                     .orderByAsc(SysDicData::getDataSeq));
-            redisTemplateUtils.setCacheList(CacheConstants.SYS_DICT + type.getDicType(), dicData);
+            if (!dicData.isEmpty()) {
+                redisTemplateUtils.setCacheList(CacheConstants.SYS_DICT + type.getDicType(), dicData);
+            }
         });
     }
 
@@ -114,6 +117,17 @@ public class SysDicTypeServiceImpl extends ServiceImpl<SysDicTypeMapper, SysDicT
 
     @Override
     public void updateDicType(SysDicType sysDicType) {
+        SysDicType oldOne = sysDicTypeMapper.selectById(sysDicType.getTypeId());
+        if (!oldOne.getDicType().equals(sysDicType.getDicType())) {
+            SysDicType dicType = sysDicTypeMapper.selectByDicType(oldOne.getDicType());
+            if (dicType != null && !dicType.getData().isEmpty()) {
+                for (SysDicData data : dicType.getData()) {
+                    data.setDataType(sysDicType.getDicType());
+                    sysDicDataMapper.update(data, new LambdaUpdateWrapper<SysDicData>()
+                            .eq(SysDicData::getDataType, oldOne.getDicType()));
+                }
+            }
+        }
         sysDicTypeMapper.updateById(sysDicType);
     }
 
@@ -150,7 +164,7 @@ public class SysDicTypeServiceImpl extends ServiceImpl<SysDicTypeMapper, SysDicT
 
     private List<SysDicData> loadExcelCastData(String type) {
         List<SysDicData> cacheList = redisTemplateUtils.getCacheList(CacheConstants.SYS_DICT + type);
-        if(!cacheList.isEmpty()) {
+        if (!cacheList.isEmpty()) {
             return cacheList;
         }
         return sysDicDataMapper.selectByType(type);

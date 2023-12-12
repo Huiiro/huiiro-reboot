@@ -3,7 +3,17 @@ import request from '@/utils/request.ts';
 const prefix = "/system/role";
 
 export interface role {
+    roleId: number
     roleName: string
+    roleKey: string
+    roleScope: number
+    roleSeq: number
+    roleStatus: string
+    remark: string
+    createBy: string
+    createTime: string
+    updateBy: string
+    updateTime: string
 }
 
 enum API {

@@ -80,7 +80,7 @@ public class SysLogAspect {
             String requestParams = getRequestParams(log, joinPoint, requestMethod);
             String responseParams = getResponseParams(log, result);
 
-            long costTIme = System.currentTimeMillis() - LOG_ASPECT_THREADLOCAL.get();
+            Long costTIme = System.currentTimeMillis() - LOG_ASPECT_THREADLOCAL.get();
             String opStatus = SystemConstants.STATUS_1;
             String opMessage = "";
             if (ObjectUtils.isNotEmpty(e)) {
@@ -93,7 +93,7 @@ public class SysLogAspect {
                             .orElse(null);
                 }
             }
-            SysLogOp op = new SysLogOp(null, username, methodName, log.opType().getId(), LocalDateTime.now(), costTIme,
+            SysLogOp op = new SysLogOp(null, username, methodName, log.opType().getId(), LocalDateTime.now(), costTIme.toString(),
                     ip, address, requestMethod, className + methodName, requestParams, responseParams,
                     opStatus, "0", opMessage, null);
             AsyncManager.manager().execute(AsyncFactory.apiLogger(op));
