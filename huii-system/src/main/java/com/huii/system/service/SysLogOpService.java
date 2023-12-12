@@ -11,7 +11,10 @@ public interface SysLogOpService {
 
     List<SysLogOp> selectSysLogOpList(SysLogOp sysLogOp);
 
+    void updateLogOpFlagStatus(SysLogOp sysLogOp);
+
     void removeBatchByIds(Long[] ids);
 
     void removeAll();
+
 }

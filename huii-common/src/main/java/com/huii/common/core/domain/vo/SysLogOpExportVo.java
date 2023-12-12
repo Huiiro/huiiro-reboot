@@ -35,7 +35,7 @@ public class SysLogOpExportVo implements Serializable {
     private LocalDateTime opTime;
 
     @ExcelProperty(value = "接口耗时(ms)")
-    private String opCostTime;
+    private Long opCostTime;
 
     @ExcelProperty(value = "请求IP")
     private String opIp;

@@ -69,7 +69,7 @@
       <!--right fixed-->
       <el-form-item class="global-form-item-right">
         <!--显示/隐藏时间列-->
-        <el-button :size="size" :icon="Odometer" circle @click="handleExpandTime"/>
+        <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
         <!--隐藏搜索栏按钮-->
         <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
         <!--刷新按钮-->
@@ -305,10 +305,10 @@ import {
   Download,
   Edit,
   Lock,
-  Odometer,
   Plus,
   Refresh,
   Search,
+  Timer,
   Upload,
   User
 } from "@element-plus/icons-vue";
@@ -368,7 +368,7 @@ const query = ref({
  */
 const getData = () => {
   loading.value = true;
-  getRoleList(paramBuilder(query.value, queryPage.value, null)).then(res => {
+  getRoleList(paramBuilder(query.value, queryPage.value, null, null)).then(res => {
     const response = res.data;
     tableData.value = response.data;
     pageCurrent.value = response.current;

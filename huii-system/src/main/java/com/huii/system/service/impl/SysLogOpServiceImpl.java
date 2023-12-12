@@ -3,8 +3,10 @@ package com.huii.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
+import com.huii.common.exception.ServiceException;
 import com.huii.common.utils.PageParamUtils;
 import com.huii.common.utils.TimeUtils;
 import com.huii.system.domain.SysLogOp;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +39,13 @@ public class SysLogOpServiceImpl extends ServiceImpl<SysLogOpMapper, SysLogOp> i
     @Override
     public List<SysLogOp> selectSysLogOpList(SysLogOp sysLogOp) {
         return sysLogOpMapper.selectList(wrapperBuilder(sysLogOp));
+    }
+
+    @Override
+    public void updateLogOpFlagStatus(SysLogOp sysLogOp) {
+        sysLogOp.setOpMarkFlag(Objects.equals(sysLogOp.getOpMarkFlag(), SystemConstants.STATUS_1)
+                ? SystemConstants.STATUS_0 : SystemConstants.STATUS_1);
+        sysLogOpMapper.updateById(sysLogOp);
     }
 
     @Override
@@ -63,34 +73,38 @@ public class SysLogOpServiceImpl extends ServiceImpl<SysLogOpMapper, SysLogOp> i
                         SysLogOp::getOpTime, TimeUtils.stringToLocalDateTime((String) params.get("beginTime")),
                         TimeUtils.stringToLocalDateTime((String) params.get("endTime")))
                 .orderByAsc(SysLogOp::getOpTime);
-        String costTime = logOp.getOpCostTime();
-        if (ObjectUtils.isEmpty(costTime)) {
+        if (ObjectUtils.isEmpty(params.get("costTime"))) {
             return wrapper;
         }
-        String[] split = costTime.split("-");
-        if (split.length == 2) {
-            int le = Integer.parseInt(split[0]);
-            int ge = Integer.parseInt(split[1]);
-            wrapper.between(SysLogOp::getOpCostTime, le, ge);
-        } else if (split.length == 1) {
-            String pattern = "^([<>]=?)?(\\d+)$";
-            Pattern p = Pattern.compile(pattern);
-            Matcher m = p.matcher(costTime);
-            if(m.find()) {
-                String operator = m.group(1);
-                int value = Integer.parseInt(m.group(2));
-                if ("<".equals(operator)) {
-                    wrapper.lt(SysLogOp::getOpCostTime, value);
-                } else if ("<=".equals(operator)) {
-                    wrapper.le(SysLogOp::getOpCostTime, value);
-                } else if (">".equals(operator)) {
-                    wrapper.gt(SysLogOp::getOpCostTime, value);
-                } else if (">=".equals(operator)) {
-                    wrapper.ge(SysLogOp::getOpCostTime, value);
-                } else {
-                    wrapper.eq(SysLogOp::getOpCostTime, value);
+        try {
+            String costTime = (String) params.get("costTime");
+            String[] split = costTime.split("-");
+            if (split.length == 2) {
+                Long le = Long.valueOf(split[0]);
+                Long ge = Long.valueOf(split[1]);
+                wrapper.between(SysLogOp::getOpCostTime, le, ge);
+            } else if (split.length == 1) {
+                String pattern = "^([<>]=?)?(\\d+)$";
+                Pattern p = Pattern.compile(pattern);
+                Matcher m = p.matcher(costTime);
+                if (m.find()) {
+                    String operator = m.group(1);
+                    Long value = Long.valueOf(m.group(2));
+                    if ("<".equals(operator)) {
+                        wrapper.lt(SysLogOp::getOpCostTime, value);
+                    } else if ("<=".equals(operator)) {
+                        wrapper.le(SysLogOp::getOpCostTime, value);
+                    } else if (">".equals(operator)) {
+                        wrapper.gt(SysLogOp::getOpCostTime, value);
+                    } else if (">=".equals(operator)) {
+                        wrapper.ge(SysLogOp::getOpCostTime, value);
+                    } else {
+                        wrapper.eq(SysLogOp::getOpCostTime, value);
+                    }
                 }
             }
+        } catch (Exception e) {
+            throw new ServiceException("非法的参数输入");
         }
         return wrapper;
     }

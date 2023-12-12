@@ -25,6 +25,7 @@ export interface logOp {
 enum API {
     GET_LIST = prefix + "/list",
     EXPORT = prefix + "/export",
+    UPDATE_FLAG = prefix + "/update/flag",
     DELETE_ONE = prefix + "/delete",
     DELETE_ALL = prefix + "/delete/all",
 }
@@ -44,6 +45,11 @@ export const getLogOpList = (logOp: logOp) => request.get(API.GET_LIST,
  * 导出操作日志
  */
 export const exportLogOp = (logOp: logOp) => request.get(API.EXPORT, {responseType: 'blob', data: logOp});
+
+/**
+ * 更新操作日志
+ */
+export const updateLogOpFlagStatus = (logOp: logOp) => request.post(API.UPDATE_FLAG, logOp);
 
 /**
  * 删除操作日志

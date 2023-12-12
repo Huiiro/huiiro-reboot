@@ -93,7 +93,7 @@ public class SysLogAspect {
                             .orElse(null);
                 }
             }
-            SysLogOp op = new SysLogOp(null, username, methodName, log.opType().getId(), LocalDateTime.now(), costTIme.toString(),
+            SysLogOp op = new SysLogOp(null, username, methodName, log.opType().getId(), LocalDateTime.now(), costTIme,
                     ip, address, requestMethod, className + methodName, requestParams, responseParams,
                     opStatus, "0", opMessage, null);
             AsyncManager.manager().execute(AsyncFactory.apiLogger(op));

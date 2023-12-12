@@ -42,7 +42,7 @@
         <!--折叠树形按钮 仅树表生效-->
         <el-button :size="size" :icon="Sort" circle @click="handleExpandAll"/>
         <!--显示/隐藏时间列-->
-        <el-button :size="size" :icon="Odometer" circle @click="handleExpandTime"/>
+        <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
         <!--隐藏搜索栏按钮-->
         <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
         <!--刷新按钮-->
@@ -290,18 +290,7 @@
 import {deleteMenu, getMenuSelect, getMenuSingleton, getMenuTree, insertMenu, updateMenu} from "@/api/system/menu";
 import {onMounted, ref, shallowRef} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
-import {
-  Check,
-  Close,
-  Delete,
-  Edit,
-  Odometer,
-  Plus,
-  QuestionFilled,
-  Refresh,
-  Search,
-  Sort
-} from "@element-plus/icons-vue";
+import {Check, Close, Delete, Edit, Plus, QuestionFilled, Refresh, Search, Sort, Timer} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {menuStatusOptions, menuTypeOptions, menuVisibleOptions} from "./dictionary.ts";
 

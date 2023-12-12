@@ -41,5 +41,5 @@ public class SysConfig extends BaseEntity {
     private String configValue;
 
     @ExcelProperty(value = "系统参数备注")
-    private String configRemark;
+    private String remark;
 }

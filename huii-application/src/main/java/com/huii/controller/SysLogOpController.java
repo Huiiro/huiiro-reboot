@@ -46,6 +46,13 @@ public class SysLogOpController extends BaseController {
     }
 
     @PreAuthorize("@ap.hasAuth('system:all')")
+    @PostMapping("/update/flag")
+    public R<Void> updateLogOpFlagStatus(@RequestBody SysLogOp sysLogOp) {
+        sysLogOpService.updateLogOpFlagStatus(sysLogOp);
+        return R.ok();
+    }
+
+    @PreAuthorize("@ap.hasAuth('system:all')")
     @PostMapping("/delete")
     @Log(value = "删除日志")
     public R<Void> deleteLogOp(@RequestBody Long[] ids) {

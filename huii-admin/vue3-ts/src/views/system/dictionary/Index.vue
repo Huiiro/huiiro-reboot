@@ -43,7 +43,7 @@
       <!--right fixed-->
       <el-form-item class="global-form-item-right">
         <!--显示/隐藏时间列-->
-        <el-button :size="size" :icon="Odometer" circle @click="handleExpandTime"/>
+        <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
         <!--隐藏搜索栏按钮-->
         <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
         <!--刷新按钮-->
@@ -175,7 +175,7 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
-import {Delete, Edit, Odometer, Plus, Refresh, Search, Upload,} from "@element-plus/icons-vue";
+import {Delete, Edit, Plus, Refresh, Search, Timer, Upload,} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
 import {dicStatusOptions} from "@/views/system/dictionary/dictionary.ts";
@@ -222,7 +222,7 @@ const query = ref({
  */
 const getData = () => {
   loading.value = true;
-  getDicTypeList(paramBuilder(query.value, queryPage.value, null)).then(res => {
+  getDicTypeList(paramBuilder(query.value, queryPage.value, null, null)).then(res => {
     const response = res.data;
     tableData.value = response.data;
     pageCurrent.value = response.current;

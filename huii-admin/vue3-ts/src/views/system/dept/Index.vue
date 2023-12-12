@@ -43,7 +43,7 @@
         <!--折叠树形按钮 仅树表生效-->
         <el-button :size="size" :icon="Sort" circle @click="handleExpandAll"/>
         <!--显示/隐藏时间列-->
-        <el-button :size="size" :icon="Odometer" circle @click="handleExpandTime"/>
+        <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
         <!--隐藏搜索栏按钮-->
         <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
         <!--刷新按钮-->
@@ -188,7 +188,7 @@
 <script setup lang="ts">
 import {onMounted, ref, shallowRef} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
-import {Check, Close, Delete, Edit, Odometer, Plus, Refresh, Search, Sort} from "@element-plus/icons-vue";
+import {Check, Close, Delete, Edit, Plus, Refresh, Search, Sort, Timer} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {deleteDept, getDeptSelect, getDeptSingleton, getDeptTree, insertDept, updateDept} from "@/api/system/dept";
 import {deptStatusOptions} from "@/views/system/dept/dictionary.ts";
