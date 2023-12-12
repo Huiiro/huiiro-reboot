@@ -208,8 +208,8 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="handleCloseForm">取 消</el-button>
-      <el-button type="primary" @click="handleSubmitForm(formRuleRef)">确 定</el-button>
+      <el-button @click="handleCloseForm">关 闭</el-button>
+      <el-button type="primary" @click="handleSubmitForm(formRuleRef)" v-if="false">确 定</el-button>
     </template>
   </el-dialog>
 </template>
