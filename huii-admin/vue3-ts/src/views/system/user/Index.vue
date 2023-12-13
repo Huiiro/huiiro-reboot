@@ -69,31 +69,36 @@
           <!--add-->
           <el-form-item class="global-form-item-margin">
             <el-button :size="size" :icon="Plus" @click="handleInsert"
-                       :color="layoutStore.BtnInsert" plain>添加用户
+                       :color="layoutStore.BtnInsert" plain
+                       v-if="checkPermission('system:user:add')">添加用户
             </el-button>
           </el-form-item>
           <!--edit-->
           <el-form-item class="global-form-item-margin">
             <el-button :size="size" :icon="Edit" @click="handleEdit"
-                       :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改用户
+                       :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle"
+                       v-if="checkPermission('system:user:edit')">修改用户
             </el-button>
           </el-form-item>
           <!--delete-->
           <el-form-item class="global-form-item-margin">
             <el-button :size="size" :icon="Delete" @click="handleDelete"
-                       :color="layoutStore.BtnDelete" plain :disabled="selectable">删除用户
+                       :color="layoutStore.BtnDelete" plain :disabled="selectable"
+                       v-if="checkPermission('system:user:delete')">删除用户
             </el-button>
           </el-form-item>
           <!--import-->
           <el-form-item class="global-form-item-margin">
             <el-button :size="size" :icon="Download" @click="handleImport"
-                       :color="layoutStore.BtnImport" plain>导入用户
+                       :color="layoutStore.BtnImport" plain
+                       v-if="checkPermission('system:user:import')">导入用户
             </el-button>
           </el-form-item>
           <!--export-->
           <el-form-item class="global-form-item-margin">
             <el-button :size="size" :icon="Upload" @click="handleExport"
-                       :color="layoutStore.BtnExport" plain>导出用户
+                       :color="layoutStore.BtnExport" plain
+                       v-if="checkPermission('system:user:export')">导出用户
             </el-button>
           </el-form-item>
           <!--right fixed-->
@@ -147,18 +152,23 @@
               <div class="display">
                 <el-button class="global-table-btn"
                            size="small" type="primary" link :icon="Edit"
-                           @click="handleEdit(scope.$index, scope.row)">
+                           @click="handleEdit(scope.$index, scope.row)"
+                           v-if="checkPermission('system:user:edit')">
                   编辑
                 </el-button>
-                <el-divider direction="vertical"/>
+                <el-divider direction="vertical"
+                            v-if="checkPermission('system:user:edit')"/>
                 <el-button class="global-table-btn red"
                            size="small" type="primary" link :icon="Delete"
-                           @click="handleDelete(scope.$index, scope.row)">
+                           @click="handleDelete(scope.$index, scope.row)"
+                           v-if="checkPermission('system:user:delete')">
                   删除
                 </el-button>
-                <el-divider direction="vertical"/>
+                <el-divider direction="vertical"
+                            v-if="checkPermission('system:user:delete')"/>
                 <!--selectable more actions-->
-                <el-dropdown class="global-table-dropdown" size="small">
+                <el-dropdown class="global-table-dropdown" size="small"
+                             v-if="checkPermission('system:user:edit')">
               <span class="display">
                 <el-icon><DArrowRight/></el-icon>
                 更多
@@ -381,8 +391,9 @@ import {userSexualStatusOptions, userStatusOptions} from "@/views/system/user/di
 import {getDeptSelect} from "@/api/system/dept";
 import {Tree} from "element-plus/es/components/tree-v2/src/types";
 import {encryptFiled} from "@/utils/encrypt.ts";
-import {download} from "@/utils/excel.ts";
+import {download} from "@/utils/download.ts";
 import upload from '@/components/upload/Index.vue';
+import {checkPermission} from "@/utils/permission.ts";
 
 //store
 const layoutStore = useLayoutStore();

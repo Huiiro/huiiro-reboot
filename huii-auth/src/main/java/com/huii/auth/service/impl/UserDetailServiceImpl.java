@@ -1,5 +1,6 @@
 package com.huii.auth.service.impl;
 
+import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysUser;
 import com.huii.common.core.model.LoginUser;
 import com.huii.common.enums.ResType;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -45,7 +47,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (ObjectUtils.isEmpty(sysUser)) {
             throw new UsernameNotFoundException(ResType.getI18nMessage(ResType.USER_NOT_EXIST));
         }
-        List<String> auths = sysUserMapper.selectAuthsByUserId(sysUser.getUserId());
+        List<String> auths = new ArrayList<>();
+        if (sysUser.getUserId().equals(SystemConstants.ADMIN_ID)) {
+            auths.add(SystemConstants.ALL_PERMISSION);
+        } else {
+            auths = sysUserMapper.selectAuthsByUserId(sysUser.getUserId());
+        }
         return new LoginUser(sysUser, new HashSet<>(auths));
     }
 }

@@ -113,6 +113,6 @@ public class LoginProviderServiceImpl implements LoginProviderService {
     @Override
     public void sendAsyncMsg(LoginUser loginUser, String status, String msg) {
         AsyncManager.manager().execute(AsyncFactory.loginLogger(
-                loginUser.getUsername(), loginUser.getPrinciple(), loginUser.getType().getId(), status, msg));
+                loginUser.getUsername(), loginUser.getPrinciple(), loginUser.getLoginType().getId(), status, msg));
     }
 }

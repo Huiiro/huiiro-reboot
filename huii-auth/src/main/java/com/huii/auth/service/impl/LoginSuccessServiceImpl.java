@@ -1,5 +1,6 @@
 package com.huii.auth.service.impl;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.huii.auth.config.properties.JwtProperties;
 import com.huii.auth.core.entity.oauth2.Oauth2User;
@@ -8,6 +9,7 @@ import com.huii.auth.service.LoginSuccessService;
 import com.huii.auth.utils.JwtUtils;
 import com.huii.common.constants.CacheConstants;
 import com.huii.common.constants.SystemConstants;
+import com.huii.common.core.domain.SysRole;
 import com.huii.common.core.domain.SysUser;
 import com.huii.common.core.model.LoginUser;
 import com.huii.common.utils.redis.RedisTemplateUtils;
@@ -18,14 +20,13 @@ import com.huii.system.mapper.SysUserOauthMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,48 +60,83 @@ public class LoginSuccessServiceImpl implements LoginSuccessService {
             //access && refresh
             String accessToken = jwtUtils.createAccessToken(id);
             String refreshToken = jwtUtils.createRefreshToken(id);
+            loginUser.setRefreshToken(refreshToken);
             redisTemplateUtils.setCacheObject(CacheConstants.USER + id, loginUser, jwtUtils.getRefresh(), TimeUnit.HOURS);
             //是否保存accessToken至redis，默认不保存
-            if (Objects.equals(jwtProperties.getSaveToken(), Boolean.TRUE.toString())) {
+            if (Objects.equals(jwtProperties.getSaveAccessToken(), Boolean.TRUE.toString())) {
                 redisTemplateUtils.setCacheObject(CacheConstants.TOKEN + id, accessToken, jwtUtils.getAccess(), TimeUnit.HOURS);
             }
-            redisTemplateUtils.setCacheObject(CacheConstants.REFRESH + id, refreshToken, jwtUtils.getRefresh(), TimeUnit.HOURS);
-
             vo.setAccessToken(accessToken);
             vo.setRefreshToken(refreshToken);
         } else {
             //only access
+            //as access token,but longer than access token
             String token = jwtUtils.createSingleToken(id);
             redisTemplateUtils.setCacheObject(CacheConstants.USER + id, loginUser, jwtUtils.getSingle(), TimeUnit.HOURS);
             //是否保存单token至redis，默认保存
-            if (Objects.equals(jwtProperties.getSaveToken(), Boolean.TRUE.toString())) {
+            if (Objects.equals(jwtProperties.getSaveAccessToken(), Boolean.TRUE.toString())) {
                 redisTemplateUtils.setCacheObject(CacheConstants.TOKEN + id, token, jwtUtils.getSingle(), TimeUnit.HOURS);
             }
             vo.setAccessToken(token);
         }
-        Map<String, Object> map = new HashMap<>(3);
-        map.put("userId", loginUser.getUser().getUserId());
-        map.put("username", loginUser.getUser().getUserName());
-        map.put("userAvatar", loginUser.getUser().getAvatar());
-        vo.setUserInfo(map);
         if (loginUser.getBindStatus().equals(SystemConstants.STATUS_0)) {
             vo.setNeedBind(true);
         }
-        return vo;
+        return loginVoBuilder(vo, loginUser);
     }
 
     @Override
-    public void updateUserAuthsInfo(LoginUser loginUser) {
+    public int updateUserAuthsInfo(LoginUser loginUser) {
+        if (ObjectUtils.isEmpty(loginUser)) {
+            return 0;
+        }
+        int counter = 0;
         Long id = loginUser.getUser().getUserId();
-        if (SystemConstants.TRUE.equals(jwtProperties.getSaveToken()) &&
-                SystemConstants.FALSE.equals(jwtProperties.getEnableDoubleToken())) {
+        if (SystemConstants.FALSE.equals(jwtProperties.getEnableDoubleToken()) &&
+                SystemConstants.TRUE.equals(jwtProperties.getSaveAccessToken())) {
             //只开启单Token时 并且开启Redis验证
             redisTemplateUtils.setCacheObject(CacheConstants.USER + id, loginUser, jwtUtils.getSingle(), TimeUnit.HOURS);
-        } else if(jwtProperties.getEnableDoubleToken().equals(SystemConstants.TRUE) &&
-                jwtProperties.getSaveAccessToken().equals(SystemConstants.TRUE)) {
+            counter++;
+        } else if (SystemConstants.TRUE.equals(jwtProperties.getEnableDoubleToken()) &&
+                SystemConstants.TRUE.equals(jwtProperties.getSaveAccessToken())) {
             //双Token时 并且开启Redis验证
             redisTemplateUtils.setCacheObject(CacheConstants.USER + id, loginUser, jwtUtils.getRefresh(), TimeUnit.HOURS);
+            counter++;
         }
+        return counter;
+    }
+
+    @Override
+    public int updateUserAuthsInfoByUserId(List<Long> userIds, List<String> auths) {
+        if(userIds.isEmpty()) {
+            return 0;
+        }
+        int counter = 0;
+        HashSet<String> newAuths = new HashSet<>(auths);
+        for (Long id : userIds) {
+            //从缓存加载用户信息
+            JSONObject object = redisTemplateUtils.getCacheObject(CacheConstants.USER + id);
+            if (ObjectUtils.isNotEmpty(object)) {
+                LoginUser loginUser = object.toJavaObject(LoginUser.class);
+                loginUser.setStringAuthorities(newAuths);
+                counter += updateUserAuthsInfo(loginUser);
+            }
+        }
+        return counter;
+    }
+
+    @Override
+    public int updateUserRolesByUserId(List<Long> userIds, List<SysRole> roles) {
+        int counter = 0;
+        for (Long id : userIds) {
+            JSONObject object = redisTemplateUtils.getCacheObject(CacheConstants.USER + id);
+            if (ObjectUtils.isNotEmpty(object)) {
+                LoginUser loginUser = object.toJavaObject(LoginUser.class);
+                loginUser.getUser().setRoles(roles);
+                counter += updateUserAuthsInfo(loginUser);
+            }
+        }
+        return counter;
     }
 
     @Override
@@ -132,8 +168,8 @@ public class LoginSuccessServiceImpl implements LoginSuccessService {
     @Override
     public SysUser createUserEntity(Oauth2User oauth2User) {
         SysUser sysUser = new SysUser();
-        sysUser.setUserStatus("1");
-        sysUser.setDeleteFlag("0");
+        sysUser.setUserStatus(SystemConstants.STATUS_1);
+        sysUser.setDeleteFlag(SystemConstants.STATUS_0);
         sysUser.setUserName(genRandomUsername());
         sysUser.setNickName(oauth2User.getName());
         sysUser.setAvatar(oauth2User.getAvatar());
@@ -143,5 +179,23 @@ public class LoginSuccessServiceImpl implements LoginSuccessService {
 
     private String genRandomUsername() {
         return "user_" + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 12);
+    }
+
+    public static LoginVo loginVoBuilder(LoginVo loginVo, LoginUser loginUser) {
+        if (ObjectUtils.isEmpty(loginVo)) {
+            loginVo = new LoginVo();
+        }
+        SysUser user = loginUser.getUser();
+        Map<String, Object> map = new HashMap<>(3);
+        map.put("userId", user.getUserId());
+        map.put("username", user.getUserName());
+        map.put("userAvatar", user.getAvatar());
+        loginVo.setUserInfo(map);
+        //set user permission status
+        loginVo.setPermissions(new ArrayList<>(loginUser.getStringAuthorities()));
+        //set user roles
+        loginVo.setRoles(user.getRoles().stream().map(SysRole::getRoleName).collect(Collectors.toList()));
+
+        return loginVo;
     }
 }

@@ -29,7 +29,7 @@ public class AccountAuthenticationProvider implements AuthenticationProvider {
         String username = (String) token.getPrincipal();
         String password = (String) token.getCredentials();
         LoginUser loginUser = (LoginUser) userDetailService.loadUserByUsername(username);
-        loginUser.setType(LoginType.ACCOUNT);
+        loginUser.setLoginType(LoginType.ACCOUNT);
         loginUser.setPrinciple(username);
         providerService.checkLoginBans(loginUser);
         providerService.checkLoginPassword(loginUser, password);

@@ -4,7 +4,7 @@
       <el-form :model="loginForm" :rules="loginRules" ref="loginFormRef">
         <el-form-item>
           <div>
-            <p class="title">{{settings.headerTitle}} Login</p>
+            <p class="title">{{ settings.headerTitle }} Login</p>
           </div>
         </el-form-item>
         <el-form-item prop="username" class="login-form-item">
@@ -73,8 +73,10 @@ import {checkClickTextCaptcha} from "@/api/auth/captcha";
 import {encryptFiled} from "@/utils/encrypt.ts";
 import {useLayoutStore} from "@/store/modules/layout.ts";
 import settings from "../../settings.ts";
+import {useUserStore} from "@/store/modules/user.ts";
 
 const layoutStore = useLayoutStore();
+const userStore = useUserStore();
 let router = useRouter();
 let route = useRoute();
 let loginForm = reactive({username: '', password: '', rememberMe: false});
@@ -118,11 +120,12 @@ const handleRealLogin = () => {
         loginForm.password = encryptPassword;
         accountLogin(loginForm).then((res: any) => {
           if (res.code === 0) {
-            setAccessToken(res.data.accessToken);
-            if (res.data.refreshToken) {
-              setRefreshToken(res.data.refreshToken);
-            }
-            setUserInfo(res.data.userInfo);
+            const data = res.data;
+            setUserInfo(data.userInfo);
+            setAccessToken(data.accessToken);
+            setRefreshToken(data.refreshToken);
+            userStore.setPermissions(data.permissions)
+            userStore.setRoles(data.roles)
             let redirect: any = route.query.redirect;
             router.push({path: redirect || "/index"});
           }

@@ -65,14 +65,11 @@ public class JwtProperties {
      */
     private String enableDoubleToken = "false";
 
-    /**
-     * 保存 token 至 redis 中
-     */
-    private String saveToken = "true";
 
     /**
      * 保存 accessToken 至 redis 中
+     * <p>单token情况下使用同一变量</p>
      */
-    private String saveAccessToken = "false";
+    private String saveAccessToken = "true";
 
 }

@@ -51,7 +51,7 @@ public class SysUserController extends BaseController {
     /**
      * 导出用户
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:user:export')")
     @RepeatSubmit(interval = 10000, message = "annotation.repeat.submit.export")
     @RequestMapping("/export")
     @Log(value = "导出用户", opType = OpType.EXPORT)
@@ -64,7 +64,6 @@ public class SysUserController extends BaseController {
     /**
      * 导出用户模板
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
     @RepeatSubmit(interval = 10000, message = "annotation.repeat.submit.export")
     @RequestMapping("/import/template/down")
     public void importTemplate(HttpServletResponse response) {
@@ -74,7 +73,7 @@ public class SysUserController extends BaseController {
     /**
      * 导入用户
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:user:import')")
     @RepeatSubmit(interval = 10000, message = "annotation.repeat.submit.export")
     @RequestMapping("/import{update}")
     @Log(value = "导入用户", opType = OpType.IMPORT)
@@ -115,7 +114,7 @@ public class SysUserController extends BaseController {
     /**
      * 添加用户
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:user:add')")
     @PostMapping("/insert")
     @Log(value = "添加用户", opType = OpType.INSERT)
     public R<SysUser> insertUser(@Validated @RequestBody SysUser sysUser) {
@@ -127,7 +126,7 @@ public class SysUserController extends BaseController {
     /**
      * 更新用户
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:user:edit')")
     @PostMapping("/update")
     @Log(value = "更新用户", opType = OpType.UPDATE)
     @Transactional(rollbackFor = RuntimeException.class)
@@ -143,7 +142,7 @@ public class SysUserController extends BaseController {
     /**
      * 重置密码
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:user:edit')")
     @PostMapping("/reset/pwd")
     @Log(value = "重置密码", opType = OpType.UPDATE)
     public R<Void> resetPasswordByAdmin(@RequestBody SysUser sysUser) {
@@ -156,7 +155,7 @@ public class SysUserController extends BaseController {
     /**
      * 删除用户
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:user:delete')")
     @PostMapping("/delete")
     @Log(value = "删除用户", opType = OpType.DELETE)
     @Transactional(rollbackFor = RuntimeException.class)

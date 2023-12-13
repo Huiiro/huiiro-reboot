@@ -15,6 +15,12 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public interface LoginService {
 
+
+    /**
+     * load userInfo when login success
+     * @return loginVo
+     */
+    LoginVo getInfo();
     /**
      * accountLogin
      *

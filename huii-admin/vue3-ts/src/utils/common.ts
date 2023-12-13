@@ -26,7 +26,7 @@ export const paramBuilder = (data: any, page: pageParam, date: any,
         data.params['beginTime'] = formatDate(date[0]);
         data.params['endTime'] = formatDate(date[1]);
     }
-    args.forEach((arg, index) => {
+    args.forEach((arg) => {
         if (arg !== null && arg !== undefined) {
             if (arg instanceof Map) {
                 arg.forEach((value, key) => {
@@ -42,7 +42,7 @@ export const paramBuilder = (data: any, page: pageParam, date: any,
     return data;
 }
 
-function formatDate(date) {
+function formatDate(date: any) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');

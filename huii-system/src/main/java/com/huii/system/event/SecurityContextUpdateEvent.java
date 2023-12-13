@@ -21,7 +21,6 @@ public class SecurityContextUpdateEvent extends ApplicationEvent {
 
     private final List<Long> userIds;
 
-
     public SecurityContextUpdateEvent(Object source, Long roleId, Long menuId, List<String> auths, List<Long> userIds) {
         super(source);
         this.roleId = roleId;

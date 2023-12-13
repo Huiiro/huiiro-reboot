@@ -16,11 +16,6 @@ public interface CacheConstants {
     String TOKEN = "auth_token:";
 
     /**
-     * refreshToken
-     */
-    String REFRESH = "auth_refresh:";
-
-    /**
      * 登录验证码
      */
     String VERIFY_CODE = "verify_code:";

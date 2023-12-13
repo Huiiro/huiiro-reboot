@@ -14,4 +14,6 @@ public interface SystemConstants {
     String FALSE = "false";
 
     Long ADMIN_ID = 1L;
+
+    String ALL_PERMISSION = "*:*:*";
 }

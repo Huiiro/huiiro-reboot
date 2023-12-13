@@ -2,10 +2,13 @@ package com.huii.auth.service;
 
 import com.huii.auth.core.entity.oauth2.Oauth2User;
 import com.huii.auth.core.entity.vo.LoginVo;
+import com.huii.common.core.domain.SysRole;
 import com.huii.common.core.domain.SysUser;
 import com.huii.common.core.model.LoginUser;
 import com.huii.system.domain.SysUserOauth;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 /**
  * 登录成功处理服务
@@ -31,11 +34,30 @@ public interface LoginSuccessService {
     LoginVo createToken(LoginUser loginUser);
 
     /**
-     * 更新用户权限信息后处理redis信息
+     * 更新用户权限信息后处理 redis 信息
      *
      * @param loginUser loginUser
+     * @return counter
      */
-    void updateUserAuthsInfo(LoginUser loginUser);
+    int updateUserAuthsInfo(LoginUser loginUser);
+
+    /**
+     * 更新用户权限信息后处理 redis 信息
+     *
+     * @param userIds   userIds
+     * @param auths auths
+     * @return counter
+     */
+    int updateUserAuthsInfoByUserId(List<Long> userIds, List<String> auths);
+
+    /**
+     * 更新角色授权后处理 redis 信息
+     *
+     * @param userIds   userIds
+     * @param roles roles
+     * @return counter
+     */
+    int updateUserRolesByUserId(List<Long> userIds, List<SysRole> roles);
 
     /**
      * 自动登录方法 包含更新用户信息和授权

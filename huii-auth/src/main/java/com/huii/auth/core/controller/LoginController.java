@@ -15,10 +15,7 @@ import com.huii.common.utils.MessageUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Validated
 @Anonymous
@@ -30,6 +27,17 @@ public class LoginController {
     private final LoginService loginService;
     private final LoginCaptchaService loginCaptchaService;
     private final LoginSecurityService loginSecurityService;
+
+
+    /**
+     * 获取用户权限信息
+     * 获取路由: <a> com.huii.controller.SysMenuController.getRouteList </a>
+     */
+    @GetMapping("/info")
+    public R<LoginVo> getInfo() {
+        LoginVo loginVo = loginService.getInfo();
+        return R.ok(loginVo);
+    }
 
     /**
      * 账号密码登录
@@ -65,5 +73,4 @@ public class LoginController {
         LoginVo loginVo = loginService.smsLogin(dto, request);
         return R.ok(MessageUtils.message(ResType.USER_LOGIN_SUCCESS.getI18n()), loginVo);
     }
-
 }

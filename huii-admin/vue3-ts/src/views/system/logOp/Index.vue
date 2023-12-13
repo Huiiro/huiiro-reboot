@@ -222,7 +222,7 @@ import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
 import {deleteLogOp, deleteLogOpAll, exportLogOp, getLogOpList, updateLogOpFlagStatus} from "@/api/system/logOp";
 import {logOpMarkOptions, logOpStatusOptions, logOpTypeOptions} from "@/views/system/logOp/dictionary.ts";
-import {download} from "@/utils/excel.ts";
+import {download} from "@/utils/download.ts";
 
 //store
 const layoutStore = useLayoutStore();

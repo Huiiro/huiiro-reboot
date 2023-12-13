@@ -52,7 +52,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             } else {
                 //单token情况是否验证redis中的token
                 if (SystemConstants.FALSE.equals(jwtProperties.getEnableDoubleToken()) &&
-                        SystemConstants.TRUE.equals(jwtProperties.getSaveToken())) {
+                        SystemConstants.TRUE.equals(jwtProperties.getSaveAccessToken())) {
                     String redisToken = redisTemplateUtils.getCacheObject(CacheConstants.TOKEN + id);
                     if (ObjectUtils.isEmpty(redisToken) || !token.equals(redisToken)) {
                         filterChain.doFilter(request, response);
@@ -70,6 +70,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 }
                 //获取用户信息
                 JSONObject object = redisTemplateUtils.getCacheObject(CacheConstants.USER + id);
+                if(object.isEmpty()) {
+                    return;
+                }
                 LoginUser loginUser = object.toJavaObject(LoginUser.class);
                 if (ObjectUtils.isNotEmpty(loginUser)) {
                     UsernamePasswordAuthenticationToken authenticationToken =

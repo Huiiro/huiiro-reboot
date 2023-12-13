@@ -7,7 +7,6 @@ import com.huii.common.core.model.Route;
 import com.huii.common.core.model.Tree;
 import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.OpType;
-import com.huii.system.service.SecurityContextService;
 import com.huii.system.service.SysMenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +25,6 @@ import java.util.Map;
 public class SysMenuController extends BaseController {
 
     private final SysMenuService sysMenuService;
-    private final SecurityContextService securityContextService;
 
     /**
      * 获取菜单列表
@@ -111,7 +109,6 @@ public class SysMenuController extends BaseController {
     public R<Void> updateMenu(@Validated @RequestBody SysMenu sysMenu) {
         sysMenuService.checkUpdate(sysMenu);
         sysMenuService.updateMenu(sysMenu);
-        securityContextService.clearUpdateMenuByMenuId(sysMenu.getMenuId());
         return updateSuccess();
     }
 

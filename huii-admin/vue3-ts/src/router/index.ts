@@ -7,6 +7,7 @@ import settings from "@/settings.ts";
 //@ts-ignore
 import nprocess from 'nprogress';
 import "nprogress/nprogress.css";
+import {getInfo} from "@/api/auth/login";
 
 interface MenuItem {
     path: string;
@@ -88,7 +89,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
 
     const isLogin = userStore.isLogin;
     if (token && !isLogin) {
-        let response: any = await getRoutes();
+        const response: any = await getRoutes();
         let code = response.code;
         if (code === 0) {
             let menus = response.data;
@@ -99,6 +100,9 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
             }
             userStore.setLoginStatus(true);
             userStore.setMenuList(menus);
+            const info: any = await getInfo();
+            userStore.setPermissions(info.data.permissions)
+            userStore.setRoles(info.data.roles)
             router.addRoute(indexRoute);
             router.addRoute(staticRoute);
             next({path: to.path});

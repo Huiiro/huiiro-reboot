@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.annotation.JSONField;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysUser;
 import com.huii.common.enums.LoginType;
+import com.huii.common.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,9 +28,11 @@ public class LoginUser implements UserDetails, Serializable {
     private static final long serialVersionUID = 1L;
     private SysUser user;
     private String principle;
-    private LoginType type;
+    private LoginType loginType;
+    private UserType userType;
     private Set<String> stringAuthorities;
     private String bindStatus = SystemConstants.STATUS_1;
+    private String refreshToken;
     @JSONField(serialize = false)
     private List<SimpleGrantedAuthority> authorities;
 

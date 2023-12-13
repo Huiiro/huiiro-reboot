@@ -29,7 +29,7 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
         String sms = (String) token.getPrincipal();
         String code = (String) token.getCredentials();
         LoginUser loginUser = (LoginUser) userDetailService.loadUserBySms(sms);
-        loginUser.setType(LoginType.SMS);
+        loginUser.setLoginType(LoginType.SMS);
         loginUser.setPrinciple(loginUser.getUser().getPhone());
         providerService.checkLoginBans(loginUser);
         providerService.checkLoginSmsCode(loginUser, code);

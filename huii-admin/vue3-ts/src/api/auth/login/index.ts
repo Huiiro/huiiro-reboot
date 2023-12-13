@@ -1,11 +1,19 @@
 import request from '@/utils/request.ts';
 import {AccountLogin, EmailLogin, SmsLogin} from "@/api/auth/login/type.ts";
 
+const prefix = '/auth/v1/login';
+
 enum API {
-    ACC_LOGIN = "/auth/v1/login/account",
-    SMS_LOGIN = "/auth/v1/login/sms",
-    EMAIL_LOGIN = "/auth/v1/login/email"
+    INFO = prefix + "/info",
+    ACC_LOGIN = prefix + "/account",
+    SMS_LOGIN = prefix + "/sms",
+    EMAIL_LOGIN = prefix + "/email"
 }
+
+/**
+ * 获取信息
+ */
+export const getInfo = () => request.get(API.INFO);
 
 /**
  * 登录接口

@@ -12,9 +12,11 @@ import com.huii.auth.service.LoginService;
 import com.huii.auth.strategy.LoginStrategy;
 import com.huii.common.constants.RegConstants;
 import com.huii.common.core.domain.SysUser;
+import com.huii.common.core.model.LoginUser;
 import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
 import com.huii.common.utils.MessageUtils;
+import com.huii.common.utils.SecurityUtils;
 import com.huii.system.mapper.SysUserMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +29,12 @@ import org.springframework.stereotype.Service;
 public class LoginServiceImpl implements LoginService {
 
     private final SysUserMapper sysUserMapper;
+
+    @Override
+    public LoginVo getInfo() {
+        LoginUser loginUser = SecurityUtils.getPrincipal();
+        return LoginSuccessServiceImpl.loginVoBuilder(new LoginVo(), loginUser);
+    }
 
     @Override
     public LoginVo accountLogin(AccountDto dto, HttpServletRequest request) {

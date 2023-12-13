@@ -6,7 +6,9 @@ export const useUserStore = defineStore('user', {
         return {
             isLogin: false,
             menuList: [],
-            tabList: [{name: '首页', title: '首页', icon: ''}],
+            permissions: [],
+            roles: [],
+            tabList: [{name: '首页', title: '首页', icon: '', params: {}}],
             tabValue: '首页',
         }
     },
@@ -14,17 +16,26 @@ export const useUserStore = defineStore('user', {
         clearLoginInfo() {
             this.isLogin = false;
             this.menuList = [];
-            this.tabList = [{name: '首页', title: '首页', icon: ''}];
+            this.tabList = [{name: '首页', title: '首页', icon: '', params: {}}];
             this.tabValue = '首页';
+            this.permissions = [];
+            this.roles = [];
             removeAccessToken();
             removeRefreshToken();
             removeUserInfo();
         },
         setLoginStatus(isLogin: boolean) {
-            this.isLogin = isLogin
+            this.isLogin = isLogin;
         },
         setMenuList(menuList: any) {
-            this.menuList = menuList
+            this.menuList = menuList;
+        },
+        setPermissions(permissions: any) {
+            this.permissions = permissions;
+        },
+
+        setRoles(roles: any) {
+            this.roles = roles;
         },
         addTab(tab: any) {
             if (tab.name !== null && tab.title !== null && tab.name !== undefined) {
@@ -34,7 +45,7 @@ export const useUserStore = defineStore('user', {
                         name: tab.name!,
                         title: tab.title || tab.name,
                         icon: tab.icon,
-                        params: tab.params
+                        params: tab.params || null
                     })
                 } else {
                     this.tabList[index].params = tab.params;

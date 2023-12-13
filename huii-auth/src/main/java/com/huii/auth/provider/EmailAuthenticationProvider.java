@@ -29,7 +29,7 @@ public class EmailAuthenticationProvider implements AuthenticationProvider {
         String Email = (String) token.getPrincipal();
         String code = (String) token.getCredentials();
         LoginUser loginUser = (LoginUser) userDetailService.loadUserByEmail(Email);
-        loginUser.setType(LoginType.EMAIL);
+        loginUser.setLoginType(LoginType.EMAIL);
         loginUser.setPrinciple(loginUser.getUser().getPhone());
         providerService.checkLoginBans(loginUser);
         providerService.checkLoginEmailCode(loginUser, code);

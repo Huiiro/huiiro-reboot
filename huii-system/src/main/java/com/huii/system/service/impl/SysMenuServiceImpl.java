@@ -2,6 +2,7 @@ package com.huii.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.huii.common.constants.MenuConstants;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysMenu;
 import com.huii.common.core.model.Route;
@@ -152,7 +153,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     private List<Route> routeBuilder(Long pid, List<SysMenu> list) {
         List<Route> children = new ArrayList<>();
         for (SysMenu menu : list) {
-            if (pid.equals(menu.getParentId())) {
+            if (pid.equals(menu.getParentId()) &&
+                    (MenuConstants.MENU.equals(menu.getMenuType()) ||
+                            MenuConstants.DIR.equals(menu.getMenuType()))) {
                 Route route = buildRoute(menu);
                 route.setChildrenFlag(false);
                 children.add(route);

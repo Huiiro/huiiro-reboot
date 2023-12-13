@@ -42,7 +42,8 @@ export const getMenuList = (menu: menu) => request.get(API.GET_LIST, {params: me
 /**
  * 获取用户路由
  */
-export const getRoutes = (menu: menu) => request.get(API.GET_ROUTES, {params: menu});
+export const getRoutes = (menu: menu | null) => request.get(API.GET_ROUTES, {params: menu});
+
 
 /**
  * 获取菜单树
