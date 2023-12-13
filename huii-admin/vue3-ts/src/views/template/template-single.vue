@@ -1,6 +1,7 @@
 <!--通用模板-->
 <!--单表模板-->
-<!--version:1.1-->
+<!--version:1.2-->
+<!--new add permission check in header btns and table btns-->
 <!--author:huii-->
 <template>
   <el-card>
@@ -25,37 +26,43 @@
       <!--add-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain>添加huii
+                   :color="layoutStore.BtnInsert" plain
+                   v-if="checkPermission('huii')">添加huii
         </el-button>
       </el-form-item>
       <!--edit-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改huii
+                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle"
+                   v-if="checkPermission('huii')">修改huii
         </el-button>
       </el-form-item>
       <!--delete-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除huii
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
+                   v-if="checkPermission('huii')">删除huii
         </el-button>
       </el-form-item>
       <!--import-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Download" @click="handleImport"
-                   :color="layoutStore.BtnImport" plain>导入huii
+                   :color="layoutStore.BtnImport" plain
+                   v-if="checkPermission('huii')">导入huii
         </el-button>
       </el-form-item>
       <!--export-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出huii
+                   :color="layoutStore.BtnExport" plain
+                   v-if="checkPermission('huii')">导出huii
         </el-button>
       </el-form-item>
       <!--upload-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="UploadFilled" @click="handleUpload"
-                   :color="layoutStore.BtnUpload" plain>上传huii
+                   :color="layoutStore.BtnUpload" plain
+                   v-if="checkPermission('huii')">上传huii
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -84,24 +91,32 @@
       <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="150"/>
       <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="150"/>
       <!--TODO-->
-      <el-table-column label="huii操作" align="center" width="200" fixed="right">
+      <el-table-column label="huii操作" align="center" width="200" fixed="right"
+                       v-if="checkPermissions(['huii','huii'])">
         <template #default="scope">
           <div class="display">
-            <el-button class="global-table-btn"
-                       size="small" type="primary" link :icon="Edit"
-                       @click="handleEdit(scope.$index, scope.row)">
-              编辑
-            </el-button>
-            <el-divider direction="vertical"/>
-            <el-button class="global-table-btn red"
-                       size="small" type="primary" link :icon="Delete"
-                       @click="handleDelete(scope.$index, scope.row)">
-              删除
-            </el-button>
-            <el-divider direction="vertical"/>
+            <div v-if="checkPermission('huii')" class="display">
+              <el-button class="global-table-btn"
+                         size="small" type="primary" link :icon="Edit"
+                         @click="handleEdit(scope.$index, scope.row)">
+                编辑
+              </el-button>
+              <el-divider direction="vertical"/>
+            </div>
+            <div v-if="checkPermission('huii')" class="display">
+              <el-button class="global-table-btn red"
+                         size="small" type="primary" link :icon="Delete"
+                         @click="handleDelete(scope.$index, scope.row)"
+                         v-if="checkPermission('huii')">
+                删除
+              </el-button>
+              <el-divider direction="vertical"/>
+            </div>
+
             <!--selectable more actions-->
             <!--TODO-->
-            <el-dropdown class="global-table-dropdown" size="small">
+            <el-dropdown class="global-table-dropdown" size="small"
+                         v-if="checkPermission('huii')">
               <span class="display">
                 <el-icon><DArrowRight/></el-icon>
                 更多
@@ -186,6 +201,7 @@ import {
 } from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
+import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 
 //store
 const layoutStore = useLayoutStore();

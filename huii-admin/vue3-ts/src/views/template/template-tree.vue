@@ -25,7 +25,8 @@
       <!--add-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain>添加huii
+                   :color="layoutStore.BtnInsert" plain
+                   v-if="checkPermission('huii')">添加huii
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -64,25 +65,34 @@
       <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="150"/>
       <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="150"/>
       <!--TODO-->
-      <el-table-column label="huii操作" align="center" width="200" fixed="right">
+      <el-table-column label="huii操作" align="center" width="200" fixed="right"
+                       v-if="checkPermissions(['huii','huii'])">
         <template #default="scope">
-          <el-button class="global-table-btn"
-                     size="small" type="primary" link :icon="Plus"
-                     @click="handleInsert(scope.$index, scope.row)">
-            添加
-          </el-button>
-          <el-divider direction="vertical"/>
-          <el-button class="global-table-btn"
-                     size="small" type="primary" link :icon="Edit"
-                     @click="handleEdit(scope.$index, scope.row)">
-            编辑
-          </el-button>
-          <el-divider direction="vertical"/>
-          <el-button class="global-table-btn red"
-                     size="small" type="primary" link :icon="Delete"
-                     @click="handleDelete(scope.$index, scope.row)">
-            删除
-          </el-button>
+          <div class="display">
+            <div v-if="checkPermission('huii')" class="display">
+              <el-button class="global-table-btn"
+                         size="small" type="primary" link :icon="Plus"
+                         @click="handleInsert(scope.$index, scope.row)">
+                添加
+              </el-button>
+              <el-divider direction="vertical"/>
+            </div>
+            <div v-if="checkPermission('huii')" class="display">
+              <el-button class="global-table-btn"
+                         size="small" type="primary" link :icon="Edit"
+                         @click="handleEdit(scope.$index, scope.row)">
+                编辑
+              </el-button>
+              <el-divider direction="vertical"/>
+            </div>
+            <div v-if="checkPermission('huii')" class="display">
+              <el-button class="global-table-btn red"
+                         size="small" type="primary" link :icon="Delete"
+                         @click="handleDelete(scope.$index, scope.row)">
+                删除
+              </el-button>
+            </div>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -133,6 +143,7 @@ import {onMounted, ref, shallowRef} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
 import {Check, Close, Delete, Edit, Plus, Refresh, Search, Sort, Timer} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
+import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 
 //store
 const layoutStore = useLayoutStore();

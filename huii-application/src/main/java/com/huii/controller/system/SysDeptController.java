@@ -1,4 +1,4 @@
-package com.huii.controller;
+package com.huii.controller.system;
 
 import com.huii.common.annotation.Log;
 import com.huii.common.core.domain.SysDept;
@@ -79,7 +79,7 @@ public class SysDeptController extends BaseController {
     /**
      * 添加部门
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:dept:add')")
     @PostMapping("/insert")
     @Log(value = "添加部门", opType = OpType.INSERT)
     public R<Void> insertDept(@Validated @RequestBody SysDept sysDept) {
@@ -91,7 +91,7 @@ public class SysDeptController extends BaseController {
     /**
      * 更新部门
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:dept:edit')")
     @PostMapping("/update")
     @Log(value = "更新部门", opType = OpType.UPDATE)
     @Transactional(rollbackFor = RuntimeException.class)
@@ -104,7 +104,7 @@ public class SysDeptController extends BaseController {
     /**
      * 删除部门
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:dept:delete')")
     @PostMapping("/delete/{allow}/{id}")
     @Log(value = "删除部门", opType = OpType.DELETE)
     @Transactional(rollbackFor = RuntimeException.class)

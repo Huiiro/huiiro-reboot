@@ -1,4 +1,4 @@
-package com.huii.controller;
+package com.huii.controller.system;
 
 import com.huii.common.annotation.Log;
 import com.huii.common.core.domain.SysDicData;
@@ -43,7 +43,7 @@ public class SysDicDataController extends BaseController {
     /**
      * 添加字典数据
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:dic:add')")
     @PostMapping("/insert")
     @Log(value = "添加字典数据", opType = OpType.INSERT)
     public R<Void> insertDicData(@Validated @RequestBody SysDicData sysDicData) {
@@ -55,7 +55,7 @@ public class SysDicDataController extends BaseController {
     /**
      * 更新字典数据
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:dic:edit')")
     @PostMapping("/update")
     @Log(value = "更新字典数据", opType = OpType.INSERT)
     public R<Void> updateDicData(@Validated @RequestBody SysDicData sysDicData) {
@@ -67,7 +67,7 @@ public class SysDicDataController extends BaseController {
     /**
      * 删除字典数据
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:dic:delete')")
     @PostMapping("/delete")
     @Log(value = "删除字典数据", opType = OpType.DELETE)
     @Transactional(rollbackFor = RuntimeException.class)

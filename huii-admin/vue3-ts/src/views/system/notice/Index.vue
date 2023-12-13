@@ -3,8 +3,8 @@
     <!--formSearch-->
     <el-form :inline="true" :size="size" v-show="showSearch">
       <!--searchParam-->
-      <el-form-item label="消息标题" class="global-input-item">
-        <el-input v-model="query.noticeTitle" placeholder="请输入消息标题"
+      <el-form-item label="通知标题" class="global-input-item">
+        <el-input v-model="query.noticeTitle" placeholder="请输入通知标题"
                   class="global-input" :size="size"/>
       </el-form-item>
       <!--fixed-->
@@ -19,19 +19,22 @@
       <!--add-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain>添加消息
+                   :color="layoutStore.BtnInsert" plain
+                   v-if="checkPermission('system:notice:add')">添加通知
         </el-button>
       </el-form-item>
       <!--edit-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改消息
+                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle"
+                   v-if="checkPermission('system:notice:edit')">修改通知
         </el-button>
       </el-form-item>
       <!--delete-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除消息
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
+                   v-if="checkPermission('system:notice:delete')">删除通知
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -54,8 +57,8 @@
               stripe
               @selection-change="selectionChange">
       <el-table-column type="selection" width="55"/>
-      <el-table-column prop="noticeTitle" label="消息标题" align="left" min-width="180"/>
-      <el-table-column prop="noticeContent" label="消息内容" align="left" min-width="150">
+      <el-table-column prop="noticeTitle" label="通知标题" align="left" min-width="180"/>
+      <el-table-column prop="noticeContent" label="通知内容" align="left" min-width="150">
         <template #default="scope">
           <p style="overflow: hidden;
           white-space: nowrap;
@@ -63,9 +66,9 @@
           >{{ scope.row.noticeContent }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="noticeType" label="消息类型" align="center" width="120">
+      <el-table-column prop="noticeType" label="通知类型" align="center" width="120">
         <template #default="scope">
-          <el-tag v-for="tag in messageTypeOptions"
+          <el-tag v-for="tag in noticeTypeOptions"
                   v-show="tag.value === scope.row.noticeType"
                   :size="size"
                   :key="tag.value"
@@ -73,9 +76,9 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="noticeStatus" label="消息状态" align="center" width="120">
+      <el-table-column prop="noticeStatus" label="通知状态" align="center" width="120">
         <template #default="scope">
-          <el-tag v-for="tag in messageStatusOptions"
+          <el-tag v-for="tag in noticeStatusOptions"
                   v-show="tag.value === scope.row.noticeStatus"
                   :size="size"
                   :key="tag.value"
@@ -85,20 +88,25 @@
       </el-table-column>
       <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="150"/>
       <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="150"/>
-      <el-table-column label="消息操作" align="center" width="200" fixed="right">
+      <el-table-column label="通知操作" align="center" width="200" fixed="right"
+                       v-if="checkPermissions(['system:notice:edit','system:notice:delete'])">
         <template #default="scope">
           <div class="display">
-            <el-button class="global-table-btn"
-                       size="small" type="primary" link :icon="Edit"
-                       @click="handleEdit(scope.$index, scope.row)">
-              编辑
-            </el-button>
-            <el-divider direction="vertical"/>
-            <el-button class="global-table-btn red"
-                       size="small" type="primary" link :icon="Delete"
-                       @click="handleDelete(scope.$index, scope.row)">
-              删除
-            </el-button>
+            <div v-if="checkPermission('system:notice:edit')" class="display">
+              <el-button class="global-table-btn"
+                         size="small" type="primary" link :icon="Edit"
+                         @click="handleEdit(scope.$index, scope.row)">
+                编辑
+              </el-button>
+              <el-divider direction="vertical"/>
+            </div>
+            <div v-if="checkPermission('system:notice:delete')" class="display">
+              <el-button class="global-table-btn red"
+                         size="small" type="primary" link :icon="Delete"
+                         @click="handleDelete(scope.$index, scope.row)">
+                删除
+              </el-button>
+            </div>
           </div>
         </template>
       </el-table-column>
@@ -117,16 +125,16 @@
   </el-card>
 
   <el-dialog class="global-dialog-iu"
-             title="消息管理" v-model="dialogVisible"
+             title="通知管理" v-model="dialogVisible"
              :close-on-click-modal="false"
              @close="handleCloseForm">
     <el-form :model="form"
              :rules="formRules"
              ref="formRuleRef">
-      <el-form-item label="消息标题" label-width="85" prop="noticeTitle">
+      <el-form-item label="通知标题" label-width="85" prop="noticeTitle">
         <el-input v-model="form.noticeTitle" autocomplete="off"/>
       </el-form-item>
-      <el-form-item label="消息内容" label-width="85" prop="noticeContent">
+      <el-form-item label="通知内容" label-width="85" prop="noticeContent">
         <el-input v-model="form.noticeContent"
                   autocomplete="off"
                   type="textarea"
@@ -150,14 +158,14 @@
       </el-row>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="消息类型" label-width="85" prop="postIds">
+          <el-form-item label="通知类型" label-width="85" prop="postIds">
             <el-select
                 v-model="form.noticeType"
-                placeholder="请选择消息类型"
+                placeholder="请选择通知类型"
                 style="width: 240px"
             >
               <el-option
-                  v-for="item in messageTypeOptions"
+                  v-for="item in noticeTypeOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -167,9 +175,9 @@
         </el-col>
         <el-col :span="2"/>
         <el-col :span="11">
-          <el-form-item label="消息状态" label-width="85" prop="noticeStatus">
+          <el-form-item label="通知状态" label-width="85" prop="noticeStatus">
             <el-radio-group v-model="form.noticeStatus">
-              <el-radio v-for="option in messageStatusOptions" :key="option.value" :label="option.value">
+              <el-radio v-for="option in noticeStatusOptions" :key="option.value" :label="option.value">
                 {{ option.label }}
               </el-radio>
             </el-radio-group>
@@ -190,8 +198,9 @@ import {useLayoutStore} from "@/store/modules/layout.ts";
 import {Delete, Edit, Plus, Refresh, Search, Timer,} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
-import {messageStatusOptions, messageTypeOptions} from "@/views/system/notice/dictionary.ts";
+import {noticeStatusOptions, noticeTypeOptions} from "@/views/system/notice/dictionary.ts";
 import {deleteNotice, getNoticeList, getNoticeSingleton, insertNotice, updateNotice} from "@/api/system/notice";
+import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 
 //store
 const layoutStore = useLayoutStore();
@@ -316,7 +325,7 @@ const form = ref({
   noticeId: 0,
   noticeTitle: '',
   noticeContent: '',
-  noticeType: 0,
+  noticeType: 1,
   noticeStatus: '',
   remark: '',
   createBy: '',
@@ -327,18 +336,18 @@ const form = ref({
 //表单数据校验规则
 const formRules = ref({
   noticeTitle: [
-    {required: true, message: '请输入消息标题', trigger: 'blur'},
-    {min: 1, max: 60, message: '消息标题在 1 至 60 个字符之间', trigger: 'blur'}
+    {required: true, message: '请输入通知标题', trigger: 'blur'},
+    {min: 1, max: 60, message: '通知标题在 1 至 60 个字符之间', trigger: 'blur'}
   ],
   noticeContent: [
-    {required: true, message: '请输入消息内容', trigger: 'blur'},
-    {min: 1, max: 999, message: '消息内容在 1 至 999 个字符之间', trigger: 'blur'}
+    {required: true, message: '请输入通知内容', trigger: 'blur'},
+    {min: 1, max: 999, message: '通知内容在 1 至 999 个字符之间', trigger: 'blur'}
   ],
   noticeType: [
-    {required: true, message: '请选择消息类型', trigger: 'blur'},
+    {required: true, message: '请选择通知类型', trigger: 'blur'},
   ],
   noticeStatus: [
-    {required: true, message: '请选择消息状态', trigger: 'blur'},
+    {required: true, message: '请选择通知状态', trigger: 'blur'},
   ]
 });
 //表单校验规则ref
@@ -398,7 +407,7 @@ const handleInsert = (index, row) => {
     noticeContent: "",
     noticeStatus: "",
     noticeTitle: "",
-    noticeType: 0,
+    noticeType: 1,
     remark: "",
     createBy: "",
     createTime: "",
@@ -442,7 +451,7 @@ const handleDelete = (index, row) => {
     names.push(row.noticeTitle);
   }
   ElMessageBox.confirm(
-      '将删除消息标题为  \'' + names.toString().substring(0, 40) + '\'  的' + names.length + '项数据，是否确认？',
+      '将删除通知标题为  \'' + names.toString().substring(0, 40) + '\'  的' + names.length + '项数据，是否确认？',
       '提示', {confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning'}
   ).then(() => {
     deleteNotice(ids).then((res) => {

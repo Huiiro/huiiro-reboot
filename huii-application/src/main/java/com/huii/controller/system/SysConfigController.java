@@ -1,4 +1,4 @@
-package com.huii.controller;
+package com.huii.controller.system;
 
 import com.huii.common.annotation.Log;
 import com.huii.common.core.model.Page;
@@ -22,19 +22,27 @@ public class SysConfigController extends BaseController {
 
     private final SysConfigService sysConfigService;
 
+    /**
+     * 获取配置列表
+     */
     @GetMapping("/list")
     public R<Page> getList(SysConfig sysConfig, PageParam pageParam) {
         Page page = sysConfigService.selectConfigList(sysConfig, pageParam);
         return R.ok(page);
     }
 
+    /**
+     * 获取列表
+     */
     @GetMapping(value = "/{id}")
     public R<SysConfig> getRole(@PathVariable Long id) {
         return R.ok(sysConfigService.selectConfigById(id));
     }
 
-
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    /**
+     * 添加配置
+     */
+    @PreAuthorize("@ap.hasAuth('system:config:add')")
     @PostMapping("/insert")
     @Log(value = "添加配置", opType = OpType.INSERT)
     public R<Void> insertConfig(@Validated @RequestBody SysConfig sysConfig) {
@@ -43,7 +51,10 @@ public class SysConfigController extends BaseController {
         return saveSuccess();
     }
 
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    /**
+     * 更新配置
+     */
+    @PreAuthorize("@ap.hasAuth('system:config:edit')")
     @PostMapping("/update")
     @Log(value = "更新配置", opType = OpType.UPDATE)
     public R<Void> updateConfig(@Validated @RequestBody SysConfig sysConfig) {
@@ -52,7 +63,10 @@ public class SysConfigController extends BaseController {
         return saveSuccess();
     }
 
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    /**
+     * 删除配置
+     */
+    @PreAuthorize("@ap.hasAuth('system:config:delete')")
     @PostMapping("/delete")
     @Log(value = "删除配置", opType = OpType.DELETE)
     @Transactional(rollbackFor = RuntimeException.class)

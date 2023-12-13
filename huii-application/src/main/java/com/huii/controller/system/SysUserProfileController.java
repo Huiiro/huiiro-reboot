@@ -1,4 +1,4 @@
-package com.huii.controller;
+package com.huii.controller.system;
 
 import com.huii.common.core.model.base.BaseController;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Validated
 @RestController
-@RequestMapping("/system/oss")
+@RequestMapping("/system/user/profile")
 @RequiredArgsConstructor
-public class SysOssController extends BaseController {
+public class SysUserProfileController extends BaseController {
 }

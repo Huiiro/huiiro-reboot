@@ -65,18 +65,21 @@
       <!--delete-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Delete" @click="handleDeleteAll"
-                   :color="layoutStore.BtnDelete" plain>删除全部
+                   :color="layoutStore.BtnDelete" plain
+                   v-if="checkPermission('system:logOp:delete:all')">删除全部
         </el-button>
       </el-form-item>
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除日志
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
+                   v-if="checkPermission('system:logOp:delete')">删除日志
         </el-button>
       </el-form-item>
       <!--export-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出日志
+                   :color="layoutStore.BtnExport" plain
+                   v-if="checkPermission('system:logOp:export')">导出日志
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -149,26 +152,33 @@
           >{{ scope.row.opMessage }}</p>
         </template>
       </el-table-column>
-      <el-table-column label="日志操作" align="center" width="200" fixed="right">
+      <el-table-column label="日志操作" align="center" width="200" fixed="right"
+                       v-if="checkPermissions(['system:logOp:edit','system:logOp:delete'])">
         <template #default="scope">
           <div class="display">
-            <el-button class="global-table-btn"
-                       size="small" type="primary" link :icon="Edit"
-                       @click="handleUpdateStatus(scope.$index, scope.row)">
-              标记
-            </el-button>
-            <el-divider direction="vertical"/>
-            <el-button class="global-table-btn"
-                       size="small" type="primary" link :icon="Edit"
-                       @click="handleEdit(scope.$index, scope.row)">
-              详情
-            </el-button>
-            <el-divider direction="vertical"/>
-            <el-button class="global-table-btn red"
-                       size="small" type="primary" link :icon="Delete"
-                       @click="handleDelete(scope.$index, scope.row)">
-              删除
-            </el-button>
+            <div v-if="checkPermission('system:logOp:edit')" class="display">
+              <el-button class="global-table-btn"
+                         size="small" type="primary" link :icon="Edit"
+                         @click="handleUpdateStatus(scope.$index, scope.row)">
+                标记
+              </el-button>
+              <el-divider direction="vertical"/>
+            </div>
+            <div v-if="checkPermission('system:logOp:edit')" class="display">
+              <el-button class="global-table-btn"
+                         size="small" type="primary" link :icon="Edit"
+                         @click="handleEdit(scope.$index, scope.row)">
+                详情
+              </el-button>
+              <el-divider direction="vertical"/>
+            </div>
+            <div v-if="checkPermission('system:logOp:delete')" class="display">
+              <el-button class="global-table-btn red"
+                         size="small" type="primary" link :icon="Delete"
+                         @click="handleDelete(scope.$index, scope.row)">
+                删除
+              </el-button>
+            </div>
           </div>
         </template>
       </el-table-column>
@@ -220,9 +230,16 @@ import {useLayoutStore} from "@/store/modules/layout.ts";
 import {Delete, Edit, Refresh, Search, Timer, Upload,} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
-import {deleteLogOp, deleteLogOpAll, exportLogOp, getLogOpList, updateLogOpFlagStatus} from "@/api/system/logOp";
-import {logOpMarkOptions, logOpStatusOptions, logOpTypeOptions} from "@/views/system/logOp/dictionary.ts";
+import {
+  deleteLogOp,
+  deleteLogOpAll,
+  exportLogOp,
+  getLogOpList,
+  updateLogOpFlagStatus
+} from "../../../api/monitor/logOp";
+import {logOpMarkOptions, logOpStatusOptions, logOpTypeOptions} from "@/views/monitor/logOp/dictionary.ts";
 import {download} from "@/utils/download.ts";
+import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 
 //store
 const layoutStore = useLayoutStore();

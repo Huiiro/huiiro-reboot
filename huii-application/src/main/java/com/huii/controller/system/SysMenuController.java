@@ -1,4 +1,4 @@
-package com.huii.controller;
+package com.huii.controller.system;
 
 import com.huii.common.annotation.Log;
 import com.huii.common.core.domain.SysMenu;
@@ -90,7 +90,7 @@ public class SysMenuController extends BaseController {
     /**
      * 添加菜单
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:menu:add')")
     @PostMapping("/insert")
     @Log(value = "添加菜单", opType = OpType.INSERT)
     public R<Void> insertMenu(@Validated @RequestBody SysMenu sysMenu) {
@@ -102,7 +102,7 @@ public class SysMenuController extends BaseController {
     /**
      * 更新菜单
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:menu:edit')")
     @PostMapping("/update")
     @Log(value = "更新菜单", opType = OpType.UPDATE)
     @Transactional(rollbackFor = RuntimeException.class)
@@ -115,7 +115,7 @@ public class SysMenuController extends BaseController {
     /**
      * 删除菜单
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:menu:delete')")
     @PostMapping("/delete/{allow}/{id}")
     @Log(value = "删除菜单", opType = OpType.DELETE)
     @Transactional(rollbackFor = RuntimeException.class)

@@ -1,4 +1,4 @@
-package com.huii.controller;
+package com.huii.controller.monitor;
 
 import com.huii.common.annotation.Log;
 import com.huii.common.annotation.RepeatSubmit;
@@ -28,14 +28,13 @@ public class SysLogOpController extends BaseController {
 
     private final SysLogOpService sysLogOpService;
 
-    @PreAuthorize("@ap.hasAuth('system:all')")
     @GetMapping("/list")
     public R<Page> getList(SysLogOp sysLogOp, PageParam pageParam) {
         Page page = sysLogOpService.selectSysLogOpList(sysLogOp, pageParam);
         return R.ok(page);
     }
 
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:log:op:export')")
     @RepeatSubmit(interval = 10000, message = "annotation.repeat.submit.export")
     @RequestMapping("/export")
     @Log(value = "导出日志", opType = OpType.EXPORT)
@@ -45,14 +44,14 @@ public class SysLogOpController extends BaseController {
         ExcelUtils.exportExcel(null, vos, SysLogOpExportVo.class, response);
     }
 
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:log:op:edit')")
     @PostMapping("/update/flag")
     public R<Void> updateLogOpFlagStatus(@RequestBody SysLogOp sysLogOp) {
         sysLogOpService.updateLogOpFlagStatus(sysLogOp);
         return R.ok();
     }
 
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:log:op:delete')")
     @PostMapping("/delete")
     @Log(value = "删除日志")
     public R<Void> deleteLogOp(@RequestBody Long[] ids) {
@@ -60,7 +59,7 @@ public class SysLogOpController extends BaseController {
         return deleteSuccess();
     }
 
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:log:op:delete:all')")
     @PostMapping("/delete/all")
     @Log(value = "删除日志")
     public R<Void> deleteAll() {

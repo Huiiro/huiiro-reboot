@@ -25,13 +25,13 @@
     <select id="selectListMenusByUserId" resultType="com.huii.common.core.domain.SysMenu">
         <include refid="selectFields"></include>
         where u.user_id = #{userId}
-        <if test="menu.menuName != null">
+        <if test="menu.menuName != null and menu.menuName != ''">
             and m.menu_name = #{menu.menuName}
         </if>
-        <if test="menu.menuVisible != null">
+        <if test="menu.menuVisible != null and menu.menuVisible != ''">
             and m.menu_visible = #{menu.menuVisible}
         </if>
-        <if test="menu.menuStatus != null">
+        <if test="menu.menuStatus != null and menu.menuStatus != ''">
             and m.menu_status = #{menu.menuStatus}
         </if>
         order by m.parent_id asc, m.menu_seq asc

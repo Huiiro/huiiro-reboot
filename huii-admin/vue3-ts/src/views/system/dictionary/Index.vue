@@ -19,25 +19,29 @@
       <!--add-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain>添加字典
+                   :color="layoutStore.BtnInsert" plain
+                   v-if="checkPermission('system:dic:add')">添加字典
         </el-button>
       </el-form-item>
       <!--edit-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改字典
+                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle"
+                   v-if="checkPermission('system:dic:edit')">修改字典
         </el-button>
       </el-form-item>
       <!--delete-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除字典
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
+                   v-if="checkPermission('system:dic:delete')">删除字典
         </el-button>
       </el-form-item>
       <!--export-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出字典
+                   :color="layoutStore.BtnExport" plain
+                   v-if="checkPermission('system:dic:export')">导出字典
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -80,20 +84,25 @@
       </el-table-column>
       <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="150"/>
       <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="150"/>
-      <el-table-column label="字典操作" align="center" width="200" fixed="right">
+      <el-table-column label="字典操作" align="center" width="200" fixed="right"
+                       v-if="checkPermissions(['system:dic:edit','system:dic:delete'])">
         <template #default="scope">
           <div class="display">
-            <el-button class="global-table-btn"
-                       size="small" type="primary" link :icon="Edit"
-                       @click="handleEdit(scope.$index, scope.row)">
-              编辑
-            </el-button>
-            <el-divider direction="vertical"/>
-            <el-button class="global-table-btn red"
-                       size="small" type="primary" link :icon="Delete"
-                       @click="handleDelete(scope.$index, scope.row)">
-              删除
-            </el-button>
+            <div v-if="checkPermission('system:dic:edit')" class="display">
+              <el-button class="global-table-btn"
+                         size="small" type="primary" link :icon="Edit"
+                         @click="handleEdit(scope.$index, scope.row)">
+                编辑
+              </el-button>
+              <el-divider direction="vertical"/>
+            </div>
+            <div v-if="checkPermission('system:dic:delete')" class="display">
+              <el-button class="global-table-btn red"
+                         size="small" type="primary" link :icon="Delete"
+                         @click="handleDelete(scope.$index, scope.row)">
+                删除
+              </el-button>
+            </div>
           </div>
         </template>
       </el-table-column>
@@ -181,6 +190,7 @@ import {paramBuilder} from "@/utils/common.ts";
 import {dicStatusOptions} from "@/views/system/dictionary/dictionary.ts";
 import {deleteDicType, getDicTypeList, getDicTypeSingleton, insertDicType, updateDicType} from "@/api/system/dic/type";
 import router from "@/router";
+import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 
 //store
 const layoutStore = useLayoutStore();

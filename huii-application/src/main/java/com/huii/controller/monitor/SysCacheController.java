@@ -1,4 +1,4 @@
-package com.huii.controller;
+package com.huii.controller.monitor;
 
 import com.huii.common.constants.CacheConstants;
 import com.huii.common.core.model.R;

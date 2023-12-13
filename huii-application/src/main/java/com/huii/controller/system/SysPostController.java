@@ -1,4 +1,4 @@
-package com.huii.controller;
+package com.huii.controller.system;
 
 import com.huii.common.annotation.Log;
 import com.huii.common.core.domain.SysPost;
@@ -42,7 +42,7 @@ public class SysPostController extends BaseController {
     /**
      * 添加岗位
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:post:add')")
     @PostMapping("/insert")
     @Log(value = "添加岗位", opType = OpType.INSERT)
     public R<SysPost> insertPost(@Validated @RequestBody SysPost sysPost) {
@@ -54,7 +54,7 @@ public class SysPostController extends BaseController {
     /**
      * 更新岗位
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:post:edit')")
     @PostMapping("/update")
     @Log(value = "更新岗位", opType = OpType.UPDATE)
     @Transactional(rollbackFor = RuntimeException.class)
@@ -67,7 +67,7 @@ public class SysPostController extends BaseController {
     /**
      * 删除岗位
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:post:delete')")
     @PostMapping("/delete")
     @Log(value = "删除岗位", opType = OpType.DELETE)
     @Transactional(rollbackFor = RuntimeException.class)

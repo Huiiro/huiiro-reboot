@@ -1,4 +1,4 @@
-package com.huii.controller;
+package com.huii.controller.system;
 
 import com.huii.auth.service.LoginSecurityService;
 import com.huii.common.annotation.Log;

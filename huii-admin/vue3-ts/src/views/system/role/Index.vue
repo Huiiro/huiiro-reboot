@@ -39,31 +39,36 @@
       <!--add-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain>添加角色
+                   :color="layoutStore.BtnInsert" plain
+                   v-if="checkPermission('system:role:add')">添加角色
         </el-button>
       </el-form-item>
       <!--edit-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改角色
+                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle"
+                   v-if="checkPermission('system:role:edit')">修改角色
         </el-button>
       </el-form-item>
       <!--delete-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除角色
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
+                   v-if="checkPermission('system:role:delete')">删除角色
         </el-button>
       </el-form-item>
       <!--import-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Download" @click="handleImport"
-                   :color="layoutStore.BtnImport" plain>导入角色
+                   :color="layoutStore.BtnImport" plain
+                   v-if="checkPermission('system:role:import')">导入角色
         </el-button>
       </el-form-item>
       <!--export-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出角色
+                   :color="layoutStore.BtnExport" plain
+                   v-if="checkPermission('system:role:export')">导出角色
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -108,22 +113,28 @@
       </el-table-column>
       <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="180"/>
       <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="180"/>
-      <el-table-column label="角色操作" align="center" width="220" fixed="right">
+      <el-table-column label="角色操作" align="center" width="220" fixed="right"
+                       v-if="checkPermissions(['system:role:edit','system:role:delete'])">
         <template #default="scope">
           <div class="display">
-            <el-button class="global-table-btn"
-                       size="small" type="primary" link :icon="Edit"
-                       @click="handleEdit(scope.$index, scope.row)">
-              编辑
-            </el-button>
-            <el-divider direction="vertical"/>
-            <el-button class="global-table-btn red"
-                       size="small" type="primary" link :icon="Delete"
-                       @click="handleDelete(scope.$index, scope.row)">
-              删除
-            </el-button>
-            <el-divider direction="vertical"/>
-            <el-dropdown class="global-table-dropdown" size="small">
+            <div v-if="checkPermission('system:role:edit')" class="display">
+              <el-button class="global-table-btn"
+                         size="small" type="primary" link :icon="Edit"
+                         @click="handleEdit(scope.$index, scope.row)">
+                编辑
+              </el-button>
+              <el-divider direction="vertical"/>
+            </div>
+            <div v-if="checkPermission('system:role:delete')" class="display">
+              <el-button class="global-table-btn red"
+                         size="small" type="primary" link :icon="Delete"
+                         @click="handleDelete(scope.$index, scope.row)">
+                删除
+              </el-button>
+              <el-divider direction="vertical"/>
+            </div>
+            <el-dropdown class="global-table-dropdown" size="small"
+                         v-if="checkPermission('system:role:edit')">
               <span class="display">
                 <el-icon><DArrowRight/></el-icon>
                 更多
@@ -327,6 +338,7 @@ import {paramBuilder} from "@/utils/common.ts";
 import {getMenuSelectRole} from "@/api/system/menu";
 import {getDeptSelectRole} from "@/api/system/dept";
 import router from "@/router";
+import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 
 //store
 const layoutStore = useLayoutStore();

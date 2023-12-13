@@ -51,18 +51,21 @@
       <!--delete-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Delete" @click="handleDeleteAll"
-                   :color="layoutStore.BtnDelete" plain>删除全部
+                   :color="layoutStore.BtnDelete" plain
+                   v-if="checkPermission('system:logLogin:delete:all')">删除全部
         </el-button>
       </el-form-item>
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除日志
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
+                   v-if="checkPermission('system:logLogin:delete')">删除日志
         </el-button>
       </el-form-item>
       <!--export-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出日志
+                   :color="layoutStore.BtnExport" plain
+                   v-if="checkPermission('system:logLogin:export')">导出日志
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -122,7 +125,7 @@
       </el-table-column>
       <el-table-column label="日志操作" align="center" width="200" fixed="right" v-if="false">
         <template #default="scope">
-          <div class="display">
+          <div class="display" v-if="checkPermission('system:logLogin:delete')">
             <el-button class="global-table-btn red"
                        size="small" type="primary" link :icon="Delete"
                        @click="handleDelete(scope.$index, scope.row)">
@@ -168,8 +171,9 @@ import {Delete, Refresh, Search, Timer, Upload,} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
 import {download} from "@/utils/download.ts";
-import {logLoginStatusOptions, logLoginTypeOptions} from "@/views/system/logLogin/dictionary.ts";
-import {deleteLogLogin, deleteLogLoginAll, exportLogLogin, getLogLoginList} from "@/api/system/logLogin";
+import {logLoginStatusOptions, logLoginTypeOptions} from "@/views/monitor/logLogin/dictionary.ts";
+import {deleteLogLogin, deleteLogLoginAll, exportLogLogin, getLogLoginList} from "../../../api/monitor/logLogin";
+import {checkPermission} from "@/utils/permission.ts";
 
 //store
 const layoutStore = useLayoutStore();

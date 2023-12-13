@@ -1,4 +1,4 @@
-package com.huii.controller;
+package com.huii.controller.system;
 
 import com.huii.common.annotation.Log;
 import com.huii.common.core.domain.SysRole;
@@ -49,7 +49,7 @@ public class SysRoleController extends BaseController {
     /**
      * 添加角色
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:role:add')")
     @PostMapping("/insert")
     @Log(value = "添加角色", opType = OpType.INSERT)
     public R<SysRole> insertRole(@Validated @RequestBody SysRole sysRole) {
@@ -61,7 +61,7 @@ public class SysRoleController extends BaseController {
     /**
      * 更新角色
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:role:edit')")
     @PostMapping("/update")
     @Log(value = "更新角色", opType = OpType.UPDATE)
     @Transactional(rollbackFor = RuntimeException.class)
@@ -77,7 +77,7 @@ public class SysRoleController extends BaseController {
     /**
      * 更新角色状态
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:role:edit')")
     @PostMapping("/update/status")
     @Log(value = "更新角色状态", opType = OpType.UPDATE)
     public R<SysRole> updateRoleStatus(@Validated @RequestBody SysRole sysRole) {
@@ -91,7 +91,7 @@ public class SysRoleController extends BaseController {
     /**
      * 更新角色权限
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:role:edit')")
     @PostMapping("/update/auths")
     @Log(value = "更新角色权限", opType = OpType.UPDATE)
     @Transactional(rollbackFor = RuntimeException.class)
@@ -104,7 +104,7 @@ public class SysRoleController extends BaseController {
     /**
      * 更新角色数据权限
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:role:edit')")
     @PostMapping("/update/scope")
     @Log(value = "更新角色数据权限", opType = OpType.UPDATE)
     @Transactional(rollbackFor = RuntimeException.class)
@@ -116,7 +116,7 @@ public class SysRoleController extends BaseController {
     /**
      * 删除角色
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:role:delete')")
     @PostMapping("/delete")
     @Log(value = "删除角色", opType = OpType.DELETE)
     @Transactional(rollbackFor = RuntimeException.class)
@@ -131,7 +131,7 @@ public class SysRoleController extends BaseController {
     /**
      * 查询未分配用户
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:role:query')")
     @GetMapping("/query/non")
     public R<Page> queryNonAuthUser(SysUser sysUser, PageParam pageParam) {
         Page page = sysUserService.queryNonAuthUser(sysUser, pageParam);
@@ -141,7 +141,7 @@ public class SysRoleController extends BaseController {
     /**
      * 查询已分配用户
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:role:query')")
     @GetMapping("/query/auth")
     public R<Page> queryAuthUser(SysUser sysUser, PageParam pageParam) {
         Page page =  sysUserService.queryAuthUser(sysUser, pageParam);
@@ -151,7 +151,7 @@ public class SysRoleController extends BaseController {
     /**
      * 授权用户
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:role:edit')")
     @PostMapping("/user/unauth/{roleId}")
     @Transactional(rollbackFor = RuntimeException.class)
     public R<Void> authUser(@PathVariable Long roleId, @RequestBody Long[] userIds) {
@@ -163,7 +163,7 @@ public class SysRoleController extends BaseController {
     /**
      * 取消授权用户
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:role:edit')")
     @PostMapping("/user/auth/{roleId}")
     @Transactional(rollbackFor = RuntimeException.class)
     public R<Void> unauthUser(@PathVariable Long roleId, @RequestBody Long[] userIds) {

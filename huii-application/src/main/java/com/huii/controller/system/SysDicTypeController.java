@@ -1,4 +1,4 @@
-package com.huii.controller;
+package com.huii.controller.system;
 
 import com.huii.common.annotation.Log;
 import com.huii.common.core.domain.SysDicType;
@@ -22,7 +22,10 @@ public class SysDicTypeController extends BaseController {
 
     private final SysDicTypeService sysDicTypeService;
 
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    /**
+     * 刷新缓存
+     */
+    @PreAuthorize("@ap.hasAuth('system:dic:edit')")
     @GetMapping("/refresh")
     public R<Void> refreshCache() {
         sysDicTypeService.refreshCache();
@@ -32,7 +35,6 @@ public class SysDicTypeController extends BaseController {
     /**
      * 获取字典项分页数据
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
     @GetMapping("/list")
     public R<Page> getList(SysDicType sysDicType, PageParam pageParam) {
         Page page = sysDicTypeService.selectTypeList(sysDicType, pageParam);
@@ -42,7 +44,6 @@ public class SysDicTypeController extends BaseController {
     /**
      * 查询单个字典项
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
     @GetMapping("/{id}")
     public R<SysDicType> getDicType(@PathVariable Long id) {
         SysDicType sysDicType = sysDicTypeService.selectDicTypeById(id);
@@ -52,7 +53,6 @@ public class SysDicTypeController extends BaseController {
     /**
      * 根据名称查询
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
     @GetMapping("/type")
     public R<SysDicType> getDicTypeByType(@RequestParam String dicType) {
         SysDicType sysDicType = sysDicTypeService.selectDicTypeByDicType(dicType);
@@ -62,7 +62,7 @@ public class SysDicTypeController extends BaseController {
     /**
      * 添加字典项
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:dic:add')")
     @PostMapping("/insert")
     @Log(value = "添加字典项", opType = OpType.INSERT)
     public R<Void> insertDicType(@Validated @RequestBody SysDicType sysDicType) {
@@ -74,7 +74,7 @@ public class SysDicTypeController extends BaseController {
     /**
      * 更新字典项
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:dic:edit')")
     @PostMapping("/update")
     @Log(value = "更新字典项", opType = OpType.INSERT)
     @Transactional(rollbackFor = RuntimeException.class)
@@ -87,7 +87,7 @@ public class SysDicTypeController extends BaseController {
     /**
      * 删除字典项
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:dic:delete')")
     @PostMapping("/delete")
     @Log(value = "删除字典项", opType = OpType.DELETE)
     @Transactional(rollbackFor = RuntimeException.class)

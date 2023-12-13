@@ -1,4 +1,4 @@
-package com.huii.controller;
+package com.huii.controller.system;
 
 import com.huii.common.annotation.Log;
 import com.huii.common.core.model.Page;
@@ -42,7 +42,7 @@ public class SysNoticeController extends BaseController {
     /**
      * 添加通知
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:notice:add')")
     @PostMapping("/insert")
     @Log(value = "添加通知", opType = OpType.INSERT)
     public R<Void> insertNotice(@Validated @RequestBody SysNotice sysNotice) {
@@ -54,7 +54,7 @@ public class SysNoticeController extends BaseController {
     /**
      * 更新通知
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:notice:edit')")
     @PostMapping("/update")
     @Log(value = "更新通知", opType = OpType.UPDATE)
     @Transactional(rollbackFor = RuntimeException.class)
@@ -69,7 +69,7 @@ public class SysNoticeController extends BaseController {
     /**
      * 删除通知
      */
-    @PreAuthorize("@ap.hasAuth('system:all')")
+    @PreAuthorize("@ap.hasAuth('system:notice:delete')")
     @PostMapping("/delete")
     @Log(value = "删除通知", opType = OpType.DELETE)
     @Transactional(rollbackFor = RuntimeException.class)

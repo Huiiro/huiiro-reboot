@@ -29,31 +29,36 @@
       <!--add-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain>添加岗位
+                   :color="layoutStore.BtnInsert" plain
+                   v-if="checkPermission('system:post:add')">添加岗位
         </el-button>
       </el-form-item>
       <!--edit-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改岗位
+                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle"
+                   v-if="checkPermission('system:post:edit')">修改岗位
         </el-button>
       </el-form-item>
       <!--delete-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除岗位
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
+                   v-if="checkPermission('system:post:delete')">删除岗位
         </el-button>
       </el-form-item>
       <!--import-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Download" @click="handleImport"
-                   :color="layoutStore.BtnImport" plain>导入岗位
+                   :color="layoutStore.BtnImport" plain
+                   v-if="checkPermission('system:post:import')">导入岗位
         </el-button>
       </el-form-item>
       <!--export-->
       <el-form-item class="global-form-item-margin">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出岗位
+                   :color="layoutStore.BtnExport" plain
+                   v-if="checkPermission('system:post:export')">导出岗位
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -91,20 +96,25 @@
       </el-table-column>
       <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="180"/>
       <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="180"/>
-      <el-table-column label="岗位操作" align="center" width="220" fixed="right">
+      <el-table-column label="岗位操作" align="center" width="220" fixed="right"
+                       v-if="checkPermissions(['system:post:edit','system:post:delete'])">
         <template #default="scope">
           <div class="display">
-            <el-button class="global-table-btn"
-                       size="small" type="primary" link :icon="Edit"
-                       @click="handleEdit(scope.$index, scope.row)">
-              编辑
-            </el-button>
-            <el-divider direction="vertical"/>
-            <el-button class="global-table-btn red"
-                       size="small" type="primary" link :icon="Delete"
-                       @click="handleDelete(scope.$index, scope.row)">
-              删除
-            </el-button>
+            <div v-if="checkPermission('system:post:edit')" class="display">
+              <el-button class="global-table-btn"
+                         size="small" type="primary" link :icon="Edit"
+                         @click="handleEdit(scope.$index, scope.row)">
+                编辑
+              </el-button>
+              <el-divider direction="vertical"/>
+            </div>
+            <div v-if="checkPermission('system:post:delete')" class="display">
+              <el-button class="global-table-btn red"
+                         size="small" type="primary" link :icon="Delete"
+                         @click="handleDelete(scope.$index, scope.row)">
+                删除
+              </el-button>
+            </div>
           </div>
         </template>
       </el-table-column>
@@ -209,6 +219,7 @@ import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
 import {deletePost, getPostList, getPostSingleton, insertPost, updatePost} from "@/api/system/post";
 import {postStatusOptions} from "@/views/system/post/dictionary.ts";
+import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 
 //store
 const layoutStore = useLayoutStore();

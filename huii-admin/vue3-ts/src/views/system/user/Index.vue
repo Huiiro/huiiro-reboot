@@ -147,25 +147,26 @@
                            width="170"/>
           <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable
                            width="170"/>
-          <el-table-column label="用户操作" align="center" width="200" fixed="right">
+          <el-table-column label="用户操作" align="center" width="200" fixed="right"
+                           v-if="checkPermissions(['system:user:edit','system:user:delete'])">
             <template #default="scope">
               <div class="display">
-                <el-button class="global-table-btn"
-                           size="small" type="primary" link :icon="Edit"
-                           @click="handleEdit(scope.$index, scope.row)"
-                           v-if="checkPermission('system:user:edit')">
-                  编辑
-                </el-button>
-                <el-divider direction="vertical"
-                            v-if="checkPermission('system:user:edit')"/>
-                <el-button class="global-table-btn red"
-                           size="small" type="primary" link :icon="Delete"
-                           @click="handleDelete(scope.$index, scope.row)"
-                           v-if="checkPermission('system:user:delete')">
-                  删除
-                </el-button>
-                <el-divider direction="vertical"
-                            v-if="checkPermission('system:user:delete')"/>
+                <div v-if="checkPermission('system:user:edit')" class="display">
+                  <el-button class="global-table-btn"
+                             size="small" type="primary" link :icon="Edit"
+                             @click="handleEdit(scope.$index, scope.row)">
+                    编辑
+                  </el-button>
+                  <el-divider direction="vertical"/>
+                </div>
+                <div v-if="checkPermission('system:user:delete')" class="display">
+                  <el-button class="global-table-btn red"
+                             size="small" type="primary" link :icon="Delete"
+                             @click="handleDelete(scope.$index, scope.row)">
+                    删除
+                  </el-button>
+                  <el-divider direction="vertical"/>
+                </div>
                 <!--selectable more actions-->
                 <el-dropdown class="global-table-dropdown" size="small"
                              v-if="checkPermission('system:user:edit')">
@@ -393,7 +394,7 @@ import {Tree} from "element-plus/es/components/tree-v2/src/types";
 import {encryptFiled} from "@/utils/encrypt.ts";
 import {download} from "@/utils/download.ts";
 import upload from '@/components/upload/Index.vue';
-import {checkPermission} from "@/utils/permission.ts";
+import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 
 //store
 const layoutStore = useLayoutStore();
