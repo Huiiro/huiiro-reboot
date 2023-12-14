@@ -15,7 +15,8 @@ export interface dicType {
 }
 
 enum API {
-    REFRESH = prefix + "refresh",
+    EXPORT = prefix + "/export",
+    REFRESH = prefix + "/refresh",
     GET_LIST = prefix + "/list",
     GET_ONE = prefix + "/",
     GET_BY_NAME = "/type",
@@ -58,3 +59,8 @@ export const updateDicType = (dicType: dicType) => request.post(API.UPDATE_ONE, 
  * 删除字典类型
  */
 export const deleteDicType = (ids: Array<number>) => request.post(API.DELETE_ONE, ids);
+
+/**
+ * 导出字典类型
+ */
+export const exportDicType = (dicType: dicType | null) => request.get(API.EXPORT, {responseType: 'blob', data: dicType});

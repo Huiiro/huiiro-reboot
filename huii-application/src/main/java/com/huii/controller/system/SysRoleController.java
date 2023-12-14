@@ -1,22 +1,30 @@
 package com.huii.controller.system;
 
 import com.huii.common.annotation.Log;
+import com.huii.common.annotation.RepeatSubmit;
 import com.huii.common.core.domain.SysRole;
 import com.huii.common.core.domain.SysUser;
+import com.huii.common.core.domain.vo.SysRoleExportVo;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.OpType;
+import com.huii.common.utils.BeanCopyUtils;
+import com.huii.common.utils.ExcelUtils;
 import com.huii.common.utils.SecurityUtils;
 import com.huii.system.service.SecurityContextService;
 import com.huii.system.service.SysRoleService;
 import com.huii.system.service.SysUserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Validated
@@ -28,6 +36,19 @@ public class SysRoleController extends BaseController {
     private final SysRoleService sysRoleService;
     private final SysUserService sysUserService;
     private final SecurityContextService securityContextService;
+
+    /**
+     * 导出角色
+     */
+    @PreAuthorize("@ap.hasAuth('system:role:export')")
+    @RepeatSubmit(interval = 10000, message = "annotation.repeat.submit.export")
+    @RequestMapping("/export")
+    @Log(value = "导出角色", opType = OpType.EXPORT)
+    public void exportRole(SysRole sysRole, HttpServletResponse response) {
+        List<SysRole> list = sysRoleService.selectRoleList(sysRole);
+        List<SysRoleExportVo> vos = BeanCopyUtils.copyList(list, SysRoleExportVo.class);
+        ExcelUtils.exportExcel(null, vos, SysRoleExportVo.class, response);
+    }
 
     /**
      * 获取角色列表
@@ -97,7 +118,10 @@ public class SysRoleController extends BaseController {
     @Transactional(rollbackFor = RuntimeException.class)
     public R<SysRole> updateRoleAuths(@Validated @RequestBody SysRole sysRole) {
         sysRoleService.updateRoleAuths(sysRole);
-        securityContextService.clearUpdateAuthByRoleId(sysRole.getRoleId());
+        Boolean cleanCache = (Boolean) sysRole.getParams().get("cleanCache");
+        if (ObjectUtils.isNotEmpty(cleanCache) && cleanCache) {
+            securityContextService.clearUpdateAuthByRoleId(sysRole.getRoleId());
+        }
         return updateSuccess();
     }
 
@@ -144,7 +168,7 @@ public class SysRoleController extends BaseController {
     @PreAuthorize("@ap.hasAuth('system:role:query')")
     @GetMapping("/query/auth")
     public R<Page> queryAuthUser(SysUser sysUser, PageParam pageParam) {
-        Page page =  sysUserService.queryAuthUser(sysUser, pageParam);
+        Page page = sysUserService.queryAuthUser(sysUser, pageParam);
         return R.ok(page);
     }
 

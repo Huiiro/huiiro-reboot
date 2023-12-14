@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -28,6 +29,11 @@ public class SysDicDataServiceImpl extends ServiceImpl<SysDicDataMapper, SysDicD
     public Page selectDataList(SysDicData sysDicData, PageParam pageParam) {
         IPage<SysDicData> iPage = new PageParamUtils<SysDicData>().getPageInfo(pageParam);
         return new Page(this.page(iPage, wrapperBuilder(sysDicData)));
+    }
+
+    @Override
+    public List<SysDicData> selectDataList(SysDicData sysDicData) {
+        return sysDicDataMapper.selectList(wrapperBuilder(sysDicData));
     }
 
     @Override

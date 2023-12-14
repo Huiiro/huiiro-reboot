@@ -52,8 +52,8 @@ export const getUserList = (user: user) =>
 /**
  * 获取单个用户
  */
-export const getUserSingleton = (userId: number) => request.get(API.GET_ONE + userId);
-
+export const getUserSingleton = (userId: number | null) => request.get(API.GET_ONE + userId);
+export const getUserSingletonInsert = () => request.get(API.GET_ONE);
 /**
  * 添加用户
  */
@@ -87,4 +87,4 @@ export const getExportUserTemplate = () => request.get(API.IMPORT_TEMPLATE_DOWN,
 /**
  * 导出用户
  */
-export const exportUser = (user: user) => request.get(API.EXPORT, {responseType: 'blob', data: user});
+export const exportUser = (user: user | null) => request.get(API.EXPORT, {responseType: 'blob', data: user});

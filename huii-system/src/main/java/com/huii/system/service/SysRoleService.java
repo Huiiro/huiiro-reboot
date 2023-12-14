@@ -19,6 +19,13 @@ public interface SysRoleService {
     Page selectRoleList(SysRole sysRole, PageParam pageParam);
 
     /**
+     * 获取角色列表
+     * @param sysRole sysRole
+     * @return list
+     */
+    List<SysRole> selectRoleList(SysRole sysRole);
+
+    /**
      * 获取全部角色
      *
      * @return list

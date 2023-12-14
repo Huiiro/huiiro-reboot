@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class SysLogLoginExportVo  implements Serializable {
+public class SysLogLoginExportVo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

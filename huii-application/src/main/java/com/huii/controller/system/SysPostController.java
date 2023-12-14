@@ -1,18 +1,25 @@
 package com.huii.controller.system;
 
 import com.huii.common.annotation.Log;
+import com.huii.common.annotation.RepeatSubmit;
 import com.huii.common.core.domain.SysPost;
+import com.huii.common.core.domain.vo.SysPostExportVo;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.OpType;
+import com.huii.common.utils.BeanCopyUtils;
+import com.huii.common.utils.ExcelUtils;
 import com.huii.system.service.SysPostService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Validated
 @RestController
@@ -22,6 +29,18 @@ public class SysPostController extends BaseController {
 
     private final SysPostService sysPostService;
 
+    /**
+     * 导出岗位
+     */
+    @PreAuthorize("@ap.hasAuth('system:post:export')")
+    @RepeatSubmit(interval = 10000, message = "annotation.repeat.submit.export")
+    @RequestMapping("/export")
+    @Log(value = "导出岗位", opType = OpType.EXPORT)
+    public void exportPost(SysPost sysPost, HttpServletResponse response) {
+        List<SysPost> list = sysPostService.selectPostList(sysPost);
+        List<SysPostExportVo> vos = BeanCopyUtils.copyList(list, SysPostExportVo.class);
+        ExcelUtils.exportExcel(null, vos, SysPostExportVo.class, response);
+    }
     /**
      * 获取岗位列表
      */

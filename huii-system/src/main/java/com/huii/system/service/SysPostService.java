@@ -10,6 +10,8 @@ import java.util.List;
 public interface SysPostService {
     Page selectPostList(SysPost sysPost, PageParam pageParam);
 
+    List<SysPost> selectPostList(SysPost sysPost);
+
     List<Label> selectPostsAll();
 
     List<Long> selectUserPostIds(Long userId);

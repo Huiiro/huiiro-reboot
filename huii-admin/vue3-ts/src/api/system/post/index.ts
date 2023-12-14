@@ -51,3 +51,8 @@ export const updatePost = (post: post) => request.post(API.UPDATE_ONE, post);
  * 删除岗位
  */
 export const deletePost = (ids: Array<number>) => request.post(API.DELETE_ONE, ids);
+
+/**
+ * 导出岗位
+ */
+export const exportPost = (post: post | null) => request.get(API.EXPORT, {responseType: 'blob', data: post});

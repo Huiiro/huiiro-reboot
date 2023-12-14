@@ -37,38 +37,28 @@
     <el-form :inline="true" :size="size">
       <!--left select-->
       <!--add-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:role:add')">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain
-                   v-if="checkPermission('system:role:add')">添加角色
+                   :color="layoutStore.BtnInsert" plain>添加角色
         </el-button>
       </el-form-item>
       <!--edit-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin"
+                    v-if="checkPermission('system:role:edit')">
         <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle"
-                   v-if="checkPermission('system:role:edit')">修改角色
+                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改角色
         </el-button>
       </el-form-item>
       <!--delete-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:role:delete')">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
-                   v-if="checkPermission('system:role:delete')">删除角色
-        </el-button>
-      </el-form-item>
-      <!--import-->
-      <el-form-item class="global-form-item-margin">
-        <el-button :size="size" :icon="Download" @click="handleImport"
-                   :color="layoutStore.BtnImport" plain
-                   v-if="checkPermission('system:role:import')">导入角色
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除角色
         </el-button>
       </el-form-item>
       <!--export-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:role:export')">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain
-                   v-if="checkPermission('system:role:export')">导出角色
+                   :color="layoutStore.BtnExport" plain>导出角色
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -91,7 +81,8 @@
               stripe
               @selection-change="selectionChange">
       <el-table-column type="selection" width="55"/>
-      <el-table-column prop="roleName" label="角色名称" align="left" min-width="150"/>
+      <el-table-column prop="roleId" label="角色ID" align="center" min-width="120"/>
+      <el-table-column prop="roleName" label="角色名称" align="center" min-width="150"/>
       <el-table-column prop="roleKey" label="角色权限字符" align="center" min-width="150"/>
       <el-table-column prop="roleSeq" label="角色展示顺序" align="center" sortable width="140"/>
       <el-table-column prop="roleScope" label="角色数据权限" align="center" width="160">
@@ -111,13 +102,13 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="180"/>
-      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="180"/>
+      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
+      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
       <el-table-column label="角色操作" align="center" width="220" fixed="right"
                        v-if="checkPermissions(['system:role:edit','system:role:delete'])">
         <template #default="scope">
           <div class="display">
-            <div v-if="checkPermission('system:role:edit')" class="display">
+            <div class="display" v-if="checkPermission('system:role:edit')">
               <el-button class="global-table-btn"
                          size="small" type="primary" link :icon="Edit"
                          @click="handleEdit(scope.$index, scope.row)">
@@ -125,7 +116,7 @@
               </el-button>
               <el-divider direction="vertical"/>
             </div>
-            <div v-if="checkPermission('system:role:delete')" class="display">
+            <div class="display" v-if="checkPermission('system:role:delete')">
               <el-button class="global-table-btn red"
                          size="small" type="primary" link :icon="Delete"
                          @click="handleDelete(scope.$index, scope.row)">
@@ -247,6 +238,7 @@
       </p>
       <p class="check-box">
         <el-checkbox v-model="menuBtnCheckStrictly">父子联动</el-checkbox>
+        <el-checkbox v-model="menuBtnCleanCache">清理缓存</el-checkbox>
         <el-divider class="d"/>
       </p>
       <el-tree ref="menuTreeRef"
@@ -310,22 +302,11 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
-import {
-  DArrowRight,
-  Delete,
-  Download,
-  Edit,
-  Lock,
-  Plus,
-  Refresh,
-  Search,
-  Timer,
-  Upload,
-  User
-} from "@element-plus/icons-vue";
+import {DArrowRight, Delete, Edit, Lock, Plus, Refresh, Search, Timer, Upload, User} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, ElTree, FormInstance} from "element-plus";
 import {
   deleteRole,
+  exportRole,
   getRoleList,
   getRoleSingleton,
   insertRole,
@@ -334,11 +315,12 @@ import {
   updateRoleScope
 } from "@/api/system/role";
 import {roleDataScopeOptions, roleStatusOptions} from "./dictionary.ts";
-import {paramBuilder} from "@/utils/common.ts";
+import {paramBuilder, queryParamBuilder} from "@/utils/common.ts";
 import {getMenuSelectRole} from "@/api/system/menu";
 import {getDeptSelectRole} from "@/api/system/dept";
 import router from "@/router";
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
+import {download} from "@/utils/download.ts";
 
 //store
 const layoutStore = useLayoutStore();
@@ -606,18 +588,15 @@ const handleDelete = (index, row) => {
     });
   }).catch();
 };
-/**
- * 导入数据
- */
-const handleImport = () => {
 
-}
 /**
  * 导出数据
  */
 const handleExport = () => {
-
-}
+  exportRole(null).then(res => {
+    download(res);
+  });
+};
 
 /**
  * more 菜单权限
@@ -629,6 +608,7 @@ const menuTempRowData = ref();
 const menuRoleName = ref();
 const menuTreeRef = ref<InstanceType<typeof ElTree>>();
 const menuBtnCheckStrictly = ref(false);
+const menuBtnCleanCache = ref(true); //清理缓存
 //@ts-ignore
 const handleMenuPermission = (index, row) => {
   menuDrawer.value = true;
@@ -648,10 +628,17 @@ const beforeCloseMenuDrawer = () => {
 };
 const handleCloseMenuDrawer = () => {
   menuDrawer.value = false;
+  menuBtnCheckStrictly.value = false;
+  menuBtnCleanCache.value = true;
 };
 const confirmMenuDrawer = () => {
-  menuTempRowData.value.menuIdList = menuTreeRef.value!.getCheckedKeys(false);
-  updateRoleAuth(menuTempRowData.value).then(res => {
+  menuTempRowData.value.menuIdList = menuTreeRef.value!.getCheckedKeys(false)
+      .concat(menuTreeRef.value!.getHalfCheckedKeys());
+  let param = {
+    cleanCache: menuBtnCleanCache
+  }
+  const builder = queryParamBuilder(menuTempRowData.value, param);
+  updateRoleAuth(builder).then(res => {
     if (res.code === 0) {
       menuTempRowData.value = null;
       handleCloseMenuDrawer();
@@ -692,7 +679,8 @@ const handleCloseDataScopeDrawer = () => {
   dataScopeDrawer.value = false;
 };
 const confirmDataScopeDrawer = () => {
-  dsTempRowData.value.deptIdList = dsTreeRef.value!.getCheckedKeys(false);
+  dsTempRowData.value.deptIdList = dsTreeRef.value!.getCheckedKeys(false)
+      .concat(dsTreeRef.value!.getHalfCheckedKeys());
   dsTempRowData.value.roleScope = selectScope.value;
   updateRoleScope(dsTempRowData.value).then(res => {
     if (res.code === 0) {

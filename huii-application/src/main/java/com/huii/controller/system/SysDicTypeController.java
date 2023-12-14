@@ -1,18 +1,25 @@
 package com.huii.controller.system;
 
 import com.huii.common.annotation.Log;
+import com.huii.common.annotation.RepeatSubmit;
 import com.huii.common.core.domain.SysDicType;
+import com.huii.common.core.domain.vo.SysDicTypeExportVo;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.OpType;
+import com.huii.common.utils.BeanCopyUtils;
+import com.huii.common.utils.ExcelUtils;
 import com.huii.system.service.SysDicTypeService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Validated
 @RestController
@@ -21,6 +28,19 @@ import org.springframework.web.bind.annotation.*;
 public class SysDicTypeController extends BaseController {
 
     private final SysDicTypeService sysDicTypeService;
+
+    /**
+     * 导出字典项
+     */
+    @PreAuthorize("@ap.hasAuth('system:dic:export')")
+    @RepeatSubmit(interval = 10000, message = "annotation.repeat.submit.export")
+    @RequestMapping("/export")
+    @Log(value = "导出字典项", opType = OpType.EXPORT)
+    public void exportDicType(SysDicType sysDicType, HttpServletResponse response) {
+        List<SysDicType> list = sysDicTypeService.selectTypeList(sysDicType);
+        List<SysDicTypeExportVo> vos = BeanCopyUtils.copyList(list, SysDicTypeExportVo.class);
+        ExcelUtils.exportExcel(null, vos, SysDicTypeExportVo.class, response);
+    }
 
     /**
      * 刷新缓存

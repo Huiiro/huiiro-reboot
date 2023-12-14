@@ -17,6 +17,7 @@ export interface role {
 }
 
 enum API {
+    EXPORT = prefix + "/export",
     GET_LIST = prefix + "/list",
     GET_ONE = prefix + "/",
     INSERT_ONE = prefix + "/insert",
@@ -69,12 +70,12 @@ export const deleteRole = (ids: Array<number>) => request.post(API.DELETE_ONE, i
 /**
  * 查询未分配用户
  */
-export const queryNonAuthUser = (param: any) => request.get(API.QUERY_NON_AUTH_USER, param);
+export const queryNonAuthUser = (param: any) => request.get(API.QUERY_NON_AUTH_USER, {params: param});
 
 /**
  * 查询已分配用户
  */
-export const queryAuthUser = (param: any) => request.get(API.QUERY_AUTH_USER, param);
+export const queryAuthUser = (param: any) => request.get(API.QUERY_AUTH_USER, {params: param});
 
 /**
  * 授权用户
@@ -85,3 +86,8 @@ export const authUser = (userIds: Array<number>, roleId: number) => request.post
  * 取消授权用户
  */
 export const unauthUser = (userIds: Array<number>, roleId: number) => request.post(API.UNAUTH_USER + roleId, userIds);
+
+/**
+ * 导出角色
+ */
+export const exportRole = (role: role | null) => request.get(API.EXPORT, {responseType: 'blob', data: role});

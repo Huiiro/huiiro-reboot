@@ -26,10 +26,9 @@
     <!--formButton-->
     <el-form :inline="true" :size="size">
       <!--left select-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:menu:add')">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain
-                   v-if="checkPermission('system:menu:add')">添加菜单
+                   :color="layoutStore.BtnInsert" plain>添加菜单
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -62,17 +61,17 @@
               header-cell-class-name="global-table-header"
               class="global-table"
               stripe>
-      <el-table-column prop="menuName" label="菜单名称" align="left" min-width="150"/>
-      <el-table-column prop="menuIcon" label="菜单图标" align="center" width="120">
+      <el-table-column prop="menuName" label="菜单名称" align="left" min-width="200"/>
+      <el-table-column prop="menuIcon" label="菜单图标" align="left" min-width="120">
         <template #default="scope">
-          <el-icon>
+          <el-icon v-if="scope.row.menuIcon">
             <component :is="scope.row.menuIcon"/>
           </el-icon>
         </template>
       </el-table-column>
-      <el-table-column prop="menuAuth" label="菜单权限字段" align="center" width="240"/>
-      <el-table-column prop="menuPath" label="菜单路由地址" align="center" width="240"/>
-      <el-table-column prop="menuComponent" label="菜单路由组件" align="center" width="240"/>
+      <el-table-column prop="menuAuth" label="菜单权限字段" align="left" min-width="240"/>
+      <el-table-column prop="menuPath" label="菜单路由地址" align="left" min-width="240"/>
+      <el-table-column prop="menuComponent" label="菜单路由组件" align="left" min-width="240"/>
       <el-table-column prop="menuSeq" label="菜单展示顺序" align="center" sortable width="140"/>
       <el-table-column prop="menuType" label="菜单类型" align="center" width="120">
         <template #default="scope">
@@ -101,8 +100,8 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="180"/>
-      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="180"/>
+      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
+      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
       <el-table-column label="菜单操作" align="center" width="220" fixed="right"
                        v-if="checkPermissions(['system:menu:add','system:menu:edit','system:menu:delete'])">
         <template #default="scope">
@@ -115,7 +114,7 @@
               </el-button>
               <el-divider direction="vertical"/>
             </div>
-            <div v-if="checkPermission('system:menu:edit')" class="display">
+            <div class="display" v-if="checkPermission('system:menu:edit')">
               <el-button class="global-table-btn"
                          size="small" type="primary" link :icon="Edit"
                          @click="handleEdit(scope.$index, scope.row)">
@@ -123,7 +122,7 @@
               </el-button>
               <el-divider direction="vertical"/>
             </div>
-            <div v-if="checkPermission('system:menu:delete')" class="display">
+            <div class="display" v-if="checkPermission('system:menu:delete')">
               <el-button class="global-table-btn red"
                          size="small" type="primary" link :icon="Delete"
                          @click="handleDelete(scope.$index, scope.row)">

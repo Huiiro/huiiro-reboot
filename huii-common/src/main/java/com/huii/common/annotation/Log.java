@@ -32,7 +32,7 @@ public @interface Log {
     /**
      * 存储response参数
      */
-    boolean saveResponse() default false;
+    boolean saveResponse() default true;
 
     /**
      * 参数存储长度

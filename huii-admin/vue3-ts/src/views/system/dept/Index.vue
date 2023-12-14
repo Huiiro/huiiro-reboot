@@ -27,10 +27,9 @@
     <el-form :inline="true" :size="size">
       <!--left select-->
       <!--add-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dept:add')">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain
-                   v-if="checkPermission('system:dept:add')">添加部门
+                   :color="layoutStore.BtnInsert" plain>添加部门
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -63,8 +62,8 @@
               header-cell-class-name="global-table-header"
               class="global-table"
               stripe>
-      <el-table-column prop="deptName" label="部门名称" align="left" min-width="150"/>
-      <el-table-column prop="deptLeader" label="部门负责人" align="left" min-width="300"/>
+      <el-table-column prop="deptName" label="部门名称" align="left" min-width="200"/>
+      <el-table-column prop="deptLeader" label="部门负责人" align="left" min-width="200"/>
       <el-table-column prop="deptSeq" label="部门展示顺序" align="center" sortable width="140"/>
       <el-table-column prop="deptStatus" label="部门状态" align="center" width="120">
         <template #default="scope">
@@ -76,13 +75,13 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="180"/>
-      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="180"/>
+      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
+      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
       <el-table-column label="部门操作" align="center" width="220" fixed="right"
                        v-if="checkPermissions(['system:dept:add','system:dept:edit','system:dept:delete'])">
         <template #default="scope">
           <div class="display">
-            <div v-if="checkPermission('system:dept:add')" class="display">
+            <div class="display" v-if="checkPermission('system:dept:add')">
               <el-button class="global-table-btn"
                          size="small" type="primary" link :icon="Plus"
                          @click="handleInsert(scope.$index, scope.row)">
@@ -90,7 +89,7 @@
               </el-button>
               <el-divider direction="vertical"/>
             </div>
-            <div v-if="checkPermission('system:dept:edit')" class="display">
+            <div class="display" v-if="checkPermission('system:dept:edit')">
               <el-button class="global-table-btn"
                          size="small" type="primary" link :icon="Edit"
                          @click="handleEdit(scope.$index, scope.row)">
@@ -98,7 +97,7 @@
               </el-button>
               <el-divider direction="vertical"/>
             </div>
-            <div v-if="checkPermission('system:dept:delete')" class="display">
+            <div class="display" v-if="checkPermission('system:dept:delete')">
               <el-button class="global-table-btn red"
                          size="small" type="primary" link :icon="Delete"
                          @click="handleDelete(scope.$index, scope.row)">

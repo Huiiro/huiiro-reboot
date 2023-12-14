@@ -98,14 +98,16 @@ public class SysUserController extends BaseController {
      * 获取用户
      */
     @GetMapping(value = {"/", "/{id}"})
-    public R<Map<String, Object>> getUser(@PathVariable Long id) {
+    public R<Map<String, Object>> getUser(@PathVariable(required = false) Long id) {
         List<Label> roleLabels = sysRoleService.selectRolesAll();
         List<Label> postLabels = sysPostService.selectPostsAll();
         SysUser user = sysUserService.selectUserById(id);
-        user.setRoleIds(user.getRoles().stream().map(SysRole::getRoleId).toList().toArray(new Long[0]));
-        user.setPostIds(sysPostService.selectUserPostIds(id).toArray(new Long[0]));
         Map<String, Object> map = new HashMap<>(3);
-        map.put("user", user);
+        if(ObjectUtils.isNotEmpty(user)) {
+            user.setRoleIds(user.getRoles().stream().map(SysRole::getRoleId).toList().toArray(new Long[0]));
+            user.setPostIds(sysPostService.selectUserPostIds(id).toArray(new Long[0]));
+            map.put("user", user);
+        }
         map.put("roles", roleLabels);
         map.put("posts", postLabels);
         return R.ok(map);

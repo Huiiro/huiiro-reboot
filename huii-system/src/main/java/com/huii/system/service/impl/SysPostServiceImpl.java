@@ -38,6 +38,11 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
     }
 
     @Override
+    public List<SysPost> selectPostList(SysPost sysPost) {
+        return sysPostMapper.selectList(wrapperBuilder(sysPost));
+    }
+
+    @Override
     public List<Label> selectPostsAll() {
         List<SysPost> posts = sysPostMapper.selectList(null);
         return posts.stream()

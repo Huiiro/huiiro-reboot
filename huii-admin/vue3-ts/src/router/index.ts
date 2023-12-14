@@ -89,7 +89,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
 
     const isLogin = userStore.isLogin;
     if (token && !isLogin) {
-        const response: any = await getRoutes();
+        const response: any = await getRoutes(null);
         let code = response.code;
         if (code === 0) {
             let menus = response.data;

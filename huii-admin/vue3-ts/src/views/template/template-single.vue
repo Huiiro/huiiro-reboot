@@ -24,45 +24,39 @@
       <!--left select-->
       <!--TODO-->
       <!--add-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain
-                   v-if="checkPermission('huii')">添加huii
+                   :color="layoutStore.BtnInsert" plain>添加huii
         </el-button>
       </el-form-item>
       <!--edit-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
         <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle"
-                   v-if="checkPermission('huii')">修改huii
+                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改huii
         </el-button>
       </el-form-item>
       <!--delete-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
-                   v-if="checkPermission('huii')">删除huii
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除huii
         </el-button>
       </el-form-item>
       <!--import-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
         <el-button :size="size" :icon="Download" @click="handleImport"
-                   :color="layoutStore.BtnImport" plain
-                   v-if="checkPermission('huii')">导入huii
+                   :color="layoutStore.BtnImport" plain>导入huii
         </el-button>
       </el-form-item>
       <!--export-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain
-                   v-if="checkPermission('huii')">导出huii
+                   :color="layoutStore.BtnExport" plain>导出huii
         </el-button>
       </el-form-item>
       <!--upload-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
         <el-button :size="size" :icon="UploadFilled" @click="handleUpload"
-                   :color="layoutStore.BtnUpload" plain
-                   v-if="checkPermission('huii')">上传huii
+                   :color="layoutStore.BtnUpload" plain>上传huii
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -88,14 +82,14 @@
       <!--TODO-->
       <el-table-column prop="huii" label="huii" align="left" min-width="150"/>
       <el-table-column prop="huii" label="huii" align="center" width="120"/>
-      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="150"/>
-      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="150"/>
+      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
+      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
       <!--TODO-->
       <el-table-column label="huii操作" align="center" width="200" fixed="right"
                        v-if="checkPermissions(['huii','huii'])">
         <template #default="scope">
           <div class="display">
-            <div v-if="checkPermission('huii')" class="display">
+            <div class="display" v-if="checkPermission('huii')">
               <el-button class="global-table-btn"
                          size="small" type="primary" link :icon="Edit"
                          @click="handleEdit(scope.$index, scope.row)">
@@ -103,11 +97,10 @@
               </el-button>
               <el-divider direction="vertical"/>
             </div>
-            <div v-if="checkPermission('huii')" class="display">
+            <div class="display" v-if="checkPermission('huii')">
               <el-button class="global-table-btn red"
                          size="small" type="primary" link :icon="Delete"
-                         @click="handleDelete(scope.$index, scope.row)"
-                         v-if="checkPermission('huii')">
+                         @click="handleDelete(scope.$index, scope.row)">
                 删除
               </el-button>
               <el-divider direction="vertical"/>

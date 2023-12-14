@@ -17,24 +17,21 @@
     <el-form :inline="true" :size="size">
       <!--left select-->
       <!--add-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:notice:add')">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain
-                   v-if="checkPermission('system:notice:add')">添加通知
+                   :color="layoutStore.BtnInsert" plain>添加通知
         </el-button>
       </el-form-item>
       <!--edit-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:notice:edit')">
         <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle"
-                   v-if="checkPermission('system:notice:edit')">修改通知
+                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改通知
         </el-button>
       </el-form-item>
       <!--delete-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:notice:delete')">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
-                   v-if="checkPermission('system:notice:delete')">删除通知
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除通知
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -57,8 +54,9 @@
               stripe
               @selection-change="selectionChange">
       <el-table-column type="selection" width="55"/>
-      <el-table-column prop="noticeTitle" label="通知标题" align="left" min-width="180"/>
-      <el-table-column prop="noticeContent" label="通知内容" align="left" min-width="150">
+      <el-table-column prop="noticeId" label="通知ID" align="center" min-width="120"/>
+      <el-table-column prop="noticeTitle" label="通知标题" align="center" min-width="180"/>
+      <el-table-column prop="noticeContent" label="通知内容" align="center" min-width="180">
         <template #default="scope">
           <p style="overflow: hidden;
           white-space: nowrap;
@@ -66,6 +64,7 @@
           >{{ scope.row.noticeContent }}</p>
         </template>
       </el-table-column>
+      <el-table-column prop="remark" label="通知备注" align="center" min-width="150" />
       <el-table-column prop="noticeType" label="通知类型" align="center" width="120">
         <template #default="scope">
           <el-tag v-for="tag in noticeTypeOptions"
@@ -86,13 +85,13 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="150"/>
-      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="150"/>
+      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
+      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
       <el-table-column label="通知操作" align="center" width="200" fixed="right"
                        v-if="checkPermissions(['system:notice:edit','system:notice:delete'])">
         <template #default="scope">
           <div class="display">
-            <div v-if="checkPermission('system:notice:edit')" class="display">
+            <div class="display" v-if="checkPermission('system:notice:edit')">
               <el-button class="global-table-btn"
                          size="small" type="primary" link :icon="Edit"
                          @click="handleEdit(scope.$index, scope.row)">
@@ -100,7 +99,7 @@
               </el-button>
               <el-divider direction="vertical"/>
             </div>
-            <div v-if="checkPermission('system:notice:delete')" class="display">
+            <div class="display" v-if="checkPermission('system:notice:delete')">
               <el-button class="global-table-btn red"
                          size="small" type="primary" link :icon="Delete"
                          @click="handleDelete(scope.$index, scope.row)">

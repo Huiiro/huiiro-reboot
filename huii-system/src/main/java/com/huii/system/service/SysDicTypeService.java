@@ -4,6 +4,8 @@ import com.huii.common.core.domain.SysDicType;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 
+import java.util.List;
+
 public interface SysDicTypeService {
     void clearCache();
 
@@ -12,6 +14,8 @@ public interface SysDicTypeService {
     void refreshCache();
 
     Page selectTypeList(SysDicType sysDicType, PageParam pageParam);
+
+    List<SysDicType> selectTypeList(SysDicType sysDicType);
 
     SysDicType selectDicTypeById(Long id);
 

@@ -67,38 +67,33 @@
         <el-form :inline="true" :size="size">
           <!--left select-->
           <!--add-->
-          <el-form-item class="global-form-item-margin">
+          <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:add')">
             <el-button :size="size" :icon="Plus" @click="handleInsert"
-                       :color="layoutStore.BtnInsert" plain
-                       v-if="checkPermission('system:user:add')">添加用户
+                       :color="layoutStore.BtnInsert" plain>添加用户
             </el-button>
           </el-form-item>
           <!--edit-->
-          <el-form-item class="global-form-item-margin">
+          <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:edit')">
             <el-button :size="size" :icon="Edit" @click="handleEdit"
-                       :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle"
-                       v-if="checkPermission('system:user:edit')">修改用户
+                       :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改用户
             </el-button>
           </el-form-item>
           <!--delete-->
-          <el-form-item class="global-form-item-margin">
+          <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:delete')">
             <el-button :size="size" :icon="Delete" @click="handleDelete"
-                       :color="layoutStore.BtnDelete" plain :disabled="selectable"
-                       v-if="checkPermission('system:user:delete')">删除用户
+                       :color="layoutStore.BtnDelete" plain :disabled="selectable">删除用户
             </el-button>
           </el-form-item>
           <!--import-->
-          <el-form-item class="global-form-item-margin">
+          <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:import')">
             <el-button :size="size" :icon="Download" @click="handleImport"
-                       :color="layoutStore.BtnImport" plain
-                       v-if="checkPermission('system:user:import')">导入用户
+                       :color="layoutStore.BtnImport" plain>导入用户
             </el-button>
           </el-form-item>
           <!--export-->
-          <el-form-item class="global-form-item-margin">
+          <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:export')">
             <el-button :size="size" :icon="Upload" @click="handleExport"
-                       :color="layoutStore.BtnExport" plain
-                       v-if="checkPermission('system:user:export')">导出用户
+                       :color="layoutStore.BtnExport" plain>导出用户
             </el-button>
           </el-form-item>
           <!--right fixed-->
@@ -121,9 +116,9 @@
                   stripe
                   @selection-change="selectionChange">
           <el-table-column type="selection" width="55"/>
-          <el-table-column prop="userId" label="用户ID" align="left" min-width="150"/>
-          <el-table-column prop="userName" label="用户名称" align="left" width="150"/>
-          <el-table-column prop="nickName" label="用户昵称" align="center" width="150"/>
+          <el-table-column prop="userId" label="用户ID" align="center" width="120"/>
+          <el-table-column prop="userName" label="用户名称" align="center" min-width="160"/>
+          <el-table-column prop="nickName" label="用户昵称" align="center" min-width="160"/>
           <el-table-column prop="sexual" label="用户性别" align="center" width="120">
             <template #default="scope">
               <p v-for="tag in userSexualStatusOptions"
@@ -131,8 +126,8 @@
               </p>
             </template>
           </el-table-column>
-          <el-table-column prop="phone" label="用户手机" align="center" width="160"/>
-          <el-table-column prop="email" label="用户邮箱" align="center" width="200"/>
+          <el-table-column prop="phone" label="用户手机" align="center" min-width="160"/>
+          <el-table-column prop="email" label="用户邮箱" align="center" min-width="180"/>
           <el-table-column prop="userStatus" label="用户状态" align="center" width="120">
             <template #default="scope">
               <el-tag v-for="tag in userStatusOptions"
@@ -151,7 +146,7 @@
                            v-if="checkPermissions(['system:user:edit','system:user:delete'])">
             <template #default="scope">
               <div class="display">
-                <div v-if="checkPermission('system:user:edit')" class="display">
+                <div class="display" v-if="checkPermission('system:user:edit')">
                   <el-button class="global-table-btn"
                              size="small" type="primary" link :icon="Edit"
                              @click="handleEdit(scope.$index, scope.row)">
@@ -159,7 +154,7 @@
                   </el-button>
                   <el-divider direction="vertical"/>
                 </div>
-                <div v-if="checkPermission('system:user:delete')" class="display">
+                <div class="display" v-if="checkPermission('system:user:delete')">
                   <el-button class="global-table-btn red"
                              size="small" type="primary" link :icon="Delete"
                              @click="handleDelete(scope.$index, scope.row)">
@@ -383,6 +378,7 @@ import {
   getExportUserTemplate,
   getUserList,
   getUserSingleton,
+  getUserSingletonInsert,
   importUser,
   insertUser,
   resetPwd,
@@ -686,8 +682,12 @@ const handleInsert = (index, row) => {
     postIds: "",
     roleIds: ""
   };
-  isEdit.value = false;
-  dialogVisible.value = true;
+  getUserSingletonInsert().then(res => {
+    roles.value = res.data.roles;
+    posts.value = res.data.posts;
+    isEdit.value = false;
+    dialogVisible.value = true;
+  })
 };
 /**
  * 点击编辑
@@ -791,7 +791,7 @@ const handleDownloadTemplate = () => {
  * 导出数据
  */
 const handleExport = () => {
-  exportUser({}).then(res => {
+  exportUser(null).then(res => {
     download(res)
   });
 };

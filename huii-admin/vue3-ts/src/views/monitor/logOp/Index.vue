@@ -63,23 +63,20 @@
     <el-form :inline="true" :size="size">
       <!--left select-->
       <!--delete-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logOp:delete:all')">
         <el-button :size="size" :icon="Delete" @click="handleDeleteAll"
-                   :color="layoutStore.BtnDelete" plain
-                   v-if="checkPermission('system:logOp:delete:all')">删除全部
+                   :color="layoutStore.BtnDelete" plain>删除全部
         </el-button>
       </el-form-item>
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logOp:delete')">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
-                   v-if="checkPermission('system:logOp:delete')">删除日志
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除日志
         </el-button>
       </el-form-item>
       <!--export-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logOp:export')">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain
-                   v-if="checkPermission('system:logOp:export')">导出日志
+                   :color="layoutStore.BtnExport" plain>导出日志
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -102,17 +99,18 @@
               stripe
               @selection-change="selectionChange">
       <el-table-column type="selection" width="55"/>
-      <el-table-column prop="opId" label="日志ID" align="left" min-width="150"/>
-      <el-table-column prop="opUserName" label="用户名称" align="center" width="150"/>
-      <el-table-column prop="opMethodName" label="方法名称" align="center" width="150"/>
-      <el-table-column prop="opTime" label="操作时间" align="center" sortable width="150"/>
-      <el-table-column prop="opCostTime" label="操作花费时间" align="center" sortable width="120">
+      <el-table-column prop="opId" label="日志ID" align="center" min-width="120"/>
+      <el-table-column prop="opUserName" label="用户名称" align="center" min-width="150"/>
+      <el-table-column prop="opMethodName" label="方法名称" align="center" min-width="150"/>
+      <el-table-column prop="opDesc" label="方法描述" align="center" min-width="180"/>
+      <el-table-column prop="opTime" label="操作时间" align="center" sortable min-width="170"/>
+      <el-table-column prop="opCostTime" label="操作花费时间" align="center" sortable min-width="140">
         <template #default="scope">
           <p> {{ scope.row.opCostTime }}ms</p>
         </template>
       </el-table-column>
-      <el-table-column prop="opIp" label="Ip地址" align="center" width="120"/>
-      <el-table-column prop="opAddress" label="真实地址" align="center" width="120"/>
+      <el-table-column prop="opIp" label="Ip地址" align="center" min-width="140"/>
+      <el-table-column prop="opAddress" label="真实地址" align="center" min-width="140"/>
       <el-table-column prop="opRequest" label="请求方式" align="center" width="120"/>
       <el-table-column prop="opStatus" label="请求结果" align="center" width="120">
         <template #default="scope">
@@ -156,7 +154,7 @@
                        v-if="checkPermissions(['system:logOp:edit','system:logOp:delete'])">
         <template #default="scope">
           <div class="display">
-            <div v-if="checkPermission('system:logOp:edit')" class="display">
+            <div class="display" v-if="checkPermission('system:logOp:edit')">
               <el-button class="global-table-btn"
                          size="small" type="primary" link :icon="Edit"
                          @click="handleUpdateStatus(scope.$index, scope.row)">
@@ -164,7 +162,7 @@
               </el-button>
               <el-divider direction="vertical"/>
             </div>
-            <div v-if="checkPermission('system:logOp:edit')" class="display">
+            <div class="display" v-if="checkPermission('system:logOp:edit')">
               <el-button class="global-table-btn"
                          size="small" type="primary" link :icon="Edit"
                          @click="handleEdit(scope.$index, scope.row)">
@@ -172,7 +170,7 @@
               </el-button>
               <el-divider direction="vertical"/>
             </div>
-            <div v-if="checkPermission('system:logOp:delete')" class="display">
+            <div class="display" v-if="checkPermission('system:logOp:delete')">
               <el-button class="global-table-btn red"
                          size="small" type="primary" link :icon="Delete"
                          @click="handleDelete(scope.$index, scope.row)">

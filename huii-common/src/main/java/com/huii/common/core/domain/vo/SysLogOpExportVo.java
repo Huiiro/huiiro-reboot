@@ -65,4 +65,7 @@ public class SysLogOpExportVo implements Serializable {
 
     @ExcelProperty(value = "请求结果信息")
     private String opMessage;
+
+    @ExcelProperty(value = "接口描述信息")
+    private String opDesc;
 }

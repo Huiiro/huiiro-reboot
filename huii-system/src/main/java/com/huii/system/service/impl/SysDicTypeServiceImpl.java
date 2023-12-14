@@ -72,6 +72,11 @@ public class SysDicTypeServiceImpl extends ServiceImpl<SysDicTypeMapper, SysDicT
     }
 
     @Override
+    public List<SysDicType> selectTypeList(SysDicType sysDicType) {
+        return sysDicTypeMapper.selectList(wrapperBuilder(sysDicType));
+    }
+
+    @Override
     public SysDicType selectDicTypeById(Long id) {
         return sysDicTypeMapper.selectById(id);
     }

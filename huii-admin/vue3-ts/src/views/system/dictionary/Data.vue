@@ -7,6 +7,16 @@
         <el-input v-model="query.dataName" placeholder="请输入字典项名称"
                   class="global-input" :size="size"/>
       </el-form-item>
+      <el-form-item label="字典状态" class="global-input-item">
+        <el-select v-model="query.dataStatus" placeholder="请选择字典状态"
+                   :size="size">
+          <el-option
+              v-for="item in dicStatusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"/>
+        </el-select>
+      </el-form-item>
       <!--fixed-->
       <el-form-item>
         <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
@@ -18,37 +28,31 @@
       <!--left select-->
       <!--add-->
       <el-form-item class="global-form-item-margin">
+        <el-button :size="size" :icon="Back" @click="handleBack"
+                   :color="layoutStore.BtnBack" plain>返回
+        </el-button>
+      </el-form-item>
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dic:add')">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain
-                   v-if="checkPermission('system:dic:add')">添加字典项
+                   :color="layoutStore.BtnInsert" plain>添加字典项
         </el-button>
       </el-form-item>
       <!--edit-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dic:edit')">
         <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle"
-                   v-if="checkPermission('system:dic:edit')">修改字典项
+                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改字典项
         </el-button>
       </el-form-item>
       <!--delete-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dic:delete')">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
-                   v-if="checkPermission('system:dic:delete')">删除字典项
-        </el-button>
-      </el-form-item>
-      <!--import-->
-      <el-form-item class="global-form-item-margin">
-        <el-button :size="size" :icon="Download" @click="handleImport"
-                   :color="layoutStore.BtnImport" plain
-                   v-if="checkPermission('system:dic:import')">导入字典项
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除字典项
         </el-button>
       </el-form-item>
       <!--export-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dic:export')">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain
-                   v-if="checkPermission('system:dic:export')">导出字典项
+                   :color="layoutStore.BtnExport" plain>导出字典项
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -71,8 +75,9 @@
               stripe
               @selection-change="selectionChange">
       <el-table-column type="selection" width="55"/>
-      <el-table-column prop="dataName" label="字典项名称" align="left" min-width="120"/>
-      <el-table-column prop="dataType" label="字典项类型" align="center" width="160">
+      <el-table-column prop="dataId" label="字典项ID" align="center" min-width="120"/>
+      <el-table-column prop="dataName" label="字典项名称" align="center" min-width="140"/>
+      <el-table-column prop="dataType" label="字典项类型" align="center" min-width="160">
         <template #default="scope">
           <el-tag style="cursor: pointer" type="info">
             {{ scope.row.dataType }}
@@ -80,7 +85,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="dataKey" label="字典键(key)" align="center" width="140"/>
-      <el-table-column prop="dataValue" label="字典值(value)" align="center" width="140"/>
+      <el-table-column prop="dataValue" label="字典值(value)" align="center" min-width="140"/>
       <el-table-column prop="dataLabel" label="字典标签(label)" align="center" width="140"/>
       <el-table-column prop="dataSeq" label="字典展示顺序" sortable align="center" width="160"/>
       <el-table-column prop="dataTypeInfo" label="字典标签类型" align="center" width="160">
@@ -103,13 +108,13 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="150"/>
-      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="150"/>
+      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
+      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
       <el-table-column label="字典项操作" align="center" width="200" fixed="right"
                        v-if="checkPermissions(['system:dic:edit','system:dic:delete'])">
         <template #default="scope">
           <div class="display">
-            <div v-if="checkPermission('system:dic:edit')" class="display">
+            <div class="display" v-if="checkPermission('system:dic:edit')">
               <el-button class="global-table-btn"
                          size="small" type="primary" link :icon="Edit"
                          @click="handleEdit(scope.$index, scope.row)">
@@ -117,7 +122,7 @@
               </el-button>
               <el-divider direction="vertical"/>
             </div>
-            <div v-if="checkPermission('system:dic:delete')" class="display">
+            <div class="display" v-if="checkPermission('system:dic:delete')">
               <el-button class="global-table-btn red"
                          size="small" type="primary" link :icon="Delete"
                          @click="handleDelete(scope.$index, scope.row)">
@@ -283,13 +288,22 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
-import {Delete, Download, Edit, Plus, QuestionFilled, Refresh, Search, Timer, Upload,} from "@element-plus/icons-vue";
+import {Back, Delete, Edit, Plus, QuestionFilled, Refresh, Search, Timer, Upload,} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
 import {dicLabelInfoOptions, dicStatusOptions} from "@/views/system/dictionary/dictionary.ts";
-import {deleteDicData, getDicDataList, getDicDataSingleton, insertDicData, updateDicData} from "@/api/system/dic/data";
+import {
+  deleteDicData,
+  exportDicData,
+  getDicDataList,
+  getDicDataSingleton,
+  insertDicData,
+  updateDicData
+} from "@/api/system/dic/data";
 import {useRoute} from "vue-router";
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
+import router from "@/router";
+import {download} from "@/utils/download.ts";
 
 //store
 const layoutStore = useLayoutStore();
@@ -575,14 +589,17 @@ const handleDelete = (index, row) => {
 };
 
 /**
- * 导入数据
- */
-const handleImport = () => {
-}
-/**
  * 导出数据
  */
 const handleExport = () => {
+  exportDicData(null).then(res => {
+    download(res);
+  });
+};
+
+
+const handleBack = () => {
+  router.back()
 }
 </script>
 

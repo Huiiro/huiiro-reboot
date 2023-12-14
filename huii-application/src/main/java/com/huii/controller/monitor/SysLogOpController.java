@@ -37,7 +37,7 @@ public class SysLogOpController extends BaseController {
     @PreAuthorize("@ap.hasAuth('system:log:op:export')")
     @RepeatSubmit(interval = 10000, message = "annotation.repeat.submit.export")
     @RequestMapping("/export")
-    @Log(value = "导出日志", opType = OpType.EXPORT)
+    @Log(value = "导出接口日志", opType = OpType.EXPORT)
     public void exportLopOp(SysLogOp sysLogOp, HttpServletResponse response) {
         List<SysLogOp> list = sysLogOpService.selectSysLogOpList(sysLogOp);
         List<SysLogOpExportVo> vos = BeanCopyUtils.copyList(list, SysLogOpExportVo.class);
@@ -53,7 +53,7 @@ public class SysLogOpController extends BaseController {
 
     @PreAuthorize("@ap.hasAuth('system:log:op:delete')")
     @PostMapping("/delete")
-    @Log(value = "删除日志")
+    @Log(value = "删除接口日志", opType = OpType.DELETE)
     public R<Void> deleteLogOp(@RequestBody Long[] ids) {
         sysLogOpService.removeBatchByIds(ids);
         return deleteSuccess();
@@ -61,7 +61,7 @@ public class SysLogOpController extends BaseController {
 
     @PreAuthorize("@ap.hasAuth('system:log:op:delete:all')")
     @PostMapping("/delete/all")
-    @Log(value = "删除日志")
+    @Log(value = "删除全部接口日志", opType = OpType.DELETE)
     public R<Void> deleteAll() {
         sysLogOpService.removeAll();
         return deleteSuccess();

@@ -37,7 +37,7 @@ public class SysLogLoginController extends BaseController {
     @PreAuthorize("@ap.hasAuth('system:log:login:export')")
     @RepeatSubmit(interval = 10000, message = "annotation.repeat.submit.export")
     @RequestMapping("/export")
-    @Log(value = "导出日志", opType = OpType.EXPORT)
+    @Log(value = "导出登录日志", opType = OpType.EXPORT)
     public void exportLopLogin(SysLogLogin sysLogLogin, HttpServletResponse response) {
         List<SysLogLogin> list = sysLogLoginService.selectSysLogLoginList(sysLogLogin);
         List<SysLogLoginExportVo> vos = BeanCopyUtils.copyList(list, SysLogLoginExportVo.class);
@@ -46,7 +46,7 @@ public class SysLogLoginController extends BaseController {
 
     @PreAuthorize("@ap.hasAuth('system:log:login:delete')")
     @PostMapping("/delete")
-    @Log(value = "删除日志")
+    @Log(value = "删除登录日志",opType = OpType.DELETE)
     public R<Void> deleteLogLogin(@RequestBody Long[] ids) {
         sysLogLoginService.removeBatchByIds(ids);
         return deleteSuccess();
@@ -54,7 +54,7 @@ public class SysLogLoginController extends BaseController {
 
     @PreAuthorize("@ap.hasAuth('system:log:login:delete:all')")
     @PostMapping("/delete/all")
-    @Log(value = "删除日志")
+    @Log(value = "删除全部登录日志",opType = OpType.DELETE)
     public R<Void> deleteAll() {
         sysLogLoginService.removeAll();
         return deleteSuccess();

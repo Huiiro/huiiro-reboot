@@ -14,12 +14,14 @@ export const useLayoutStore = defineStore('layout', {
             //布局
             tableSize: 'small',
             //top按钮样式
+            BtnBack: '#cbc303',
             BtnInsert: '#1fa0e7',
             BtnUpdate: '#08bb1f',
             BtnDelete: '#ee1010',
             BtnImport: '#db69f8',
             BtnExport: '#9b39f3',
-            BtnUpload: '#e7a80c'
+            BtnUpload: '#e7a80c',
+            BtnClean: '#201e65'
         }
     },
     actions: {

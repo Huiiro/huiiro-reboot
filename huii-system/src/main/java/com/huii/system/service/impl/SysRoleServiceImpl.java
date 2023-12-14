@@ -46,6 +46,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
+    public List<SysRole> selectRoleList(SysRole sysRole) {
+        return sysRoleMapper.selectList(wrapperBuilder(sysRole));
+    }
+
+    @Override
     public List<Label> selectRolesAll() {
         List<SysRole> roles = sysRoleMapper.selectList(null);
         return roles.stream()

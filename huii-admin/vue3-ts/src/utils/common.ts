@@ -42,6 +42,23 @@ export const paramBuilder = (data: any, page: pageParam, date: any,
     return data;
 }
 
+export const queryParamBuilder = (data: any,  ...args: (Record<string, any> | Map<string, any>)[]) => {
+    data.params = {};
+    args.forEach((arg) => {
+        if (arg !== null && arg !== undefined) {
+            if (arg instanceof Map) {
+                arg.forEach((value, key) => {
+                    data.params[key] = value;
+                });
+            } else {
+                Object.entries(arg).forEach(([key, value]) => {
+                    data.params[key] = value;
+                });
+            }
+        }
+    })
+    return data;
+}
 function formatDate(date: any) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');

@@ -49,23 +49,20 @@
     <el-form :inline="true" :size="size">
       <!--left select-->
       <!--delete-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logLogin:delete:all')">
         <el-button :size="size" :icon="Delete" @click="handleDeleteAll"
-                   :color="layoutStore.BtnDelete" plain
-                   v-if="checkPermission('system:logLogin:delete:all')">删除全部
+                   :color="layoutStore.BtnDelete" plain>删除全部
         </el-button>
       </el-form-item>
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logLogin:delete')">
         <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable"
-                   v-if="checkPermission('system:logLogin:delete')">删除日志
+                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除日志
         </el-button>
       </el-form-item>
       <!--export-->
-      <el-form-item class="global-form-item-margin">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logLogin:export')">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain
-                   v-if="checkPermission('system:logLogin:export')">导出日志
+                   :color="layoutStore.BtnExport" plain>导出日志
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -88,13 +85,13 @@
               stripe
               @selection-change="selectionChange">
       <el-table-column type="selection" width="55"/>
-      <el-table-column prop="loginId" label="日志ID" align="left" min-width="150"/>
-      <el-table-column prop="loginUserName" label="用户名称" align="center" width="150"/>
-      <el-table-column prop="loginIp" label="Ip地址" align="center" width="120"/>
-      <el-table-column prop="loginAddress" label="真实地址" align="center" width="120"/>
-      <el-table-column prop="loginTime" label="登录时间" align="center" sortable width="150"/>
-      <el-table-column prop="loginBrowser" label="登录浏览器" align="center" width="150"/>
-      <el-table-column prop="loginOs" label="登录系统" align="center" width="150"/>
+      <el-table-column prop="loginId" label="日志ID" align="center" min-width="120"/>
+      <el-table-column prop="loginUserName" label="用户名称" align="center" min-width="150"/>
+      <el-table-column prop="loginIp" label="Ip地址" align="center" min-width="150"/>
+      <el-table-column prop="loginAddress" label="真实地址" align="center" min-width="120"/>
+      <el-table-column prop="loginTime" label="登录时间" align="center" sortable min-width="170"/>
+      <el-table-column prop="loginBrowser" label="登录浏览器" align="center" min-width="150"/>
+      <el-table-column prop="loginOs" label="登录系统" align="center" min-width="150"/>
       <el-table-column prop="loginType" label="登录类型" align="center" width="120">
         <template #default="scope">
           <el-tag v-for="tag in logLoginTypeOptions"
