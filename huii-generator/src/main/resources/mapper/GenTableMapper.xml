@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huii.generator.mapper.GenTableMapper">
+
+    <resultMap type="com.huii.generator.entity.GenTable" id="GenTableResult">
+        <id property="tableName" column="table_name"/>
+        <collection property="columns" javaType="java.util.List" resultMap="GenColumnResult"/>
+    </resultMap>
+
+    <resultMap type="com.huii.generator.entity.GenColumn" id="GenColumnResult">
+        <id property="columnName" column="column_name"/>
+    </resultMap>
+
+    <select id="loadDbData" resultType="com.huii.generator.entity.GenTable">
+        select table_name, table_comment
+        from (
+        SELECT c.relname AS table_name,
+        obj_description(c.oid) AS table_comment
+        FROM pg_class c
+        LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
+        WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
+        AND c.relname != 'spatial_%'::text
+        AND n.nspname = 'public'::name
+
+        ) list_table
+        where table_name NOT LIKE 'xxl_job_%' AND table_name NOT LIKE 'gen_%'
+        AND table_name NOT IN (select table_name from gen_table)
+        <if test="genTable.tableName != null and genTable.tableName != ''">
+            AND lower(table_name) like lower(concat('%', #{genTable.tableName}, '%'))
+        </if>
+        <if test="genTable.tableComment != null and genTable.tableComment != ''">
+            AND lower(table_comment) like lower(concat('%', #{genTable.tableComment}, '%'))
+        </if>
+    </select>
+    <select id="loadDbDataGroup" resultType="com.huii.generator.entity.GenTable">
+        SELECT table_name, column_name
+        FROM (SELECT table_name, column_name
+              FROM information_schema.columns
+              WHERE table_schema = 'public') AS subquery;
+    </select>
+</mapper>

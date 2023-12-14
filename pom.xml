@@ -67,6 +67,7 @@
         <oshi.version>6.4.3</oshi.version>
         <userAgentUtils.version>1.21</userAgentUtils.version>
         <mybatis-plus.version>3.5.3.2</mybatis-plus.version>
+        <mybatis-dynamic-datasource.version>4.1.3</mybatis-dynamic-datasource.version>
         <postgres.version>42.6.0</postgres.version>
         <jwt.version>0.9.1</jwt.version>
         <kaptcha.version>0.0.9</kaptcha.version>
@@ -180,6 +181,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${mybatis-dynamic-datasource.version}</version>
             </dependency>
 
             <!--postgresql-->

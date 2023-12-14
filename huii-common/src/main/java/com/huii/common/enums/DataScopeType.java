@@ -6,7 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 数据权限类型
- * * @author huii
+ *
+ * @author huii
  */
 @Getter
 @AllArgsConstructor

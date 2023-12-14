@@ -16,6 +16,10 @@
             <groupId>com.huii</groupId>
             <artifactId>huii-framework</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.huii</groupId>
+            <artifactId>huii-generator</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

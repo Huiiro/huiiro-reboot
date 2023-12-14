@@ -12,6 +12,12 @@
     <artifactId>huii-generator</artifactId>
 
     <dependencies>
+        <!--freemarker-->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+        </dependency>
+
         <!--common-->
         <dependency>
             <groupId>com.huii</groupId>
