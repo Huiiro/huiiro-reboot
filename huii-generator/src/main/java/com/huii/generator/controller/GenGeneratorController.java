@@ -43,7 +43,7 @@ public class GenGeneratorController extends BaseController {
     /**
      * 查询具体 table
      */
-    @GetMapping("/{id}}")
+    @GetMapping("/{id}")
     public R<GenTable> getOne(@PathVariable Long id) {
         GenTable table = genTableService.selectOne(id);
         return R.ok(table);
