@@ -12,6 +12,14 @@
         :label="item.name"
         :name="item.name"
     >
+      <template #label>
+        <span class="custom-tabs-label">
+          <el-icon v-if="item.icon">
+            <component :is="item.icon"/>
+          </el-icon>
+          <span style="margin-left: 8px">{{ item.name }}</span>
+        </span>
+      </template>
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -77,6 +85,13 @@ const clickTab = (tab: any) => {
 <style scoped lang="scss">
 .tabs {
   user-select: none;
+}
+
+.custom-tabs-label {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .el-tabs {

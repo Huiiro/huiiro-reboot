@@ -45,6 +45,16 @@ public class GenColumn extends BaseEntity {
     private String sqlField;
 
     /**
+     * 数据库字段长度
+     */
+    private String sqlCharLength;
+
+    /**
+     * 数据库字段排序
+     */
+    private String sqlOrder;
+
+    /**
      * java字段类型
      */
     private String javaType;
@@ -74,12 +84,12 @@ public class GenColumn extends BaseEntity {
      * 是否校验字段长度大小
      * 格式： 1/0,min,max,message
      */
+    @Deprecated
     private String checkSize;
 
     /**
      * 是否是不可重复字段
-     * 将在插入和修改时进行校验
-     * 格式： ‘1’/‘0’,message
+     * 将在插入和修改时进行校验 将抛出异常信息
      */
     private String checkUnique;
 

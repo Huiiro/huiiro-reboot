@@ -228,7 +228,7 @@
                   effect="dark"
                   content="菜单组件字段，路径为'../views/**/**.vue'"
                   placement="top-start"
-              >       <span>菜单组件
+              ><span>菜单组件
               <el-icon><QuestionFilled/></el-icon>
             </span>
               </el-tooltip>

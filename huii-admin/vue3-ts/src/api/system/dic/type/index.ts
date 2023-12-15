@@ -18,6 +18,7 @@ enum API {
     EXPORT = prefix + "/export",
     REFRESH = prefix + "/refresh",
     GET_LIST = prefix + "/list",
+    GET_LABEL = prefix + "/label",
     GET_ONE = prefix + "/",
     GET_BY_NAME = "/type",
     INSERT_ONE = prefix + "/insert",
@@ -34,6 +35,11 @@ export const refreshDicType = () => request.get(API.REFRESH);
  * 获取字典类型
  */
 export const getDicTypeList = (dicType: dicType) => request.get(API.GET_LIST, {params: dicType});
+
+/**
+ * 获取字典类型
+ */
+export const getDicTypeLabel = () => request.get(API.GET_LABEL);
 
 /**
  * 获取单个字典类型

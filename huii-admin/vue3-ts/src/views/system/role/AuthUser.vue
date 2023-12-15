@@ -156,7 +156,7 @@ onMounted(() => {
   getData();
 });
 //
-watch(() => dialogVisible, (newValue, oldValue) => {
+watch(() => dialogVisible, () => {
   if (dialogVisible.value === true) {
     getData2()
   }
@@ -290,9 +290,6 @@ const selectionChange2 = (value: any) => {
  * 隐藏时间列
  */
 const showTimeColumn = ref(false);
-const handleExpandTime = () => {
-  showTimeColumn.value = !showTimeColumn.value;
-};
 
 /**
  * 隐藏搜索按钮
@@ -347,10 +344,6 @@ const handleSubmitForm = (fr: FormInstance | undefined) => {
       dialogVisible.value = false;
     }
   })
-};
-const doUpdate = () => {
-};
-const doInsert = () => {
 };
 /**
  * 点击添加

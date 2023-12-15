@@ -51,7 +51,7 @@ public class GenTable extends BaseEntity {
      * 前端版本 vue2版本和vue3版本
      * 目前只支持vue3
      * 后续可能会完善vue2版本
-     * 2--vue2, 3--vue3
+     * 1--vue2, 2--vue3
      */
     private String frontendType;
 
@@ -143,6 +143,16 @@ public class GenTable extends BaseEntity {
     private String subTableForeignKey;
 
     /**
+     * 树表 ID 字段
+     */
+    private Long treeId;
+
+    /**
+     * 树表 Label 字段
+     */
+    private String treeLabelName;
+
+    /**
      * 上级菜单ID
      * 用于生成 menu 对应的sql
      */
@@ -151,7 +161,4 @@ public class GenTable extends BaseEntity {
     @TableField(exist = false)
     private List<GenColumn> columns;
 
-    /**
-     * 补充 其他字段 用于生成树表和子表
-     */
 }

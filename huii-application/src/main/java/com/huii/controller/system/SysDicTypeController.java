@@ -4,6 +4,7 @@ import com.huii.common.annotation.Log;
 import com.huii.common.annotation.RepeatSubmit;
 import com.huii.common.core.domain.SysDicType;
 import com.huii.common.core.domain.vo.SysDicTypeExportVo;
+import com.huii.common.core.model.Label;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.core.model.R;
@@ -59,6 +60,16 @@ public class SysDicTypeController extends BaseController {
     public R<Page> getList(SysDicType sysDicType, PageParam pageParam) {
         Page page = sysDicTypeService.selectTypeList(sysDicType, pageParam);
         return R.ok(page);
+    }
+
+    /**
+     * 获取label数据
+     */
+    @GetMapping("/label")
+    public R<List<Label>> getLabel() {
+        List<SysDicType> list = sysDicTypeService.selectTypeList(new SysDicType());
+        List<Label> labels = sysDicTypeService.buildTypeLabel(list);
+        return R.ok(labels);
     }
 
     /**

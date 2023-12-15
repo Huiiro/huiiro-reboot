@@ -36,6 +36,18 @@
         SELECT table_name, column_name
         FROM (SELECT table_name, column_name
               FROM information_schema.columns
-              WHERE table_schema = 'public') AS subquery;
+              WHERE table_schema = 'public') AS subquery
+    </select>
+    <select id="selectColumnByTableName" resultType="com.huii.generator.entity.GenColumn">
+        SELECT c.column_name,
+               c.data_type as sql_type,
+               c.character_maximum_length as sql_char_length,
+               c.ordinal_position as sql_order,
+               d.description as column_comment
+        FROM information_schema.columns c
+                 LEFT JOIN pg_description d ON c.table_name = d.objsubid::regclass::text
+                 AND c.column_name = d.objsubid::regclass::text
+        WHERE c.table_name = #{table}
+        ORDER BY c.ordinal_position
     </select>
 </mapper>

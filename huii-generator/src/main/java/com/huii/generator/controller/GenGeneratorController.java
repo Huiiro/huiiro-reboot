@@ -5,13 +5,17 @@ import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
+import com.huii.generator.entity.GenColumn;
 import com.huii.generator.entity.GenTable;
 import com.huii.generator.service.GenTableService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Anonymous
 @Validated
@@ -50,8 +54,29 @@ public class GenGeneratorController extends BaseController {
     }
 
     /**
+     * 查询具体 table
+     */
+    @GetMapping("/name")
+    public R<List<GenColumn>> getOne(@RequestParam String tableName) {
+        List<GenColumn> list = genTableService.selectColumnsByTableName(tableName);
+        return R.ok(list);
+    }
+
+    /**
+     * 添加 table
+     */
+    @PreAuthorize("@ap.hasAuth('tool:gen:add')")
+    @PostMapping("/insert")
+    @Transactional(rollbackFor = RuntimeException.class)
+    public R<Void> insertTable(@Validated @RequestBody String[] tables) {
+        genTableService.insertTable(tables);
+        return saveSuccess();
+    }
+
+    /**
      * 更新具体 table
      */
+    @PreAuthorize("@ap.hasAuth('tool:gen:edit')")
     @PostMapping("/update")
     @Transactional(rollbackFor = RuntimeException.class)
     public R<Void> updateTable(@Validated @RequestBody GenTable genTable) {
@@ -62,6 +87,7 @@ public class GenGeneratorController extends BaseController {
     /**
      * 删除具体 table
      */
+    @PreAuthorize("@ap.hasAuth('tool:gen:delete')")
     @PostMapping("/delete")
     @Transactional(rollbackFor = RuntimeException.class)
     public R<Void> deleteTable(@RequestBody Long[] ids) {
@@ -69,10 +95,21 @@ public class GenGeneratorController extends BaseController {
         return deleteSuccess();
     }
 
-    //TODO gen code
+    /**
+     * 生成code
+     */
+    @PreAuthorize("@ap.hasAuth('tool:gen:export')")
     @GetMapping("/code")
     public void genCode(HttpServletResponse response) {
 
     }
-    //TODO update table construct and sync to db table
+
+    /**
+     * 同步结构
+     */
+    @PreAuthorize("@ap.hasAuth('tool:gen:sync')")
+    @GetMapping("/sync")
+    public void sync() {
+
+    }
 }

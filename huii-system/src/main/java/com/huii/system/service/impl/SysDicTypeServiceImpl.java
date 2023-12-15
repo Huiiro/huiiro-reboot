@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.constants.CacheConstants;
+import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysDicData;
 import com.huii.common.core.domain.SysDicType;
+import com.huii.common.core.model.Label;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.core.service.DicService;
@@ -74,6 +76,12 @@ public class SysDicTypeServiceImpl extends ServiceImpl<SysDicTypeMapper, SysDicT
     @Override
     public List<SysDicType> selectTypeList(SysDicType sysDicType) {
         return sysDicTypeMapper.selectList(wrapperBuilder(sysDicType));
+    }
+
+    @Override
+    public List<Label> buildTypeLabel(List<SysDicType> list) {
+        return list.stream().filter(f -> SystemConstants.STATUS_1.equals(f.getTypeStatus()))
+                .map(m -> new Label(m.getTypeId(), m.getTypeName())).toList();
     }
 
     @Override
