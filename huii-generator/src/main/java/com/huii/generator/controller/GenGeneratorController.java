@@ -99,9 +99,10 @@ public class GenGeneratorController extends BaseController {
      * 生成code
      */
     @PreAuthorize("@ap.hasAuth('tool:gen:export')")
-    @GetMapping("/code")
-    public void genCode(HttpServletResponse response) {
-
+    @PostMapping("/code")
+    public void genCode(@RequestBody Long[] ids, HttpServletResponse response) {
+        List<GenTable> list = genTableService.selectBatchByIds(ids);
+        genTableService.genCode(list, response);
     }
 
     /**

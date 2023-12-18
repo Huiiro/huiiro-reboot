@@ -116,4 +116,6 @@ public class GenColumn extends BaseEntity {
      * 字典类型
      */
     private String dicType;
+
+    private String remark;
 }

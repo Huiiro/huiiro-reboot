@@ -16,11 +16,17 @@ import com.huii.generator.mapper.GenColumnMapper;
 import com.huii.generator.mapper.GenTableMapper;
 import com.huii.generator.service.GenTableService;
 import com.huii.generator.utils.CharacterEscapeUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.ZipOutputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +61,16 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
     @Override
     public List<GenColumn> selectColumnsByTableName(String tableName) {
         return genTableMapper.selectColumnByTableName(tableName);
+    }
+
+    @Override
+    public List<GenTable> selectBatchByIds(Long[] ids) {
+        List<GenTable> tables = new ArrayList<>(ids.length);
+        for (Long id : ids) {
+            GenTable table = genTableMapper.selectTableAndColumns(id);
+            tables.add(table);
+        }
+        return tables;
     }
 
     @Override
@@ -129,6 +145,40 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
                 .in(GenColumn::getTableId, list));
     }
 
+    @Override
+    public void genCode(List<GenTable> list, HttpServletResponse response) {
+        try {
+            byte[] bytes = generateCode(list);
+            setResponse(response, bytes.length, "huii.zip");
+            IOUtils.write(bytes, response.getOutputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private byte[] generateCode(List<GenTable> list) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+        for (GenTable table : list) {
+            deserializeTableTemplate(table, zip);
+        }
+        IOUtils.closeQuietly(zip);
+        return outputStream.toByteArray();
+    }
+
+    private void deserializeTableTemplate(GenTable table, ZipOutputStream zip) {
+        //TODO real generator
+    }
+
+    private void setResponse(HttpServletResponse response, long length, String fileName) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+        response.setHeader("Content-Length", "" + length);
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        response.setContentType("application/octet-stream; charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+    }
+
     private LambdaQueryWrapper<GenTable> wrapperBuilder(GenTable table) {
         return new LambdaQueryWrapper<>();
     }
@@ -152,7 +202,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
      */
     private String checkQueryType(String javaField) {
         String field = javaField.toLowerCase();
-        if(field.contains("name")) {
+        if (field.contains("name")) {
             //如果包含名称则模糊匹配
             return WrapperType.LIKE.getType();
         }
@@ -164,11 +214,11 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
      */
     private String checkIsQueryField(String javaField) {
         String field = javaField.toLowerCase();
-     if(field.contains("status") || field.contains("name")) {
-         //如果包含状态或名称将自动生成查询状态
-         return SystemConstants.STATUS_1;
-     }
-     return SystemConstants.STATUS_0;
+        if (field.contains("status") || field.contains("name")) {
+            //如果包含状态或名称将自动生成查询状态
+            return SystemConstants.STATUS_1;
+        }
+        return SystemConstants.STATUS_0;
     }
 
     /**
@@ -176,7 +226,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
      */
     private String checkFormType(String javaField) {
         String field = javaField.toLowerCase();
-        if(field.contains("time") ) {
+        if (field.contains("time")) {
             //如果包含时间则启用日期控件
             return FormType.DATETIME.getType();
         } else if (field.contains("status")) {

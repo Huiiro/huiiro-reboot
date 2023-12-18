@@ -158,6 +158,8 @@ public class GenTable extends BaseEntity {
      */
     private Long parentMenuId;
 
+    private String remark;
+
     @TableField(exist = false)
     private List<GenColumn> columns;
 

@@ -4,6 +4,7 @@ import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.generator.entity.GenColumn;
 import com.huii.generator.entity.GenTable;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
@@ -16,9 +17,14 @@ public interface GenTableService {
 
     List<GenColumn> selectColumnsByTableName(String tableName);
 
+    List<GenTable> selectBatchByIds(Long[] ids);
+
     void insertTable(String[] tables);
 
     void updateTable(GenTable genTable);
 
     void deleteTable(Long[] ids);
+
+    void genCode(List<GenTable> list, HttpServletResponse response);
+
 }
