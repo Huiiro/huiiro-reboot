@@ -14,6 +14,8 @@ enum API {
     INSERT_ONE = prefix + "/insert",
     UPDATE_ONE = prefix + "/update",
     DELETE_ONE = prefix + "/delete",
+    GEN_CODE = prefix + '/code',
+    SYNC_DB = prefix + 'sync'
 }
 
 /**
@@ -51,3 +53,13 @@ export const updateGenTable = (genTable: genTable) => request.post(API.UPDATE_ON
  * 删除表格
  */
 export const deleteGenTable = (ids: Array<number>) => request.post(API.DELETE_ONE, ids);
+
+/**
+ * 生成代码
+ */
+export const genCode = (ids: Array<number>) => request.post(API.GEN_CODE, ids, {responseType: 'blob'});
+
+/**
+ * 同步代码
+ */
+export const syncCode = (id: number) => request.get(API.SYNC_DB, {params: {id}});

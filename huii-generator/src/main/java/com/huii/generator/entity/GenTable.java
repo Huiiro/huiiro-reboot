@@ -59,7 +59,7 @@ public class GenTable extends BaseEntity {
      * 数据库类型
      * 目前只支持pg
      * 后续可能考虑加入对其他数据库支持
-     * 1-- mysql, 2-- pgsql, 3--oracle, 4-- sqlserver
+     * 1-- mysql, 2-- postgresql.ftl, 3--oracle, 4-- sqlserver
      */
     private String sqlType;
 

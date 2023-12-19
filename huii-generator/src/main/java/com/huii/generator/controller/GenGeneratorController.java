@@ -109,8 +109,8 @@ public class GenGeneratorController extends BaseController {
      * 同步结构
      */
     @PreAuthorize("@ap.hasAuth('tool:gen:sync')")
-    @GetMapping("/sync")
-    public void sync() {
+    @GetMapping("/sync/{id}")
+    public void sync(@PathVariable Long id) {
 
     }
 }

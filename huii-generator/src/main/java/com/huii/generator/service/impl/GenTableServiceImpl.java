@@ -7,25 +7,32 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.utils.PageParamUtils;
+import com.huii.generator.config.TemplateConfig;
 import com.huii.generator.config.properties.GenProperties;
 import com.huii.generator.entity.GenColumn;
 import com.huii.generator.entity.GenTable;
 import com.huii.generator.enums.FormType;
+import com.huii.generator.enums.TemplateType;
 import com.huii.generator.enums.WrapperType;
 import com.huii.generator.mapper.GenColumnMapper;
 import com.huii.generator.mapper.GenTableMapper;
 import com.huii.generator.service.GenTableService;
 import com.huii.generator.utils.CharacterEscapeUtils;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 @Service
@@ -149,14 +156,14 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
     public void genCode(List<GenTable> list, HttpServletResponse response) {
         try {
             byte[] bytes = generateCode(list);
-            setResponse(response, bytes.length, "huii.zip");
+            setResponse(response, bytes.length, genProperties.getGenPackageName() + ".zip");
             IOUtils.write(bytes, response.getOutputStream());
-        } catch (IOException e) {
+        } catch (IOException | TemplateException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private byte[] generateCode(List<GenTable> list) {
+    private byte[] generateCode(List<GenTable> list) throws IOException, TemplateException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
         for (GenTable table : list) {
@@ -166,8 +173,23 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
         return outputStream.toByteArray();
     }
 
-    private void deserializeTableTemplate(GenTable table, ZipOutputStream zip) {
-        //TODO real generator
+    private void deserializeTableTemplate(GenTable table, ZipOutputStream zip) throws IOException, TemplateException {
+        List<TemplateType> list = TemplateType.getTemplateList(table.getFrontendType(), table.getSqlType(),
+                ObjectUtils.isEmpty(table.getTreeLabelName()) ? SystemConstants.STATUS_1 : SystemConstants.STATUS_0);
+        for (TemplateType templateType : list) {
+            Template template = TemplateConfig.generator().getTemplate(templateType.getTemplate());
+            StringWriter writer = new StringWriter();
+            template.process(table, writer);
+            String name = templateType.getPrefix() + table.getClassName() + templateType.getSuffix();
+            if (SystemConstants.STATUS_1.equals(templateType.getIsFull())) {
+                name = templateType.getPrefix() + templateType.getSuffix();
+            }
+            zip.putNextEntry(new ZipEntry(name));
+            IOUtils.write(writer.toString(), zip, "UTF-8");
+            IOUtils.closeQuietly(writer);
+            zip.flush();
+            zip.closeEntry();
+        }
     }
 
     private void setResponse(HttpServletResponse response, long length, String fileName) {

@@ -37,7 +37,7 @@
       <!--export-->
       <el-form-item class="global-form-item-margin" v-if="checkPermission('tool:gen:export')">
         <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出代码
+                   :color="layoutStore.BtnExport" plain :disabled="selectable">导出代码
         </el-button>
       </el-form-item>
       <!--right fixed-->
@@ -93,10 +93,10 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item :icon="Upload" @click="handleExport"
+                  <el-dropdown-item :icon="Upload" @click="handleExport(scope.$index, scope.row)"
                                     v-if="checkPermission('tool:gen:export')">导出代码
                   </el-dropdown-item>
-                  <el-dropdown-item :icon="Refresh" @click="handleSync"
+                  <el-dropdown-item :icon="Refresh" @click="handleSync(scope.$index, scope.row)"
                                     v-if="checkPermission('tool:gen:sync')">同步表结构
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -171,8 +171,9 @@ import {DArrowRight, Delete, Download, Edit, Refresh, Search, Timer, Upload,} fr
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
-import {deleteGenTable, getGenTableDbList, getGenTableList, insertGenTable} from "@/api/tool/generator";
+import {deleteGenTable, genCode, getGenTableDbList, getGenTableList, insertGenTable} from "@/api/tool/generator";
 import router from "@/router";
+import {download} from "@/utils/download.ts";
 
 //dialogVisible2
 const dialogVisible2 = ref();
@@ -420,14 +421,27 @@ const handleImport = () => {
 /**
  * 导出数据
  */
-const handleExport = () => {
+//@ts-ignore
+const handleExport = (index, row) => {
+  let ids: any = [];
+  if (row == null) {
+    multiSelectData.value.forEach(i => {
+      ids.push(i.tableId);
+    })
+  } else {
+    ids.push(row.tableId);
+  }
+  genCode(ids).then(res => {
+    download(res)
+  })
 }
 
 /**
  * 同步表
  */
-const handleSync = () => {
-
+//@ts-ignore
+const handleSync = (index, row) => {
+  console.log(row)
 }
 
 

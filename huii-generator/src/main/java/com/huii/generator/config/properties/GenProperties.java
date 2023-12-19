@@ -16,6 +16,11 @@ import org.springframework.stereotype.Component;
 public class GenProperties {
 
     /**
+     * 生成压缩包名 + .zip
+     */
+    private String genPackageName = "huii";
+
+    /**
      * 作者名
      */
     private String authorName = "huii";
