@@ -90,7 +90,7 @@ public class GenTable extends BaseEntity {
 
     /**
      * 模块功能名称
-     * 描述模块作用
+     * 描述模块作用 例如用户
      */
     private String moduleFunctionName;
 
@@ -101,6 +101,12 @@ public class GenTable extends BaseEntity {
      * xx: add, edit, delete, query, insert, upload
      */
     private String authPrefix;
+
+    /**
+     * 请求路径字段
+     * 控制器请求路段前缀，以'/'开头，例如 /system/user
+     */
+    private String requestUrl;
 
     /**
      * 生成的接口类型
@@ -145,7 +151,7 @@ public class GenTable extends BaseEntity {
     /**
      * 树表 ID 字段
      */
-    private Long treeId;
+    private String treeId;
 
     /**
      * 树表 Label 字段

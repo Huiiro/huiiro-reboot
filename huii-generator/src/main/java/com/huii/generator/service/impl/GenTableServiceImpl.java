@@ -103,8 +103,8 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
             genTable.setGenAddInterface(SystemConstants.STATUS_1);
             genTable.setGenEditInterface(SystemConstants.STATUS_1);
             genTable.setGenDeleteInterface(SystemConstants.STATUS_1);
-            genTable.setGenImportInterface(SystemConstants.STATUS_1);
-            genTable.setGenExportInterface(SystemConstants.STATUS_1);
+            genTable.setGenImportInterface(SystemConstants.STATUS_0);
+            genTable.setGenExportInterface(SystemConstants.STATUS_0);
 
             genTableMapper.insert(genTable);
             List<GenColumn> columns = genTableMapper.selectColumnByTableName(tableName);
@@ -175,7 +175,8 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
 
     private void deserializeTableTemplate(GenTable table, ZipOutputStream zip) throws IOException, TemplateException {
         List<TemplateType> list = TemplateType.getTemplateList(table.getFrontendType(), table.getSqlType(),
-                ObjectUtils.isEmpty(table.getTreeLabelName()) ? SystemConstants.STATUS_1 : SystemConstants.STATUS_0);
+                ObjectUtils.isEmpty(table.getTreeLabelName()) ? SystemConstants.STATUS_1 : SystemConstants.STATUS_0,
+                table.getGenExportInterface(), table.getGenImportInterface());
         for (TemplateType templateType : list) {
             Template template = TemplateConfig.generator().getTemplate(templateType.getTemplate());
             StringWriter writer = new StringWriter();

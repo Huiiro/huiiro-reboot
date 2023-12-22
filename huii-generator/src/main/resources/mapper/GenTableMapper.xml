@@ -17,6 +17,7 @@
         <result property="moduleFunctionDesc" column="module_function_desc"/>
         <result property="moduleFunctionName" column="module_function_name"/>
         <result property="authPrefix" column="auth_prefix"/>
+        <result property="requestUrl" column="request_url"/>
         <result property="genAddInterface" column="gen_add_interface"/>
         <result property="genEditInterface" column="gen_edit_interface"/>
         <result property="genDeleteInterface" column="gen_delete_interface"/>
@@ -69,7 +70,8 @@
         AND n.nspname = 'public'::name
 
         ) list_table
-        where table_name NOT LIKE 'xxl_job_%' AND table_name NOT LIKE 'gen_%'
+                                                            --         TODO
+        where table_name NOT LIKE 'xxl_job_%' AND table_name NOT LIKE 'gentest_%'
         AND table_name NOT IN (select table_name from gen_table)
         <if test="genTable.tableName != null and genTable.tableName != ''">
             AND lower(table_name) like lower(concat('%', #{genTable.tableName}, '%'))

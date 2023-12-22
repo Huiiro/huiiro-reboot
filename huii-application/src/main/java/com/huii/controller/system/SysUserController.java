@@ -77,7 +77,7 @@ public class SysUserController extends BaseController {
     @RepeatSubmit(interval = 10000, message = "annotation.repeat.submit.export")
     @RequestMapping("/import{update}")
     @Log(value = "导入用户", opType = OpType.IMPORT)
-    public R<Object> importUser(@RequestPart("file") MultipartFile file,
+    public R<ExcelResult<SysUserExcelImportVo>> importUser(@RequestPart("file") MultipartFile file,
                                 @PathVariable(required = false) Boolean update) throws IOException {
         ExcelResult<SysUserExcelImportVo> result = ExcelUtils.importAsyncExcel(
                 file.getInputStream(), SysUserExcelImportVo.class,

@@ -41,8 +41,7 @@ enum API {
  * 获取用户列表
  */
 export const getUserList = (user: user) =>
-    request.get(API.GET_LIST,
-        {
+    request.get(API.GET_LIST, {
             params: user,
             paramsSerializer: function (params) {
                 return qs.stringify(params, {arrayFormat: 'comma'})

@@ -183,7 +183,22 @@
               </el-form-item>
             </el-col>
             <el-col :span="2"/>
-            <el-col :span="11"/>
+            <el-col :span="11">
+              <el-form-item label="请求路径" prop="requestUrl" class="global-input-item">
+                <template v-slot:label>
+                  <el-tooltip
+                      class="box-item"
+                      effect="dark"
+                      content="控制层请求路径前缀，以'/'开头，例如/system/user"
+                      placement="top-start"
+                  ><span>请求路径
+                      <el-icon><QuestionFilled/></el-icon>
+                    </span>
+                  </el-tooltip>
+                </template>
+                <el-input v-model="form.requestUrl" autocomplete="off"/>
+              </el-form-item>
+            </el-col>
           </el-row>
           <el-row>
             <el-col :span="11">
@@ -451,7 +466,12 @@
 <script setup lang="ts">
 import {onMounted, ref, watch} from "vue";
 import {useRoute} from "vue-router";
-import {getGenTableDbList, getGenTableSingleton, getGenTableSingletonByName} from "@/api/tool/generator";
+import {
+  getGenTableDbList,
+  getGenTableSingleton,
+  getGenTableSingletonByName,
+  updateGenTable
+} from "@/api/tool/generator";
 import {Plus, QuestionFilled} from "@element-plus/icons-vue";
 import {
   formTypes,
@@ -526,6 +546,7 @@ const form = ref({
   tableComment: '',
   tableTemplate: '',
   authPrefix: '',
+  requestUrl: '',
   className: '',
   variableName: '',
   packageName: '',
@@ -622,6 +643,9 @@ const formRules = ref({
   authPrefix: [
     {required: true, message: '权限字符串不为空', trigger: 'blur'},
   ],
+  requestUrl: [
+    {required: true, message: '请求路径不为空', trigger: 'blur'},
+  ],
   authorName: [
     {required: true, message: '作者名称不为空', trigger: 'blur'},
   ],
@@ -662,7 +686,9 @@ const handleSubmitForm = async (fr: FormInstance | undefined) => {
   //@ts-ignore
   await fr.validate((valid) => {
     if (valid) {
-      console.log(form.value)
+      updateGenTable(form.value).then(res => {
+        console.log(res)
+      })
     }
   });
 }

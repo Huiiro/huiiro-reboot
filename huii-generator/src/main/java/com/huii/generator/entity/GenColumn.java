@@ -107,7 +107,11 @@ public class GenColumn extends BaseEntity {
     /**
      * 前端表单数据展示类型
      * input
-     * textarea...
+     * input-number
+     * textarea
+     * radio
+     * select
+     * tree-select
      * datetime
      */
     private String formType;
