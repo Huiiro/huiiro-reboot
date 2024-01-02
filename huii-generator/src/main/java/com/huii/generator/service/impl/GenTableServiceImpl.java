@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.model.PageParam;
+import com.huii.common.exception.ServiceException;
 import com.huii.common.utils.PageParamUtils;
 import com.huii.generator.config.TemplateConfig;
 import com.huii.generator.config.properties.GenProperties;
@@ -134,11 +135,19 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
 
     @Override
     public void updateTable(GenTable genTable) {
-        //TODO 提交表格更新 此处要对数据进行校验
         //校验内容包括 主键唯一
         //字段属性是否对应 ... ?? 等等
         genTableMapper.updateById(genTable);
         List<GenColumn> columns = genTable.getColumns();
+        int pk = 0;
+        for (GenColumn column : columns) {
+            if(column.getIsPrimaryKey().equals(SystemConstants.STATUS_1)) {
+                pk++;
+            }
+            if(pk > 1) {
+                throw new ServiceException("存在多个主键，请检查");
+            }
+        }
         for (GenColumn column : columns) {
             genColumnMapper.updateById(column);
         }

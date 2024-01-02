@@ -18,6 +18,10 @@
         </dependency>
         <dependency>
             <groupId>com.huii</groupId>
+            <artifactId>huii-job</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.huii</groupId>
             <artifactId>huii-generator</artifactId>
         </dependency>
     </dependencies>

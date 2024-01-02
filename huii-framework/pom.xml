@@ -42,6 +42,12 @@
             <artifactId>huii-auth</artifactId>
         </dependency>
 
+        <!--oss-->
+        <dependency>
+            <groupId>com.huii</groupId>
+            <artifactId>huii-oss</artifactId>
+        </dependency>
+
         <!--system-->
         <dependency>
             <groupId>com.huii</groupId>

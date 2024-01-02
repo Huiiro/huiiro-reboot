@@ -25,3 +25,11 @@ spring:
           max-idle: 10
           max-active: 20
           max-wait: 100000
+
+oss:
+  endpoint: 192.168.24.101:9001
+  bucketName: local
+  accessKey: minio
+  secretKey: admin123
+  https: false
+  access-policy: 1

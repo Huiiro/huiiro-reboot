@@ -12,6 +12,11 @@
     <artifactId>huii-oss</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <groupId>com.amazonaws</groupId>
+        </dependency>
         <!--common-->
         <dependency>
             <groupId>com.huii</groupId>
