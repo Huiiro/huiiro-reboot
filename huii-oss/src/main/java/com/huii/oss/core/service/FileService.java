@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * 文件服务
@@ -52,4 +53,10 @@ public interface FileService {
      * @return preSignedUrl
      */
     String getPreSignedUrl(String fileName);
+
+    /**
+     * 批量删除
+     * @param names nameIds
+     */
+    void deleteBatch(List<String> names);
 }

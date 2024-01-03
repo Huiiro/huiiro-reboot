@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class OssServiceImpl implements OssService {
             return ossTemplate.putObject(ossProperties.getBucketName(), file.getOriginalFilename(),
                     file.getInputStream(), file.getContentType());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new OssException("文件上传失败");
         }
     }
 
@@ -37,7 +38,7 @@ public class OssServiceImpl implements OssService {
         if (ossTemplate.exists(ossProperties.getBucketName(), fileName)) {
             return ossTemplate.getStream(ossProperties.getBucketName(), fileName);
         }
-        throw new OssException("文件不存在");
+        throw new OssException("文件不存在或已被删除");
     }
 
     @Override
@@ -50,7 +51,7 @@ public class OssServiceImpl implements OssService {
         if (ossTemplate.exists(ossProperties.getBucketName(), fileName)) {
             return ossTemplate.getObject(ossProperties.getBucketName(), fileName);
         }
-        throw new OssException("文件不存在");
+        throw new OssException("文件不存在或已被删除");
     }
 
     @Override
@@ -58,7 +59,7 @@ public class OssServiceImpl implements OssService {
         try {
             return ossTemplate.getDirectUrl(ossProperties.getBucketName(), fileName);
         } catch (Exception e) {
-            throw new OssException("文件不存在");
+            throw new OssException("文件不存在或已被删除");
         }
     }
 
@@ -67,7 +68,22 @@ public class OssServiceImpl implements OssService {
         try {
             return ossTemplate.getPreSignedUrl(ossProperties.getBucketName(), fileName, 7);
         } catch (Exception e) {
-            throw new OssException("文件不存在");
+            throw new OssException("文件不存在或已被删除");
+        }
+    }
+
+    @Override
+    public void deleteBatch(List<String> names) {
+        try {
+            for (String name : names) {
+                String substring = name.substring(name.indexOf('/', name.indexOf("//") + 2) + 1);
+                String[] parts = substring.split("/");
+                if (parts.length >= 2) {
+                    ossTemplate.deleteObject(parts[0], parts[1]);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("文件删除失败");
         }
     }
 }

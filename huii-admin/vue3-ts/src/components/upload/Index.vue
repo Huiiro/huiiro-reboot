@@ -90,10 +90,13 @@ const uploadHeaders = ref({
 /**
  * before upload
  */
-const beforeUploadInternal = (rawFile) => {
+const beforeUploadInternal = (rawFile: any) => {
   //自定义校验逻辑
   if (props.beforeUpload) {
     props.beforeUpload();
+  }
+  if(props.type === "" || props.type === null) {
+    return true;
   }
   if (!checkFileSuffix(rawFile.name, props.type)) {
     ElMessage.error('文件格式只能是' + props.type + '格式！');
@@ -105,11 +108,11 @@ const beforeUploadInternal = (rawFile) => {
   return true;
 };
 
-const getFileExtension = (fileName) => {
+const getFileExtension = (fileName: any) => {
   return fileName.slice((Math.max(0, fileName.lastIndexOf(".")) || Infinity) + 1);
 }
 
-const checkFileSuffix = (filename, suffix) => {
+const checkFileSuffix = (filename: any, suffix: any) => {
   return suffix.toString().split('/').includes(getFileExtension(filename));
 }
 /**
@@ -118,10 +121,10 @@ const checkFileSuffix = (filename, suffix) => {
  */
 const success = (response: any) => {
   if (response.code === 0) {
+    ElMessage({type: 'success', message: response.message == 'ok' ? '文件已成功上传' : response.message});
     if (response.data.analysis) {
       msg.value = response.data.analysis;
     }
-    ElMessage({type: 'success', message: response.message == 'ok' ? '文件已成功上传' : response.message});
   } else {
     ElMessage({type: 'error', message: response.message || '文件上传失败，请重试'});
   }

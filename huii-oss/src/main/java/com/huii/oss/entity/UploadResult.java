@@ -23,4 +23,20 @@ public class UploadResult {
      * 文件名
      */
     private String filename;
+
+    /**
+     * 文件原名
+     */
+    private String fileOriginName;
+
+    /**
+     * 文件大小
+     */
+    private String fileSize;
+
+    /**
+     * 文件MD5
+     */
+    private String md5;
+
 }

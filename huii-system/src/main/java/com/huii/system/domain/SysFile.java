@@ -1,15 +1,12 @@
 package com.huii.system.domain;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
+import com.baomidou.mybatisplus.annotation.*;
+import com.huii.common.core.model.base.BaseEntity;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * 文件 实体类
@@ -18,26 +15,35 @@ import java.io.Serializable;
  * @author huii
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @TableName("sys_file")
-public class SysFile implements Serializable {
+@KeySequence(value = "sys_config_id_seq", dbType = DbType.POSTGRE_SQL)
+public class SysFile extends BaseEntity {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.ASSIGN_UUID)
+    @TableId(value = "file_id", type = IdType.INPUT)
     @ExcelProperty(value = "文件ID")
-    private Long id;
+    private Long fileId;
 
     @ExcelProperty(value = "文件名称")
     private String fileName;
 
-    @ExcelProperty(value = "文件类型")
-    private String fileSuffix;
+    @ExcelProperty(value = "文件原名")
+    private String originName;
 
     @ExcelProperty(value = "文件大小")
     private String fileSize;
+
+    @ExcelProperty(value = "文件后缀")
+    private String fileSuffix;
+
+    @ExcelProperty(value = "文件权限")
+    private String fileAcl;
+
+    @ExcelProperty(value = "文件md5")
+    private String fileMd5;
+
+    @ExcelProperty(value = "文件价格")
+    private BigDecimal filePrice;
 
     @ExcelProperty(value = "文件直链")
     private String accessUrl;

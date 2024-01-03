@@ -33,3 +33,6 @@ oss:
   secretKey: admin123
   https: false
   access-policy: 1
+local:
+  base-path: D:/huii/file
+  endPoint: http://127.0.0.1:8080/oss/local

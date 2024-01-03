@@ -236,7 +236,7 @@ import {
   updateLogOpFlagStatus
 } from "../../../api/monitor/logOp";
 import {logOpMarkOptions, logOpStatusOptions, logOpTypeOptions} from "@/views/monitor/logOp/dictionary.ts";
-import {download} from "@/utils/download.ts";
+import {downloadExport} from "@/utils/download.ts";
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 
 //store
@@ -499,8 +499,8 @@ const handleDeleteAll = () => {
  * 导出数据
  */
 const handleExport = () => {
-  exportLogOp({}).then(res => {
-    download(res)
+  exportLogOp(null).then(res => {
+    downloadExport(res)
   })
 }
 

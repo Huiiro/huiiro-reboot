@@ -44,7 +44,7 @@ export const getLogOpList = (logOp: logOp) => request.get(API.GET_LIST,
 /**
  * 导出操作日志
  */
-export const exportLogOp = (logOp: logOp) => request.get(API.EXPORT, {responseType: 'blob', data: logOp});
+export const exportLogOp = (logOp: logOp | null) => request.get(API.EXPORT, {responseType: 'blob', data: logOp});
 
 /**
  * 更新操作日志

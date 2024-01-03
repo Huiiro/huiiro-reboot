@@ -7,14 +7,20 @@ import com.huii.oss.exception.OssException;
 import com.huii.oss.utils.FileUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -30,19 +36,24 @@ public class LocalServiceImpl implements LocalService {
 
     @Override
     public UploadResult uploadFile(MultipartFile multipartFile, String module) {
-        String fileName = FileUtils.initRandomFileName() +
-                FileUtils.getFileSuffixWithDot(multipartFile.getOriginalFilename());
-        //本地保存路径，如：D:/huii/file/avatar/fa98ft91g981.jpg
-        String savePath = properties.getBasePath() + "/" + module + "/" + fileName;
-        //网页访问路径，如：https:ss.huii147.xyz/avatar/fa98ft91g981.jpg
-        String fileUrl = properties.getEndPoint() + "/" + module + "/" + fileName;
-        File file = new File(savePath);
         try {
+            String fileName = FileUtils.initRandomFileName() +
+                    FileUtils.getFileSuffixWithDot(multipartFile.getOriginalFilename());
+            //本地保存路径，如：D:/huii/file/avatar/fa98ft91g981.jpg
+            String savePath = properties.getBasePath() + "/" + module + "/" + fileName;
+            //网页访问路径，如：https:api.huii147.xyz/oss/local?module=default&fileName=fa98ft91g981.jpg
+            String fileUrl = properties.getEndPoint() + "?module=" + module + "&fileName=" + fileName;
+            //检查文件目录是否存在
+            FileUtils.createDirectory(savePath);
+            File file = new File(savePath);
+            //计算md5
+            String md5 = DigestUtils.md5Hex(multipartFile.getInputStream());
             multipartFile.transferTo(file);
+            return new UploadResult(fileUrl, fileName, multipartFile.getOriginalFilename(),
+                    FileUtils.formatFileSize(multipartFile.getSize()), md5);
         } catch (Exception e) {
-            throw new OssException("文件读取异常");
+            throw new OssException("文件上传失败");
         }
-        return new UploadResult(fileUrl, multipartFile.getOriginalFilename());
     }
 
     @Override
@@ -56,7 +67,7 @@ public class LocalServiceImpl implements LocalService {
         try {
             return Files.newInputStream(Paths.get(path));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new OssException("文件不存在或已被删除");
         }
     }
 
@@ -85,4 +96,35 @@ public class LocalServiceImpl implements LocalService {
         return null;
     }
 
+    @Override
+    public void deleteBatch(List<String> names) {
+        String basePath = properties.getBasePath();
+        try {
+            for (String name : names) {
+                String query = new URL(name).getQuery();
+                Map<String, String> params = getQueryParams(query);
+                String filePath = basePath + "/" + params.get("module") + "/" + params.get("fileName");
+                Path path = Paths.get(filePath);
+                Files.delete(path);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("文件删除失败");
+        }
+    }
+
+    private static Map<String, String> getQueryParams(String query) {
+        Map<String, String> params = new HashMap<>();
+
+        if (query != null) {
+            String[] pairs = query.split("&");
+            for (String pair : pairs) {
+                String[] keyValue = pair.split("=");
+                if (keyValue.length == 2) {
+                    params.put(keyValue[0], keyValue[1]);
+                }
+            }
+        }
+
+        return params;
+    }
 }

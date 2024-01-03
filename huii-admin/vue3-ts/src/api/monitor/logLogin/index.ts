@@ -38,7 +38,7 @@ export const getLogLoginList = (logLogin: logLogin) => request.get(API.GET_LIST,
 /**
  * 导出操作日志
  */
-export const exportLogLogin = (logLogin: logLogin) => request.get(API.EXPORT, {responseType: 'blob', data: logLogin});
+export const exportLogLogin = (logLogin: logLogin | null) => request.get(API.EXPORT, {responseType: 'blob', data: logLogin});
 
 /**
  * 删除操作日志

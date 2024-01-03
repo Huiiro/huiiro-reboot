@@ -173,7 +173,7 @@ import {paramBuilder} from "@/utils/common.ts";
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 import {deleteGenTable, genCode, getGenTableDbList, getGenTableList, insertGenTable} from "@/api/tool/generator";
 import router from "@/router";
-import {download} from "@/utils/download.ts";
+import {downloadExport} from "@/utils/download.ts";
 
 //dialogVisible2
 const dialogVisible2 = ref();
@@ -432,7 +432,7 @@ const handleExport = (index, row) => {
     ids.push(row.tableId);
   }
   genCode(ids).then(res => {
-    download(res)
+    downloadExport(res);
   })
 }
 

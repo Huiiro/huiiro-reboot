@@ -14,8 +14,10 @@ import com.amazonaws.util.IOUtils;
 import com.huii.oss.config.properties.OssProperties;
 import com.huii.oss.entity.UploadResult;
 import com.huii.oss.enums.AccessType;
+import com.huii.oss.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -86,16 +88,18 @@ public class OssTemplate implements BaseTemplate {
     @Override
     @SneakyThrows
     public UploadResult putObject(String bucketName, String objectName, InputStream stream, String contextType) {
+        String fileName = FileUtils.initRandomFileName() + FileUtils.getFileSuffixWithDot(objectName);
         byte[] bytes = IOUtils.toByteArray(stream);
+        String md5 = DigestUtils.md5Hex(stream);
         ObjectMetadata objectMetadata = new ObjectMetadata();
         //设置stream.available可能会导致流长度读取不一致问题，忽略该参数让s3自行计算
         objectMetadata.setContentType(contextType);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, byteArrayInputStream, objectMetadata);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, fileName, byteArrayInputStream, objectMetadata);
         AccessType accessType = AccessType.getType(properties.getAccessPolicy());
         putObjectRequest.setCannedAcl(accessType.getAcl());
         amazonS3.putObject(putObjectRequest);
-        return new UploadResult(getUrl() + objectName, objectName);
+        return new UploadResult(getUrl() + fileName, fileName, objectName, FileUtils.formatFileSize(stream.available()), md5);
     }
 
     @Override

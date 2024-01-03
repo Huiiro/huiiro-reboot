@@ -210,7 +210,7 @@ import {paramBuilder} from "@/utils/common.ts";
 import {deletePost, exportPost, getPostList, getPostSingleton, insertPost, updatePost} from "@/api/system/post";
 import {postStatusOptions} from "@/views/system/post/dictionary.ts";
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
-import {download} from "@/utils/download.ts";
+import {downloadExport} from "@/utils/download.ts";
 
 //store
 const layoutStore = useLayoutStore();
@@ -476,7 +476,7 @@ const handleDelete = (index, row) => {
  */
 const handleExport = () => {
   exportPost(null).then(res => {
-    download(res);
+    downloadExport(res);
   });
 };
 

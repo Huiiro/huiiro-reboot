@@ -168,4 +168,18 @@ public class FileUtils {
             throw new RuntimeException("文件下载失败");
         }
     }
+
+    /**
+     * 创建文件目录
+     *
+     * @param directoryPath dirPath
+     */
+    public static void createDirectory(String directoryPath) {
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            if (!directory.mkdirs()) {
+                throw new RuntimeException("目录创建失败");
+            }
+        }
+    }
 }

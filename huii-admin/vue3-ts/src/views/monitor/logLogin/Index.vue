@@ -167,7 +167,7 @@ import {useLayoutStore} from "@/store/modules/layout.ts";
 import {Delete, Refresh, Search, Timer, Upload,} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
-import {download} from "@/utils/download.ts";
+import {downloadExport} from "@/utils/download.ts";
 import {logLoginStatusOptions, logLoginTypeOptions} from "@/views/monitor/logLogin/dictionary.ts";
 import {deleteLogLogin, deleteLogLoginAll, exportLogLogin, getLogLoginList} from "../../../api/monitor/logLogin";
 import {checkPermission} from "@/utils/permission.ts";
@@ -401,8 +401,8 @@ const handleDeleteAll = () => {
  * 导出数据
  */
 const handleExport = () => {
-  exportLogLogin({}).then(res => {
-    download(res)
+  exportLogLogin(null).then(res => {
+    downloadExport(res)
   })
 }
 

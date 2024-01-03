@@ -388,7 +388,7 @@ import {userSexualStatusOptions, userStatusOptions} from "@/views/system/user/di
 import {getDeptSelect} from "@/api/system/dept";
 import {Tree} from "element-plus/es/components/tree-v2/src/types";
 import {encryptFiled} from "@/utils/encrypt.ts";
-import {download} from "@/utils/download.ts";
+import {downloadExport} from "@/utils/download.ts";
 import upload from '@/components/upload/Index.vue';
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 
@@ -784,7 +784,7 @@ const handleImport = () => {
 }
 const handleDownloadTemplate = () => {
   getExportUserTemplate().then(res => {
-    download(res)
+    downloadExport(res);
   });
 };
 /**
@@ -792,7 +792,7 @@ const handleDownloadTemplate = () => {
  */
 const handleExport = () => {
   exportUser(null).then(res => {
-    download(res)
+    downloadExport(res);
   });
 };
 

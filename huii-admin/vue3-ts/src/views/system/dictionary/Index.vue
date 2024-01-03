@@ -212,7 +212,7 @@ import {
 } from "@/api/system/dic/type";
 import router from "@/router";
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
-import {download} from "@/utils/download.ts";
+import {downloadExport} from "@/utils/download.ts";
 
 //store
 const layoutStore = useLayoutStore();
@@ -481,7 +481,7 @@ const handleDelete = (index, row) => {
  */
 const handleExport = () => {
   exportDicType(null).then(res => {
-    download(res);
+    downloadExport(res);
   });
 };
 

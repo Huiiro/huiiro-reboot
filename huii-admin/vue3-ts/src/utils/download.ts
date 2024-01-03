@@ -1,6 +1,6 @@
 import {ElMessage} from "element-plus";
 
-export function download(res: any) {
+export function downloadExport(res: any) {
     //获取下载请求头
     let name = res.headers['content-disposition'] || res.headers['Content-Disposition'];
 
@@ -27,8 +27,23 @@ export function download(res: any) {
         const file = new FileReader();
         file.readAsText(res.data, 'utf-8');
         file.onload = function () {
+            //@ts-ignore
             const result = JSON.parse(file.result);
             ElMessage({type: 'error', message: result.message});
         }
     }
+}
+
+export async function download(fileUrl: any, fileName: any) {
+    const response = await fetch(fileUrl);
+    const blob = await response.blob();
+    const link = document.createElement("a");
+    link.style.display = "none";
+    document.body.appendChild(link);
+    const url = window.URL.createObjectURL(blob);
+    link.href = url;
+    link.setAttribute("download", fileName);
+    link.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(link);
 }
