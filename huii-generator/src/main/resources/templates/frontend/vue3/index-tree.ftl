@@ -194,31 +194,13 @@
 </template>
 
 <script setup lang="ts">
-    import {onMounted, ref, shallowRef} from "vue";
-    import {useLayoutStore} from "@/store/modules/layout.ts";
-    import {Check, Close} from "@element-plus/icons-vue";
-    import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
-    import {delete$
+import {onMounted, ref, shallowRef} from "vue";
+import {useLayoutStore} from "@/store/modules/layout.ts";
+import {Check, Close} from "@element-plus/icons-vue";
+import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
+import {delete${className}, export${className}, import${className}, insert${className}, update${className}} from "@/api";
 
-    {
-        className
-    }
-    ,
-    insert$
-    {
-        className
-    }
-    ,
-    update$
-    {
-        className
-    }
-    ,
-    }
-    from
-    "@/api";
-
-    //store
+//store
 const layoutStore = useLayoutStore();
 //layout
 const size = layoutStore.tableSize;
