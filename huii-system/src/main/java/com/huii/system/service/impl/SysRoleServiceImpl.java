@@ -9,7 +9,9 @@ import com.huii.common.core.model.Label;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.enums.DataScopeType;
+import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.PageParamUtils;
 import com.huii.common.utils.TimeUtils;
 import com.huii.system.domain.SysRoleDept;
@@ -72,11 +74,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public void checkInsert(SysRole sysRole) {
         if (sysRoleMapper.exists(new LambdaQueryWrapper<SysRole>()
                 .eq(SysRole::getRoleName, sysRole.getRoleName()))) {
-            throw new ServiceException("角色名称重复");
+            ResType resType = ResType.SYS_ROLE_NAME_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         if (sysRoleMapper.exists(new LambdaQueryWrapper<SysRole>()
                 .eq(SysRole::getRoleKey, sysRole.getRoleKey()))) {
-            throw new ServiceException("角色编码重复");
+            ResType resType = ResType.SYS_ROLE_KEY_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -92,13 +96,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         if (!StringUtils.equals(sysRole.getRoleName(), oldOne.getRoleName())) {
             if (sysRoleMapper.exists(new LambdaQueryWrapper<SysRole>()
                     .eq(SysRole::getRoleName, sysRole.getRoleName()))) {
-                throw new ServiceException("角色名称重复");
+                ResType resType = ResType.SYS_ROLE_NAME_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
         if (!StringUtils.equals(sysRole.getRoleKey(), oldOne.getRoleKey())) {
             if (sysRoleMapper.exists(new LambdaQueryWrapper<SysRole>()
                     .eq(SysRole::getRoleKey, sysRole.getRoleKey()))) {
-                throw new ServiceException("角色编码重复");
+                ResType resType = ResType.SYS_ROLE_KEY_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
     }
@@ -158,7 +164,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                     .eq(SysUserRole::getRoleId, id));
             if (existUserInRole) {
                 SysRole sysRole = selectRoleById(id);
-                throw new ServiceException(sysRole.getRoleName() + "角色下存在用户，不允许删除");
+                ResType resType = ResType.SYS_ROLE_EXISTS_USER;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n(), sysRole.getRoleName()));
             }
         }
 

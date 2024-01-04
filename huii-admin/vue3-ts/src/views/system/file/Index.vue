@@ -239,6 +239,8 @@ const getData = () => {
  */
 const handleReset = () => {
   query.value.fileName = '';
+  query.value.fileServer = '';
+  query.value.fileAcl = '';
   query.value.fileStatus = '';
   getData();
 };

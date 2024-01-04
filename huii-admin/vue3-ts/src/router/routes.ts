@@ -9,12 +9,6 @@ export const constRoutes = [
         component: () => import('@/views/errorPage/404.vue')
     },
     {
-        name: 'test',
-        path: '/test',
-        meta: {},
-        component: () => import('@/views/Test.vue')
-    },
-    {
         name: 'login',
         path: '/login',
         meta: {

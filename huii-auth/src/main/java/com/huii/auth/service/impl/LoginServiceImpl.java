@@ -1,6 +1,7 @@
 package com.huii.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.huii.auth.config.properties.LoginProperties;
 import com.huii.auth.core.entity.LoginEntity;
 import com.huii.auth.core.entity.dto.AccountDto;
 import com.huii.auth.core.entity.dto.EmailDto;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 public class LoginServiceImpl implements LoginService {
 
     private final SysUserMapper sysUserMapper;
+    private final LoginProperties loginProperties;
 
     @Override
     public LoginVo getInfo() {
@@ -58,7 +60,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public void defaultOauth2LoginResponse(LoginVo loginVo, HttpServletResponse response) {
-        String redirectUrl = "http://localhost:8081/oauth/redirect?token=" + loginVo.getAccessToken();
+        String redirectUrl = loginProperties.getDefaultOauth2LoginCallbackUrl() + "?token=" + loginVo.getAccessToken();
         response.setStatus(HttpServletResponse.SC_FOUND);
         response.setHeader("Location", redirectUrl);
     }

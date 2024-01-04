@@ -10,7 +10,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysUser;
 import com.huii.common.core.model.PageParam;
+import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.PageParamUtils;
 import com.huii.common.utils.TimeUtils;
 import com.huii.system.domain.SysUserPost;
@@ -60,15 +62,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void checkInsert(SysUser sysUser) {
         if (sysUserMapper.exists(new LambdaQueryWrapper<SysUser>()
                 .eq(SysUser::getUserName, sysUser.getUserName()))) {
-            throw new ServiceException("用户名称重复");
+            ResType resType = ResType.SYS_USER_NAME_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         if (sysUserMapper.exists(new LambdaQueryWrapper<SysUser>()
                 .eq(SysUser::getPhone, sysUser.getPhone()))) {
-            throw new ServiceException("手机号码重复");
+            ResType resType = ResType.SYS_USER_PHONE_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         if (sysUserMapper.exists(new LambdaQueryWrapper<SysUser>()
                 .eq(SysUser::getEmail, sysUser.getEmail()))) {
-            throw new ServiceException("邮箱号码重复");
+            ResType resType = ResType.SYS_USER_EMAIL_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -86,19 +91,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (!StringUtils.equals(sysUser.getUserName(), oldOne.getUserName())) {
             if (sysUserMapper.exists(new LambdaQueryWrapper<SysUser>()
                     .eq(SysUser::getUserName, sysUser.getUserName()))) {
-                throw new ServiceException("用户名称重复");
+                ResType resType = ResType.SYS_USER_NAME_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
         if (!StringUtils.equals(sysUser.getPhone(), oldOne.getPhone())) {
             if (sysUserMapper.exists(new LambdaQueryWrapper<SysUser>()
                     .eq(SysUser::getPhone, sysUser.getPhone()))) {
-                throw new ServiceException("手机号码重复");
+                ResType resType = ResType.SYS_USER_PHONE_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
         if (!StringUtils.equals(sysUser.getEmail(), oldOne.getEmail())) {
             if (sysUserMapper.exists(new LambdaQueryWrapper<SysUser>()
                     .eq(SysUser::getEmail, sysUser.getEmail()))) {
-                throw new ServiceException("邮箱号码重复");
+                ResType resType = ResType.SYS_USER_EMAIL_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
     }
@@ -129,10 +137,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public com.huii.common.core.model.Page queryNonAuthUser(SysUser sysUser, PageParam pageParam) {
         List<Long> userIds = sysUserRoleMapper.selectUserIdsByRoleId(sysUser.getRoleId());
+        if (userIds.isEmpty()) {
+            userIds.add(-1L);
+        }
         IPage<SysUser> iPage = new PageParamUtils<SysUser>().getPageInfo(pageParam);
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
-        wrapper.notIn(SysUser::getUserId, userIds)
-                .eq(SysUser::getUserStatus, SystemConstants.STATUS_1)
+        wrapper.notIn(SysUser::getUserId, userIds).eq(SysUser::getUserStatus, SystemConstants.STATUS_1)
                 .eq(SysUser::getDeleteFlag, SystemConstants.STATUS_0)
                 .like(StringUtils.isNotBlank(sysUser.getUserName()), SysUser::getUserName, sysUser.getUserName());
         return new com.huii.common.core.model.Page(this.page(iPage, wrapper));
@@ -141,6 +151,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public com.huii.common.core.model.Page queryAuthUser(SysUser sysUser, PageParam pageParam) {
         List<Long> userIds = sysUserRoleMapper.selectUserIdsByRoleId(sysUser.getRoleId());
+        if (userIds.isEmpty()) {
+            //添加-1，防止userIds为空导致报错
+            userIds.add(-1L);
+        }
         IPage<SysUser> iPage = new PageParamUtils<SysUser>().getPageInfo(pageParam);
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
         wrapper.in(SysUser::getUserId, userIds)

@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
+import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.PageParamUtils;
 import com.huii.common.utils.TimeUtils;
 import com.huii.system.domain.SysNotice;
@@ -40,7 +42,8 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
     public void checkInsert(SysNotice sysNotice) {
         if (sysNoticeMapper.exists(new LambdaQueryWrapper<SysNotice>()
                 .eq(SysNotice::getNoticeTitle, sysNotice.getNoticeTitle()))) {
-            throw new ServiceException("通知标题重复");
+            ResType resType = ResType.SYS_NOTICE_TITLE_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -55,7 +58,8 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
         if (!StringUtils.equals(sysNotice.getNoticeTitle(), oldOne.getNoticeTitle())) {
             if (sysNoticeMapper.exists(new LambdaQueryWrapper<SysNotice>()
                     .eq(SysNotice::getNoticeTitle, sysNotice.getNoticeTitle()))) {
-                throw new ServiceException("通知标题重复");
+                ResType resType = ResType.SYS_NOTICE_TITLE_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
     }

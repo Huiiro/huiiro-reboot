@@ -1,9 +1,11 @@
 package com.huii.oss.core.service.impl;
 
+import com.huii.common.enums.ResType;
+import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import com.huii.oss.config.properties.LocalProperties;
 import com.huii.oss.core.service.LocalService;
 import com.huii.oss.entity.UploadResult;
-import com.huii.oss.exception.OssException;
 import com.huii.oss.utils.FileUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +54,8 @@ public class LocalServiceImpl implements LocalService {
             return new UploadResult(fileUrl, fileName, multipartFile.getOriginalFilename(),
                     FileUtils.formatFileSize(multipartFile.getSize()), md5);
         } catch (Exception e) {
-            throw new OssException("文件上传失败");
+            ResType resType = ResType.SYS_FILE_UPLOAD_FAIL;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -67,7 +70,8 @@ public class LocalServiceImpl implements LocalService {
         try {
             return Files.newInputStream(Paths.get(path));
         } catch (IOException e) {
-            throw new OssException("文件不存在或已被删除");
+            ResType resType = ResType.SYS_FILE_NOT_EXIST;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -108,13 +112,13 @@ public class LocalServiceImpl implements LocalService {
                 Files.delete(path);
             }
         } catch (IOException e) {
-            throw new RuntimeException("文件删除失败");
+            ResType resType = ResType.SYS_FILE_DELETE_FAIL;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
     private static Map<String, String> getQueryParams(String query) {
         Map<String, String> params = new HashMap<>();
-
         if (query != null) {
             String[] pairs = query.split("&");
             for (String pair : pairs) {
@@ -124,7 +128,6 @@ public class LocalServiceImpl implements LocalService {
                 }
             }
         }
-
         return params;
     }
 }

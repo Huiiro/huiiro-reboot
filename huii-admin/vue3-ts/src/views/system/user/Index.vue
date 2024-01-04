@@ -31,6 +31,14 @@
             <el-input v-model="query.userName" placeholder="请输入用户名称"
                       class="global-input" :size="size"/>
           </el-form-item>
+          <el-form-item label="用户手机" class="global-input-item">
+            <el-input v-model="query.phone" placeholder="请输入用户手机"
+                      class="global-input" :size="size"/>
+          </el-form-item>
+          <el-form-item label="用户邮箱" class="global-input-item">
+            <el-input v-model="query.email" placeholder="请输入用户邮箱"
+                      class="global-input" :size="size"/>
+          </el-form-item>
           <el-form-item label="用户状态" class="global-input-item">
             <el-select v-model="query.userStatus" placeholder="请选择用户状态"
                        :size="size">
@@ -40,14 +48,6 @@
                   :label="item.label"
                   :value="item.value"/>
             </el-select>
-          </el-form-item>
-          <el-form-item label="用户手机" class="global-input-item">
-            <el-input v-model="query.phone" placeholder="请输入用户手机"
-                      class="global-input" :size="size"/>
-          </el-form-item>
-          <el-form-item label="用户邮箱" class="global-input-item">
-            <el-input v-model="query.email" placeholder="请输入用户邮箱"
-                      class="global-input" :size="size"/>
           </el-form-item>
           <el-form-item label="创建时间" class="global-input-item">
             <el-date-picker
@@ -229,13 +229,38 @@
         </el-col>
       </el-row>
       <el-row>
+        <el-col :span="24">
+          <el-form-item label="用户备注" label-width="85" prop="roleIds">
+            <el-input v-model="form.remark"
+                      autocomplete="off"
+                      type="textarea"
+                      show-word-limit
+                      maxlength="100"
+                      :rows="1"
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+          <el-form-item label="部门分配" label-width="85" prop="roleIds">
+            <el-tree-select v-model="form.deptId"
+                            placeholder="请选择部门"
+                            :props="props"
+                            :data="selectDeptData"
+                            check-strictly
+                            style="width: 100%;"/>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="11">
           <el-form-item label="角色分配" label-width="85" prop="roleIds">
             <el-select
                 v-model="form.roleIds"
                 multiple
                 placeholder="请选择角色进行分配"
-                style="width: 240px"
+                style="width: 100%"
             >
               <el-option
                   v-for="item in roles"
@@ -253,7 +278,7 @@
                 v-model="form.postIds"
                 multiple
                 placeholder="请选择岗位进行分配"
-                style="width: 240px"
+                style="width: 100%"
             >
               <el-option
                   v-for="item in posts"
@@ -467,6 +492,7 @@ const query = ref({
   deptId: null
 });
 const time = ref();
+
 /**
  * 查询数据
  */
@@ -581,7 +607,8 @@ const form = ref({
   createTime: '',
   updateTime: '',
   roleIds: '',
-  postIds: ''
+  postIds: '',
+  remark: '',
 });
 //表单数据校验规则
 const formRules = ref({
@@ -616,6 +643,7 @@ const posts = ref();
 const isEdit = ref(false);
 //对话框
 const dialogVisible = ref(false);
+
 /**
  * 关闭表单
  */
@@ -625,6 +653,7 @@ const handleCloseForm = () => {
   resetPwdDialogVisible.value = false;
   importVisible.value = false;
 };
+
 /**
  * 提交表单
  */
@@ -658,6 +687,7 @@ const doInsert = () => {
     }
   });
 };
+
 /**
  * 点击添加
  */
@@ -689,6 +719,7 @@ const handleInsert = (index, row) => {
     dialogVisible.value = true;
   })
 };
+
 /**
  * 点击编辑
  */
@@ -708,6 +739,7 @@ const handleEdit = (index, row) => {
     dialogVisible.value = true;
   });
 };
+
 /**
  * 删除
  */
@@ -787,6 +819,7 @@ const handleDownloadTemplate = () => {
     downloadExport(res);
   });
 };
+
 /**
  * 导出数据
  */

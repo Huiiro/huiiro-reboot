@@ -10,8 +10,10 @@ import com.huii.common.core.model.PageParam;
 import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.OpType;
+import com.huii.common.enums.ResType;
 import com.huii.common.utils.BeanCopyUtils;
 import com.huii.common.utils.ExcelUtils;
+import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.SecurityUtils;
 import com.huii.system.service.SecurityContextService;
 import com.huii.system.service.SysRoleService;
@@ -88,7 +90,8 @@ public class SysRoleController extends BaseController {
     @Transactional(rollbackFor = RuntimeException.class)
     public R<SysRole> updateRole(@Validated @RequestBody SysRole sysRole) {
         if (SecurityUtils.isRoleAdmin(sysRole.getRoleId())) {
-            return R.failed("无法修改管理员信息");
+            ResType resType = ResType.SYS_ADMIN_NOT_ALLOW_UPDATE;
+            return R.failed(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         sysRoleService.checkUpdate(sysRole);
         sysRoleService.updateRole(sysRole);
@@ -103,7 +106,8 @@ public class SysRoleController extends BaseController {
     @Log(value = "更新角色状态", opType = OpType.UPDATE)
     public R<SysRole> updateRoleStatus(@Validated @RequestBody SysRole sysRole) {
         if (SecurityUtils.isRoleAdmin(sysRole.getRoleId())) {
-            return R.failed("无法禁用管理员角色");
+            ResType resType = ResType.SYS_ADMIN_NOT_ALLOW_BAN;
+            return R.failed(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         sysRoleService.updateRoleStatus(sysRole);
         return updateSuccess();
@@ -146,7 +150,8 @@ public class SysRoleController extends BaseController {
     @Transactional(rollbackFor = RuntimeException.class)
     public R<SysRole> deleteRole(@RequestBody Long[] ids) {
         if (SecurityUtils.isRoleAdmin(ids)) {
-            return R.failed("无法删除管理员");
+            ResType resType = ResType.SYS_ADMIN_NOT_ALLOW_DELETE;
+            return R.failed(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         sysRoleService.deleteRoles(ids);
         return deleteSuccess();

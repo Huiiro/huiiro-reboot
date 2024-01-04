@@ -3,6 +3,7 @@ package com.huii.system.mapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.huii.common.annotation.DataScope;
 import com.huii.common.core.domain.SysUser;
 import com.huii.common.core.model.base.BaseMapperPlus;
 import org.apache.ibatis.annotations.Mapper;
@@ -76,6 +77,7 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser> {
      * @param queryWrapper queryWrapper
      * @return Page
      */
+    @DataScope
     Page<SysUser> selectUserPageWithDept(@Param("page") Page<SysUser> page,
                                          @Param(Constants.WRAPPER) Wrapper<SysUser> queryWrapper);
 
@@ -85,5 +87,6 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser> {
      * @param queryWrapper queryWrapper
      * @return list
      */
+    @DataScope
     List<SysUser> selectUserListWithDept(@Param(Constants.WRAPPER) Wrapper<SysUser> queryWrapper);
 }

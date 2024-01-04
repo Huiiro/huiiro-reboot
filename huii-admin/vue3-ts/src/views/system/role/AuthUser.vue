@@ -17,7 +17,7 @@
     <el-form :inline="true" :size="size">
       <!--left select-->
       <!--add-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('sys:user:query')">
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:role:auth:user')">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
                    :color="layoutStore.BtnInsert" plain>添加用户
         </el-button>
@@ -286,6 +286,7 @@ const multiSelectData2 = ref();
 const selectionChange2 = (value: any) => {
   multiSelectData2.value = value
 };
+
 /**
  * 隐藏时间列
  */
@@ -345,6 +346,7 @@ const handleSubmitForm = (fr: FormInstance | undefined) => {
     }
   })
 };
+
 /**
  * 点击添加
  */
@@ -353,6 +355,7 @@ const handleInsert = (index, row) => {
   isEdit.value = false;
   dialogVisible.value = true;
 };
+
 /**
  * 点击编辑
  */
@@ -361,6 +364,7 @@ const handleEdit = (index, row) => {
   isEdit.value = true;
   dialogVisible.value = true;
 };
+
 /**
  * 删除
  */

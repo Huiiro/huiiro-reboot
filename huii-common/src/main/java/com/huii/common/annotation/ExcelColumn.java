@@ -38,8 +38,4 @@ public @interface ExcelColumn {
      * 字段是否导出
      */
     boolean export() default true;
-
-    //TODO
-    //设置样式
-
 }

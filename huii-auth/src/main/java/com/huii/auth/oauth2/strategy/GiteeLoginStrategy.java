@@ -30,7 +30,7 @@ public class GiteeLoginStrategy extends Oauth2LoginStrategy {
             JsonNode jsonNode = objectMapper.readTree(response.getBody());
             return jsonNode.get("access_token").asText();
         } catch (JsonProcessingException e) {
-            throw new BasicAuthenticationException("获取信息失败");
+            throw new BasicAuthenticationException("获取用户信息失败");
         }
     }
 

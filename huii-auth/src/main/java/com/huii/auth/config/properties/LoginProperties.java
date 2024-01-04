@@ -37,4 +37,9 @@ public class LoginProperties {
      * 账号封禁时间 (min)
      */
     private Integer errorWaitTime = 10;
+
+    /**
+     * oauth2 登录回调地址 默认为本地前端回调接口
+     */
+    private String defaultOauth2LoginCallbackUrl = "http://localhost:5173/oauth/redirect";
 }

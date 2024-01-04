@@ -6,7 +6,9 @@ import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysDept;
 import com.huii.common.core.domain.SysUser;
 import com.huii.common.core.model.Tree;
+import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import com.huii.system.domain.SysRoleDept;
 import com.huii.system.mapper.SysDeptMapper;
 import com.huii.system.mapper.SysRoleDeptMapper;
@@ -81,7 +83,8 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     public void checkInsert(SysDept sysDept) {
         if (sysDeptMapper.exists(new LambdaQueryWrapper<SysDept>()
                 .eq(SysDept::getDeptName, sysDept.getDeptName()))) {
-            throw new ServiceException("部门名称字段重复");
+            ResType resType = ResType.SYS_DEPT_NAME_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -94,12 +97,14 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     public void checkUpdate(SysDept sysDept) {
         SysDept oldOne = sysDeptMapper.selectById(sysDept.getDeptId());
         if (sysDept.getDeptId().equals(sysDept.getParentId())) {
-            throw new ServiceException("不允许的操作,无法将自己作为上级部门");
+            ResType resType = ResType.SYS_DEPT_NOT_ALLOW_SET_PARENT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         if (!StringUtils.equals(sysDept.getDeptName(), oldOne.getDeptName())) {
             if (sysDeptMapper.exists(new LambdaQueryWrapper<SysDept>()
                     .eq(SysDept::getDeptName, sysDept.getDeptName()))) {
-                throw new ServiceException("菜单名称字段重复");
+                ResType resType = ResType.SYS_DEPT_NAME_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
     }
@@ -119,19 +124,22 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             boolean existsUser = sysUserMapper.exists(new LambdaQueryWrapper<SysUser>()
                     .in(SysUser::getDeptId, ids));
             if (existsUser) {
-                throw new ServiceException("存在用户已分配该部门");
+                ResType resType = ResType.SYS_DEPT_EXISTS_USER;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
             sysDeptMapper.deleteBatchIds(ids);
         } else {
             boolean existsChildren = sysDeptMapper.exists(new LambdaQueryWrapper<SysDept>()
                     .eq(SysDept::getParentId, id));
             if (existsChildren) {
-                throw new ServiceException("该菜单下存在子菜单");
+                ResType resType = ResType.SYS_DEPT_EXISTS_CHILDREN;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
             boolean existsUser = sysUserMapper.exists(new LambdaQueryWrapper<SysUser>()
                     .eq(SysUser::getDeptId, id));
             if (existsUser) {
-                throw new ServiceException("存在用户已分配该部门");
+                ResType resType = ResType.SYS_DEPT_EXISTS_USER;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
             sysDeptMapper.deleteById(id);
         }

@@ -15,12 +15,18 @@ export interface config {
 }
 
 enum API {
+    REFRESH = prefix + "/refresh",
     GET_LIST = prefix + "/list",
     GET_ONE = prefix + "/",
     INSERT_ONE = prefix + "/insert",
     UPDATE_ONE = prefix + "/update",
     DELETE_ONE = prefix + "/delete",
 }
+
+/**
+ * 获取系统配置
+ */
+export const refreshConfig = () => request.get(API.REFRESH);
 
 /**
  * 获取系统配置

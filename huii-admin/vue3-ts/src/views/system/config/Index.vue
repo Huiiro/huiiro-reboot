@@ -16,6 +16,12 @@
     <!--formButton-->
     <el-form :inline="true" :size="size">
       <!--left select-->
+      <!--refresh-->
+      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:config:edit')">
+        <el-button :size="size" :icon="Refresh" @click="handleRefreshCache"
+                   :color="layoutStore.BtnClean" plain>刷新缓存
+        </el-button>
+      </el-form-item>
       <!--add-->
       <el-form-item class="global-form-item-margin" v-if="checkPermission('system:config:add')">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
@@ -155,7 +161,14 @@ import {useLayoutStore} from "@/store/modules/layout.ts";
 import {Delete, Edit, Plus, Refresh, Search, Timer} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
-import {deleteConfig, getConfigList, getConfigSingleton, insertConfig, updateConfig} from "@/api/system/config";
+import {
+  deleteConfig,
+  getConfigList,
+  getConfigSingleton,
+  insertConfig,
+  refreshConfig,
+  updateConfig
+} from "@/api/system/config";
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 
 //store
@@ -187,7 +200,7 @@ const query = ref({
  */
 const getData = () => {
   loading.value = true;
-  getConfigList(paramBuilder(query.value, queryPage.value, null, null)).then(res => {
+  getConfigList(paramBuilder(query.value, queryPage.value, null, [])).then(res => {
     const response = res.data;
     tableData.value = response.data;
     pageCurrent.value = response.current;
@@ -274,7 +287,6 @@ const handleRefresh = () => {
  */
 //表单数据
 const form = ref({
-  //TODO
   configId: 0,
   configName: '',
   configKey: '',
@@ -283,7 +295,8 @@ const form = ref({
   createBy: '',
   createTime: '',
   updateBy: '',
-  updateTime: ''
+  updateTime: '',
+  remark: ''
 });
 //表单数据校验规则
 const formRules = ref({
@@ -307,6 +320,7 @@ const formRuleRef = ref<FormInstance>();
 const isEdit = ref(false);
 //对话框
 const dialogVisible = ref(false);
+
 /**
  * 关闭表单
  */
@@ -314,6 +328,7 @@ const handleCloseForm = () => {
   isEdit.value = false;
   dialogVisible.value = false;
 };
+
 /**
  * 提交表单
  */
@@ -347,12 +362,14 @@ const doInsert = () => {
     }
   });
 };
+
 /**
  * 点击添加
  */
 //@ts-ignore
 const handleInsert = (index, row) => {
   form.value = {
+    remark: "",
     configId: 0,
     configKey: "",
     configName: "",
@@ -366,6 +383,7 @@ const handleInsert = (index, row) => {
   isEdit.value = false;
   dialogVisible.value = true;
 };
+
 /**
  * 点击编辑
  */
@@ -383,6 +401,7 @@ const handleEdit = (index, row) => {
     dialogVisible.value = true;
   });
 };
+
 /**
  * 删除
  */
@@ -411,6 +430,12 @@ const handleDelete = (index, row) => {
   }).catch();
 };
 
+/**
+ * 刷新缓存
+ */
+const handleRefreshCache = () => {
+  refreshConfig();
+}
 </script>
 
 <style scoped lang="scss">

@@ -91,7 +91,6 @@ public class SysPostController extends BaseController {
     @Log(value = "删除岗位", opType = OpType.DELETE)
     @Transactional(rollbackFor = RuntimeException.class)
     public R<SysPost> deletePost(@RequestBody Long[] ids) {
-        //TODO check user
         sysPostService.deletePosts(ids);
         return deleteSuccess();
     }

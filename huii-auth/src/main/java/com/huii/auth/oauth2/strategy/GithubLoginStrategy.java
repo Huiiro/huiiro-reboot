@@ -44,7 +44,7 @@ public class GithubLoginStrategy extends Oauth2LoginStrategy {
             }
             return jsonObject.get("access_token").asText();
         } catch (Exception e) {
-            throw new BasicAuthenticationException("获取信息失败");
+            throw new BasicAuthenticationException("获取用户信息失败");
         }
     }
 

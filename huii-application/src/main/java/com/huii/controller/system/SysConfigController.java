@@ -6,6 +6,8 @@ import com.huii.common.core.model.PageParam;
 import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.OpType;
+import com.huii.common.enums.ResType;
+import com.huii.common.utils.MessageUtils;
 import com.huii.system.domain.SysConfig;
 import com.huii.system.service.SysConfigService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,13 @@ public class SysConfigController extends BaseController {
 
     private final SysConfigService sysConfigService;
 
+    @PreAuthorize("@ap.hasAuth('system:config:edit')")
+    @GetMapping("/refresh")
+    public R<Void> refreshCache() {
+        sysConfigService.refreshCache();
+        return R.ok(MessageUtils.message(ResType.SYS_CACHE_REFRESH_SUCCESS.getI18n()));
+    }
+
     /**
      * 获取配置列表
      */
@@ -35,7 +44,7 @@ public class SysConfigController extends BaseController {
      * 获取列表
      */
     @GetMapping(value = "/{id}")
-    public R<SysConfig> getRole(@PathVariable Long id) {
+    public R<SysConfig> getConfig(@PathVariable Long id) {
         return R.ok(sysConfigService.selectConfigById(id));
     }
 

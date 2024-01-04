@@ -7,7 +7,9 @@ import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysMenu;
 import com.huii.common.core.model.Route;
 import com.huii.common.core.model.Tree;
+import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.SecurityUtils;
 import com.huii.system.mapper.SysMenuMapper;
 import com.huii.system.service.SysMenuService;
@@ -78,15 +80,18 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public void checkInsert(SysMenu sysMenu) {
         if (sysMenuMapper.exists(new LambdaQueryWrapper<SysMenu>()
                 .eq(SysMenu::getMenuName, sysMenu.getMenuName()))) {
-            throw new ServiceException("菜单名称字段重复");
+            ResType resType = ResType.SYS_MENU_NAME_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         if (sysMenuMapper.exists(new LambdaQueryWrapper<SysMenu>()
                 .eq(SysMenu::getMenuAuth, sysMenu.getMenuAuth()))) {
-            throw new ServiceException("菜单权限字段重复");
+            ResType resType = ResType.SYS_MENU_AUTH_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         if (sysMenuMapper.exists(new LambdaQueryWrapper<SysMenu>()
                 .eq(SysMenu::getMenuPath, sysMenu.getMenuPath()))) {
-            throw new ServiceException("菜单路径字段重复");
+            ResType resType = ResType.SYS_MENU_PATH_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -99,24 +104,28 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public void checkUpdate(SysMenu sysMenu) {
         SysMenu oldOne = sysMenuMapper.selectById(sysMenu.getMenuId());
         if (sysMenu.getMenuId().equals(sysMenu.getParentId())) {
-            throw new ServiceException("不允许的操作,无法将自己作为上级菜单");
+            ResType resType = ResType.SYS_MENU_NOT_ALLOW_SET_PARENT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         if (!StringUtils.equals(sysMenu.getMenuName(), oldOne.getMenuName())) {
             if (sysMenuMapper.exists(new LambdaQueryWrapper<SysMenu>()
                     .eq(SysMenu::getMenuName, sysMenu.getMenuName()))) {
-                throw new ServiceException("菜单名称字段重复");
+                ResType resType = ResType.SYS_MENU_NAME_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
         if (!StringUtils.equals(sysMenu.getMenuAuth(), oldOne.getMenuAuth())) {
             if (sysMenuMapper.exists(new LambdaQueryWrapper<SysMenu>()
                     .eq(SysMenu::getMenuAuth, sysMenu.getMenuAuth()))) {
-                throw new ServiceException("菜单权限字段重复");
+                ResType resType = ResType.SYS_MENU_AUTH_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
         if (!StringUtils.equals(sysMenu.getMenuPath(), oldOne.getMenuPath())) {
             if (sysMenuMapper.exists(new LambdaQueryWrapper<SysMenu>()
                     .eq(SysMenu::getMenuPath, sysMenu.getMenuPath()))) {
-                throw new ServiceException("菜单路径字段重复");
+                ResType resType = ResType.SYS_MENU_PATH_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
     }
@@ -134,17 +143,20 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             List<SysMenu> menuList = sysMenuMapper.selectList(null);
             selectChildrenIds(id, menuList, ids);
             if (sysMenuMapper.checkRoleHasAnyMenu(ids)) {
-                throw new ServiceException("存在角色已分配该菜单");
+                ResType resType = ResType.SYS_MENU_EXISTS_ROLE;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
             sysMenuMapper.deleteBatchIds(ids);
         } else {
             boolean existsChildren = sysMenuMapper.exists(new LambdaQueryWrapper<SysMenu>()
                     .eq(SysMenu::getParentId, id));
             if (existsChildren) {
-                throw new ServiceException("该菜单下存在子菜单");
+                ResType resType = ResType.SYS_MENU_EXISTS_CHILDREN;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
             if (sysMenuMapper.checkRoleHasAnyMenu(ids)) {
-                throw new ServiceException("存在角色已分配该菜单");
+                ResType resType = ResType.SYS_MENU_EXISTS_ROLE;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
             sysMenuMapper.deleteById(id);
         }

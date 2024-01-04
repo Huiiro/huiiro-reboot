@@ -46,6 +46,10 @@ public class R<T> implements Serializable {
         return resultBuilder(SUCCESS_CODE, message, data);
     }
 
+    public static <T> R<T> ok(Integer code, String message) {
+        return resultBuilder(code, message, null);
+    }
+
     public static <T> R<T> ok(Integer code, String message, T data) {
         return resultBuilder(code, message, data);
     }

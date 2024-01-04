@@ -64,8 +64,6 @@ public class SysNoticeController extends BaseController {
         return updateSuccess();
     }
 
-    //TODO update status
-
     /**
      * 删除通知
      */

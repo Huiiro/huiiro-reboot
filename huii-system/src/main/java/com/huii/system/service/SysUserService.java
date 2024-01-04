@@ -8,6 +8,11 @@ import java.util.List;
 
 public interface SysUserService {
 
+    /**
+     * 查询全部用户
+     * @param sysUser sysUser
+     * @return list
+     */
     List<SysUser> selectUserList(SysUser sysUser);
 
     /**

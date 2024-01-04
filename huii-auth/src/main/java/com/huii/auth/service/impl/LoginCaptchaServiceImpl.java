@@ -173,7 +173,8 @@ public class LoginCaptchaServiceImpl implements LoginCaptchaService {
             map.put("captcha", captcha);
             return map;
         } catch (IOException e) {
-            throw new ServiceException("验证码生成异常");
+            ResType resType = ResType.SYS_CODE_GEN_ERROR;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 

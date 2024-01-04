@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
+import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.PageParamUtils;
 import com.huii.common.utils.TimeUtils;
 import com.huii.system.domain.SysLogOp;
@@ -104,7 +106,8 @@ public class SysLogOpServiceImpl extends ServiceImpl<SysLogOpMapper, SysLogOp> i
                 }
             }
         } catch (Exception e) {
-            throw new ServiceException("非法的参数输入");
+            ResType resType = ResType.SYS_ILLEGAL_INPUT_ARG;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         return wrapper;
     }

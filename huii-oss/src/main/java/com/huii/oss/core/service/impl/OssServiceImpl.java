@@ -1,11 +1,13 @@
 package com.huii.oss.core.service.impl;
 
 import com.amazonaws.services.s3.model.S3Object;
+import com.huii.common.enums.ResType;
+import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import com.huii.oss.config.properties.OssProperties;
 import com.huii.oss.core.service.OssService;
 import com.huii.oss.core.template.OssTemplate;
 import com.huii.oss.entity.UploadResult;
-import com.huii.oss.exception.OssException;
 import com.huii.oss.utils.FileUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +31,8 @@ public class OssServiceImpl implements OssService {
             return ossTemplate.putObject(ossProperties.getBucketName(), file.getOriginalFilename(),
                     file.getInputStream(), file.getContentType());
         } catch (IOException e) {
-            throw new OssException("文件上传失败");
+            ResType resType = ResType.SYS_FILE_UPLOAD_FAIL;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -38,7 +41,8 @@ public class OssServiceImpl implements OssService {
         if (ossTemplate.exists(ossProperties.getBucketName(), fileName)) {
             return ossTemplate.getStream(ossProperties.getBucketName(), fileName);
         }
-        throw new OssException("文件不存在或已被删除");
+        ResType resType = ResType.SYS_FILE_NOT_EXIST;
+        throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
     }
 
     @Override
@@ -51,7 +55,8 @@ public class OssServiceImpl implements OssService {
         if (ossTemplate.exists(ossProperties.getBucketName(), fileName)) {
             return ossTemplate.getObject(ossProperties.getBucketName(), fileName);
         }
-        throw new OssException("文件不存在或已被删除");
+        ResType resType = ResType.SYS_FILE_NOT_EXIST;
+        throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
     }
 
     @Override
@@ -59,7 +64,8 @@ public class OssServiceImpl implements OssService {
         try {
             return ossTemplate.getDirectUrl(ossProperties.getBucketName(), fileName);
         } catch (Exception e) {
-            throw new OssException("文件不存在或已被删除");
+            ResType resType = ResType.SYS_FILE_NOT_EXIST;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -68,7 +74,8 @@ public class OssServiceImpl implements OssService {
         try {
             return ossTemplate.getPreSignedUrl(ossProperties.getBucketName(), fileName, 7);
         } catch (Exception e) {
-            throw new OssException("文件不存在或已被删除");
+            ResType resType = ResType.SYS_FILE_NOT_EXIST;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -83,7 +90,8 @@ public class OssServiceImpl implements OssService {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("文件删除失败");
+            ResType resType = ResType.SYS_FILE_DELETE_FAIL;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 }

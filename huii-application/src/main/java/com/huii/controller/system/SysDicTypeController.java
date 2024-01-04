@@ -10,8 +10,10 @@ import com.huii.common.core.model.PageParam;
 import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.OpType;
+import com.huii.common.enums.ResType;
 import com.huii.common.utils.BeanCopyUtils;
 import com.huii.common.utils.ExcelUtils;
+import com.huii.common.utils.MessageUtils;
 import com.huii.system.service.SysDicTypeService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +52,7 @@ public class SysDicTypeController extends BaseController {
     @GetMapping("/refresh")
     public R<Void> refreshCache() {
         sysDicTypeService.refreshCache();
-        return R.ok("刷新缓存成功", null);
+        return R.ok(MessageUtils.message(ResType.SYS_CACHE_REFRESH_SUCCESS.getI18n()));
     }
 
     /**

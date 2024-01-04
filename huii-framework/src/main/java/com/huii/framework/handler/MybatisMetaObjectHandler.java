@@ -4,13 +4,14 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.huii.common.core.model.LoginUser;
 import com.huii.common.core.model.base.BaseEntity;
+import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.reflection.MetaObject;
-import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -38,7 +39,8 @@ public class MybatisMetaObjectHandler implements MetaObjectHandler {
                 baseEntity.setUpdateBy(username);
             }
         } catch (Exception e) {
-            throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "自动注入异常");
+            ResType resType = ResType.SYS_AUTO_INJECT_ERROR;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -55,7 +57,8 @@ public class MybatisMetaObjectHandler implements MetaObjectHandler {
                 }
             }
         } catch (Exception e) {
-            throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "自动注入异常");
+            ResType resType = ResType.SYS_AUTO_INJECT_ERROR;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 

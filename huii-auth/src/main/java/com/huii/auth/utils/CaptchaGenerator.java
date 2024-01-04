@@ -3,7 +3,9 @@ package com.huii.auth.utils;
 import com.huii.auth.core.entity.Captcha;
 import com.huii.auth.core.entity.RectangleDto;
 import com.huii.common.constants.CaptchaConstants;
+import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -148,7 +150,8 @@ public class CaptchaGenerator {
                 return ImageIO.read(file);
             }
         } catch (Exception e) {
-            throw new ServiceException("资源获取失败");
+            ResType resType = ResType.SYS_CODE_GEN_ERROR;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -306,7 +309,8 @@ public class CaptchaGenerator {
             String base64 = Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
             return String.format("data:image/%s;base64,%s", type, base64);
         } catch (IOException e) {
-            throw new ServiceException("图片获取失败，转换异常");
+            ResType resType = ResType.SYS_CODE_GEN_ERROR;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 }

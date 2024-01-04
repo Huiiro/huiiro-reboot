@@ -12,7 +12,9 @@ import com.huii.common.core.model.Label;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.core.service.DicService;
+import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.PageParamUtils;
 import com.huii.common.utils.StreamUtils;
 import com.huii.common.utils.TimeUtils;
@@ -98,11 +100,13 @@ public class SysDicTypeServiceImpl extends ServiceImpl<SysDicTypeMapper, SysDicT
     public void checkInsertDicType(SysDicType sysDicType) {
         if (sysDicTypeMapper.exists(new LambdaQueryWrapper<SysDicType>()
                 .eq(SysDicType::getTypeName, sysDicType.getTypeName()))) {
-            throw new ServiceException("字典名称重复");
+            ResType resType = ResType.SYS_DIC_TYPE_NAME_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         if (sysDicTypeMapper.exists(new LambdaQueryWrapper<SysDicType>()
                 .eq(SysDicType::getDicType, sysDicType.getDicType()))) {
-            throw new ServiceException("字典类型重复");
+            ResType resType = ResType.SYS_DIC_TYPE_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -117,13 +121,15 @@ public class SysDicTypeServiceImpl extends ServiceImpl<SysDicTypeMapper, SysDicT
         if (!StringUtils.equals(sysDicType.getTypeName(), oldOne.getTypeName())) {
             if (sysDicTypeMapper.exists(new LambdaQueryWrapper<SysDicType>()
                     .eq(SysDicType::getTypeName, sysDicType.getTypeName()))) {
-                throw new ServiceException("字典名称重复");
+                ResType resType = ResType.SYS_DIC_TYPE_NAME_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
         if (!StringUtils.equals(sysDicType.getDicType(), oldOne.getDicType())) {
             if (sysDicTypeMapper.exists(new LambdaQueryWrapper<SysDicType>()
                     .eq(SysDicType::getDicType, sysDicType.getDicType()))) {
-                throw new ServiceException("字典类型重复");
+                ResType resType = ResType.SYS_DIC_TYPE_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
     }

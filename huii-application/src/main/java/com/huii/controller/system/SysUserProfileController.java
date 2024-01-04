@@ -11,4 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/system/user/profile")
 @RequiredArgsConstructor
 public class SysUserProfileController extends BaseController {
+
+    //TODO upload avatar
+    //TODO reset password
+    //TODO forget password
+    //TODO get my profile
+    //TODO update my profile
 }

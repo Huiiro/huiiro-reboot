@@ -13,9 +13,11 @@ import com.huii.common.core.model.PageParam;
 import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.OpType;
+import com.huii.common.enums.ResType;
 import com.huii.common.excel.ExcelResult;
 import com.huii.common.utils.BeanCopyUtils;
 import com.huii.common.utils.ExcelUtils;
+import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.SecurityUtils;
 import com.huii.system.listener.SysUserImportListener;
 import com.huii.system.service.SysPostService;
@@ -134,7 +136,8 @@ public class SysUserController extends BaseController {
     @Transactional(rollbackFor = RuntimeException.class)
     public R<SysUser> updateUser(@Validated @RequestBody SysUser sysUser) {
         if (SecurityUtils.isAdmin(sysUser.getUserId())) {
-            return R.failed("无法修改管理员信息");
+            ResType resType = ResType.SYS_ADMIN_NOT_ALLOW_UPDATE;
+            return R.failed(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         sysUserService.checkUpdate(sysUser);
         sysUserService.updateUser(sysUser);
@@ -163,12 +166,13 @@ public class SysUserController extends BaseController {
     @Transactional(rollbackFor = RuntimeException.class)
     public R<Void> deleteUser(@RequestBody Long[] ids) {
         if (SecurityUtils.isRoleAdmin(ids)) {
-            return R.failed("无法删除管理员");
+            ResType resType = ResType.SYS_ADMIN_NOT_ALLOW_DELETE;
+            return R.failed(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         if (ArrayUtils.contains(ids, getUserId())) {
-            return R.failed("无法删除当前用户");
+            ResType resType = ResType.SYS_CURRENT_USER_NOT_ALLOW_DELETE;
+            return R.failed(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
-        //TODO check dept role post?
         sysUserService.deleteUsers(ids);
         return deleteSuccess();
     }

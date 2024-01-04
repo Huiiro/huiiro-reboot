@@ -249,6 +249,7 @@ const handleReset2 = () => {
   query2.value.tableName = '';
   getData2();
 };
+
 /**
  * 分页参数配置
  */
@@ -313,6 +314,7 @@ const multiSelectData2 = ref();
 const selectionChange2 = (value: any) => {
   multiSelectData2.value = value
 }
+
 /**
  * 隐藏时间列
  */
@@ -340,6 +342,7 @@ const handleRefresh = () => {
 
 //对话框
 const dialogVisible = ref(false);
+
 /**
  * 关闭表单
  */
@@ -347,6 +350,7 @@ const handleCloseForm = () => {
   dialogVisible.value = false;
   dialogVisible2.value = false;
 };
+
 /**
  * 提交表单
  */
@@ -364,6 +368,7 @@ const handleSubmitForm = async (fr: FormInstance | undefined) => {
     }
   })
 };
+
 /**
  * 点击添加
  */
@@ -371,6 +376,7 @@ const handleSubmitForm = async (fr: FormInstance | undefined) => {
 const handleInsert = (index, row) => {
   dialogVisible.value = true;
 };
+
 /**
  * 点击编辑
  */
@@ -384,6 +390,7 @@ const handleEdit = (index, row) => {
   }
   router.push({name: '字段详情', params: {tableId: id}});
 };
+
 /**
  * 删除
  */

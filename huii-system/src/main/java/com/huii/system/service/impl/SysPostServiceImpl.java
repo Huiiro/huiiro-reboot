@@ -8,7 +8,9 @@ import com.huii.common.core.domain.SysPost;
 import com.huii.common.core.model.Label;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
+import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.PageParamUtils;
 import com.huii.common.utils.TimeUtils;
 import com.huii.system.domain.SysUserPost;
@@ -66,11 +68,13 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
     public void checkInsert(SysPost sysPost) {
         if (sysPostMapper.exists(new LambdaQueryWrapper<SysPost>()
                 .eq(SysPost::getPostName, sysPost.getPostName()))) {
-            throw new ServiceException("岗位名称重复");
+            ResType resType = ResType.SYS_POST_NAME_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
         if (sysPostMapper.exists(new LambdaQueryWrapper<SysPost>()
                 .eq(SysPost::getPostKey, sysPost.getPostKey()))) {
-            throw new ServiceException("岗位编码重复");
+            ResType resType = ResType.SYS_POST_KEY_REPEAT;
+            throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
         }
     }
 
@@ -85,13 +89,15 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
         if (!StringUtils.equals(sysPost.getPostName(), oldOne.getPostName())) {
             if (sysPostMapper.exists(new LambdaQueryWrapper<SysPost>()
                     .eq(SysPost::getPostName, sysPost.getPostName()))) {
-                throw new ServiceException("岗位名称重复");
+                ResType resType = ResType.SYS_POST_NAME_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
         if (!StringUtils.equals(sysPost.getPostKey(), oldOne.getPostKey())) {
             if (sysPostMapper.exists(new LambdaQueryWrapper<SysPost>()
                     .eq(SysPost::getPostKey, sysPost.getPostKey()))) {
-                throw new ServiceException("岗位编码重复");
+                ResType resType = ResType.SYS_POST_KEY_REPEAT;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
     }
@@ -108,7 +114,8 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
                     .eq(SysUserPost::getPostId, id));
             if (exists) {
                 SysPost sysPost = selectPostById(id);
-                throw new ServiceException(sysPost.getPostName() + "岗位下存在用户，不允许删除");
+                ResType resType = ResType.SYS_POST_EXISTS_USER;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n(), sysPost.getPostName()));
             }
         }
 

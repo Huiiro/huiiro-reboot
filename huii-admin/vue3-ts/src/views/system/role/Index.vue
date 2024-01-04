@@ -485,6 +485,7 @@ const formRuleRef = ref<FormInstance>();
 const isEdit = ref(false);
 //对话框
 const dialogVisible = ref(false);
+
 /**
  * 关闭表单
  */
@@ -492,6 +493,7 @@ const handleCloseForm = () => {
   isEdit.value = false;
   dialogVisible.value = false;
 };
+
 /**
  * 提交表单
  */
@@ -525,6 +527,7 @@ const doInsert = () => {
     }
   });
 };
+
 /**
  * 点击添加
  */
@@ -544,6 +547,7 @@ const handleInsert = (index, row) => {
   isEdit.value = false;
   dialogVisible.value = true;
 };
+
 /**
  * 点击编辑
  */
@@ -561,6 +565,7 @@ const handleEdit = (index, row) => {
     dialogVisible.value = true;
   });
 };
+
 /**
  * 删除
  */

@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.model.PageParam;
+import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
+import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.PageParamUtils;
 import com.huii.generator.config.TemplateConfig;
 import com.huii.generator.config.properties.GenProperties;
@@ -145,7 +147,8 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
                 pk++;
             }
             if(pk > 1) {
-                throw new ServiceException("存在多个主键，请检查");
+                ResType resType = ResType.GEN_MULTI_PRIMARY_KEY;
+                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
         for (GenColumn column : columns) {
