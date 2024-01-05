@@ -82,9 +82,13 @@ public class SysCacheController extends BaseController {
      */
     @GetMapping("/key/value/{cacheKey}")
     public R<SysCache> getCacheKeyValue(@PathVariable String cacheKey) {
-        String value = redisTemplate.opsForValue().get(cacheKey);
-        SysCache sysCache = new SysCache(null, cacheKey, value, null);
-        return R.ok(sysCache);
+        try {
+            String value = redisTemplate.opsForValue().get(cacheKey);
+            SysCache sysCache = new SysCache(null, cacheKey, value, null);
+            return R.ok(sysCache);
+        } catch (Exception e) {
+            return R.failed("暂不支持查看");
+        }
     }
 
     /**

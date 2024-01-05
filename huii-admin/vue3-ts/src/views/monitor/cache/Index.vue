@@ -210,7 +210,23 @@ onMounted(() => {
 })
 
 const cacheSize = ref({});
-const cacheProperties = ref({});
+const cacheProperties = ref({
+  redis_version: '',
+  uptime_in_seconds: '',
+  uptime_in_days: '',
+  redis_mode: '',
+  connected_clients: '',
+  blocked_clients: '',
+  cluster_enabled: '',
+  cluster_size: '',
+  used_memory_human: '',
+  used_cpu_user_children: '',
+  instantaneous_output_kbps: '',
+  instantaneous_input_kbps: '',
+  aof_enabled: '',
+  rdb_last_bgsave_status: '',
+  db0: '',
+});
 const cacheCommands = ref({});
 const memory = ref();
 const command = ref();
@@ -247,7 +263,7 @@ const init = () => {
         type: "gauge",
         min: 0,
         max: maxMemory,
-        center: ['50%', '50%'],
+        center: ['30%', '50%'],
         detail: {
           formatter: usedMemory,
         },
@@ -281,7 +297,7 @@ const init = () => {
       },
       legend: {
         orient: 'vertical',
-        x: 'right',
+        x: '65%',
         data: cacheCommands.value.key
       },
       series: [{
@@ -289,7 +305,7 @@ const init = () => {
         type: "pie",
         roseType: "radius",
         radius: [0, "55%"],
-        center: ["50%", "50%"],
+        center: ["30%", "50%"],
         data: cacheCommands.value,
         animationEasing: "cubicInOut",
         animationDuration: 1500,
@@ -356,8 +372,10 @@ const handleRowClickKey = (row) => {
 }
 const getCacheValue = (key) => {
   getCacheKeyValue(key).then(res => {
-    cacheData.value = res.data;
-    dialogVisible.value = true;
+    if(res.code === 0) {
+      cacheData.value = res.data;
+      dialogVisible.value = true;
+    }
   });
 }
 const handleCloseForm = () => {
@@ -419,7 +437,7 @@ const handleRefresh = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 500px;
+  width: 580px;
   height: 400px;
 }
 
