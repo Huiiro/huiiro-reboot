@@ -2,7 +2,6 @@ import axios from "axios";
 import {ElMessage} from "element-plus";
 import {getAccessToken, refreshAccessToken} from "@/utils/token.ts";
 import {useUserStore} from "@/store/modules/user.ts";
-import {useRouter} from "vue-router";
 
 let request = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -42,21 +41,25 @@ request.interceptors.response.use((response) => {
 }, async (error) => {
     let status = error.response.status;
     let code = error.response.data.code;
-
     if (status === 401) {
         if (code === 407) {
             //自定义token异常 获取新accessToken
-            const newAccessToken = await refreshAccessToken()
+            const newAccessToken = await refreshAccessToken();
             if (newAccessToken) {
-                location.reload()
-                error.config.headers.Authorization = 'Bearer ' + newAccessToken
-                return axios(error.config)
+                location.reload();
+                error.config.headers.Authorization = 'Bearer ' + newAccessToken;
+                return axios(error.config);
             } else {
                 const userStore = useUserStore();
-                const router = useRouter();
                 userStore.clearLoginInfo();
-                await router.push({path: "/index"})
+                localStorage.clear();
+                location.reload();
             }
+        } else if (code === 401) {
+            const userStore = useUserStore();
+            userStore.clearLoginInfo();
+            localStorage.clear();
+            location.reload();
         }
     }
     let message = error.response.data.message;

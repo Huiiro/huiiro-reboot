@@ -26,20 +26,30 @@ public class SysCacheController extends BaseController {
     private final static List<SysCache> CACHES = new ArrayList<>();
 
     static {
-        CACHES.add(new SysCache(CacheConstants.USER, "在线用户"));
+        CACHES.add(new SysCache(CacheConstants.USER, "用户信息"));
+        CACHES.add(new SysCache(CacheConstants.TOKEN, "用户凭证"));
+        CACHES.add(new SysCache(CacheConstants.VERIFY_CODE, "验证码信息"));
+        CACHES.add(new SysCache(CacheConstants.VERIFY_TIMES, "验证码错误次数"));
+        CACHES.add(new SysCache(CacheConstants.ERROR_TIMES, "登录错误次数"));
+        CACHES.add(new SysCache(CacheConstants.RATE_LIMIT, "接口限流"));
+        CACHES.add(new SysCache(CacheConstants.REPEAT_SUBMIT, "重复提交"));
+        CACHES.add(new SysCache(CacheConstants.SYS_DICT, "系统字典"));
+        CACHES.add(new SysCache(CacheConstants.SYS_CONFIG, "系统参数"));
     }
 
+    @SuppressWarnings("all")
     @GetMapping("/info")
     public R<Map<String, Object>> getCacheInfo() {
         RedisConnection connection = redissonConnectionFactory.getConnection();
+        Properties commandStats = connection.info("commandstats");
         RedisServerCommands commands = connection.serverCommands();
         Properties properties = commands.info();
         Long dbSize = commands.dbSize();
         Map<String, Object> map = new HashMap<>(3);
         List<Map<String, String>> list = new ArrayList<>();
-        Objects.requireNonNull(properties).stringPropertyNames().forEach(k -> {
+        Objects.requireNonNull(commandStats).stringPropertyNames().forEach(k -> {
             Map<String, String> data = new HashMap<>(2);
-            String property = properties.getProperty(k);
+            String property = commandStats.getProperty(k);
             data.put("name", StringUtils.removeStart(k, "cmdstat_"));
             data.put("value", StringUtils.substringBetween(property, "calls=", ",usec"));
             list.add(data);
@@ -62,7 +72,7 @@ public class SysCacheController extends BaseController {
      * 获取缓存键值
      */
     @GetMapping("/key/{cacheName}")
-    public R<Set<String>> getCaches(@PathVariable String cacheName) {
+    public R<Set<String>> getCacheKey(@PathVariable String cacheName) {
         Set<String> keys = redisTemplate.keys(cacheName + "*");
         return R.ok(keys);
     }
@@ -71,7 +81,7 @@ public class SysCacheController extends BaseController {
      * 获取缓存值
      */
     @GetMapping("/key/value/{cacheKey}")
-    public R<SysCache> getCacheKey(@PathVariable String cacheKey) {
+    public R<SysCache> getCacheKeyValue(@PathVariable String cacheKey) {
         String value = redisTemplate.opsForValue().get(cacheKey);
         SysCache sysCache = new SysCache(null, cacheKey, value, null);
         return R.ok(sysCache);
@@ -98,6 +108,9 @@ public class SysCacheController extends BaseController {
         return deleteSuccess();
     }
 
+    /**
+     * 清空缓存
+     */
     @PostMapping("/delete/all")
     public R<Object> clearCaches() {
         Collection<String> keys = redisTemplate.keys("*");
