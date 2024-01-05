@@ -1,88 +1,80 @@
 <template>
   <el-tabs type="border-card">
     <el-tab-pane label="缓存监控">
-      <div class="main-info">
+      <div class="main-info cache">
        <el-card>
          <el-divider/>
          <el-row>
-           <el-col :span="2"/>
-           <el-col :span="5">
+           <el-col :span="6">
              Redis版本： {{ cacheProperties.redis_version }}
            </el-col>
-           <el-col :span="5">
+           <el-col :span="6">
              运行时间(秒)： {{ cacheProperties.uptime_in_seconds }}
            </el-col>
-           <el-col :span="5">
+           <el-col :span="6">
              运行时间(天)： {{ cacheProperties.uptime_in_days }}
            </el-col>
-           <el-col :span="5">
+           <el-col :span="6">
              运行模式： {{ cacheProperties.redis_mode === 'standalone' ? '单机部署' : '集群部署' }}
            </el-col>
-           <el-col :span="2"/>
          </el-row>
          <el-divider/>
          <el-row>
-           <el-col :span="2"/>
-           <el-col :span="5">
+           <el-col :span="6">
              连接客户端数量： {{ cacheProperties.connected_clients }}
            </el-col>
-           <el-col :span="5">
+           <el-col :span="6">
              阻塞客户端数量：{{ cacheProperties.blocked_clients }}
            </el-col>
-           <el-col :span="5">
+           <el-col :span="6">
              是否启用集群：{{ cacheProperties.cluster_enabled === '0' ? '否' : '是' }}
            </el-col>
-           <el-col :span="5">
+           <el-col :span="6">
              集群节点数量：<span v-if="cacheProperties.cluster_size">{{ cacheProperties.cluster_size }}</span><span
                v-else>N/A</span>
            </el-col>
-           <el-col :span="2"/>
          </el-row>
          <el-divider/>
          <el-row>
-           <el-col :span="2"/>
-           <el-col :span="5">
+           <el-col :span="6">
              使用内存： {{ cacheProperties.used_memory_human }}
            </el-col>
-           <el-col :span="5">
+           <el-col :span="6">
              使用CPU(%)： {{ parseFloat(cacheProperties.used_cpu_user_children).toFixed(3) }}
            </el-col>
-           <el-col :span="5">
+           <el-col :span="6">
              网络出口：{{ cacheProperties.instantaneous_output_kbps }}kps
            </el-col>
-           <el-col :span="5">
+           <el-col :span="6">
              网络入口： {{ cacheProperties.instantaneous_input_kbps }}kps
            </el-col>
-           <el-col :span="2"/>
          </el-row>
          <el-divider/>
          <el-row>
-           <el-col :span="2"/>
-           <el-col :span="5">
+           <el-col :span="6">
              是否开启AOF： {{ cacheProperties.aof_enabled === '0' ? '否' : '是' }}
            </el-col>
-           <el-col :span="5">
+           <el-col :span="6">
              是否开启RDB： {{ cacheProperties.rdb_last_bgsave_status === 'ok' ? '是' : '否' }}
            </el-col>
-           <el-col :span="5">
+           <el-col :span="6">
              key数量： {{ cacheSize }}
            </el-col>
-           <el-col :span="5">
+           <el-col :span="6">
            </el-col>
-           <el-col :span="2"/>
          </el-row>
          <el-divider/>
        </el-card>
       </div>
-      <div class="db-info" v-if="false">
-        <el-row>
-          <el-col :span="2"/>
-          <el-col :span="5">
-            {{ cacheProperties.db0 }}
-          </el-col>
-          <el-col :span="2"/>
-        </el-row>
-        <el-divider/>
+      <div class="db-info cache" v-if="false">
+        <el-card>
+          <el-row>
+            <el-col :span="12">
+              DB0: {{ cacheProperties.db0 }}
+            </el-col>
+          </el-row>
+          <el-divider/>
+        </el-card>
       </div>
       <div class="ec-info">
         <el-card class="chart-card">
@@ -122,6 +114,7 @@
         <el-row>
           <el-col :span="11">
             <el-table :data="caches"
+                      size="small"
                       @row-click="handleRowClickName">
               <el-table-column prop="cacheName" label="缓存名称" align="left" min-width="120"/>
               <el-table-column prop="cacheRemark" label="缓存备注" align="left" min-width="120"/>
@@ -415,11 +408,24 @@ const handleRefresh = () => {
 </script>
 
 <style scoped lang="scss">
+.cache {
+  font-size: 12px
+}
+
+.el-divider {
+  margin: 12px 0;
+  padding: 0;
+}
+
 .ec-info {
-  margin-top: 40px;
+  margin-top: 30px;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+}
+
+.db-info {
+  margin-top: 30px;
 }
 
 .chart-card {

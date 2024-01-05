@@ -63,4 +63,26 @@ public class IpAddressUtils {
         String query = RegionUtils.query(ip);
         return ObjectUtils.isEmpty(query) ? "" : query;
     }
+
+    /**
+     * 获取主机名
+     */
+    public static String getHostName() {
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            return "未知";
+        }
+    }
+
+    /**
+     * 获取本地IP
+     */
+    public static String getHostIp() {
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            return "127.0.0.1";
+        }
+    }
 }
