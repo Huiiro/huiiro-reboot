@@ -1,123 +1,121 @@
 <template>
-  <el-card>
-    <!--formSearch-->
-    <el-form :inline="true" :size="size" v-show="showSearch">
-      <!--searchParam-->
-      <el-form-item label="表单名称" class="global-input-item">
-        <el-input v-model="query.tableName" placeholder="请输入表单名称"
-                  class="global-input" :size="size"/>
-      </el-form-item>
-      <!--fixed-->
-      <el-form-item>
-        <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
-        <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <!--formButton-->
-    <el-form :inline="true" :size="size">
-      <!--left select-->
-      <!--edit-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('tool:gen:edit')">
-        <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改表格
-        </el-button>
-      </el-form-item>
-      <!--delete-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('tool:gen:delete')">
-        <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除表格
-        </el-button>
-      </el-form-item>
-      <!--import-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('tool:gen:add')">
-        <el-button :size="size" :icon="Download" @click="handleImport"
-                   :color="layoutStore.BtnImport" plain>从数据库导入
-        </el-button>
-      </el-form-item>
-      <!--export-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('tool:gen:export')">
-        <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain :disabled="selectable">导出代码
-        </el-button>
-      </el-form-item>
-      <!--right fixed-->
-      <el-form-item class="global-form-item-right">
-        <!--显示/隐藏时间列-->
-        <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
-        <!--隐藏搜索栏按钮-->
-        <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
-        <!--刷新按钮-->
-        <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
-      </el-form-item>
-    </el-form>
-    <!--dataTable-->
-    <el-table :data="tableData"
-              v-loading="loading"
-              :size="size"
-              :highlight-current-row="true"
-              header-cell-class-name="global-table-header"
-              class="global-table"
-              stripe
-              @selection-change="selectionChange">
-      <el-table-column type="selection" width="55"/>
-      <el-table-column prop="tableName" label="表名称" align="left" min-width="150"/>
-      <el-table-column prop="tableComment" label="表注释" align="center" min-width="150"/>
-      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
-      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
-      <el-table-column label="表操作" align="center" width="200" fixed="right"
-                       v-if="checkPermissions(['tool:gen:export','tool:gen:edit','tool:gen:delete','tool:gen:sync'])">
-        <template #default="scope">
-          <div class="display">
-            <div class="display" v-if="checkPermission('tool:gen:edit')">
-              <el-button class="global-table-btn"
-                         size="small" type="primary" link :icon="Edit"
-                         @click="handleEdit(scope.$index, scope.row)">
-                编辑
-              </el-button>
-              <el-divider direction="vertical"/>
-            </div>
-            <div class="display" v-if="checkPermission('tool:gen:delete')">
-              <el-button class="global-table-btn red"
-                         size="small" type="primary" link :icon="Delete"
-                         @click="handleDelete(scope.$index, scope.row)">
-                删除
-              </el-button>
-              <el-divider direction="vertical"/>
-            </div>
+  <!--formSearch-->
+  <el-form :inline="true" :size="size" v-show="showSearch">
+    <!--searchParam-->
+    <el-form-item label="表单名称" class="global-input-item">
+      <el-input v-model="query.tableName" placeholder="请输入表单名称"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <!--fixed-->
+    <el-form-item>
+      <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
+      <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
+    </el-form-item>
+  </el-form>
+  <!--formButton-->
+  <el-form :inline="true" :size="size">
+    <!--left select-->
+    <!--edit-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('tool:gen:edit')">
+      <el-button :size="size" :icon="Edit" @click="handleEdit"
+                 :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改表格
+      </el-button>
+    </el-form-item>
+    <!--delete-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('tool:gen:delete')">
+      <el-button :size="size" :icon="Delete" @click="handleDelete"
+                 :color="layoutStore.BtnDelete" plain :disabled="selectable">删除表格
+      </el-button>
+    </el-form-item>
+    <!--import-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('tool:gen:add')">
+      <el-button :size="size" :icon="Download" @click="handleImport"
+                 :color="layoutStore.BtnImport" plain>从数据库导入
+      </el-button>
+    </el-form-item>
+    <!--export-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('tool:gen:export')">
+      <el-button :size="size" :icon="Upload" @click="handleExport"
+                 :color="layoutStore.BtnExport" plain :disabled="selectable">导出代码
+      </el-button>
+    </el-form-item>
+    <!--right fixed-->
+    <el-form-item class="global-form-item-right">
+      <!--显示/隐藏时间列-->
+      <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
+      <!--隐藏搜索栏按钮-->
+      <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
+      <!--刷新按钮-->
+      <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
+    </el-form-item>
+  </el-form>
+  <!--dataTable-->
+  <el-table :data="tableData"
+            v-loading="loading"
+            :size="size"
+            :highlight-current-row="true"
+            header-cell-class-name="global-table-header"
+            class="global-table"
+            stripe
+            @selection-change="selectionChange">
+    <el-table-column type="selection" width="55"/>
+    <el-table-column prop="tableName" label="表名称" align="left" min-width="150"/>
+    <el-table-column prop="tableComment" label="表注释" align="center" min-width="150"/>
+    <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
+    <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
+    <el-table-column label="表操作" align="center" width="200" fixed="right"
+                     v-if="checkPermissions(['tool:gen:export','tool:gen:edit','tool:gen:delete','tool:gen:sync'])">
+      <template #default="scope">
+        <div class="display">
+          <div class="display" v-if="checkPermission('tool:gen:edit')">
+            <el-button class="global-table-btn"
+                       size="small" type="primary" link :icon="Edit"
+                       @click="handleEdit(scope.$index, scope.row)">
+              编辑
+            </el-button>
+            <el-divider direction="vertical"/>
+          </div>
+          <div class="display" v-if="checkPermission('tool:gen:delete')">
+            <el-button class="global-table-btn red"
+                       size="small" type="primary" link :icon="Delete"
+                       @click="handleDelete(scope.$index, scope.row)">
+              删除
+            </el-button>
+            <el-divider direction="vertical"/>
+          </div>
 
-            <el-dropdown class="global-table-dropdown" size="small"
-                         v-if="checkPermissions(['tool:gen:export','tool:gen:sync'])">
+          <el-dropdown class="global-table-dropdown" size="small"
+                       v-if="checkPermissions(['tool:gen:export','tool:gen:sync'])">
               <span class="display">
                 <el-icon><DArrowRight/></el-icon>
                 更多
               </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item :icon="Upload" @click="handleExport(scope.$index, scope.row)"
-                                    v-if="checkPermission('tool:gen:export')">导出代码
-                  </el-dropdown-item>
-                  <el-dropdown-item :icon="Refresh" @click="handleSync(scope.$index, scope.row)"
-                                    v-if="checkPermission('tool:gen:sync')">同步表结构
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!--pagination-->
-    <el-pagination
-        class="global-pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :small="pageLayoutSize"
-        :layout="pageLayout"
-        :page-sizes="pageSizes"
-        :current-page="pageCurrent"
-        :page-size="pageSize"
-        :total="pageTotal"/>
-  </el-card>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item :icon="Upload" @click="handleExport(scope.$index, scope.row)"
+                                  v-if="checkPermission('tool:gen:export')">导出代码
+                </el-dropdown-item>
+                <el-dropdown-item :icon="Refresh" @click="handleSync(scope.$index, scope.row)"
+                                  v-if="checkPermission('tool:gen:sync')">同步表结构
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+      </template>
+    </el-table-column>
+  </el-table>
+  <!--pagination-->
+  <el-pagination
+      class="global-pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :small="pageLayoutSize"
+      :layout="pageLayout"
+      :page-sizes="pageSizes"
+      :current-page="pageCurrent"
+      :page-size="pageSize"
+      :total="pageTotal"/>
 
   <el-dialog class="global-dialog-iu"
              title="选择导入表" v-model="dialogVisible2"

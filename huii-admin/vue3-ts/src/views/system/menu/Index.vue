@@ -1,139 +1,137 @@
 <template>
-  <el-card>
-    <!--formSearch-->
-    <el-form :inline="true" :size="size" v-show="showSearch">
-      <!--searchParam-->
-      <el-form-item label="菜单名称" class="global-input-item">
-        <el-input v-model="query.menuName" placeholder="请输入菜单名称"
-                  class="global-input" :size="size"/>
-      </el-form-item>
-      <el-form-item label="菜单状态" class="global-input-item">
-        <el-select v-model="query.menuStatus" placeholder="请选择菜单状态"
-                   :size="size">
-          <el-option
-              v-for="item in menuStatusOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-        </el-select>
-      </el-form-item>
-      <!--fixed-->
-      <el-form-item>
-        <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
-        <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <!--formButton-->
-    <el-form :inline="true" :size="size">
-      <!--left select-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:menu:add')">
-        <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain>添加菜单
-        </el-button>
-      </el-form-item>
-      <!--right fixed-->
-      <el-form-item class="global-form-item-right">
-        <!--级联删除按钮 仅树表生效-->
-        <el-button :size="size" circle @click="handleAllowCascadeDelete">
-          <el-icon>
-            <component :is="allowIcon"/>
-          </el-icon>
-        </el-button>
-        <!--折叠树形按钮 仅树表生效-->
-        <el-button :size="size" :icon="Sort" circle @click="handleExpandAll"/>
-        <!--显示/隐藏时间列-->
-        <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
-        <!--隐藏搜索栏按钮-->
-        <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
-        <!--刷新按钮-->
-        <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
-      </el-form-item>
-    </el-form>
-    <!--dataTable-->
-    <el-table :data="tableData"
-              v-loading="loading"
-              :size="size"
-              :row-key="rowKey"
-              :tree-props="treeProps"
-              :default-expand-all="expandTable"
-              :expand-row-keys="expandRowKeys"
-              :highlight-current-row="true"
-              header-cell-class-name="global-table-header"
-              class="global-table"
-              stripe>
-      <el-table-column prop="menuName" label="菜单名称" align="left" min-width="200"/>
-      <el-table-column prop="menuIcon" label="菜单图标" align="left" min-width="120">
-        <template #default="scope">
-          <el-icon v-if="scope.row.menuIcon">
-            <component :is="scope.row.menuIcon"/>
-          </el-icon>
-        </template>
-      </el-table-column>
-      <el-table-column prop="menuAuth" label="菜单权限字段" align="left" min-width="240"/>
-      <el-table-column prop="menuPath" label="菜单路由地址" align="left" min-width="240"/>
-      <el-table-column prop="menuComponent" label="菜单路由组件" align="left" min-width="240"/>
-      <el-table-column prop="menuSeq" label="菜单展示顺序" align="center" sortable width="140"/>
-      <el-table-column prop="menuType" label="菜单类型" align="center" width="120">
-        <template #default="scope">
-          <el-tag :size="size"
-          >{{ getMenuType(scope.row.menuType) }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="menuVisible" label="是否展示" align="center" width="120">
-        <template #default="scope">
-          <el-tag v-for="tag in menuVisibleOptions"
-                  v-show="tag.value === scope.row.menuStatus"
-                  :size="size"
-                  :key="tag.value"
-                  :type="tag.type"> {{ tag.label }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="menuStatus" label="菜单状态" align="center" width="120">
-        <template #default="scope">
-          <el-tag v-for="tag in menuStatusOptions"
-                  v-show="tag.value === scope.row.menuStatus"
-                  :size="size"
-                  :key="tag.value"
-                  :type="tag.type"> {{ tag.label }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
-      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
-      <el-table-column label="菜单操作" align="center" width="220" fixed="right"
-                       v-if="checkPermissions(['system:menu:add','system:menu:edit','system:menu:delete'])">
-        <template #default="scope">
-          <div class="display">
-            <div v-if="checkPermission('system:menu:add')" class="display">
-              <el-button class="global-table-btn"
-                         size="small" type="primary" link :icon="Plus"
-                         @click="handleInsert(scope.$index, scope.row)">
-                添加
-              </el-button>
-              <el-divider direction="vertical"/>
-            </div>
-            <div class="display" v-if="checkPermission('system:menu:edit')">
-              <el-button class="global-table-btn"
-                         size="small" type="primary" link :icon="Edit"
-                         @click="handleEdit(scope.$index, scope.row)">
-                编辑
-              </el-button>
-              <el-divider direction="vertical"/>
-            </div>
-            <div class="display" v-if="checkPermission('system:menu:delete')">
-              <el-button class="global-table-btn red"
-                         size="small" type="primary" link :icon="Delete"
-                         @click="handleDelete(scope.$index, scope.row)">
-                删除
-              </el-button>
-            </div>
+  <!--formSearch-->
+  <el-form :inline="true" :size="size" v-show="showSearch">
+    <!--searchParam-->
+    <el-form-item label="菜单名称" class="global-input-item">
+      <el-input v-model="query.menuName" placeholder="请输入菜单名称"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <el-form-item label="菜单状态" class="global-input-item">
+      <el-select v-model="query.menuStatus" placeholder="请选择菜单状态"
+                 :size="size">
+        <el-option
+            v-for="item in menuStatusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <!--fixed-->
+    <el-form-item>
+      <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
+      <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
+    </el-form-item>
+  </el-form>
+  <!--formButton-->
+  <el-form :inline="true" :size="size">
+    <!--left select-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:menu:add')">
+      <el-button :size="size" :icon="Plus" @click="handleInsert"
+                 :color="layoutStore.BtnInsert" plain>添加菜单
+      </el-button>
+    </el-form-item>
+    <!--right fixed-->
+    <el-form-item class="global-form-item-right">
+      <!--级联删除按钮 仅树表生效-->
+      <el-button :size="size" circle @click="handleAllowCascadeDelete">
+        <el-icon>
+          <component :is="allowIcon"/>
+        </el-icon>
+      </el-button>
+      <!--折叠树形按钮 仅树表生效-->
+      <el-button :size="size" :icon="Sort" circle @click="handleExpandAll"/>
+      <!--显示/隐藏时间列-->
+      <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
+      <!--隐藏搜索栏按钮-->
+      <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
+      <!--刷新按钮-->
+      <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
+    </el-form-item>
+  </el-form>
+  <!--dataTable-->
+  <el-table :data="tableData"
+            v-loading="loading"
+            :size="size"
+            :row-key="rowKey"
+            :tree-props="treeProps"
+            :default-expand-all="expandTable"
+            :expand-row-keys="expandRowKeys"
+            :highlight-current-row="true"
+            header-cell-class-name="global-table-header"
+            class="global-table"
+            stripe>
+    <el-table-column prop="menuName" label="菜单名称" align="left" min-width="200"/>
+    <el-table-column prop="menuIcon" label="菜单图标" align="left" min-width="120">
+      <template #default="scope">
+        <el-icon v-if="scope.row.menuIcon">
+          <component :is="scope.row.menuIcon"/>
+        </el-icon>
+      </template>
+    </el-table-column>
+    <el-table-column prop="menuAuth" label="菜单权限字段" align="left" min-width="240"/>
+    <el-table-column prop="menuPath" label="菜单路由地址" align="left" min-width="240"/>
+    <el-table-column prop="menuComponent" label="菜单路由组件" align="left" min-width="240"/>
+    <el-table-column prop="menuSeq" label="菜单展示顺序" align="center" sortable width="140"/>
+    <el-table-column prop="menuType" label="菜单类型" align="center" width="120">
+      <template #default="scope">
+        <el-tag :size="size"
+        >{{ getMenuType(scope.row.menuType) }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="menuVisible" label="是否展示" align="center" width="120">
+      <template #default="scope">
+        <el-tag v-for="tag in menuVisibleOptions"
+                v-show="tag.value === scope.row.menuStatus"
+                :size="size"
+                :key="tag.value"
+                :type="tag.type"> {{ tag.label }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="menuStatus" label="菜单状态" align="center" width="120">
+      <template #default="scope">
+        <el-tag v-for="tag in menuStatusOptions"
+                v-show="tag.value === scope.row.menuStatus"
+                :size="size"
+                :key="tag.value"
+                :type="tag.type"> {{ tag.label }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
+    <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
+    <el-table-column label="菜单操作" align="center" width="220" fixed="right"
+                     v-if="checkPermissions(['system:menu:add','system:menu:edit','system:menu:delete'])">
+      <template #default="scope">
+        <div class="display">
+          <div v-if="checkPermission('system:menu:add')" class="display">
+            <el-button class="global-table-btn"
+                       size="small" type="primary" link :icon="Plus"
+                       @click="handleInsert(scope.$index, scope.row)">
+              添加
+            </el-button>
+            <el-divider direction="vertical"/>
           </div>
-        </template>
-      </el-table-column>
-    </el-table>
-  </el-card>
+          <div class="display" v-if="checkPermission('system:menu:edit')">
+            <el-button class="global-table-btn"
+                       size="small" type="primary" link :icon="Edit"
+                       @click="handleEdit(scope.$index, scope.row)">
+              编辑
+            </el-button>
+            <el-divider direction="vertical"/>
+          </div>
+          <div class="display" v-if="checkPermission('system:menu:delete')">
+            <el-button class="global-table-btn red"
+                       size="small" type="primary" link :icon="Delete"
+                       @click="handleDelete(scope.$index, scope.row)">
+              删除
+            </el-button>
+          </div>
+        </div>
+      </template>
+    </el-table-column>
+  </el-table>
 
   <el-dialog class="global-dialog-iu"
              title="菜单管理" v-model="dialogVisible"

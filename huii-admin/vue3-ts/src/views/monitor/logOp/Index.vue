@@ -1,198 +1,196 @@
 <template>
-  <el-card>
-    <!--formSearch-->
-    <el-form :inline="true" :size="size" v-show="showSearch">
-      <!--searchParam-->
-      <el-form-item label="用户名称" class="global-input-item">
-        <el-input v-model="query.opUserName" placeholder="请输入用户名称"
-                  class="global-input" :size="size"/>
-      </el-form-item>
-      <el-form-item label="接口耗时" class="global-input-item">
-        <el-input v-model="costTime" placeholder="请输入接口耗时"
-                  class="global-input" :size="size"/>
-      </el-form-item>
-      <el-form-item label="请求IP" class="global-input-item">
-        <el-input v-model="query.opIp" placeholder="请输入请求IP"
-                  class="global-input" :size="size"/>
-      </el-form-item>
-      <el-form-item label="请求方式" class="global-input-item">
-        <el-select v-model="query.opType" placeholder="请选择请求方式"
-                   :size="size">
-          <el-option
-              v-for="item in logOpTypeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="请求结果" class="global-input-item">
-        <el-select v-model="query.opStatus" placeholder="请选择请求结果"
-                   :size="size">
-          <el-option
-              v-for="item in logOpStatusOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="是否标记" class="global-input-item">
-        <el-select v-model="query.opMarkFlag" placeholder="请选择是否标记"
-                   :size="size">
-          <el-option
-              v-for="item in logOpMarkOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="请求时间" class="global-input-item">
-        <el-date-picker
-            type="datetimerange"
-            v-model="time"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"/>
-      </el-form-item>
-      <!--fixed-->
-      <el-form-item>
-        <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
-        <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <!--formButton-->
-    <el-form :inline="true" :size="size">
-      <!--left select-->
-      <!--delete-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logOp:delete:all')">
-        <el-button :size="size" :icon="Delete" @click="handleDeleteAll"
-                   :color="layoutStore.BtnDelete" plain>删除全部
-        </el-button>
-      </el-form-item>
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logOp:delete')">
-        <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除日志
-        </el-button>
-      </el-form-item>
-      <!--export-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logOp:export')">
-        <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出日志
-        </el-button>
-      </el-form-item>
-      <!--right fixed-->
-      <el-form-item class="global-form-item-right">
-        <!--显示/隐藏时间列-->
-        <el-button :size="size" :icon="Timer" circle @click="handleExpandTime" v-if="false"/>
-        <!--隐藏搜索栏按钮-->
-        <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
-        <!--刷新按钮-->
-        <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
-      </el-form-item>
-    </el-form>
-    <!--dataTable-->
-    <el-table :data="tableData"
-              v-loading="loading"
-              :size="size"
-              :highlight-current-row="true"
-              header-cell-class-name="global-table-header"
-              class="global-table"
-              stripe
-              @selection-change="selectionChange">
-      <el-table-column type="selection" width="55"/>
-      <el-table-column prop="opId" label="日志ID" align="center" min-width="120"/>
-      <el-table-column prop="opUserName" label="用户名称" align="center" min-width="150"/>
-      <el-table-column prop="opMethodName" label="方法名称" align="center" min-width="150"/>
-      <el-table-column prop="opDesc" label="方法描述" align="center" min-width="180"/>
-      <el-table-column prop="opTime" label="操作时间" align="center" sortable min-width="170"/>
-      <el-table-column prop="opCostTime" label="操作花费时间" align="center" sortable min-width="140">
-        <template #default="scope">
-          <p> {{ scope.row.opCostTime }}ms</p>
-        </template>
-      </el-table-column>
-      <el-table-column prop="opIp" label="Ip地址" align="center" min-width="140"/>
-      <el-table-column prop="opAddress" label="真实地址" align="center" min-width="140"/>
-      <el-table-column prop="opRequest" label="请求方式" align="center" width="120"/>
-      <el-table-column prop="opStatus" label="请求结果" align="center" width="120">
-        <template #default="scope">
-          <el-tag v-for="tag in logOpStatusOptions"
-                  v-show="tag.value === scope.row.opStatus"
-                  :size="size"
-                  :key="tag.value"
-                  :type="tag.type"> {{ tag.label }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="opType" label="请求类型" align="center" width="120">
-        <template #default="scope">
-          <el-tag v-for="tag in logOpTypeOptions"
-                  v-show="tag.value === scope.row.opType"
-                  :size="size"
-                  :key="tag.value"
-                  :type="tag.type"> {{ tag.label }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="opMarkFlag" label="标记" align="center" width="120">
-        <template #default="scope">
-          <el-tag v-for="tag in logOpMarkOptions"
-                  v-show="tag.value === scope.row.opMarkFlag"
-                  :size="size"
-                  :key="tag.value"
-                  :type="tag.type"> {{ tag.label }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="opMessage" label="错误信息" align="center" width="180">
-        <template #default="scope">
-          <p style="overflow: hidden;
+  <!--formSearch-->
+  <el-form :inline="true" :size="size" v-show="showSearch">
+    <!--searchParam-->
+    <el-form-item label="用户名称" class="global-input-item">
+      <el-input v-model="query.opUserName" placeholder="请输入用户名称"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <el-form-item label="接口耗时" class="global-input-item">
+      <el-input v-model="costTime" placeholder="请输入接口耗时"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <el-form-item label="请求IP" class="global-input-item">
+      <el-input v-model="query.opIp" placeholder="请输入请求IP"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <el-form-item label="请求方式" class="global-input-item">
+      <el-select v-model="query.opType" placeholder="请选择请求方式"
+                 :size="size">
+        <el-option
+            v-for="item in logOpTypeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="请求结果" class="global-input-item">
+      <el-select v-model="query.opStatus" placeholder="请选择请求结果"
+                 :size="size">
+        <el-option
+            v-for="item in logOpStatusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="是否标记" class="global-input-item">
+      <el-select v-model="query.opMarkFlag" placeholder="请选择是否标记"
+                 :size="size">
+        <el-option
+            v-for="item in logOpMarkOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="请求时间" class="global-input-item">
+      <el-date-picker
+          type="datetimerange"
+          v-model="time"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"/>
+    </el-form-item>
+    <!--fixed-->
+    <el-form-item>
+      <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
+      <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
+    </el-form-item>
+  </el-form>
+  <!--formButton-->
+  <el-form :inline="true" :size="size">
+    <!--left select-->
+    <!--delete-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logOp:delete:all')">
+      <el-button :size="size" :icon="Delete" @click="handleDeleteAll"
+                 :color="layoutStore.BtnDelete" plain>删除全部
+      </el-button>
+    </el-form-item>
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logOp:delete')">
+      <el-button :size="size" :icon="Delete" @click="handleDelete"
+                 :color="layoutStore.BtnDelete" plain :disabled="selectable">删除日志
+      </el-button>
+    </el-form-item>
+    <!--export-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logOp:export')">
+      <el-button :size="size" :icon="Upload" @click="handleExport"
+                 :color="layoutStore.BtnExport" plain>导出日志
+      </el-button>
+    </el-form-item>
+    <!--right fixed-->
+    <el-form-item class="global-form-item-right">
+      <!--显示/隐藏时间列-->
+      <el-button :size="size" :icon="Timer" circle @click="handleExpandTime" v-if="false"/>
+      <!--隐藏搜索栏按钮-->
+      <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
+      <!--刷新按钮-->
+      <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
+    </el-form-item>
+  </el-form>
+  <!--dataTable-->
+  <el-table :data="tableData"
+            v-loading="loading"
+            :size="size"
+            :highlight-current-row="true"
+            header-cell-class-name="global-table-header"
+            class="global-table"
+            stripe
+            @selection-change="selectionChange">
+    <el-table-column type="selection" width="55"/>
+    <el-table-column prop="opId" label="日志ID" align="center" min-width="120"/>
+    <el-table-column prop="opUserName" label="用户名称" align="center" min-width="150"/>
+    <el-table-column prop="opMethodName" label="方法名称" align="center" min-width="150"/>
+    <el-table-column prop="opDesc" label="方法描述" align="center" min-width="180"/>
+    <el-table-column prop="opTime" label="操作时间" align="center" sortable min-width="170"/>
+    <el-table-column prop="opCostTime" label="操作花费时间" align="center" sortable min-width="140">
+      <template #default="scope">
+        <p> {{ scope.row.opCostTime }}ms</p>
+      </template>
+    </el-table-column>
+    <el-table-column prop="opIp" label="Ip地址" align="center" min-width="140"/>
+    <el-table-column prop="opAddress" label="真实地址" align="center" min-width="140"/>
+    <el-table-column prop="opRequest" label="请求方式" align="center" width="120"/>
+    <el-table-column prop="opStatus" label="请求结果" align="center" width="120">
+      <template #default="scope">
+        <el-tag v-for="tag in logOpStatusOptions"
+                v-show="tag.value === scope.row.opStatus"
+                :size="size"
+                :key="tag.value"
+                :type="tag.type"> {{ tag.label }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="opType" label="请求类型" align="center" width="120">
+      <template #default="scope">
+        <el-tag v-for="tag in logOpTypeOptions"
+                v-show="tag.value === scope.row.opType"
+                :size="size"
+                :key="tag.value"
+                :type="tag.type"> {{ tag.label }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="opMarkFlag" label="标记" align="center" width="120">
+      <template #default="scope">
+        <el-tag v-for="tag in logOpMarkOptions"
+                v-show="tag.value === scope.row.opMarkFlag"
+                :size="size"
+                :key="tag.value"
+                :type="tag.type"> {{ tag.label }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="opMessage" label="错误信息" align="center" width="180">
+      <template #default="scope">
+        <p style="overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;"
-          >{{ scope.row.opMessage }}</p>
-        </template>
-      </el-table-column>
-      <el-table-column label="日志操作" align="center" width="200" fixed="right"
-                       v-if="checkPermissions(['system:logOp:edit','system:logOp:delete'])">
-        <template #default="scope">
-          <div class="display">
-            <div class="display" v-if="checkPermission('system:logOp:edit')">
-              <el-button class="global-table-btn"
-                         size="small" type="primary" link :icon="Edit"
-                         @click="handleUpdateStatus(scope.$index, scope.row)">
-                标记
-              </el-button>
-              <el-divider direction="vertical"/>
-            </div>
-            <div class="display" v-if="checkPermission('system:logOp:edit')">
-              <el-button class="global-table-btn"
-                         size="small" type="primary" link :icon="Edit"
-                         @click="handleEdit(scope.$index, scope.row)">
-                详情
-              </el-button>
-              <el-divider direction="vertical"/>
-            </div>
-            <div class="display" v-if="checkPermission('system:logOp:delete')">
-              <el-button class="global-table-btn red"
-                         size="small" type="primary" link :icon="Delete"
-                         @click="handleDelete(scope.$index, scope.row)">
-                删除
-              </el-button>
-            </div>
+        >{{ scope.row.opMessage }}</p>
+      </template>
+    </el-table-column>
+    <el-table-column label="日志操作" align="center" width="200" fixed="right"
+                     v-if="checkPermissions(['system:logOp:edit','system:logOp:delete'])">
+      <template #default="scope">
+        <div class="display">
+          <div class="display" v-if="checkPermission('system:logOp:edit')">
+            <el-button class="global-table-btn"
+                       size="small" type="primary" link :icon="Edit"
+                       @click="handleUpdateStatus(scope.$index, scope.row)">
+              标记
+            </el-button>
+            <el-divider direction="vertical"/>
           </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!--pagination-->
-    <el-pagination
-        class="global-pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :small="pageLayoutSize"
-        :layout="pageLayout"
-        :page-sizes="pageSizes"
-        :current-page="pageCurrent"
-        :page-size="pageSize"
-        :total="pageTotal"/>
-  </el-card>
+          <div class="display" v-if="checkPermission('system:logOp:edit')">
+            <el-button class="global-table-btn"
+                       size="small" type="primary" link :icon="Edit"
+                       @click="handleEdit(scope.$index, scope.row)">
+              详情
+            </el-button>
+            <el-divider direction="vertical"/>
+          </div>
+          <div class="display" v-if="checkPermission('system:logOp:delete')">
+            <el-button class="global-table-btn red"
+                       size="small" type="primary" link :icon="Delete"
+                       @click="handleDelete(scope.$index, scope.row)">
+              删除
+            </el-button>
+          </div>
+        </div>
+      </template>
+    </el-table-column>
+  </el-table>
+  <!--pagination-->
+  <el-pagination
+      class="global-pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :small="pageLayoutSize"
+      :layout="pageLayout"
+      :page-sizes="pageSizes"
+      :current-page="pageCurrent"
+      :page-size="pageSize"
+      :total="pageTotal"/>
 
   <el-dialog class="global-dialog-iu"
              title="日志详情" v-model="dialogVisible"

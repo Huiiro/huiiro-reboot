@@ -1,199 +1,197 @@
 <template>
-  <el-card>
-    <div style="display: flex">
-      <transition name="left-fade">
-        <div class="left" :class="{fold: !showLeft}">
-          <el-input :prefix-icon="Search" :size=size v-model="filterText" v-show="showLeft" placeholder="输入部门名称"/>
-          <el-tree node-key="id"
-                   ref="deptTreeRef"
-                   v-show="showLeft"
-                   :props="props"
-                   :data="selectDeptData"
-                   :highlight-current="true"
-                   :default-expand-all="true"
-                   :expand-on-click-node="false"
-                   :filter-node-method="filterNode"
-                   @node-click="handleDeptNodeClick"
-                   style="padding-top: 20px"/>
-        </div>
-      </transition>
-      <div class="right" :class="{fold: !showLeft}">
-        <!--formSearch-->
-        <el-form :inline="true" :size="size" v-show="showSearch">
-          <!--add for left control-->
-          <el-form-item style="margin-right: 8px">
-            <el-icon @click="handleShowLeft">
-              <Switch/>
-            </el-icon>
-          </el-form-item>
-          <!--searchParam-->
-          <el-form-item label="用户名称" class="global-input-item">
-            <el-input v-model="query.userName" placeholder="请输入用户名称"
-                      class="global-input" :size="size"/>
-          </el-form-item>
-          <el-form-item label="用户手机" class="global-input-item">
-            <el-input v-model="query.phone" placeholder="请输入用户手机"
-                      class="global-input" :size="size"/>
-          </el-form-item>
-          <el-form-item label="用户邮箱" class="global-input-item">
-            <el-input v-model="query.email" placeholder="请输入用户邮箱"
-                      class="global-input" :size="size"/>
-          </el-form-item>
-          <el-form-item label="用户状态" class="global-input-item">
-            <el-select v-model="query.userStatus" placeholder="请选择用户状态"
-                       :size="size">
-              <el-option
-                  v-for="item in userStatusOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"/>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="创建时间" class="global-input-item">
-            <el-date-picker
-                type="datetimerange"
-                v-model="time"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"/>
-          </el-form-item>
-          <!--fixed-->
-          <el-form-item>
-            <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
-            <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
-          </el-form-item>
-        </el-form>
-        <!--formButton-->
-        <el-form :inline="true" :size="size">
-          <!--left select-->
-          <!--add-->
-          <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:add')">
-            <el-button :size="size" :icon="Plus" @click="handleInsert"
-                       :color="layoutStore.BtnInsert" plain>添加用户
-            </el-button>
-          </el-form-item>
-          <!--edit-->
-          <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:edit')">
-            <el-button :size="size" :icon="Edit" @click="handleEdit"
-                       :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改用户
-            </el-button>
-          </el-form-item>
-          <!--delete-->
-          <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:delete')">
-            <el-button :size="size" :icon="Delete" @click="handleDelete"
-                       :color="layoutStore.BtnDelete" plain :disabled="selectable">删除用户
-            </el-button>
-          </el-form-item>
-          <!--import-->
-          <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:import')">
-            <el-button :size="size" :icon="Download" @click="handleImport"
-                       :color="layoutStore.BtnImport" plain>导入用户
-            </el-button>
-          </el-form-item>
-          <!--export-->
-          <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:export')">
-            <el-button :size="size" :icon="Upload" @click="handleExport"
-                       :color="layoutStore.BtnExport" plain>导出用户
-            </el-button>
-          </el-form-item>
-          <!--right fixed-->
-          <el-form-item class="global-form-item-right">
-            <!--显示/隐藏时间列-->
-            <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
-            <!--隐藏搜索栏按钮-->
-            <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
-            <!--刷新按钮-->
-            <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
-          </el-form-item>
-        </el-form>
-        <!--dataTable-->
-        <el-table :data="tableData"
-                  v-loading="loading"
-                  :size="size"
-                  :highlight-current-row="true"
-                  header-cell-class-name="global-table-header"
-                  class="global-table"
-                  stripe
-                  @selection-change="selectionChange">
-          <el-table-column type="selection" width="55"/>
-          <el-table-column prop="userId" label="用户ID" align="center" width="120"/>
-          <el-table-column prop="userName" label="用户名称" align="center" min-width="160"/>
-          <el-table-column prop="nickName" label="用户昵称" align="center" min-width="160"/>
-          <el-table-column prop="sexual" label="用户性别" align="center" width="120">
-            <template #default="scope">
-              <p v-for="tag in userSexualStatusOptions"
-                 v-show="tag.value === scope.row.sexual"> {{ tag.label }}
-              </p>
-            </template>
-          </el-table-column>
-          <el-table-column prop="phone" label="用户手机" align="center" min-width="160"/>
-          <el-table-column prop="email" label="用户邮箱" align="center" min-width="180"/>
-          <el-table-column prop="userStatus" label="用户状态" align="center" width="120">
-            <template #default="scope">
-              <el-tag v-for="tag in userStatusOptions"
-                      v-show="tag.value === scope.row.userStatus"
-                      :size="size"
-                      :key="tag.value"
-                      :type="tag.type"> {{ tag.label }}
-              </el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable
-                           width="170"/>
-          <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable
-                           width="170"/>
-          <el-table-column label="用户操作" align="center" width="200" fixed="right"
-                           v-if="checkPermissions(['system:user:edit','system:user:delete'])">
-            <template #default="scope">
-              <div class="display">
-                <div class="display" v-if="checkPermission('system:user:edit')">
-                  <el-button class="global-table-btn"
-                             size="small" type="primary" link :icon="Edit"
-                             @click="handleEdit(scope.$index, scope.row)">
-                    编辑
-                  </el-button>
-                  <el-divider direction="vertical"/>
-                </div>
-                <div class="display" v-if="checkPermission('system:user:delete')">
-                  <el-button class="global-table-btn red"
-                             size="small" type="primary" link :icon="Delete"
-                             @click="handleDelete(scope.$index, scope.row)">
-                    删除
-                  </el-button>
-                  <el-divider direction="vertical"/>
-                </div>
-                <!--selectable more actions-->
-                <el-dropdown class="global-table-dropdown" size="small"
-                             v-if="checkPermission('system:user:edit')">
+  <div style="display: flex">
+    <transition name="left-fade">
+      <div class="left" :class="{fold: !showLeft}">
+        <el-input :prefix-icon="Search" :size=size v-model="filterText" v-show="showLeft" placeholder="输入部门名称"/>
+        <el-tree node-key="id"
+                 ref="deptTreeRef"
+                 v-show="showLeft"
+                 :props="props"
+                 :data="selectDeptData"
+                 :highlight-current="true"
+                 :default-expand-all="true"
+                 :expand-on-click-node="false"
+                 :filter-node-method="filterNode"
+                 @node-click="handleDeptNodeClick"
+                 style="padding-top: 20px"/>
+      </div>
+    </transition>
+    <div class="right" :class="{fold: !showLeft}">
+      <!--formSearch-->
+      <el-form :inline="true" :size="size" v-show="showSearch">
+        <!--add for left control-->
+        <el-form-item style="margin-right: 8px">
+          <el-icon @click="handleShowLeft">
+            <Switch/>
+          </el-icon>
+        </el-form-item>
+        <!--searchParam-->
+        <el-form-item label="用户名称" class="global-input-item">
+          <el-input v-model="query.userName" placeholder="请输入用户名称"
+                    class="global-input" :size="size"/>
+        </el-form-item>
+        <el-form-item label="用户手机" class="global-input-item">
+          <el-input v-model="query.phone" placeholder="请输入用户手机"
+                    class="global-input" :size="size"/>
+        </el-form-item>
+        <el-form-item label="用户邮箱" class="global-input-item">
+          <el-input v-model="query.email" placeholder="请输入用户邮箱"
+                    class="global-input" :size="size"/>
+        </el-form-item>
+        <el-form-item label="用户状态" class="global-input-item">
+          <el-select v-model="query.userStatus" placeholder="请选择用户状态"
+                     :size="size">
+            <el-option
+                v-for="item in userStatusOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="创建时间" class="global-input-item">
+          <el-date-picker
+              type="datetimerange"
+              v-model="time"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"/>
+        </el-form-item>
+        <!--fixed-->
+        <el-form-item>
+          <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
+          <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
+        </el-form-item>
+      </el-form>
+      <!--formButton-->
+      <el-form :inline="true" :size="size">
+        <!--left select-->
+        <!--add-->
+        <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:add')">
+          <el-button :size="size" :icon="Plus" @click="handleInsert"
+                     :color="layoutStore.BtnInsert" plain>添加用户
+          </el-button>
+        </el-form-item>
+        <!--edit-->
+        <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:edit')">
+          <el-button :size="size" :icon="Edit" @click="handleEdit"
+                     :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改用户
+          </el-button>
+        </el-form-item>
+        <!--delete-->
+        <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:delete')">
+          <el-button :size="size" :icon="Delete" @click="handleDelete"
+                     :color="layoutStore.BtnDelete" plain :disabled="selectable">删除用户
+          </el-button>
+        </el-form-item>
+        <!--import-->
+        <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:import')">
+          <el-button :size="size" :icon="Download" @click="handleImport"
+                     :color="layoutStore.BtnImport" plain>导入用户
+          </el-button>
+        </el-form-item>
+        <!--export-->
+        <el-form-item class="global-form-item-margin" v-if="checkPermission('system:user:export')">
+          <el-button :size="size" :icon="Upload" @click="handleExport"
+                     :color="layoutStore.BtnExport" plain>导出用户
+          </el-button>
+        </el-form-item>
+        <!--right fixed-->
+        <el-form-item class="global-form-item-right">
+          <!--显示/隐藏时间列-->
+          <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
+          <!--隐藏搜索栏按钮-->
+          <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
+          <!--刷新按钮-->
+          <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
+        </el-form-item>
+      </el-form>
+      <!--dataTable-->
+      <el-table :data="tableData"
+                v-loading="loading"
+                :size="size"
+                :highlight-current-row="true"
+                header-cell-class-name="global-table-header"
+                class="global-table"
+                stripe
+                @selection-change="selectionChange">
+        <el-table-column type="selection" width="55"/>
+        <el-table-column prop="userId" label="用户ID" align="center" width="120"/>
+        <el-table-column prop="userName" label="用户名称" align="center" min-width="160"/>
+        <el-table-column prop="nickName" label="用户昵称" align="center" min-width="160"/>
+        <el-table-column prop="sexual" label="用户性别" align="center" width="120">
+          <template #default="scope">
+            <p v-for="tag in userSexualStatusOptions"
+               v-show="tag.value === scope.row.sexual"> {{ tag.label }}
+            </p>
+          </template>
+        </el-table-column>
+        <el-table-column prop="phone" label="用户手机" align="center" min-width="160"/>
+        <el-table-column prop="email" label="用户邮箱" align="center" min-width="180"/>
+        <el-table-column prop="userStatus" label="用户状态" align="center" width="120">
+          <template #default="scope">
+            <el-tag v-for="tag in userStatusOptions"
+                    v-show="tag.value === scope.row.userStatus"
+                    :size="size"
+                    :key="tag.value"
+                    :type="tag.type"> {{ tag.label }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable
+                         width="170"/>
+        <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable
+                         width="170"/>
+        <el-table-column label="用户操作" align="center" width="200" fixed="right"
+                         v-if="checkPermissions(['system:user:edit','system:user:delete'])">
+          <template #default="scope">
+            <div class="display">
+              <div class="display" v-if="checkPermission('system:user:edit')">
+                <el-button class="global-table-btn"
+                           size="small" type="primary" link :icon="Edit"
+                           @click="handleEdit(scope.$index, scope.row)">
+                  编辑
+                </el-button>
+                <el-divider direction="vertical"/>
+              </div>
+              <div class="display" v-if="checkPermission('system:user:delete')">
+                <el-button class="global-table-btn red"
+                           size="small" type="primary" link :icon="Delete"
+                           @click="handleDelete(scope.$index, scope.row)">
+                  删除
+                </el-button>
+                <el-divider direction="vertical"/>
+              </div>
+              <!--selectable more actions-->
+              <el-dropdown class="global-table-dropdown" size="small"
+                           v-if="checkPermission('system:user:edit')">
               <span class="display">
                 <el-icon><DArrowRight/></el-icon>
                 更多
               </span>
-                  <template #dropdown>
-                    <el-dropdown-menu>
-                      <el-dropdown-item :icon="Lock" @click="handleResetPwd(scope.$index, scope.row)">重置密码
-                      </el-dropdown-item>
-                    </el-dropdown-menu>
-                  </template>
-                </el-dropdown>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-        <!--pagination-->
-        <el-pagination
-            class="global-pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :small="pageLayoutSize"
-            :layout="pageLayout"
-            :page-sizes="pageSizes"
-            :current-page="pageCurrent"
-            :page-size="pageSize"
-            :total="pageTotal"/>
-      </div>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item :icon="Lock" @click="handleResetPwd(scope.$index, scope.row)">重置密码
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!--pagination-->
+      <el-pagination
+          class="global-pagination"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :small="pageLayoutSize"
+          :layout="pageLayout"
+          :page-sizes="pageSizes"
+          :current-page="pageCurrent"
+          :page-size="pageSize"
+          :total="pageTotal"/>
     </div>
-  </el-card>
+  </div>
 
   <el-dialog class="global-dialog-iu"
              title="用户管理" v-model="dialogVisible"

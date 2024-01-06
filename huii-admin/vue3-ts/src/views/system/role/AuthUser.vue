@@ -1,82 +1,86 @@
 <template>
-  <el-card>
-    <!--formSearch-->
-    <el-form :inline="true" :size="size" v-show="showSearch">
-      <!--searchParam-->
-      <el-form-item label="用户名称" class="global-input-item">
-        <el-input v-model="query.userName" placeholder="请输入用户名称"
-                  class="global-input" :size="size"/>
-      </el-form-item>
-      <!--fixed-->
-      <el-form-item>
-        <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
-        <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <!--formButton-->
-    <el-form :inline="true" :size="size">
-      <!--left select-->
-      <!--add-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:role:auth:user')">
-        <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain>添加用户
-        </el-button>
-      </el-form-item>
-      <!--delete-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:role:auth:user')">
-        <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">取消授权
-        </el-button>
-      </el-form-item>
-      <!--right fixed-->
-      <el-form-item class="global-form-item-right">
-        <!--隐藏搜索栏按钮-->
-        <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
-        <!--刷新按钮-->
-        <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
-      </el-form-item>
-    </el-form>
-    <!--dataTable-->
-    <el-table :data="tableData"
-              v-loading="loading"
-              :size="size"
-              :highlight-current-row="true"
-              header-cell-class-name="global-table-header"
-              class="global-table"
-              stripe
-              @selection-change="selectionChange">
-      <el-table-column type="selection" width="55"/>
-      <el-table-column prop="userName" label="用户名称" align="left"/>
-      <el-table-column prop="nickName" label="用户昵称" align="center"/>
-      <el-table-column prop="phone" label="用户手机" align="center"/>
-      <el-table-column prop="email" label="用户邮箱" align="center"/>
-      <el-table-column label="授权操作" align="center" width="120" fixed="right"
-                       v-if="checkPermissions(['system:role:auth:user'])">
-        <template #default="scope">
-          <div class="display">
-            <div class="display" v-if="checkPermission('system:role:auth:user')">
-              <el-button class="global-table-btn red"
-                         size="small" type="primary" link :icon="Delete"
-                         @click="handleDelete(scope.$index, scope.row)">
-                取消授权
-              </el-button>
-            </div>
+  <!--formSearch-->
+  <el-form :inline="true" :size="size" v-show="showSearch">
+    <!--searchParam-->
+    <el-form-item label="用户名称" class="global-input-item">
+      <el-input v-model="query.userName" placeholder="请输入用户名称"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <!--fixed-->
+    <el-form-item>
+      <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
+      <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
+    </el-form-item>
+  </el-form>
+  <!--formButton-->
+  <el-form :inline="true" :size="size">
+    <!--left select-->
+    <!--back-->
+    <el-form-item class="global-form-item-margin">
+      <el-button :size="size" :icon="ArrowLeft" @click="handleBack"
+                 :color="layoutStore.BtnBack" plain>返回
+      </el-button>
+    </el-form-item>
+    <!--add-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:role:auth:user')">
+      <el-button :size="size" :icon="Plus" @click="handleInsert"
+                 :color="layoutStore.BtnInsert" plain>添加用户
+      </el-button>
+    </el-form-item>
+    <!--delete-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:role:auth:user')">
+      <el-button :size="size" :icon="Delete" @click="handleDelete"
+                 :color="layoutStore.BtnDelete" plain :disabled="selectable">取消授权
+      </el-button>
+    </el-form-item>
+    <!--right fixed-->
+    <el-form-item class="global-form-item-right">
+      <!--隐藏搜索栏按钮-->
+      <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
+      <!--刷新按钮-->
+      <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
+    </el-form-item>
+  </el-form>
+  <!--dataTable-->
+  <el-table :data="tableData"
+            v-loading="loading"
+            :size="size"
+            :highlight-current-row="true"
+            header-cell-class-name="global-table-header"
+            class="global-table"
+            stripe
+            @selection-change="selectionChange">
+    <el-table-column type="selection" width="55"/>
+    <el-table-column prop="userName" label="用户名称" align="left"/>
+    <el-table-column prop="nickName" label="用户昵称" align="center"/>
+    <el-table-column prop="phone" label="用户手机" align="center"/>
+    <el-table-column prop="email" label="用户邮箱" align="center"/>
+    <el-table-column label="授权操作" align="center" width="120" fixed="right"
+                     v-if="checkPermissions(['system:role:auth:user'])">
+      <template #default="scope">
+        <div class="display">
+          <div class="display" v-if="checkPermission('system:role:auth:user')">
+            <el-button class="global-table-btn red"
+                       size="small" type="primary" link :icon="Delete"
+                       @click="handleDelete(scope.$index, scope.row)">
+              取消授权
+            </el-button>
           </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!--pagination-->
-    <el-pagination
-        class="global-pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :small="pageLayoutSize"
-        :layout="pageLayout"
-        :page-sizes="pageSizes"
-        :current-page="pageCurrent"
-        :page-size="pageSize"
-        :total="pageTotal"/>
-  </el-card>
+        </div>
+      </template>
+    </el-table-column>
+  </el-table>
+  <!--pagination-->
+  <el-pagination
+      class="global-pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :small="pageLayoutSize"
+      :layout="pageLayout"
+      :page-sizes="pageSizes"
+      :current-page="pageCurrent"
+      :page-size="pageSize"
+      :total="pageTotal"/>
 
   <el-dialog class="global-dialog-iu"
              title="授权管理" v-model="dialogVisible"
@@ -129,12 +133,13 @@
 <script setup lang="ts">
 import {computed, onMounted, ref, watch} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
-import {Delete, Plus, Refresh, Search,} from "@element-plus/icons-vue";
+import {ArrowLeft, Delete, Plus, Refresh, Search,} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 import {useRoute} from "vue-router";
 import {authUser, queryAuthUser, queryNonAuthUser, unauthUser} from "@/api/system/role";
+import router from "@/router";
 
 //提升作用域 便于监听
 //对话框
@@ -393,6 +398,9 @@ const handleDelete = (index, row) => {
   }).catch();
 };
 
+const handleBack = () => {
+  router.push({name: '角色管理'})
+}
 </script>
 
 <style scoped lang="scss">

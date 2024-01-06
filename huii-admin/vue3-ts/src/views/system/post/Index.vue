@@ -1,126 +1,124 @@
 <template>
-  <el-card>
-    <!--formSearch-->
-    <el-form :inline="true" :size="size" v-show="showSearch">
-      <!--searchParam-->
-      <el-form-item label="岗位名称" class="global-input-item">
-        <el-input v-model="query.postName" placeholder="请输入岗位名称"
-                  class="global-input" :size="size"/>
-      </el-form-item>
-      <el-form-item label="岗位状态" class="global-input-item">
-        <el-select v-model="query.postStatus" placeholder="请选择岗位状态"
-                   :size="size">
-          <el-option
-              v-for="item in postStatusOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-        </el-select>
-      </el-form-item>
-      <!--fixed-->
-      <el-form-item>
-        <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
-        <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <!--formButton-->
-    <el-form :inline="true" :size="size">
-      <!--left select-->
-      <!--add-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:post:add')">
-        <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain>添加岗位
-        </el-button>
-      </el-form-item>
-      <!--edit-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:post:edit')">
-        <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改岗位
-        </el-button>
-      </el-form-item>
-      <!--delete-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:post:delete')">
-        <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除岗位
-        </el-button>
-      </el-form-item>
-      <!--export-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:post:export')">
-        <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出岗位
-        </el-button>
-      </el-form-item>
-      <!--right fixed-->
-      <el-form-item class="global-form-item-right">
-        <!--显示/隐藏时间列-->
-        <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
-        <!--隐藏搜索栏按钮-->
-        <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
-        <!--刷新按钮-->
-        <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
-      </el-form-item>
-    </el-form>
-    <!--dataTable-->
-    <el-table :data="tableData"
-              v-loading="loading"
-              :size="size"
-              :highlight-current-row="true"
-              header-cell-class-name="global-table-header"
-              class="global-table"
-              stripe
-              @selection-change="selectionChange">
-      <el-table-column type="selection" width="55"/>
-      <el-table-column prop="postId" label="岗位ID" align="center" min-width="120"/>
-      <el-table-column prop="postName" label="岗位名称" align="center" min-width="150"/>
-      <el-table-column prop="postKey" label="岗位编码" align="center" min-width="150"/>
-      <el-table-column prop="postSeq" label="岗位展示顺序" align="center" sortable width="140"/>
-      <el-table-column prop="postStatus" label="岗位状态" align="center" width="120">
-        <template #default="scope">
-          <el-tag v-for="tag in postStatusOptions"
-                  v-show="tag.value === scope.row.postStatus"
-                  :size="size"
-                  :key="tag.value"
-                  :type="tag.type"> {{ tag.label }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
-      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
-      <el-table-column label="岗位操作" align="center" width="220" fixed="right"
-                       v-if="checkPermissions(['system:post:edit','system:post:delete'])">
-        <template #default="scope">
-          <div class="display">
-            <div class="display" v-if="checkPermission('system:post:edit')">
-              <el-button class="global-table-btn"
-                         size="small" type="primary" link :icon="Edit"
-                         @click="handleEdit(scope.$index, scope.row)">
-                编辑
-              </el-button>
-              <el-divider direction="vertical"/>
-            </div>
-            <div class="display" v-if="checkPermission('system:post:delete')">
-              <el-button class="global-table-btn red"
-                         size="small" type="primary" link :icon="Delete"
-                         @click="handleDelete(scope.$index, scope.row)">
-                删除
-              </el-button>
-            </div>
+  <!--formSearch-->
+  <el-form :inline="true" :size="size" v-show="showSearch">
+    <!--searchParam-->
+    <el-form-item label="岗位名称" class="global-input-item">
+      <el-input v-model="query.postName" placeholder="请输入岗位名称"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <el-form-item label="岗位状态" class="global-input-item">
+      <el-select v-model="query.postStatus" placeholder="请选择岗位状态"
+                 :size="size">
+        <el-option
+            v-for="item in postStatusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <!--fixed-->
+    <el-form-item>
+      <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
+      <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
+    </el-form-item>
+  </el-form>
+  <!--formButton-->
+  <el-form :inline="true" :size="size">
+    <!--left select-->
+    <!--add-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:post:add')">
+      <el-button :size="size" :icon="Plus" @click="handleInsert"
+                 :color="layoutStore.BtnInsert" plain>添加岗位
+      </el-button>
+    </el-form-item>
+    <!--edit-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:post:edit')">
+      <el-button :size="size" :icon="Edit" @click="handleEdit"
+                 :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改岗位
+      </el-button>
+    </el-form-item>
+    <!--delete-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:post:delete')">
+      <el-button :size="size" :icon="Delete" @click="handleDelete"
+                 :color="layoutStore.BtnDelete" plain :disabled="selectable">删除岗位
+      </el-button>
+    </el-form-item>
+    <!--export-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:post:export')">
+      <el-button :size="size" :icon="Upload" @click="handleExport"
+                 :color="layoutStore.BtnExport" plain>导出岗位
+      </el-button>
+    </el-form-item>
+    <!--right fixed-->
+    <el-form-item class="global-form-item-right">
+      <!--显示/隐藏时间列-->
+      <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
+      <!--隐藏搜索栏按钮-->
+      <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
+      <!--刷新按钮-->
+      <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
+    </el-form-item>
+  </el-form>
+  <!--dataTable-->
+  <el-table :data="tableData"
+            v-loading="loading"
+            :size="size"
+            :highlight-current-row="true"
+            header-cell-class-name="global-table-header"
+            class="global-table"
+            stripe
+            @selection-change="selectionChange">
+    <el-table-column type="selection" width="55"/>
+    <el-table-column prop="postId" label="岗位ID" align="center" min-width="120"/>
+    <el-table-column prop="postName" label="岗位名称" align="center" min-width="150"/>
+    <el-table-column prop="postKey" label="岗位编码" align="center" min-width="150"/>
+    <el-table-column prop="postSeq" label="岗位展示顺序" align="center" sortable width="140"/>
+    <el-table-column prop="postStatus" label="岗位状态" align="center" width="120">
+      <template #default="scope">
+        <el-tag v-for="tag in postStatusOptions"
+                v-show="tag.value === scope.row.postStatus"
+                :size="size"
+                :key="tag.value"
+                :type="tag.type"> {{ tag.label }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
+    <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
+    <el-table-column label="岗位操作" align="center" width="220" fixed="right"
+                     v-if="checkPermissions(['system:post:edit','system:post:delete'])">
+      <template #default="scope">
+        <div class="display">
+          <div class="display" v-if="checkPermission('system:post:edit')">
+            <el-button class="global-table-btn"
+                       size="small" type="primary" link :icon="Edit"
+                       @click="handleEdit(scope.$index, scope.row)">
+              编辑
+            </el-button>
+            <el-divider direction="vertical"/>
           </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!--pagination-->
-    <el-pagination
-        class="global-pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :small="pageLayoutSize"
-        :layout="pageLayout"
-        :page-sizes="pageSizes"
-        :current-page="pageCurrent"
-        :page-size="pageSize"
-        :total="pageTotal"/>
-  </el-card>
+          <div class="display" v-if="checkPermission('system:post:delete')">
+            <el-button class="global-table-btn red"
+                       size="small" type="primary" link :icon="Delete"
+                       @click="handleDelete(scope.$index, scope.row)">
+              删除
+            </el-button>
+          </div>
+        </div>
+      </template>
+    </el-table-column>
+  </el-table>
+  <!--pagination-->
+  <el-pagination
+      class="global-pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :small="pageLayoutSize"
+      :layout="pageLayout"
+      :page-sizes="pageSizes"
+      :current-page="pageCurrent"
+      :page-size="pageSize"
+      :total="pageTotal"/>
 
   <el-dialog class="global-dialog-iu"
              title="岗位管理" v-model="dialogVisible"

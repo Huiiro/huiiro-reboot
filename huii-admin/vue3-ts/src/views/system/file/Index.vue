@@ -1,152 +1,150 @@
 <template>
-  <el-card>
-    <!--formSearch-->
-    <el-form :inline="true" :size="size" v-show="showSearch">
-      <!--searchParam-->
-      <el-form-item label="文件名称" class="global-input-item">
-        <el-input v-model="query.fileName" placeholder="请输入文件名称"
-                  class="global-input" :size="size"/>
-      </el-form-item>
-      <el-form-item label="文件位置" class="global-input-item">
-        <el-select v-model="query.fileServer" placeholder="请选择文件位置"
-                   :size="size">
-          <el-option
-              v-for="item in fileServer"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="文件状态" class="global-input-item">
-        <el-select v-model="query.fileStatus" placeholder="请选择文件状态"
-                   :size="size">
-          <el-option
-              v-for="item in fileStatus"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="文件权限" class="global-input-item">
-        <el-select v-model="query.fileAcl" placeholder="请选择文件权限"
-                   :size="size">
-          <el-option
-              v-for="item in fileAcl"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-        </el-select>
-      </el-form-item>
-      <!--fixed-->
-      <el-form-item>
-        <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
-        <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <!--formButton-->
-    <el-form :inline="true" :size="size">
-      <!--left select-->
-      <!--delete-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:file:delete')">
-        <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除文件
-        </el-button>
-      </el-form-item>
-      <!--upload-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:file:upload')">
-        <el-button :size="size" :icon="UploadFilled" @click="handleUpload"
-                   :color="layoutStore.BtnUpload" plain>上传文件
-        </el-button>
-      </el-form-item>
-      <!--right fixed-->
-      <el-form-item class="global-form-item-right">
-        <!--显示/隐藏时间列-->
-        <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
-        <!--隐藏搜索栏按钮-->
-        <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
-        <!--刷新按钮-->
-        <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
-      </el-form-item>
-    </el-form>
-    <!--dataTable-->
-    <el-table :data="tableData"
-              v-loading="loading"
-              :size="size"
-              :highlight-current-row="true"
-              header-cell-class-name="global-table-header"
-              class="global-table"
-              stripe
-              @selection-change="selectionChange">
-      <el-table-column type="selection" width="55"/>
-      <el-table-column prop="fileView" label="文件阅览" align="center" width="120">
-        <template #default="scope">
-          <el-image :src="scope.row.accessUrl" alt="">
-            <template #error>
-              <div class="image-slot">
-                暂不支持查看
-              </div>
-            </template>
-          </el-image>
-        </template>
-      </el-table-column>
-      <el-table-column prop="fileName" label="文件名称" align="center" min-width="120"/>
-      <el-table-column prop="originName" label="文件原名" align="center" min-width="120"/>
-      <el-table-column prop="accessUrl" label="文件直链" align="center" min-width="120"/>
-      <el-table-column prop="fileSize" label="文件大小" align="center" min-width="80"/>
-      <el-table-column prop="fileServer" label="文件位置" align="center" min-width="80"/>
-      <el-table-column prop="fileAcl" label="文件权限" align="center" min-width="80">
-        <template #default="scope">
-          <el-switch v-model="scope.row.fileAcl"
-                     active-value="pub" inactive-value="pri"
-                     @click="handleUpdateFileAcl(scope.$index, scope.row)"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column prop="fileStatus" label="文件状态" align="center" min-width="80">
-        <template #default="scope">
-          <el-switch v-model="scope.row.fileStatus"
-                     active-value="1" inactive-value="0"
-                     @click="handleUpdateFileStatus(scope.$index, scope.row)"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
-      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
-      <el-table-column label="文件操作" align="center" width="160" fixed="right"
-                       v-if="checkPermissions(['system:file:edit','system:file:delete'])">
-        <template #default="scope">
-          <div class="display">
-            <div class="display" v-if="checkPermission('system:file:edit')">
-              <el-button class="global-table-btn"
-                         size="small" type="primary" link :icon="Edit"
-                         @click="handleDownload(scope.$index, scope.row)">
-                下载
-              </el-button>
-              <el-divider direction="vertical"/>
+  <!--formSearch-->
+  <el-form :inline="true" :size="size" v-show="showSearch">
+    <!--searchParam-->
+    <el-form-item label="文件名称" class="global-input-item">
+      <el-input v-model="query.fileName" placeholder="请输入文件名称"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <el-form-item label="文件位置" class="global-input-item">
+      <el-select v-model="query.fileServer" placeholder="请选择文件位置"
+                 :size="size">
+        <el-option
+            v-for="item in fileServer"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="文件状态" class="global-input-item">
+      <el-select v-model="query.fileStatus" placeholder="请选择文件状态"
+                 :size="size">
+        <el-option
+            v-for="item in fileStatus"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="文件权限" class="global-input-item">
+      <el-select v-model="query.fileAcl" placeholder="请选择文件权限"
+                 :size="size">
+        <el-option
+            v-for="item in fileAcl"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <!--fixed-->
+    <el-form-item>
+      <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
+      <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
+    </el-form-item>
+  </el-form>
+  <!--formButton-->
+  <el-form :inline="true" :size="size">
+    <!--left select-->
+    <!--delete-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:file:delete')">
+      <el-button :size="size" :icon="Delete" @click="handleDelete"
+                 :color="layoutStore.BtnDelete" plain :disabled="selectable">删除文件
+      </el-button>
+    </el-form-item>
+    <!--upload-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:file:upload')">
+      <el-button :size="size" :icon="UploadFilled" @click="handleUpload"
+                 :color="layoutStore.BtnUpload" plain>上传文件
+      </el-button>
+    </el-form-item>
+    <!--right fixed-->
+    <el-form-item class="global-form-item-right">
+      <!--显示/隐藏时间列-->
+      <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
+      <!--隐藏搜索栏按钮-->
+      <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
+      <!--刷新按钮-->
+      <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
+    </el-form-item>
+  </el-form>
+  <!--dataTable-->
+  <el-table :data="tableData"
+            v-loading="loading"
+            :size="size"
+            :highlight-current-row="true"
+            header-cell-class-name="global-table-header"
+            class="global-table"
+            stripe
+            @selection-change="selectionChange">
+    <el-table-column type="selection" width="55"/>
+    <el-table-column prop="fileView" label="文件阅览" align="center" width="120">
+      <template #default="scope">
+        <el-image :src="scope.row.accessUrl" alt="">
+          <template #error>
+            <div class="image-slot">
+              暂不支持查看
             </div>
-            <div class="display" v-if="checkPermission('system:file:delete')">
-              <el-button class="global-table-btn red"
-                         size="small" type="primary" link :icon="Delete"
-                         @click="handleDelete(scope.$index, scope.row)">
-                删除
-              </el-button>
-            </div>
+          </template>
+        </el-image>
+      </template>
+    </el-table-column>
+    <el-table-column prop="fileName" label="文件名称" align="center" min-width="120"/>
+    <el-table-column prop="originName" label="文件原名" align="center" min-width="120"/>
+    <el-table-column prop="accessUrl" label="文件直链" align="center" min-width="120"/>
+    <el-table-column prop="fileSize" label="文件大小" align="center" min-width="80"/>
+    <el-table-column prop="fileServer" label="文件位置" align="center" min-width="80"/>
+    <el-table-column prop="fileAcl" label="文件权限" align="center" min-width="80">
+      <template #default="scope">
+        <el-switch v-model="scope.row.fileAcl"
+                   active-value="pub" inactive-value="pri"
+                   @click="handleUpdateFileAcl(scope.$index, scope.row)"
+        />
+      </template>
+    </el-table-column>
+    <el-table-column prop="fileStatus" label="文件状态" align="center" min-width="80">
+      <template #default="scope">
+        <el-switch v-model="scope.row.fileStatus"
+                   active-value="1" inactive-value="0"
+                   @click="handleUpdateFileStatus(scope.$index, scope.row)"
+        />
+      </template>
+    </el-table-column>
+    <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
+    <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
+    <el-table-column label="文件操作" align="center" width="160" fixed="right"
+                     v-if="checkPermissions(['system:file:edit','system:file:delete'])">
+      <template #default="scope">
+        <div class="display">
+          <div class="display" v-if="checkPermission('system:file:edit')">
+            <el-button class="global-table-btn"
+                       size="small" type="primary" link :icon="Edit"
+                       @click="handleDownload(scope.$index, scope.row)">
+              下载
+            </el-button>
+            <el-divider direction="vertical"/>
           </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!--pagination-->
-    <el-pagination
-        class="global-pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :small="pageLayoutSize"
-        :layout="pageLayout"
-        :page-sizes="pageSizes"
-        :current-page="pageCurrent"
-        :page-size="pageSize"
-        :total="pageTotal"/>
-  </el-card>
+          <div class="display" v-if="checkPermission('system:file:delete')">
+            <el-button class="global-table-btn red"
+                       size="small" type="primary" link :icon="Delete"
+                       @click="handleDelete(scope.$index, scope.row)">
+              删除
+            </el-button>
+          </div>
+        </div>
+      </template>
+    </el-table-column>
+  </el-table>
+  <!--pagination-->
+  <el-pagination
+      class="global-pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :small="pageLayoutSize"
+      :layout="pageLayout"
+      :page-sizes="pageSizes"
+      :current-page="pageCurrent"
+      :page-size="pageSize"
+      :total="pageTotal"/>
 
   <el-dialog class="global-dialog-iu"
              title="上传文件" v-model="uploadVisible"
@@ -381,7 +379,7 @@ const handleUpdateFileStatus = (index, row) => {
     if (res.code === 0) {
       getData();
     }
-  })
+  });
 }
 
 /**
@@ -391,7 +389,7 @@ const handleUpdateFileStatus = (index, row) => {
  */
 //@ts-ignore
 const handleDownload = (index, row) => {
-    download(row.accessUrl, row.originName);
+  download(row.accessUrl, row.originName);
 }
 
 </script>

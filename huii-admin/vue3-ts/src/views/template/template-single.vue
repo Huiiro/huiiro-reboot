@@ -4,138 +4,136 @@
 <!--new add permission check in header btns and table btns-->
 <!--author:huii-->
 <template>
-  <el-card>
-    <!--formSearch-->
-    <el-form :inline="true" :size="size" v-show="showSearch">
-      <!--searchParam-->
-      <!--TODO-->
-      <el-form-item label="huii名称" class="global-input-item">
-        <el-input v-model="query.huii" placeholder="请输入huii名称"
-                  class="global-input" :size="size"/>
-      </el-form-item>
-      <!--fixed-->
-      <el-form-item>
-        <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
-        <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <!--formButton-->
-    <el-form :inline="true" :size="size">
-      <!--left select-->
-      <!--TODO-->
-      <!--add-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
-        <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain>添加huii
-        </el-button>
-      </el-form-item>
-      <!--edit-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
-        <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改huii
-        </el-button>
-      </el-form-item>
-      <!--delete-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
-        <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除huii
-        </el-button>
-      </el-form-item>
-      <!--import-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
-        <el-button :size="size" :icon="Download" @click="handleImport"
-                   :color="layoutStore.BtnImport" plain>导入huii
-        </el-button>
-      </el-form-item>
-      <!--export-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
-        <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出huii
-        </el-button>
-      </el-form-item>
-      <!--upload-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
-        <el-button :size="size" :icon="UploadFilled" @click="handleUpload"
-                   :color="layoutStore.BtnUpload" plain>上传huii
-        </el-button>
-      </el-form-item>
-      <!--right fixed-->
-      <el-form-item class="global-form-item-right">
-        <!--显示/隐藏时间列-->
-        <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
-        <!--隐藏搜索栏按钮-->
-        <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
-        <!--刷新按钮-->
-        <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
-      </el-form-item>
-    </el-form>
-    <!--dataTable-->
-    <el-table :data="tableData"
-              v-loading="loading"
-              :size="size"
-              :highlight-current-row="true"
-              header-cell-class-name="global-table-header"
-              class="global-table"
-              stripe
-              @selection-change="selectionChange">
-      <el-table-column type="selection" width="55"/>
-      <!--TODO-->
-      <el-table-column prop="huii" label="huii" align="left" min-width="150"/>
-      <el-table-column prop="huii" label="huii" align="center" width="120"/>
-      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
-      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
-      <!--TODO-->
-      <el-table-column label="huii操作" align="center" width="200" fixed="right"
-                       v-if="checkPermissions(['huii','huii'])">
-        <template #default="scope">
-          <div class="display">
-            <div class="display" v-if="checkPermission('huii')">
-              <el-button class="global-table-btn"
-                         size="small" type="primary" link :icon="Edit"
-                         @click="handleEdit(scope.$index, scope.row)">
-                编辑
-              </el-button>
-              <el-divider direction="vertical"/>
-            </div>
-            <div class="display" v-if="checkPermission('huii')">
-              <el-button class="global-table-btn red"
-                         size="small" type="primary" link :icon="Delete"
-                         @click="handleDelete(scope.$index, scope.row)">
-                删除
-              </el-button>
-              <el-divider direction="vertical"/>
-            </div>
+  <!--formSearch-->
+  <el-form :inline="true" :size="size" v-show="showSearch">
+    <!--searchParam-->
+    <!--TODO-->
+    <el-form-item label="huii名称" class="global-input-item">
+      <el-input v-model="query.huii" placeholder="请输入huii名称"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <!--fixed-->
+    <el-form-item>
+      <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
+      <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
+    </el-form-item>
+  </el-form>
+  <!--formButton-->
+  <el-form :inline="true" :size="size">
+    <!--left select-->
+    <!--TODO-->
+    <!--add-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
+      <el-button :size="size" :icon="Plus" @click="handleInsert"
+                 :color="layoutStore.BtnInsert" plain>添加huii
+      </el-button>
+    </el-form-item>
+    <!--edit-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
+      <el-button :size="size" :icon="Edit" @click="handleEdit"
+                 :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改huii
+      </el-button>
+    </el-form-item>
+    <!--delete-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
+      <el-button :size="size" :icon="Delete" @click="handleDelete"
+                 :color="layoutStore.BtnDelete" plain :disabled="selectable">删除huii
+      </el-button>
+    </el-form-item>
+    <!--import-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
+      <el-button :size="size" :icon="Download" @click="handleImport"
+                 :color="layoutStore.BtnImport" plain>导入huii
+      </el-button>
+    </el-form-item>
+    <!--export-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
+      <el-button :size="size" :icon="Upload" @click="handleExport"
+                 :color="layoutStore.BtnExport" plain>导出huii
+      </el-button>
+    </el-form-item>
+    <!--upload-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('huii')">
+      <el-button :size="size" :icon="UploadFilled" @click="handleUpload"
+                 :color="layoutStore.BtnUpload" plain>上传huii
+      </el-button>
+    </el-form-item>
+    <!--right fixed-->
+    <el-form-item class="global-form-item-right">
+      <!--显示/隐藏时间列-->
+      <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
+      <!--隐藏搜索栏按钮-->
+      <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
+      <!--刷新按钮-->
+      <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
+    </el-form-item>
+  </el-form>
+  <!--dataTable-->
+  <el-table :data="tableData"
+            v-loading="loading"
+            :size="size"
+            :highlight-current-row="true"
+            header-cell-class-name="global-table-header"
+            class="global-table"
+            stripe
+            @selection-change="selectionChange">
+    <el-table-column type="selection" width="55"/>
+    <!--TODO-->
+    <el-table-column prop="huii" label="huii" align="left" min-width="150"/>
+    <el-table-column prop="huii" label="huii" align="center" width="120"/>
+    <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
+    <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
+    <!--TODO-->
+    <el-table-column label="huii操作" align="center" width="200" fixed="right"
+                     v-if="checkPermissions(['huii','huii'])">
+      <template #default="scope">
+        <div class="display">
+          <div class="display" v-if="checkPermission('huii')">
+            <el-button class="global-table-btn"
+                       size="small" type="primary" link :icon="Edit"
+                       @click="handleEdit(scope.$index, scope.row)">
+              编辑
+            </el-button>
+            <el-divider direction="vertical"/>
+          </div>
+          <div class="display" v-if="checkPermission('huii')">
+            <el-button class="global-table-btn red"
+                       size="small" type="primary" link :icon="Delete"
+                       @click="handleDelete(scope.$index, scope.row)">
+              删除
+            </el-button>
+            <el-divider direction="vertical"/>
+          </div>
 
-            <!--selectable more actions-->
-            <!--TODO-->
-            <el-dropdown class="global-table-dropdown" size="small"
-                         v-if="checkPermission('huii')">
+          <!--selectable more actions-->
+          <!--TODO-->
+          <el-dropdown class="global-table-dropdown" size="small"
+                       v-if="checkPermission('huii')">
               <span class="display">
                 <el-icon><DArrowRight/></el-icon>
                 更多
               </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item :icon="Plus">TODO</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!--pagination-->
-    <el-pagination
-        class="global-pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :small="pageLayoutSize"
-        :layout="pageLayout"
-        :page-sizes="pageSizes"
-        :current-page="pageCurrent"
-        :page-size="pageSize"
-        :total="pageTotal"/>
-  </el-card>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item :icon="Plus">TODO</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+      </template>
+    </el-table-column>
+  </el-table>
+  <!--pagination-->
+  <el-pagination
+      class="global-pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :small="pageLayoutSize"
+      :layout="pageLayout"
+      :page-sizes="pageSizes"
+      :current-page="pageCurrent"
+      :page-size="pageSize"
+      :total="pageTotal"/>
 
   <!--TODO-->
   <el-dialog class="global-dialog-iu"

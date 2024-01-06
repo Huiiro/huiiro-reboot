@@ -1,150 +1,148 @@
 <template>
-  <el-card>
-    <!--formSearch-->
-    <el-form :inline="true" :size="size" v-show="showSearch">
-      <!--searchParam-->
-      <el-form-item label="字典项名称" class="global-input-item">
-        <el-input v-model="query.dataName" placeholder="请输入字典项名称"
-                  class="global-input" :size="size"/>
-      </el-form-item>
-      <el-form-item label="字典状态" class="global-input-item">
-        <el-select v-model="query.dataStatus" placeholder="请选择字典状态"
-                   :size="size">
-          <el-option
-              v-for="item in dicStatusOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-        </el-select>
-      </el-form-item>
-      <!--fixed-->
-      <el-form-item>
-        <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
-        <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <!--formButton-->
-    <el-form :inline="true" :size="size">
-      <!--left select-->
-      <!--add-->
-      <el-form-item class="global-form-item-margin">
-        <el-button :size="size" :icon="Back" @click="handleBack"
-                   :color="layoutStore.BtnBack" plain>返回
-        </el-button>
-      </el-form-item>
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dic:add')">
-        <el-button :size="size" :icon="Plus" @click="handleInsert"
-                   :color="layoutStore.BtnInsert" plain>添加字典项
-        </el-button>
-      </el-form-item>
-      <!--edit-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dic:edit')">
-        <el-button :size="size" :icon="Edit" @click="handleEdit"
-                   :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改字典项
-        </el-button>
-      </el-form-item>
-      <!--delete-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dic:delete')">
-        <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除字典项
-        </el-button>
-      </el-form-item>
-      <!--export-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dic:export')">
-        <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出字典项
-        </el-button>
-      </el-form-item>
-      <!--right fixed-->
-      <el-form-item class="global-form-item-right">
-        <!--显示/隐藏时间列-->
-        <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
-        <!--隐藏搜索栏按钮-->
-        <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
-        <!--刷新按钮-->
-        <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
-      </el-form-item>
-    </el-form>
-    <!--dataTable-->
-    <el-table :data="tableData"
-              v-loading="loading"
-              :size="size"
-              :highlight-current-row="true"
-              header-cell-class-name="global-table-header"
-              class="global-table"
-              stripe
-              @selection-change="selectionChange">
-      <el-table-column type="selection" width="55"/>
-      <el-table-column prop="dataId" label="字典项ID" align="center" min-width="120"/>
-      <el-table-column prop="dataName" label="字典项名称" align="center" min-width="140"/>
-      <el-table-column prop="dataType" label="字典项类型" align="center" min-width="160">
-        <template #default="scope">
-          <el-tag style="cursor: pointer" type="info">
-            {{ scope.row.dataType }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="dataKey" label="字典键(key)" align="center" width="140"/>
-      <el-table-column prop="dataValue" label="字典值(value)" align="center" min-width="140"/>
-      <el-table-column prop="dataLabel" label="字典标签(label)" align="center" width="140"/>
-      <el-table-column prop="dataSeq" label="字典展示顺序" sortable align="center" width="160"/>
-      <el-table-column prop="dataTypeInfo" label="字典标签类型" align="center" width="160">
-        <template #default="scope">
-          <el-tag v-for="tag in dicLabelInfoOptions"
-                  v-show="tag.value === scope.row.dataTypeInfo"
-                  :size="size"
-                  :key="tag.value"
-                  :type="tag.type"> {{ tag.label }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="dataStatus" label="字典状态" align="center" width="120">
-        <template #default="scope">
-          <el-tag v-for="tag in dicStatusOptions"
-                  v-show="tag.value === scope.row.dataStatus"
-                  :size="size"
-                  :key="tag.value"
-                  :type="tag.type"> {{ tag.label }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
-      <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
-      <el-table-column label="字典项操作" align="center" width="200" fixed="right"
-                       v-if="checkPermissions(['system:dic:edit','system:dic:delete'])">
-        <template #default="scope">
-          <div class="display">
-            <div class="display" v-if="checkPermission('system:dic:edit')">
-              <el-button class="global-table-btn"
-                         size="small" type="primary" link :icon="Edit"
-                         @click="handleEdit(scope.$index, scope.row)">
-                编辑
-              </el-button>
-              <el-divider direction="vertical"/>
-            </div>
-            <div class="display" v-if="checkPermission('system:dic:delete')">
-              <el-button class="global-table-btn red"
-                         size="small" type="primary" link :icon="Delete"
-                         @click="handleDelete(scope.$index, scope.row)">
-                删除
-              </el-button>
-            </div>
+  <!--formSearch-->
+  <el-form :inline="true" :size="size" v-show="showSearch">
+    <!--searchParam-->
+    <el-form-item label="字典项名称" class="global-input-item">
+      <el-input v-model="query.dataName" placeholder="请输入字典项名称"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <el-form-item label="字典状态" class="global-input-item">
+      <el-select v-model="query.dataStatus" placeholder="请选择字典状态"
+                 :size="size">
+        <el-option
+            v-for="item in dicStatusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <!--fixed-->
+    <el-form-item>
+      <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
+      <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
+    </el-form-item>
+  </el-form>
+  <!--formButton-->
+  <el-form :inline="true" :size="size">
+    <!--left select-->
+    <!--add-->
+    <el-form-item class="global-form-item-margin">
+      <el-button :size="size" :icon="Back" @click="handleBack"
+                 :color="layoutStore.BtnBack" plain>返回
+      </el-button>
+    </el-form-item>
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dic:add')">
+      <el-button :size="size" :icon="Plus" @click="handleInsert"
+                 :color="layoutStore.BtnInsert" plain>添加字典项
+      </el-button>
+    </el-form-item>
+    <!--edit-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dic:edit')">
+      <el-button :size="size" :icon="Edit" @click="handleEdit"
+                 :color="layoutStore.BtnUpdate" plain :disabled="!selectSingle">修改字典项
+      </el-button>
+    </el-form-item>
+    <!--delete-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dic:delete')">
+      <el-button :size="size" :icon="Delete" @click="handleDelete"
+                 :color="layoutStore.BtnDelete" plain :disabled="selectable">删除字典项
+      </el-button>
+    </el-form-item>
+    <!--export-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:dic:export')">
+      <el-button :size="size" :icon="Upload" @click="handleExport"
+                 :color="layoutStore.BtnExport" plain>导出字典项
+      </el-button>
+    </el-form-item>
+    <!--right fixed-->
+    <el-form-item class="global-form-item-right">
+      <!--显示/隐藏时间列-->
+      <el-button :size="size" :icon="Timer" circle @click="handleExpandTime"/>
+      <!--隐藏搜索栏按钮-->
+      <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
+      <!--刷新按钮-->
+      <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
+    </el-form-item>
+  </el-form>
+  <!--dataTable-->
+  <el-table :data="tableData"
+            v-loading="loading"
+            :size="size"
+            :highlight-current-row="true"
+            header-cell-class-name="global-table-header"
+            class="global-table"
+            stripe
+            @selection-change="selectionChange">
+    <el-table-column type="selection" width="55"/>
+    <el-table-column prop="dataId" label="字典项ID" align="center" min-width="120"/>
+    <el-table-column prop="dataName" label="字典项名称" align="center" min-width="140"/>
+    <el-table-column prop="dataType" label="字典项类型" align="center" min-width="160">
+      <template #default="scope">
+        <el-tag style="cursor: pointer" type="info">
+          {{ scope.row.dataType }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="dataKey" label="字典键(key)" align="center" width="140"/>
+    <el-table-column prop="dataValue" label="字典值(value)" align="center" min-width="140"/>
+    <el-table-column prop="dataLabel" label="字典标签(label)" align="center" width="140"/>
+    <el-table-column prop="dataSeq" label="字典展示顺序" sortable align="center" width="160"/>
+    <el-table-column prop="dataTypeInfo" label="字典标签类型" align="center" width="160">
+      <template #default="scope">
+        <el-tag v-for="tag in dicLabelInfoOptions"
+                v-show="tag.value === scope.row.dataTypeInfo"
+                :size="size"
+                :key="tag.value"
+                :type="tag.type"> {{ tag.label }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="dataStatus" label="字典状态" align="center" width="120">
+      <template #default="scope">
+        <el-tag v-for="tag in dicStatusOptions"
+                v-show="tag.value === scope.row.dataStatus"
+                :size="size"
+                :key="tag.value"
+                :type="tag.type"> {{ tag.label }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
+    <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
+    <el-table-column label="字典项操作" align="center" width="200" fixed="right"
+                     v-if="checkPermissions(['system:dic:edit','system:dic:delete'])">
+      <template #default="scope">
+        <div class="display">
+          <div class="display" v-if="checkPermission('system:dic:edit')">
+            <el-button class="global-table-btn"
+                       size="small" type="primary" link :icon="Edit"
+                       @click="handleEdit(scope.$index, scope.row)">
+              编辑
+            </el-button>
+            <el-divider direction="vertical"/>
           </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!--pagination-->
-    <el-pagination
-        class="global-pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :small="pageLayoutSize"
-        :layout="pageLayout"
-        :page-sizes="pageSizes"
-        :current-page="pageCurrent"
-        :page-size="pageSize"
-        :total="pageTotal"/>
-  </el-card>
+          <div class="display" v-if="checkPermission('system:dic:delete')">
+            <el-button class="global-table-btn red"
+                       size="small" type="primary" link :icon="Delete"
+                       @click="handleDelete(scope.$index, scope.row)">
+              删除
+            </el-button>
+          </div>
+        </div>
+      </template>
+    </el-table-column>
+  </el-table>
+  <!--pagination-->
+  <el-pagination
+      class="global-pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :small="pageLayoutSize"
+      :layout="pageLayout"
+      :page-sizes="pageSizes"
+      :current-page="pageCurrent"
+      :page-size="pageSize"
+      :total="pageTotal"/>
 
   <el-dialog class="global-dialog-iu"
              title="字典项管理" v-model="dialogVisible"

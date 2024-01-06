@@ -1,149 +1,147 @@
 <template>
-  <el-card>
-    <!--formSearch-->
-    <el-form :inline="true" :size="size" v-show="showSearch">
-      <!--searchParam-->
-      <el-form-item label="用户名称" class="global-input-item">
-        <el-input v-model="query.loginUserName" placeholder="请输入用户名称"
-                  class="global-input" :size="size"/>
-      </el-form-item>
-      <el-form-item label="请求IP" class="global-input-item">
-        <el-input v-model="query.loginIp" placeholder="请输入登录IP"
-                  class="global-input" :size="size"/>
-      </el-form-item>
-      <el-form-item label="登录方式" class="global-input-item">
-        <el-select v-model="query.loginType" placeholder="请选择登录方式"
-                   :size="size">
-          <el-option
-              v-for="item in logLoginTypeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="登录结果" class="global-input-item">
-        <el-select v-model="query.loginStatus" placeholder="请选择登录结果"
-                   :size="size">
-          <el-option
-              v-for="item in logLoginStatusOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="登录时间" class="global-input-item">
-        <el-date-picker
-            type="datetimerange"
-            v-model="time"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"/>
-      </el-form-item>
-      <!--fixed-->
-      <el-form-item>
-        <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
-        <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <!--formButton-->
-    <el-form :inline="true" :size="size">
-      <!--left select-->
-      <!--delete-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logLogin:delete:all')">
-        <el-button :size="size" :icon="Delete" @click="handleDeleteAll"
-                   :color="layoutStore.BtnDelete" plain>删除全部
-        </el-button>
-      </el-form-item>
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logLogin:delete')">
-        <el-button :size="size" :icon="Delete" @click="handleDelete"
-                   :color="layoutStore.BtnDelete" plain :disabled="selectable">删除日志
-        </el-button>
-      </el-form-item>
-      <!--export-->
-      <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logLogin:export')">
-        <el-button :size="size" :icon="Upload" @click="handleExport"
-                   :color="layoutStore.BtnExport" plain>导出日志
-        </el-button>
-      </el-form-item>
-      <!--right fixed-->
-      <el-form-item class="global-form-item-right">
-        <!--显示/隐藏时间列-->
-        <el-button :size="size" :icon="Timer" circle @click="handleExpandTime" v-if="false"/>
-        <!--隐藏搜索栏按钮-->
-        <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
-        <!--刷新按钮-->
-        <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
-      </el-form-item>
-    </el-form>
-    <!--dataTable-->
-    <el-table :data="tableData"
-              v-loading="loading"
-              :size="size"
-              :highlight-current-row="true"
-              header-cell-class-name="global-table-header"
-              class="global-table"
-              stripe
-              @selection-change="selectionChange">
-      <el-table-column type="selection" width="55"/>
-      <el-table-column prop="loginId" label="日志ID" align="center" min-width="120"/>
-      <el-table-column prop="loginUserName" label="用户名称" align="center" min-width="150"/>
-      <el-table-column prop="loginIp" label="Ip地址" align="center" min-width="150"/>
-      <el-table-column prop="loginAddress" label="真实地址" align="center" min-width="120"/>
-      <el-table-column prop="loginTime" label="登录时间" align="center" sortable min-width="170"/>
-      <el-table-column prop="loginBrowser" label="登录浏览器" align="center" min-width="150"/>
-      <el-table-column prop="loginOs" label="登录系统" align="center" min-width="150"/>
-      <el-table-column prop="loginType" label="登录类型" align="center" width="120">
-        <template #default="scope">
-          <el-tag v-for="tag in logLoginTypeOptions"
-                  v-show="tag.value === scope.row.loginType"
-                  :size="size"
-                  :key="tag.value"
-                  :type="tag.type"> {{ tag.label }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="loginStatus" label="登录结果" align="center" width="120">
-        <template #default="scope">
-          <el-tag v-for="tag in logLoginStatusOptions"
-                  v-show="tag.value === scope.row.loginStatus"
-                  :size="size"
-                  :key="tag.value"
-                  :type="tag.type"> {{ tag.label }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="loginMessage" label="错误信息" align="center" width="180">
-        <template #default="scope">
-          <p style="overflow: hidden;
+  <!--formSearch-->
+  <el-form :inline="true" :size="size" v-show="showSearch">
+    <!--searchParam-->
+    <el-form-item label="用户名称" class="global-input-item">
+      <el-input v-model="query.loginUserName" placeholder="请输入用户名称"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <el-form-item label="请求IP" class="global-input-item">
+      <el-input v-model="query.loginIp" placeholder="请输入登录IP"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <el-form-item label="登录方式" class="global-input-item">
+      <el-select v-model="query.loginType" placeholder="请选择登录方式"
+                 :size="size">
+        <el-option
+            v-for="item in logLoginTypeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="登录结果" class="global-input-item">
+      <el-select v-model="query.loginStatus" placeholder="请选择登录结果"
+                 :size="size">
+        <el-option
+            v-for="item in logLoginStatusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="登录时间" class="global-input-item">
+      <el-date-picker
+          type="datetimerange"
+          v-model="time"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"/>
+    </el-form-item>
+    <!--fixed-->
+    <el-form-item>
+      <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
+      <el-button :size="size" :icon="Refresh" @click="handleReset">重置</el-button>
+    </el-form-item>
+  </el-form>
+  <!--formButton-->
+  <el-form :inline="true" :size="size">
+    <!--left select-->
+    <!--delete-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logLogin:delete:all')">
+      <el-button :size="size" :icon="Delete" @click="handleDeleteAll"
+                 :color="layoutStore.BtnDelete" plain>删除全部
+      </el-button>
+    </el-form-item>
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logLogin:delete')">
+      <el-button :size="size" :icon="Delete" @click="handleDelete"
+                 :color="layoutStore.BtnDelete" plain :disabled="selectable">删除日志
+      </el-button>
+    </el-form-item>
+    <!--export-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:logLogin:export')">
+      <el-button :size="size" :icon="Upload" @click="handleExport"
+                 :color="layoutStore.BtnExport" plain>导出日志
+      </el-button>
+    </el-form-item>
+    <!--right fixed-->
+    <el-form-item class="global-form-item-right">
+      <!--显示/隐藏时间列-->
+      <el-button :size="size" :icon="Timer" circle @click="handleExpandTime" v-if="false"/>
+      <!--隐藏搜索栏按钮-->
+      <el-button :size="size" :icon="Search" circle @click="handleHideSearch"/>
+      <!--刷新按钮-->
+      <el-button :size="size" :icon="Refresh" circle @click="handleRefresh"/>
+    </el-form-item>
+  </el-form>
+  <!--dataTable-->
+  <el-table :data="tableData"
+            v-loading="loading"
+            :size="size"
+            :highlight-current-row="true"
+            header-cell-class-name="global-table-header"
+            class="global-table"
+            stripe
+            @selection-change="selectionChange">
+    <el-table-column type="selection" width="55"/>
+    <el-table-column prop="loginId" label="日志ID" align="center" min-width="120"/>
+    <el-table-column prop="loginUserName" label="用户名称" align="center" min-width="150"/>
+    <el-table-column prop="loginIp" label="Ip地址" align="center" min-width="150"/>
+    <el-table-column prop="loginAddress" label="真实地址" align="center" min-width="120"/>
+    <el-table-column prop="loginTime" label="登录时间" align="center" sortable min-width="170"/>
+    <el-table-column prop="loginBrowser" label="登录浏览器" align="center" min-width="150"/>
+    <el-table-column prop="loginOs" label="登录系统" align="center" min-width="150"/>
+    <el-table-column prop="loginType" label="登录类型" align="center" width="120">
+      <template #default="scope">
+        <el-tag v-for="tag in logLoginTypeOptions"
+                v-show="tag.value === scope.row.loginType"
+                :size="size"
+                :key="tag.value"
+                :type="tag.type"> {{ tag.label }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="loginStatus" label="登录结果" align="center" width="120">
+      <template #default="scope">
+        <el-tag v-for="tag in logLoginStatusOptions"
+                v-show="tag.value === scope.row.loginStatus"
+                :size="size"
+                :key="tag.value"
+                :type="tag.type"> {{ tag.label }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="loginMessage" label="错误信息" align="center" width="180">
+      <template #default="scope">
+        <p style="overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;"
-          >{{ scope.row.loginMessage }}</p>
-        </template>
-      </el-table-column>
-      <el-table-column label="日志操作" align="center" width="200" fixed="right" v-if="false">
-        <template #default="scope">
-          <div class="display" v-if="checkPermission('system:logLogin:delete')">
-            <el-button class="global-table-btn red"
-                       size="small" type="primary" link :icon="Delete"
-                       @click="handleDelete(scope.$index, scope.row)">
-              删除
-            </el-button>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!--pagination-->
-    <el-pagination
-        class="global-pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :small="pageLayoutSize"
-        :layout="pageLayout"
-        :page-sizes="pageSizes"
-        :current-page="pageCurrent"
-        :page-size="pageSize"
-        :total="pageTotal"/>
-  </el-card>
+        >{{ scope.row.loginMessage }}</p>
+      </template>
+    </el-table-column>
+    <el-table-column label="日志操作" align="center" width="200" fixed="right" v-if="false">
+      <template #default="scope">
+        <div class="display" v-if="checkPermission('system:logLogin:delete')">
+          <el-button class="global-table-btn red"
+                     size="small" type="primary" link :icon="Delete"
+                     @click="handleDelete(scope.$index, scope.row)">
+            删除
+          </el-button>
+        </div>
+      </template>
+    </el-table-column>
+  </el-table>
+  <!--pagination-->
+  <el-pagination
+      class="global-pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :small="pageLayoutSize"
+      :layout="pageLayout"
+      :page-sizes="pageSizes"
+      :current-page="pageCurrent"
+      :page-size="pageSize"
+      :total="pageTotal"/>
 
   <el-dialog class="global-dialog-iu"
              title="日志详情" v-model="dialogVisible"
