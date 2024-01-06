@@ -45,7 +45,7 @@
     </el-form-item>
     <!--log-->
     <el-form-item class="global-form-item-margin" v-if="checkPermission('system:job:log')">
-      <el-button :size="size" :icon="DocumentRemove" @click="handleLog"
+      <el-button :size="size" :icon="DocumentRemove" @click="handleLog(null)"
                  :color="layoutStore.BtnUpload" plain>管理日志
       </el-button>
     </el-form-item>
@@ -113,7 +113,8 @@
               </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item :icon="Plus">更多功能</el-dropdown-item>
+                <el-dropdown-item :icon="CaretRight" @click="handleRunOnce(scope.row)">立即执行</el-dropdown-item>
+                <el-dropdown-item :icon="DocumentRemove" @click="handleLog(scope.row)">查看日志</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -232,10 +233,21 @@ import {
   getSysJobList,
   getSysJobSingleton,
   insertSysJob,
+  runSysJob,
   updateSysJob,
   updateSysJobStatus
 } from "@/api/monitor/job";
-import {DArrowRight, Delete, DocumentRemove, Edit, Plus, Refresh, Search, Timer} from "@element-plus/icons-vue";
+import {
+  CaretRight,
+  DArrowRight,
+  Delete,
+  DocumentRemove,
+  Edit,
+  Plus,
+  Refresh,
+  Search,
+  Timer
+} from "@element-plus/icons-vue";
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 import {
   jobConcurrentStatusOptions,
@@ -537,8 +549,16 @@ const handleUpdateJobStatus = (index, row) => {
   });
 }
 
-const handleLog = () => {
-  router.push({name: '任务日志'})
+const handleRunOnce = (row) => {
+  runSysJob(row).then(() => {
+  })
+}
+const handleLog = (row: any) => {
+  if (row === null) {
+    router.push({name: '任务日志', params: {name: 'log'}});
+  } else {
+    router.push({name: '任务日志', params: {name: row.jobName}});
+  }
 }
 </script>
 

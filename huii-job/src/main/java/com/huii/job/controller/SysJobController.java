@@ -103,6 +103,6 @@ public class SysJobController extends BaseController {
     @Log(value = "执行任务", opType = OpType.DELETE)
     public R<Void> runSysJob(@Validated @RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.runJob(sysJob);
-        return R.ok();
+        return R.ok("执行成功");
     }
 }

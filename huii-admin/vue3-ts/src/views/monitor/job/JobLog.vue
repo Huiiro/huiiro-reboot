@@ -148,6 +148,7 @@ import {checkPermission, checkPermissions} from "@/utils/permission.ts";
 import {downloadExport} from "@/utils/download.ts";
 import router from "@/router";
 import {jobGroupOptions, jobLogStatusOptions} from "@/views/monitor/job/dictionary.ts";
+import {useRoute} from "vue-router";
 
 //store
 const layoutStore = useLayoutStore();
@@ -157,7 +158,12 @@ const pageLayoutSize = computed(() => {
   return size === 'small';
 });
 //mounted
+const route = useRoute();
 onMounted(() => {
+  if (route.params.name !== 'log') {
+    //携带参数
+    query.value.jobName = <string>route.params.name;
+  }
   getData();
 });
 
