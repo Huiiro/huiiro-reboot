@@ -15,7 +15,8 @@ import router from "@/router";
 import globalComponent from '@/components/index.ts'
 //global style
 import '@/styles/index.scss'
-
+//vmEditor
+import vmEditor from './plugins/vmEditor'
 
 import App from '@/App.vue'
 
@@ -26,4 +27,6 @@ app.use(ElementPlus, {
 app.use(pinia)
 app.use(router)
 app.use(globalComponent)
+app.use(vmEditor.VMdEditor);
+app.use(vmEditor.VMdPreview);
 app.mount('#app')

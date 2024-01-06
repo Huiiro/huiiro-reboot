@@ -2,13 +2,20 @@ import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import {createSvgIconsPlugin} from "vite-plugin-svg-icons";
+import {prismjsPlugin} from 'vite-plugin-prismjs';
 
 export default defineConfig({
     base: '/',
-    plugins: [createSvgIconsPlugin({
-        iconDirs: [path.resolve(process.cwd(), 'src/assets/icons/svg')],
-        symbolId: 'icon-[dir]-[name]',
-    }), vue()],
+    plugins: [
+        createSvgIconsPlugin({
+            iconDirs: [path.resolve(process.cwd(), 'src/assets/icons/svg')],
+            symbolId: 'icon-[dir]-[name]',
+        }),
+        vue(),
+        prismjsPlugin({
+            languages: 'all',//按需配置：['json','java']
+        }),
+    ],
     server: {
         host: '0.0.0.0',
         port: 5173,
