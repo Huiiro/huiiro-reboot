@@ -28,12 +28,12 @@ public interface JobConstants {
     /**
      * 任务正常
      */
-    int JOB_STATUS_OK = 0;
+    int JOB_STATUS_OK = 1;
 
     /**
      * 任务暂停
      */
-    int JOB_STATUS_PAUSE = 1;
+    int JOB_STATUS_PAUSE = 0;
 
     /**
      * 任务执行目标KEY

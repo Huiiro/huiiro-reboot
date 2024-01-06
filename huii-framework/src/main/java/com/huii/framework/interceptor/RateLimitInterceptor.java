@@ -1,5 +1,6 @@
 package com.huii.framework.interceptor;
 
+import com.google.common.util.concurrent.RateLimiter;
 import com.huii.common.annotation.RateLimit;
 import com.huii.common.constants.CacheConstants;
 import com.huii.common.core.model.R;
@@ -29,9 +30,12 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@SuppressWarnings("all")
 public class RateLimitInterceptor implements HandlerInterceptor {
 
     private final RedisTemplateUtils redisTemplateUtils;
+    //基于guava的令牌桶限流
+    private RateLimiter rateLimiter = RateLimiter.create(10, 1, TimeUnit.SECONDS);
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
@@ -59,12 +63,17 @@ public class RateLimitInterceptor implements HandlerInterceptor {
                     }
 
                     long cur = System.currentTimeMillis();
-                    int restTime = (int) (Integer.parseInt(parts[1]) - Math.abs((Long.parseLong(parts[2]) - cur) / 1000));
-                    String val = (parts[0] + 1) + ":" + restTime + ":" + cur;
+                    int restTime = (int) (Integer.parseInt(parts[1]) - Math.abs((Long.parseLong(parts[2]) - cur) / 1000)) + limit.accCoefficient();
+                    String val = (Integer.parseInt(parts[0]) + 1) + ":" + restTime + ":" + cur;
                     redisTemplateUtils.setCacheObject(key, val, restTime, TimeUnit.SECONDS);
 
                 } else if (strategy.equals(LimitStrategy.BUCKET)) {
-                    log.debug("todo 令牌桶策略");
+                    log.debug("令牌桶策略");
+                    if (rateLimiter.tryAcquire()) {
+                        return true;
+                    } else {
+                        return printErrorInfo(response, limit.message());
+                    }
                 } else if (strategy.equals(LimitStrategy.WINDOW)) {
                     log.debug("todo 滑动窗口策略");
                 }

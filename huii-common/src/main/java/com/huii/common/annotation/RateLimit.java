@@ -17,12 +17,17 @@ public @interface RateLimit {
     /**
      * 最大访问次数
      */
-    int access() default 100;
+    int access() default 20;
 
     /**
      * 访问限制时间(单位: s)
      */
     int interval() default 60;
+
+    /**
+     * 累加参数 为0时不会为续key时长
+     */
+    int accCoefficient() default 2;
 
     /**
      * 限流策略

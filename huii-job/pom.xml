@@ -12,6 +12,17 @@
     <artifactId>huii-job</artifactId>
 
     <dependencies>
+        <!--quartz-->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.mchange</groupId>
+                    <artifactId>c3p0</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!--common-->
         <dependency>
             <groupId>com.huii</groupId>

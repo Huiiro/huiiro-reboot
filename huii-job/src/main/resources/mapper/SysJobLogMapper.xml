@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huii.job.mapper.SysJobLogMapper">
+
+    <resultMap type="com.huii.job.domain.SysJobLog" id="SysJobLogResult">
+        <result property="logId" column="log_id"/>
+        <result property="jobName" column="job_name"/>
+        <result property="groupName" column="group_name"/>
+        <result property="target" column="target"/>
+        <result property="jobStatus" column="job_status"/>
+        <result property="jobMessage" column="job_message"/>
+        <result property="errorInfo" column="error_info"/>
+        <result property="beginTime" column="begin_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="cost" column="cost"/>
+    </resultMap>
+
+    <sql id="selectSysJobLog">
+        select a.log_id,
+               a.job_name,
+               a.group_name,
+               a.target,
+               a.job_status,
+               a.job_message,
+               a.error_info,
+               a.begin_time,
+               a.end_time,
+               a.cost
+        from sys_job_log a
+    </sql>
+
+</mapper>
