@@ -114,7 +114,7 @@ const handleClickUserCenter = () => {
 
 };
 const handleClickHelpDoc = () => {
-
+  window.open('https://gitee.com/hu-yi0990/huii-reboot3', '_blank');
 };
 const handleLogout = () => {
   ElMessageBox.confirm(
