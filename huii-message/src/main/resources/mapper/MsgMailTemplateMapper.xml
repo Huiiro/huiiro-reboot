@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huii.message.mapper.MsgMailTemplateMapper">
+
+    <resultMap type="com.huii.message.domain.MsgMailTemplate" id="MsgMailTemplateResult">
+        <id property="mailTempId" column="mail_temp_id"/>
+        <result property="mailType" column="mail_type"/>
+        <result property="mailSubject" column="mail_subject"/>
+        <result property="mailContent" column="mail_content"/>
+        <result property="mailAttachFile" column="mail_attach_file"/>
+        <result property="tempName" column="temp_name"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectMsgMailTemplate">
+        select a.mail_temp_id,
+               a.mail_type,
+               a.mail_subject,
+               a.mail_content,
+               a.mail_attach_file,
+               a.temp_name,
+               a.remark,
+               a.create_by,
+               a.create_time,
+               a.update_by,
+               a.update_time
+        from msg_mail_template a
+    </sql>
+    <select id="loadTemplate" resultType="com.huii.message.domain.MsgMailTemplate">
+        <include refid="selectMsgMailTemplate"/>
+        where a.temp_name = #{template}
+    </select>
+
+</mapper>

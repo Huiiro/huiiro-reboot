@@ -1,7 +1,7 @@
 package com.huii.message.helper;
 
-import com.huii.message.exception.MailException;
 import com.huii.message.config.properties.MailProperties;
+import com.huii.message.exception.MailException;
 import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -30,7 +30,7 @@ public class MailHelper {
     @PostConstruct
     private void init() {
         enableSend = mailProperties.getEnableMail().equals("true");
-        if(enableSend) {
+        if (enableSend) {
             JavaMailSenderImpl myMailSender = new JavaMailSenderImpl();
             myMailSender.setDefaultEncoding("UTF-8");
             myMailSender.setHost(mailProperties.getHost());
@@ -110,8 +110,8 @@ public class MailHelper {
     }
 
     private void enableSend() {
-        if(!enableSend) {
-            throw new MailException("短信功能未开启");
+        if (!enableSend) {
+            throw new MailException("邮件功能未开启");
         }
     }
 }

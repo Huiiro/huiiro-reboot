@@ -34,10 +34,10 @@
             <version>2.0.1</version>
         </dependency>
 
-        <!--common-->
+        <!--system-->
         <dependency>
             <groupId>com.huii</groupId>
-            <artifactId>huii-common</artifactId>
+            <artifactId>huii-system</artifactId>
         </dependency>
     </dependencies>
 </project>

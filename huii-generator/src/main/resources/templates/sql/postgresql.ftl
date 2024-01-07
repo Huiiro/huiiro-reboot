@@ -34,5 +34,5 @@ VALUES (parent_id, 3, '导入${moduleFunctionName}', '${authPrefix}:import', '',
 --export
 INSERT INTO sys_menu (parent_id, menu_type, menu_name, menu_auth, menu_icon, menu_path, menu_component, menu_seq, menu_visible, menu_status, query_param, remark, create_by, create_time, update_by, update_time)
 VALUES (parent_id, 3, '导出${moduleFunctionName}', '${authPrefix}:export', '', '${requestUrl}/export', '', 1, '1', '1', '', '', 'admin', '${createTime}', 'admin', '${createTime}');
-END $$;
 </#if>
+END $$;

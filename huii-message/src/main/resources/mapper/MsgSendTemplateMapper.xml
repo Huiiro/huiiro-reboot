@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huii.message.mapper.MsgSendTemplateMapper">
+
+    <resultMap type="com.huii.message.domain.MsgSendTemplate" id="MsgSendTemplateResult">
+        <id property="tempId" column="temp_id"/>
+        <result property="tempName" column="temp_name"/>
+        <result property="tempParams" column="temp_params"/>
+        <result property="sendType" column="send_type"/>
+        <result property="sendTargets" column="send_targets"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="sendStatus" column="send_status"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectMsgSendTemplate">
+        select a.temp_id,
+               a.temp_name,
+               a.temp_params,
+               a.send_type,
+               a.send_targets,
+               a.send_time,
+               a.send_status,
+               a.remark,
+               a.create_by,
+               a.create_time,
+               a.update_by,
+               a.update_time
+        from msg_send_template a
+    </sql>
+
+</mapper>

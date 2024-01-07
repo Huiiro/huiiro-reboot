@@ -36,3 +36,11 @@ oss:
 local:
   base-path: D:/huii/file
   endPoint: http://127.0.0.1:8080/oss/local
+
+mail:
+  enable-mail: true
+  port: 25
+  protocol: smtp
+  host: smtp.163.com
+  username: H1740268plw32e@163.com
+  password: SBOHNTSFXQUDIELY
