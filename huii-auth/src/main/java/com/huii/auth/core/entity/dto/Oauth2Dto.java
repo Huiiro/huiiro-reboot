@@ -1,6 +1,7 @@
 package com.huii.auth.core.entity.dto;
 
 import com.huii.auth.core.entity.LoginEntity;
+import com.huii.common.constants.SystemConstants;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,4 +21,8 @@ public class Oauth2Dto extends LoginEntity {
     private String state;
 
     private String scope;
+
+    private Long bindId;
+
+    private String hasLoginAndDoBind = SystemConstants.STATUS_0;
 }

@@ -10,9 +10,9 @@ import com.huii.auth.service.LoginSuccessService;
 import com.huii.auth.service.impl.UserDetailServiceImpl;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysUser;
-import com.huii.system.domain.SysUserOauth;
 import com.huii.common.core.model.LoginUser;
 import com.huii.common.exception.BasicAuthenticationException;
+import com.huii.system.domain.SysUserOauth;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +58,11 @@ public class Oauth2AuthenticationProvider implements AuthenticationProvider {
         Oauth2User oauthUser = strategy.getOauthUser(client, accessToken);
         SysUserOauth oauthUserInfo = loginSuccessService.getOauthUserInfo(oauthUser);
         LoginUser loginUser;
+        //是否是非登录绑定操作
+        if (checkNeedBind(token.getHasLoginAndDoBind(), token.getBindId(), oauthUser)) {
+            loginUser = (LoginUser) userDetailService.loadUserByUserId(token.getBindId());
+            return new Oauth2Token(loginUser, null, null);
+        }
         if (oauthUserInfo != null) {
             loginUser = (LoginUser) userDetailService.loadUserByUserId(oauthUserInfo.getUserId());
         } else {
@@ -68,7 +73,8 @@ public class Oauth2AuthenticationProvider implements AuthenticationProvider {
             //设置未绑定标志
             loginUser.setBindStatus(SystemConstants.STATUS_0);
         }
-
+        //设置登录类型
+        loginUser.setLoginType(token.getLoginType());
         return new Oauth2Token(loginUser, null, null);
     }
 
@@ -77,6 +83,9 @@ public class Oauth2AuthenticationProvider implements AuthenticationProvider {
         return Oauth2Token.class.isAssignableFrom(authentication);
     }
 
+    /**
+     * 获取provider信息
+     */
     private Oauth2Client getProvider(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         if (StringUtils.isEmpty(requestURI)) {
@@ -93,5 +102,18 @@ public class Oauth2AuthenticationProvider implements AuthenticationProvider {
             }
         }
         throw new BasicAuthenticationException("获取Oauth2认证信息失败");
+    }
+
+    /**
+     * 检查是否是绑定账号
+     */
+    private boolean checkNeedBind(String hasLoginAndDoBind, Long userId, Oauth2User oauthUser) {
+        if (SystemConstants.STATUS_1.equals(hasLoginAndDoBind) && userId != null) {
+            if (!loginSuccessService.checkBind(userId, oauthUser.getType())) {
+                loginSuccessService.createUserOauthEntity(userId, oauthUser);
+            }
+            return true;
+        }
+        return false;
     }
 }

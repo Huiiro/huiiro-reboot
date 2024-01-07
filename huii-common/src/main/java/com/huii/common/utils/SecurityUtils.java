@@ -1,8 +1,8 @@
 package com.huii.common.utils;
 
 import com.huii.common.constants.SystemConstants;
-import com.huii.common.core.model.LoginUser;
 import com.huii.common.core.domain.SysUser;
+import com.huii.common.core.model.LoginUser;
 import com.huii.common.exception.BasicAuthenticationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,6 +25,17 @@ public class SecurityUtils {
      */
     public static Long getUserId() {
         return getPrincipal().getUser().getUserId();
+    }
+
+    /**
+     * 安全获取用户ID 不会抛出异常，返回null
+     */
+    public static Long safeGetUserId() {
+        try {
+            return getPrincipal().getUser().getUserId();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**

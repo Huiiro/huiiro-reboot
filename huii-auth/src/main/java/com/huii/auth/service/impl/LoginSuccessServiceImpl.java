@@ -108,7 +108,7 @@ public class LoginSuccessServiceImpl implements LoginSuccessService {
 
     @Override
     public int updateUserAuthsInfoByUserId(List<Long> userIds, List<String> auths) {
-        if(userIds.isEmpty()) {
+        if (userIds.isEmpty()) {
             return 0;
         }
         int counter = 0;
@@ -175,6 +175,13 @@ public class LoginSuccessServiceImpl implements LoginSuccessService {
         sysUser.setAvatar(oauth2User.getAvatar());
         sysUserMapper.insert(sysUser);
         return sysUser;
+    }
+
+    @Override
+    public boolean checkBind(Long userId, String type) {
+        return sysUserOauthMapper.exists(new LambdaQueryWrapper<SysUserOauth>()
+                .eq(SysUserOauth::getUserId, userId)
+                .eq(SysUserOauth::getOauthProvider, type));
     }
 
     private String genRandomUsername() {

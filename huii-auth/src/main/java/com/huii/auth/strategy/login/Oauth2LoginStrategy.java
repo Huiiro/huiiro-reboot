@@ -29,7 +29,8 @@ public class Oauth2LoginStrategy extends AbstractLoginStrategy {
     public LoginVo login(LoginEntity loginEntity, HttpServletRequest request) {
         Oauth2Dto dto = (Oauth2Dto) loginEntity;
         Oauth2Token token = new Oauth2Token(request, null, dto.getCode(),
-                dto.getState(), dto.getScope(), dto.getType());
+                dto.getState(), dto.getScope(), dto.getType(), loginEntity.getLoginType(),
+                dto.getHasLoginAndDoBind(), dto.getBindId());
         return this.authenticate(token, manager, loginSuccessService, request);
     }
 

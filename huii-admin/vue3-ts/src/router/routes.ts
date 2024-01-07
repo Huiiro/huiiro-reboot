@@ -9,6 +9,10 @@ export const constRoutes = [
         component: () => import('@/views/errorPage/404.vue')
     },
     {
+        path: '/oauth/redirect',
+        component: () => import('../views/redirect/OauthRedirect.vue')
+    },
+    {
         name: 'login',
         path: '/login',
         meta: {

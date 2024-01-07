@@ -13,7 +13,7 @@ export default defineConfig({
         }),
         vue(),
         prismjsPlugin({
-            languages: 'all',//按需配置：['json','java']
+            languages: [],//按需配置：['json','java'] //全部配置：'all'
         }),
     ],
     server: {

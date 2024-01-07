@@ -1,6 +1,7 @@
 package com.huii.auth.core.entity.token;
 
 import com.huii.auth.core.entity.TokenEntity;
+import com.huii.common.enums.LoginType;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -13,13 +14,22 @@ public class Oauth2Token extends TokenEntity {
     private String state;
     private String scope;
     private String type;
+    private LoginType loginType;
+    //是否已登录并绑定该账号
+    private String hasLoginAndDoBind;
+    //需要绑定的账号
+    private Long bindId;
 
-    public Oauth2Token(Object principal, Object credentials, String code, String state, String scope, String type) {
+    public Oauth2Token(Object principal, Object credentials, String code, String state, String scope, String type,
+                       LoginType loginType, String hasLoginAndDoBind, Long bindId) {
         super(principal, credentials);
         this.code = code;
         this.state = state;
         this.scope = scope;
         this.type = type;
+        this.loginType = loginType;
+        this.hasLoginAndDoBind = hasLoginAndDoBind;
+        this.bindId = bindId;
     }
 
     public Oauth2Token(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {

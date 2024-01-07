@@ -18,9 +18,11 @@ public interface LoginService {
 
     /**
      * load userInfo when login success
+     *
      * @return loginVo
      */
     LoginVo getInfo();
+
     /**
      * accountLogin
      *
@@ -58,12 +60,20 @@ public interface LoginService {
     LoginVo oauth2Login(Oauth2Dto dto, HttpServletRequest request);
 
     /**
-     * oauth2LoginResponse
+     * oauth2登录成功返回结果
      *
-     * @param loginVo loginVo
+     * @param loginVo  loginVo
      * @param response response
      */
     void defaultOauth2LoginResponse(LoginVo loginVo, HttpServletResponse response);
+
+    /**
+     * oauth2绑定成功返回结果
+     *
+     * @param loginVo  loginVo
+     * @param response response
+     */
+    void defaultOauth2LoginBindResponse(LoginVo loginVo, HttpServletResponse response);
 
     /**
      * 获取用户唯一用户名

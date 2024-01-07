@@ -61,8 +61,16 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public void defaultOauth2LoginResponse(LoginVo loginVo, HttpServletResponse response) {
         String redirectUrl = loginProperties.getDefaultOauth2LoginCallbackUrl() + "?token=" + loginVo.getAccessToken();
+        if (ObjectUtils.isNotEmpty(loginVo.getRefreshToken())) {
+            redirectUrl += "&refreshToken=" + loginVo.getRefreshToken();
+        }
         response.setStatus(HttpServletResponse.SC_FOUND);
         response.setHeader("Location", redirectUrl);
+    }
+
+    @Override
+    public void defaultOauth2LoginBindResponse(LoginVo loginVo, HttpServletResponse response) {
+        defaultOauth2LoginResponse(loginVo, response);
     }
 
     @Override

@@ -93,4 +93,10 @@ public interface LoginSuccessService {
      */
     SysUser createUserEntity(Oauth2User oauth2User);
 
+    /**
+     * 检查是否绑定该账号
+     * @param userId userId
+     * @param type type
+     */
+    boolean checkBind(Long userId, String type);
 }

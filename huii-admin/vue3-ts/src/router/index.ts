@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormalized, RouteRecordRaw} from "vue-router";
 import {checkInWhiteList, constRoutes} from "@/router/routes.ts";
-import {getAccessToken, removeAccessToken, setAccessToken} from "@/utils/token.ts";
+import {getAccessToken, removeAccessToken, setAccessToken, setRefreshToken, setUserInfo} from "@/utils/token.ts";
 import {useUserStore} from '@/store/modules/user.ts';
 import {getRoutes} from "@/api/system/menu";
 import settings from "@/settings.ts";
@@ -70,6 +70,10 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
         setAccessToken(queryToken);
         token = queryToken;
     }
+    let refreshToken: any = to.query.refreshToken;
+    if(refreshToken) {
+        setRefreshToken(refreshToken)
+    }
     if (!token && to.path !== '/login') {
         next({path: "/login"});
     }
@@ -103,6 +107,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
             const info: any = await getInfo();
             userStore.setPermissions(info.data.permissions)
             userStore.setRoles(info.data.roles)
+            setUserInfo(info.data.userInfo)
             router.addRoute(indexRoute);
             router.addRoute(staticRoute);
             next({path: to.path});

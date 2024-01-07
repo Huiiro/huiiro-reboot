@@ -39,7 +39,12 @@ public class LoginProperties {
     private Integer errorWaitTime = 10;
 
     /**
-     * oauth2 登录回调地址 默认为本地前端回调接口
+     * oauth2 登录成功重定向地址 默认为本地前端回调接口
      */
     private String defaultOauth2LoginCallbackUrl = "http://localhost:5173/oauth/redirect";
+
+    /**
+     * oauth2 授权服务器回调地址
+     */
+    private String defaultOauth2LoginRedirectUrl = "http://localhost:8080/callback";
 }

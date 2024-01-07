@@ -74,6 +74,7 @@ import {encryptFiled} from "@/utils/encrypt.ts";
 import {useLayoutStore} from "@/store/modules/layout.ts";
 import settings from "../../settings.ts";
 import {useUserStore} from "@/store/modules/user.ts";
+import {giteeLogin, githubLogin} from "@/api/auth/oauth2";
 
 const layoutStore = useLayoutStore();
 const userStore = useUserStore();
@@ -142,7 +143,15 @@ const handleForgetPassword = () => {
   console.log('forgetPassword')
 };
 const handleOauthLogin = (type: String) => {
-  console.log(type)
+  if (type == 'gitee') {
+    giteeLogin().then(res => {
+      window.location.href = res.data.url;
+    });
+  } else if (type == 'github') {
+    githubLogin().then(res => {
+      window.location.href = res.data.url;
+    });
+  }
 };
 </script>
 

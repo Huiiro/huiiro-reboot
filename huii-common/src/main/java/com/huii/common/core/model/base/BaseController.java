@@ -16,6 +16,10 @@ public class BaseController {
         return SecurityUtils.getUserId();
     }
 
+    public Long safeGetUserId() {
+        return SecurityUtils.safeGetUserId();
+    }
+
     public <T> R<T> saveSuccess() {
         return saveSuccess(null);
     }
