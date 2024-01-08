@@ -23,6 +23,21 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser> {
     int realDelete(Long userId);
 
     /**
+     * 更新用户资料
+     *
+     * @param sysUser sysUser
+     */
+    void updateUserProfile(SysUser sysUser);
+
+    /**
+     * 更新用户头像
+     *
+     * @param userId userId
+     * @param url    avatar url
+     */
+    void updateUserAvatar(@Param("userId") Long userId, @Param("url") String url);
+
+    /**
      * 根据用户ID查询用户权限字段
      *
      * @param userId userId
