@@ -109,7 +109,8 @@ public class Oauth2AuthenticationProvider implements AuthenticationProvider {
      */
     private boolean checkNeedBind(String hasLoginAndDoBind, Long userId, Oauth2User oauthUser) {
         if (SystemConstants.STATUS_1.equals(hasLoginAndDoBind) && userId != null) {
-            if (!loginSuccessService.checkBind(userId, oauthUser.getType())) {
+            if (!loginSuccessService.checkAccBind(oauthUser) &&
+                    !loginSuccessService.checkUserBind(userId, oauthUser.getType())) {
                 loginSuccessService.createUserOauthEntity(userId, oauthUser);
             }
             return true;

@@ -161,6 +161,7 @@ public class LoginSuccessServiceImpl implements LoginSuccessService {
         sysUserOauth.setOauthUserName(oauth2User.getName());
         sysUserOauth.setOauthUserAvatar(oauth2User.getAvatar());
         sysUserOauth.setOauthIdentify(oauth2User.getId());
+        sysUserOauth.setCreateTime(LocalDateTime.now());
         sysUserOauthMapper.insert(sysUserOauth);
         return sysUserOauth;
     }
@@ -178,10 +179,17 @@ public class LoginSuccessServiceImpl implements LoginSuccessService {
     }
 
     @Override
-    public boolean checkBind(Long userId, String type) {
+    public boolean checkUserBind(Long userId, String type) {
         return sysUserOauthMapper.exists(new LambdaQueryWrapper<SysUserOauth>()
                 .eq(SysUserOauth::getUserId, userId)
                 .eq(SysUserOauth::getOauthProvider, type));
+    }
+
+    @Override
+    public boolean checkAccBind(Oauth2User oauth2User) {
+        return sysUserOauthMapper.exists(new LambdaQueryWrapper<SysUserOauth>()
+                .eq(SysUserOauth::getOauthIdentify, oauth2User.getId())
+                .eq(SysUserOauth::getOauthProvider, oauth2User.getType()));
     }
 
     private String genRandomUsername() {

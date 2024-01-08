@@ -118,6 +118,10 @@
                  left join sys_user_role ur on u.user_id = ur.user_id
                  left join sys_role r on r.role_id = ur.role_id
     </sql>
+    <delete id="realDelete">
+        delete from sys_user
+        WHERE user_id = #{userId};
+    </delete>
 
     <select id="selectAuthsByUserId" resultType="java.lang.String">
         select distinct m.menu_auth

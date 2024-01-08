@@ -6,7 +6,6 @@ import com.huii.auth.core.entity.vo.LoginVo;
 import com.huii.auth.service.LoginUserOauthService;
 import com.huii.common.constants.CacheConstants;
 import com.huii.common.core.model.LoginUser;
-import com.huii.common.enums.LoginType;
 import com.huii.common.utils.redis.RedisTemplateUtils;
 import com.huii.system.domain.SysUserOauth;
 import com.huii.system.mapper.SysUserMapper;
@@ -16,7 +15,9 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -42,27 +43,39 @@ public class LoginUserOauthServiceImpl implements LoginUserOauthService {
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public void bindUser(Long userId, LoginVo loginVo) {
-        //获取登陆方式
+        Long newUserId = (Long) loginVo.getUserInfo().get("userId");
+        if(Objects.equals(userId, newUserId)) {
+            throw new RuntimeException("无法绑定至当前帐号");
+        }
+        //userId 当前登录用户的ID loginVo新登录身份
+        //获取旧登陆信息
         JSONObject object = redisTemplateUtils.getCacheObject(CacheConstants.USER + userId);
         if (ObjectUtils.isEmpty(object)) {
-            return;
+            throw new RuntimeException("当前登录信息获取失败");
         }
         LoginUser loginUser = object.toJavaObject(LoginUser.class);
-        LoginType loginType = loginUser.getLoginType();
-
-        //查询旧信息
+        String oauthProvider = loginUser.getLoginType().getName();
+        //查询旧绑定信息
         SysUserOauth userOauth = sysUserOauthMapper.selectOne(new LambdaQueryWrapper<SysUserOauth>()
                 .eq(SysUserOauth::getUserId, userId)
-                .eq(SysUserOauth::getOauthProvider, loginType.getName()));
+                .eq(SysUserOauth::getOauthProvider, oauthProvider)
+                .last("limit 1"));
+        if(ObjectUtils.isEmpty(userOauth)) {
+            throw new RuntimeException("未查询到绑定记录");
+        }
+        //删除旧绑定信息
         sysUserOauthMapper.deleteById(userOauth);
-        //获取需要绑定的ID
-        Long bindToId = (Long) loginVo.getUserInfo().get("userId");
-        userOauth.setUserId(bindToId);
-        //更新绑定信息
-        sysUserOauthMapper.updateById(userOauth);
+
+        //绑定新信息
+        userOauth.setUserId(newUserId);
+        userOauth.setCreateTime(LocalDateTime.now());
+        sysUserOauthMapper.insert(userOauth);
 
         //删除旧用户信息
-        sysUserMapper.deleteById(userId);
+        int deleted = sysUserMapper.realDelete(userId);
+        if(deleted <= 0) {
+            throw new RuntimeException("解绑失败");
+        }
         //删除旧缓存信息
         redisTemplateUtils.deleteObject(CacheConstants.USER + userId);
         redisTemplateUtils.deleteObject(CacheConstants.TOKEN + userId);

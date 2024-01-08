@@ -44,8 +44,8 @@ public interface LoginSuccessService {
     /**
      * 更新用户权限信息后处理 redis 信息
      *
-     * @param userIds   userIds
-     * @param auths auths
+     * @param userIds userIds
+     * @param auths   auths
      * @return counter
      */
     int updateUserAuthsInfoByUserId(List<Long> userIds, List<String> auths);
@@ -53,8 +53,8 @@ public interface LoginSuccessService {
     /**
      * 更新角色授权后处理 redis 信息
      *
-     * @param userIds   userIds
-     * @param roles roles
+     * @param userIds userIds
+     * @param roles   roles
      * @return counter
      */
     int updateUserRolesByUserId(List<Long> userIds, List<SysRole> roles);
@@ -94,9 +94,18 @@ public interface LoginSuccessService {
     SysUser createUserEntity(Oauth2User oauth2User);
 
     /**
-     * 检查是否绑定该账号
+     * 检查用户是否绑定该账号
+     *
      * @param userId userId
-     * @param type type
+     * @param type   type
      */
-    boolean checkBind(Long userId, String type);
+    boolean checkUserBind(Long userId, String type);
+
+    /**
+     * 检查该账号是否已被绑定
+     *
+     * @param oauth2User oauth2User
+     * @return b
+     */
+    boolean checkAccBind(Oauth2User oauth2User);
 }

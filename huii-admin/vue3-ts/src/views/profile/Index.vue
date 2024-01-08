@@ -4,7 +4,7 @@
       <el-card class="box-card" shadow="never">
         <template #header>
           <div class="card-header">
-            <el-avatar :src="avatar"></el-avatar>
+            <el-avatar :src="avatar" :size="36" style="min-width: 36px"></el-avatar>
             <p class="card-header-text">{{ username }}</p>
           </div>
         </template>
@@ -113,8 +113,9 @@ const handleClick = (item: any) => {
 
 .card-header-text {
   margin-left: 15px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
+  overflow: hidden;
 }
 
 .header {

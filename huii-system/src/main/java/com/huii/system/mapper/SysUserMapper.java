@@ -15,6 +15,14 @@ import java.util.List;
 public interface SysUserMapper extends BaseMapperPlus<SysUser> {
 
     /**
+     * 执行正真删除 而不是逻辑删除
+     *
+     * @param userId userId
+     * @return count
+     */
+    int realDelete(Long userId);
+
+    /**
      * 根据用户ID查询用户权限字段
      *
      * @param userId userId

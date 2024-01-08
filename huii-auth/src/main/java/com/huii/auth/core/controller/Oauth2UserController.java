@@ -58,13 +58,14 @@ public class Oauth2UserController extends BaseController {
      */
     @PostMapping("/bind/has")
     public R<Object> bindAccountToMy(@RequestBody @Validated AccountDto dto, HttpServletRequest request) {
+        Long userId = getUserId();
         dto.setLoginType(LoginType.ACCOUNT);
         String username = loginService.getUsername(dto.getUsername());
         dto.setUsername(username);
         String password = loginSecurityService.decrypt(dto.getPassword());
         dto.setPassword(password);
         LoginVo loginVo = loginService.accountLogin(dto, request);
-        loginUserOauthService.bindUser(getUserId(), loginVo);
+        loginUserOauthService.bindUser(userId, loginVo);
         return R.ok(loginVo);
     }
 
