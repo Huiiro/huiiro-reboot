@@ -111,7 +111,13 @@ const handleClickAvatar = () => {
 
 };
 const handleClickUserCenter = () => {
-
+  userStore.addTab({
+    name: '个人中心',
+    title: '个人中心',
+    path: '/profile',
+    icon: 'User'
+  });
+  router.push({name: '个人中心'});
 };
 const handleClickHelpDoc = () => {
   window.open('https://gitee.com/hu-yi0990/huii-reboot3', '_blank');

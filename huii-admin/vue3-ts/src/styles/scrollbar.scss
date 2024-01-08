@@ -9,7 +9,7 @@ $scrollbar-hover-track-color: #f1f1f1;
 
 @mixin scrollbar-style($thumb-color: $scrollbar-color) {
   width: $scrollbar-width;
-
+  height: $scrollbar-width;
   &-thumb {
     background-color: $thumb-color;
     border-radius: $scrollbar-radius;
