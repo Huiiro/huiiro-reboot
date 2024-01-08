@@ -10,6 +10,7 @@ public interface SysUserService {
 
     /**
      * 查询全部用户
+     *
      * @param sysUser sysUser
      * @return list
      */
@@ -62,9 +63,26 @@ public interface SysUserService {
 
     /**
      * 更新用户密码
+     *
      * @param sysUser sysUser
      */
     void updateUserPassword(SysUser sysUser);
+
+    /**
+     * 更新用户资料
+     *
+     * @param sysUser sysUser
+     */
+    void updateUserProfile(SysUser sysUser);
+
+    /**
+     * 更新用户头像
+     *
+     * @param userId userId
+     * @param url    url
+     * @return old avatar url
+     */
+    String updateUserAvatar(Long userId, String url);
 
     /**
      * 删除用户
@@ -110,5 +128,4 @@ public interface SysUserService {
      * @param userIds userIds
      */
     void unauthUser(Long roleId, Long[] userIds);
-
 }

@@ -20,6 +20,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,6 +99,14 @@ public class LocalServiceImpl implements LocalService {
     @Override
     public String getPreSignedUrl(String fileName) {
         return null;
+    }
+
+    @Override
+    public void deleteByUrl(String url) {
+        //http://127.0.0.1:8080/oss/local?module=avatar&fileName=202401090035730d29d8-3eb.jpg
+        List<String> list = new ArrayList<>(1);
+        list.add(url);
+        deleteBatch(list);
     }
 
     @Override

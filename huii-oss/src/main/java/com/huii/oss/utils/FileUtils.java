@@ -147,7 +147,7 @@ public class FileUtils {
     public static String initRandomFileName() {
         StringBuilder builder = new StringBuilder();
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
-        String uuid = UUID.randomUUID().toString().substring(0, 12);
+        String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
         return builder.append(time).append(uuid).toString();
     }
 

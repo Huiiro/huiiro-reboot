@@ -71,7 +71,10 @@ public class Oauth2UserController extends BaseController {
 
     /**
      * 绑定第三方账号至本账号
+     *
+     * @deprecated using oauth2 login controller instead
      */
+    @Deprecated
     @PostMapping("/bind/new/{provider}")
     public R<Object> bindThirdAccountToThis(@PathVariable String provider) {
         return R.ok();

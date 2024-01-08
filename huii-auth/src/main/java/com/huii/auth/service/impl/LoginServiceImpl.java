@@ -35,6 +35,10 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public LoginVo getInfo() {
         LoginUser loginUser = SecurityUtils.getPrincipal();
+        SysUser sysUser = sysUserMapper.selectById(SecurityUtils.getUserId());
+        SysUser user = loginUser.getUser();
+        user.setAvatar(sysUser.getAvatar());
+        user.setUserName(sysUser.getUserName());
         return LoginSuccessServiceImpl.loginVoBuilder(new LoginVo(), loginUser);
     }
 

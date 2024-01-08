@@ -80,6 +80,12 @@ public class OssServiceImpl implements OssService {
     }
 
     @Override
+    public void deleteByUrl(String url) {
+        //http://192.168.24.101:9001/local/202401090047e95113eb2b2a.jpg
+        //TODO
+    }
+
+    @Override
     public void deleteBatch(List<String> names) {
         try {
             for (String name : names) {

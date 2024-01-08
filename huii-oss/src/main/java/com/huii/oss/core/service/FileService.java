@@ -55,7 +55,15 @@ public interface FileService {
     String getPreSignedUrl(String fileName);
 
     /**
-     * 批量删除
+     * 通过url进行删除
+     *
+     * @param url url
+     */
+    void deleteByUrl(String url);
+
+    /**
+     * 通过文件名批量删除
+     *
      * @param names nameIds
      */
     void deleteBatch(List<String> names);

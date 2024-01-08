@@ -126,6 +126,20 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUserMapper.updateById(sysUser);
     }
 
+
+    @Override
+    public void updateUserProfile(SysUser sysUser) {
+        checkUpdate(sysUser);
+        sysUserMapper.updateUserProfile(sysUser);
+    }
+
+    @Override
+    public String updateUserAvatar(Long userId, String url) {
+        SysUser sysUser = sysUserMapper.selectById(userId);
+        sysUserMapper.updateUserAvatar(userId, url);
+        return sysUser.getAvatar();
+    }
+
     @Override
     public void deleteUsers(Long[] ids) {
         List<Long> list = Arrays.asList(ids);

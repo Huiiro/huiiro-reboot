@@ -9,6 +9,7 @@ import com.huii.auth.service.LoginSecurityService;
 import com.huii.auth.service.LoginService;
 import com.huii.common.annotation.Anonymous;
 import com.huii.common.core.model.R;
+import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.LoginType;
 import com.huii.common.enums.ResType;
 import com.huii.common.utils.MessageUtils;
@@ -22,12 +23,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth/v1/login")
 @RequiredArgsConstructor
-public class LoginController {
+public class LoginController extends BaseController {
 
     private final LoginService loginService;
     private final LoginCaptchaService loginCaptchaService;
     private final LoginSecurityService loginSecurityService;
-
 
     /**
      * 获取用户权限信息

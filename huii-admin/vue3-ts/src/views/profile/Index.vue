@@ -4,7 +4,7 @@
       <el-card class="box-card" shadow="never">
         <template #header>
           <div class="card-header">
-            <el-avatar :src="avatar" :size="36" style="min-width: 36px"></el-avatar>
+            <user-avatar :src="avatar"/>
             <p class="card-header-text">{{ username }}</p>
           </div>
         </template>
@@ -41,6 +41,7 @@ import {onMounted, ref} from "vue";
 import {getUserInfo} from "@/utils/token.ts";
 import {defaultAvatar} from "@/utils/constants.ts";
 import router from "@/router";
+import UserAvatar from "@/views/profile/UserAvatar.vue";
 
 const isActive = ref();
 const basicMenus = [
@@ -104,7 +105,7 @@ const handleClick = (item: any) => {
 }
 
 .card-header {
-  height: 60px;
+  height: 68px;
   margin-left: 20px;
   display: flex;
   align-items: center;
@@ -136,6 +137,6 @@ const handleClick = (item: any) => {
 
 .active {
   color: #1c1c1c;
-  font-weight: bold;
+  font-weight: 500;
 }
 </style>
