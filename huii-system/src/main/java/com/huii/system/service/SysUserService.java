@@ -69,6 +69,24 @@ public interface SysUserService {
     void updateUserPassword(SysUser sysUser);
 
     /**
+     * 更新用户密码
+     *
+     * @param userId id
+     * @param oldPwd 旧密码
+     * @param newPwd 新密码
+     */
+    void updateUserPassword(Long userId, String oldPwd, String newPwd);
+
+    /**
+     * 更新用户密码
+     *
+     * @param identify 身份
+     * @param column     身份对应字段
+     * @param pwd      新密码
+     */
+    void updateUserPassword(String identify, String column, String pwd);
+
+    /**
      * 更新用户资料
      *
      * @param sysUser sysUser
@@ -128,4 +146,5 @@ public interface SysUserService {
      * @param userIds userIds
      */
     void unauthUser(Long roleId, Long[] userIds);
+
 }

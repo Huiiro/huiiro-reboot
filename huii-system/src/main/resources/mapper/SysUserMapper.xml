@@ -127,6 +127,13 @@
             remark    = #{remark}
         where user_id = #{userId}
     </update>
+
+    <update id="updateUserPassword">
+        update sys_user
+        set password = #{password}
+        where user_id = #{userId}
+    </update>
+
     <update id="updateUserAvatar">
         update sys_user
         set avatar = #{url}
@@ -134,7 +141,8 @@
     </update>
 
     <delete id="realDelete">
-        delete from sys_user
+        delete
+        from sys_user
         WHERE user_id = #{userId};
     </delete>
 
@@ -192,7 +200,7 @@
 
     <select id="selectUserPageWithDept" resultType="com.huii.common.core.domain.SysUser">
         <include refid="selectUserDept"></include>
-            ${ew.getCustomSqlSegment}
+        ${ew.getCustomSqlSegment}
     </select>
 
     <select id="selectUserListWithDept" resultType="com.huii.common.core.domain.SysUser">

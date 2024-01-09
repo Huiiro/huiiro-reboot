@@ -9,6 +9,7 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import "virtual:svg-icons-register"
 
 //vueCropper
+//https://github.com/xyxiao001/vue-cropper?tab=readme-ov-file
 import VueCropper from 'vue-cropper';
 import 'vue-cropper/dist/index.css'
 

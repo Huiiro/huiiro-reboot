@@ -79,3 +79,23 @@ html {
   max-width: 800px;
   padding: 4px;
 }
+
+.p-div {
+  margin-bottom: 50px;
+}
+
+.p-header {
+  font-size: 20px;
+  padding-bottom: 20px;
+}
+
+.info-text-clickable:hover {
+  color: #5d5d5d;
+}
+
+.info-text {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 10px 0;
+  cursor: pointer;
+}

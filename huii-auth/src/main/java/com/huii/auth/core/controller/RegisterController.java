@@ -7,6 +7,7 @@ import com.huii.common.core.model.R;
 import com.huii.common.enums.ResType;
 import com.huii.common.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +24,7 @@ public class RegisterController {
 
     @Anonymous
     @PostMapping("/register")
-    public R<Object> register(@RequestBody RegisterEntity entity) {
+    public R<Object> register(@Validated @RequestBody RegisterEntity entity) {
         registerService.register(entity);
         return R.ok(MessageUtils.message(ResType.USER_REGISTER_SUCCESS.getI18n()));
     }

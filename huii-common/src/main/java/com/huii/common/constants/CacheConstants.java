@@ -20,6 +20,8 @@ public interface CacheConstants {
      */
     String VERIFY_CODE = "verify_code:";
 
+    String VERIFY_CODE_RESET_PWD_SUFFIX = VERIFY_CODE + "reset_pwd:";
+
     /**
      * 登录验证次数
      */

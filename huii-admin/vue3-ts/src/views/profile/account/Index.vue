@@ -3,8 +3,10 @@
     <p class="p-header">
       账号密码管理
     </p>
-    <p class="info-text info-text-clickable" @click="showResetPasswordDialog = true">
+    <p class="info-text info-text-clickable" @click="clickResetPwd">
       修改密码?</p>
+    <p class="info-text info-text-clickable" @click="clickForgetPwd">
+      忘记密码?</p>
   </div>
   <div class="p-div">
     <p class="p-header">
@@ -77,7 +79,19 @@
              :close-on-click-modal="false"
              :before-close="handleClose">
     <template #default>
-      todo
+      <el-form :model="resetPwdForm" :rules="resetPwdRules" ref="resetPwdFormRef">
+        <el-form-item prop="oldPwd" class="login-form-item" label="旧密码">
+          <el-input v-model=resetPwdForm.oldPwd
+                    placeholder="输入旧密码" :prefix-icon="Lock"
+                    size="large" type="password" autocomplete="new-password"/>
+        </el-form-item>
+        <el-form-item prop="pwd" class="login-form-item" label="新密码">
+          <el-input v-model=resetPwdForm.pwd
+                    placeholder="输入新密码" :prefix-icon="Lock"
+                    size="large"
+                    type="password" show-password autocomplete="new-password"/>
+        </el-form-item>
+      </el-form>
     </template>
     <template #footer>
       <span class="dialog-footer">
@@ -85,6 +99,10 @@
         <el-button type="primary" @click="handleConfirmResetPassword">提 交</el-button>
       </span>
     </template>
+  </el-dialog>
+
+  <el-dialog title="忘记密码" v-model="showForgetPwd" width="450px" :close-on-click-modal="false">
+    <forget-pwd/>
   </el-dialog>
 </template>
 
@@ -96,6 +114,8 @@ import {Lock, User} from "@element-plus/icons-vue";
 import {encryptFiled} from "@/utils/encrypt.ts";
 import {setAccessToken, setRefreshToken, setUserInfo} from "@/utils/token.ts";
 import {useUserStore} from "@/store/modules/user.ts";
+import {resetUserPwd} from "@/api/system/userProfile";
+import ForgetPwd from "@/views/profile/ForgetPwd.vue";
 
 onMounted(() => {
   getBindStatus();
@@ -198,9 +218,50 @@ const handleConfirm = () => {
  * 重置密码
  */
 const showResetPasswordDialog = ref(false);
+let resetPwdFormRef = ref();
+let resetPwdForm = reactive({oldPwd: '', pwd: ''});
+const resetPwdRules = {
+  oldPwd: [
+    {required: true, message: '请输入旧密码', trigger: 'blur'},
+    {min: 1, max: 20, message: '用户名长度不超过20位', trigger: 'blur'},
+  ],
+  pwd: [
+    {required: true, message: '请输入新密码', trigger: 'blur'},
+    {min: 6, max: 20, message: '新密码长度应在6至20位', trigger: 'blur'},
+  ]
+}
+
+const clickResetPwd = () => {
+  showResetPasswordDialog.value = true;
+  resetPwdForm.oldPwd = '';
+  resetPwdForm.pwd = '';
+}
 
 const handleConfirmResetPassword = () => {
+  resetPwdFormRef.value.validate().then(() => {
+    encryptFiled(resetPwdForm.oldPwd).then(encryptOldPwd => {
+      resetPwdForm.oldPwd = encryptOldPwd;
+      encryptFiled(resetPwdForm.pwd).then(encryptPwd => {
+        resetPwdForm.pwd = encryptPwd;
+        //api
+        resetUserPwd(resetPwdForm).then(res => {
+          if (res.code === 0) {
+            //suc
+            handleClose();
+          }
+        })
+      })
+    })
+  })
+}
 
+/**
+ * 忘记密码
+ */
+const showForgetPwd = ref(false);
+
+const clickForgetPwd = () => {
+  showForgetPwd.value = true;
 }
 </script>
 
@@ -211,23 +272,4 @@ const handleConfirmResetPassword = () => {
   gap: 10px;
 }
 
-.p-div {
-  margin-bottom: 50px;
-}
-
-.p-header {
-  font-size: 20px;
-  padding-bottom: 20px;
-}
-
-.info-text-clickable:hover {
-  color: #5d5d5d;
-}
-
-.info-text {
-  font-size: 14px;
-  font-weight: 400;
-  margin: 10px 0;
-  cursor: pointer;
-}
 </style>

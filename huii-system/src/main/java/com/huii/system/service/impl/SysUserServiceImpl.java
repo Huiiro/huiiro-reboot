@@ -14,6 +14,7 @@ import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
 import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.PageParamUtils;
+import com.huii.common.utils.SecurityUtils;
 import com.huii.common.utils.TimeUtils;
 import com.huii.system.domain.SysUserPost;
 import com.huii.system.domain.SysUserRole;
@@ -123,7 +124,36 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void updateUserPassword(SysUser sysUser) {
-        sysUserMapper.updateById(sysUser);
+        sysUserMapper.updateUserPassword(sysUser);
+    }
+
+    @Override
+    public void updateUserPassword(Long userId, String oldPwd, String newPwd) {
+        SysUser sysUser = sysUserMapper.selectById(userId);
+        if (oldPwd.equals(newPwd)) {
+            throw new ServiceException("新密码与旧密码一致");
+        }
+        if (!SecurityUtils.matchesPassword(oldPwd, sysUser.getPassword())) {
+            throw new ServiceException("旧密码错误");
+        }
+        sysUser.setPassword(SecurityUtils.encryptPassword(newPwd));
+        updateUserPassword(sysUser);
+    }
+
+    @Override
+    public void updateUserPassword(String identify, String column, String pwd) {
+        LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
+        if (column.equals("phone")) {
+            wrapper.eq(ObjectUtils.isNotEmpty(identify), SysUser::getPhone, identify);
+        } else if (column.equals("email")) {
+            wrapper.eq(ObjectUtils.isNotEmpty(identify), SysUser::getEmail, identify);
+        }
+        SysUser sysUser = sysUserMapper.selectOne(wrapper);
+        if (ObjectUtils.isEmpty(sysUser)) {
+            throw new ServiceException("用户不存在");
+        }
+        sysUser.setPassword(SecurityUtils.encryptPassword(pwd));
+        updateUserPassword(sysUser);
     }
 
 

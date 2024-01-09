@@ -30,6 +30,13 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser> {
     void updateUserProfile(SysUser sysUser);
 
     /**
+     * 更新用户密码
+     *
+     * @param sysUser sysUser
+     */
+    void updateUserPassword(SysUser sysUser);
+
+    /**
      * 更新用户头像
      *
      * @param userId userId

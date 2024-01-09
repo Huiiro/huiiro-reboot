@@ -18,6 +18,9 @@
               @click="handleClick(menu.name)"
               :class="{ 'active': isActive == menu.name }"
           >
+            <el-icon v-if="menu.icon">
+              <component :is="menu.icon"/>
+            </el-icon>
             {{ menu.label }}
           </p>
         </div>
@@ -45,8 +48,9 @@ import UserAvatar from "@/views/profile/UserAvatar.vue";
 
 const isActive = ref();
 const basicMenus = [
-  {name: '个人资料', label: '个人资料', url: ''},
-  {name: '账号管理', label: '账号管理', url: ''},
+  {name: '个人资料', label: '个人资料', icon: 'Postcard', url: ''},
+  {name: '账号管理', label: '账号管理', icon: 'UserFilled', url: ''},
+  {name: '信息管理', label: '信息管理', icon: 'Management', url: ''},
 ];
 
 const avatar = ref();
