@@ -10,18 +10,29 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 注册接口
+ *
+ * @author huii
+ */
 @RestController
 @RequiredArgsConstructor
 public class RegisterController {
 
     private final RegisterService registerService;
 
+    /**
+     * 校验用户名是否重复
+     */
     @Anonymous
     @GetMapping("/register/check/username")
     public R<Object> checkUsername(@RequestParam String username) {
         return R.ok(registerService.checkUsername(username));
     }
 
+    /**
+     * 注册接口
+     */
     @Anonymous
     @PostMapping("/register")
     public R<Object> register(@Validated @RequestBody RegisterEntity entity) {

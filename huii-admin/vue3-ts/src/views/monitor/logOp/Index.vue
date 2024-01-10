@@ -486,7 +486,7 @@ const handleDeleteAll = () => {
       '将删除全部数据，是否确认？',
       '提示', {confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning'}
   ).then(() => {
-    deleteLogOpAll(ids).then((res) => {
+    deleteLogOpAll().then((res) => {
       if (res.code === 0) {
         getData();
       }

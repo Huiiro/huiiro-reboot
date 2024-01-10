@@ -18,6 +18,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 登录接口
+ *
+ * @author huii
+ */
 @Validated
 @Anonymous
 @RestController

@@ -20,6 +20,11 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+/**
+ * 验证码接口
+ *
+ * @author huii
+ */
 @Validated
 @Anonymous
 @RestController

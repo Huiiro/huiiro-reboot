@@ -167,7 +167,7 @@ import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
 import {downloadExport} from "@/utils/download.ts";
 import {logLoginStatusOptions, logLoginTypeOptions} from "@/views/monitor/logLogin/dictionary.ts";
-import {deleteLogLogin, deleteLogLoginAll, exportLogLogin, getLogLoginList} from "../../../api/monitor/logLogin";
+import {deleteLogLogin, deleteLogLoginAll, exportLogLogin, getLogLoginList} from "@/api/monitor/logLogin";
 import {checkPermission} from "@/utils/permission.ts";
 
 //store
@@ -387,7 +387,7 @@ const handleDeleteAll = () => {
       '将删除全部数据，是否确认？',
       '提示', {confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning'}
   ).then(() => {
-    deleteLogLoginAll(ids).then((res) => {
+    deleteLogLoginAll().then((res) => {
       if (res.code === 0) {
         getData();
       }

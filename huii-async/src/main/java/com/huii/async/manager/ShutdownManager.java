@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 
 /**
+ * 关闭线程池管理器
+ *
  * @author huii
  */
 @Slf4j

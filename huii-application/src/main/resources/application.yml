@@ -99,6 +99,15 @@ security:
     /druid/**
 
 config:
+  #token配置
   jwt:
     key: MIBIjANgiG9w0BaQwFwAOsC1AvQ8AMICgKEA5pWuE8OAGlsLq76doiXhzSTKieCxp7YqD32jcs5pzaRxPBlVKL8a8Rsi7RyEJ57
     enable-double-token: true
+  login:
+    #oauth登录重定向地址
+    default-oauth2-login-callback-url: http://localhost:5173/oauth/redirect
+    #授权服务器回调地址
+    default-oauth2-login-redirect-url: http://localhost:8080/callback
+  #线程池配置
+  thread-pool:
+    core-pool-size: 10

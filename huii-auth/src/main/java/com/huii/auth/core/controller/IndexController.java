@@ -4,6 +4,11 @@ import com.huii.common.annotation.Anonymous;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 主页接口
+ *
+ * @author huii
+ */
 @RestController
 public class IndexController {
 

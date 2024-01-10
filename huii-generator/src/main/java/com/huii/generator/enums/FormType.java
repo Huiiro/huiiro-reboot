@@ -9,6 +9,7 @@ public enum FormType {
 
     INPUT("input"),
     TEXTAREA("textarea"),
+    RICHTEXT("richtext"),
     SELECT("select"),
     CHECKBOX("checkbox"),
     DATETIME("datetime");

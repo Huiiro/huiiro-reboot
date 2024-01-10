@@ -28,11 +28,11 @@ public class ResourceExistenceFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-//        String requestMethod = request.getMethod();
-//        if (requestMethod.equals("OPTIONS")) {
-//            filterChain.doFilter(request, response);
-//        }
-//
+        String requestMethod = request.getMethod();
+        if (requestMethod.equals("OPTIONS")) {
+            filterChain.doFilter(request, response);
+        }
+
 //        String requestedResource = request.getRequestURI();
 //        Map<RequestMappingInfo, HandlerMethod> handlerMethods = mapping.getHandlerMethods();
 //        RequestMappingInfo matchingMappingInfo = handlerMethods.keySet().stream()

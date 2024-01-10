@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 登录安全接口
+ *
+ * @author huii
+ */
 @Validated
 @RestController
 @RequestMapping("/auth/v1/security")
@@ -22,6 +27,9 @@ public class LoginSecurityController {
 
     private final LoginSecurityService loginSecurityService;
 
+    /**
+     * 获取公钥
+     */
     @Anonymous
     @GetMapping("/key")
     public R<Map<String, Object>> key() {
@@ -31,6 +39,9 @@ public class LoginSecurityController {
         return R.ok(map);
     }
 
+    /**
+     * 刷新token
+     */
     @Anonymous
     @GetMapping("/refresh")
     public R<Map<String, Object>> getNewAccessToken(@NotBlank @RequestParam String refresh) {
@@ -40,8 +51,11 @@ public class LoginSecurityController {
         return token == null ? R.failed() : R.ok(map);
     }
 
+    /**
+     * 加密接口
+     */
     @Anonymous
-    @GetMapping("/test/encrypt")
+    @GetMapping("/encrypt")
     public R<Object> encrypt(@RequestParam String str) {
         String text = loginSecurityService.encrypt(str);
         Map<String, Object> map = new HashMap<>();
@@ -49,8 +63,11 @@ public class LoginSecurityController {
         return R.ok(map);
     }
 
+    /**
+     * 解密接口
+     */
     @Anonymous
-    @GetMapping("/test/decrypt")
+    @GetMapping("/decrypt")
     public R<Object> decrypt(@RequestParam String str) {
         String text = loginSecurityService.decrypt(str.replaceAll(" ", "+"));
         Map<String, Object> map = new HashMap<>();

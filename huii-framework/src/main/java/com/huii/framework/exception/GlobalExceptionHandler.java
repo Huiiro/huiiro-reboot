@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(AuthenticationException.class)
     public R<Object> authenticationExceptionHandler(AuthenticationException e, HttpServletRequest request) {
-        log.error("AuthenticationException:请求地址'{}',认证失败'{}' =>", request.getRequestURI(), e.getMessage());
+        log.error("AuthenticationException:请求地址'{}',认证失败'{}'", request.getRequestURI(), e.getMessage());
         String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() : ResType.getI18nMessage(ResType.STATUS_UNAUTHORIZED);
         return R.failed(ResType.STATUS_UNAUTHORIZED.getCode(), message);
     }
@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(AccessDeniedException.class)
     public R<Object> accessDeniedExceptionHandler(AccessDeniedException e, HttpServletRequest request) {
-        log.error("AccessDeniedException:请求地址'{}',权限校验失败'{}' =>", request.getRequestURI(), e.getMessage());
+        log.error("AccessDeniedException:请求地址'{}',权限校验失败'{}'", request.getRequestURI(), e.getMessage());
         String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() : ResType.getI18nMessage(ResType.STATUS_FORBIDDEN);
         return R.failed(ResType.STATUS_FORBIDDEN.getCode(), message);
     }
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = ServiceException.class)
     public R<Object> serviceExceptionHandler(ServiceException e, HttpServletRequest request) {
-        log.error("ServiceException:请求地址:'{}',返回信息:'{}',业务异常:'{}' =>", request.getRequestURI(), e.toString(), e.getErrorMsg());
+        log.error("ServiceException:请求地址:'{}',返回信息:'{}',业务异常:'{}'", request.getRequestURI(), e.toString(), e.getErrorMsg());
         return R.failed(e.getErrorCode(), e.getErrorMsg());
     }
 
@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = RuntimeException.class)
     public R<Object> runtimeExceptionHandler(RuntimeException e, HttpServletRequest request) {
         String errMsg = ObjectUtils.isEmpty(e.getMessage()) ? e.getCause().getMessage() : e.getMessage();
-        log.error("RuntimeException:请求地址'{}',运行异常'{}' =>", request.getRequestURI(), errMsg);
+        log.error("RuntimeException:请求地址'{}',运行异常'{}'", request.getRequestURI(), errMsg);
         return R.failed(500, errMsg);
     }
 
@@ -107,7 +107,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = NullPointerException.class)
     public R<Object> nullPointerExceptionHandler(NullPointerException e, HttpServletRequest request) {
         String errMsg = ObjectUtils.isEmpty(e.getMessage()) ? e.getCause().getMessage() : e.getMessage();
-        log.error("NullPointerException:请求地址'{}',空指针异常'{}' =>", request.getRequestURI(), errMsg);
+        log.error("NullPointerException:请求地址'{}',空指针异常'{}'", request.getRequestURI(), errMsg);
         return R.failed(9999, "系统异常，请联系管理员");
     }
 
@@ -122,7 +122,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public R<Object> exceptionHandler(Exception e, HttpServletRequest request) {
         String errMsg = ObjectUtils.isEmpty(e.getMessage()) ? e.getCause().getMessage() : e.getMessage();
-        log.error("Exception:请求地址:'{}',系统异常:'{}' =>", request.getRequestURI(), errMsg);
+        log.error("Exception:请求地址:'{}',系统异常:'{}'", request.getRequestURI(), errMsg);
         return R.failed(1000, "系统异常，请稍后尝试");
     }
 }
