@@ -65,6 +65,7 @@ mybatis-plus:
       updateStrategy: NOT_NULL
       where-strategy: NOT_NULL
 
+#oauth2参数配置
 oauth2-key:
   clients:
     - provider: github
@@ -90,7 +91,9 @@ oauth2-key:
       responseType: code
 
 security:
+  #rememberMe token
   remember: nXDRsRRGaG3QJ9t7lH4hOhnSDm2+06ImuKaGfCdIDaU1T2Sjh7Pa21NBL8abW9GrZqAgUblOUxt09nqM0c4WvFR+iVIdOfP3si+U
+  #白名单链接
   allows:
     /swagger-ui/**,
     /swagger-resources/**,
@@ -103,6 +106,7 @@ config:
   jwt:
     key: MIBIjANgiG9w0BaQwFwAOsC1AvQ8AMICgKEA5pWuE8OAGlsLq76doiXhzSTKieCxp7YqD32jcs5pzaRxPBlVKL8a8Rsi7RyEJ57
     enable-double-token: true
+  #登录配置
   login:
     #oauth登录重定向地址
     default-oauth2-login-callback-url: http://localhost:5173/oauth/redirect

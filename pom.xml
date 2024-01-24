@@ -185,12 +185,16 @@
 
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <!--springboot3-->
-                <!--<artifactId>dynamic-datasource-spring-boot3-starter</artifactId>-->
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 <version>${mybatis-dynamic-datasource.version}</version>
             </dependency>
 
+            <dependency>
+                <!--springboot3-->
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
+                <version>${mybatis-dynamic-datasource.version}</version>
+            </dependency>
 
             <!--postgresql-->
             <dependency>
