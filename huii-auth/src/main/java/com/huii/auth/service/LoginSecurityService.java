@@ -1,15 +1,22 @@
 package com.huii.auth.service;
 
+/**
+ * 登录安全服务
+ *
+ * @author huii
+ */
 public interface LoginSecurityService {
 
     /**
      * 获取公钥
+     *
      * @return public key
      */
     String getPublicKeyPem();
 
     /**
      * 解密字段
+     *
      * @param rawStr rawStr
      * @return encryptStr
      */
@@ -17,6 +24,7 @@ public interface LoginSecurityService {
 
     /**
      * 解密字段
+     *
      * @param encryptStr encryptStr
      * @return decryptStr
      */
@@ -24,6 +32,7 @@ public interface LoginSecurityService {
 
     /**
      * 刷新accessToken
+     *
      * @param refresh refresh
      * @return new token
      */

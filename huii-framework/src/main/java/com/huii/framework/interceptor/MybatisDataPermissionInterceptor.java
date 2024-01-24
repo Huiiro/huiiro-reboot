@@ -22,6 +22,11 @@ import org.apache.ibatis.session.RowBounds;
 import java.sql.Connection;
 import java.util.List;
 
+/**
+ * mybatisPlus 数据权限拦截器
+ *
+ * @author huii
+ */
 public class MybatisDataPermissionInterceptor extends JsqlParserSupport implements InnerInterceptor {
 
     private final MybatisDataPermissionHandler dataPermissionHandler = new MybatisDataPermissionHandler();

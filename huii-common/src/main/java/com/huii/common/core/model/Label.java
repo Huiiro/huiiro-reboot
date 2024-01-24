@@ -6,6 +6,11 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * Label vo
+ *
+ * @author huii
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

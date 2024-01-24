@@ -143,10 +143,10 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
         List<GenColumn> columns = genTable.getColumns();
         int pk = 0;
         for (GenColumn column : columns) {
-            if(column.getIsPrimaryKey().equals(SystemConstants.STATUS_1)) {
+            if (column.getIsPrimaryKey().equals(SystemConstants.STATUS_1)) {
                 pk++;
             }
-            if(pk > 1) {
+            if (pk > 1) {
                 ResType resType = ResType.GEN_MULTI_PRIMARY_KEY;
                 throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }

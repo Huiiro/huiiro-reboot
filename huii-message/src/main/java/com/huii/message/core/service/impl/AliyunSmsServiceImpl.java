@@ -6,10 +6,10 @@ import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
 import com.aliyun.teaopenapi.models.Config;
 import com.aliyun.teautil.models.RuntimeOptions;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huii.message.config.properties.SmsProperties;
 import com.huii.message.core.entity.SmsResult;
 import com.huii.message.core.service.SmsService;
 import com.huii.message.exception.SmsException;
-import com.huii.message.config.properties.SmsProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +20,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+/**
+ * aliyun 短信服务实现
+ *
+ * @author huii
+ */
 @Order
 @Slf4j
 @Service
@@ -58,7 +63,7 @@ public class AliyunSmsServiceImpl implements SmsService {
                     .message(response.getBody().getMessage())
                     .response(objectMapper.writeValueAsString(response))
                     .build();
-            log.debug("{}",result);
+            log.debug("{}", result);
             return result;
         } catch (Exception e) {
             throw new SmsException(e.getMessage());

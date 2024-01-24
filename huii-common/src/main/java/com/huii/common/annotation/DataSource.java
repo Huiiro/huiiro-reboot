@@ -9,9 +9,17 @@ import java.lang.annotation.Target;
 
 /**
  * 多数据源注解
+ *
+ * @author huii
+ * @deprecated using com.baomidou.dynamic.datasource.annotation.DS instead
  */
+@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface DataSource {
+
+    /**
+     * 数据源
+     */
     DynamicDataSourceType value() default DynamicDataSourceType.MASTER;
 }

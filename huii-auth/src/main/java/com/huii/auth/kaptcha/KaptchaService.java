@@ -4,6 +4,8 @@ import com.google.code.kaptcha.impl.DefaultKaptcha;
 
 /**
  * Kaptcha 实现接口
+ *
+ * @author huii
  */
 public interface KaptchaService {
 

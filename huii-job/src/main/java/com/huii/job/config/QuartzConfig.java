@@ -11,6 +11,11 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * quartz配置
+ *
+ * @author huii
+ */
 @Slf4j
 @Configuration
 public class QuartzConfig {

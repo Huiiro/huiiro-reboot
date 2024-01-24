@@ -1,6 +1,8 @@
 package com.huii.common.constants;
 
 /**
+ * 任务常量
+ *
  * @author huii
  */
 public interface JobConstants {

@@ -1,6 +1,8 @@
 package com.huii.common.constants;
 
 /**
+ * 用户常量
+ *
  * @author huii
  */
 public interface UserConstants {

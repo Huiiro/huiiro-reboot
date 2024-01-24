@@ -12,6 +12,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
+ * 树表实体类
+ *
  * @author huii
  */
 @Data

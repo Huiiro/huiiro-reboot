@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * 邮件状态枚举
+ *
  * @author huii
  */
 @Getter

@@ -80,7 +80,7 @@ public class SysUserController extends BaseController {
     @RequestMapping("/import{update}")
     @Log(value = "导入用户", opType = OpType.IMPORT)
     public R<ExcelResult<SysUserExcelImportVo>> importUser(@RequestPart("file") MultipartFile file,
-                                @PathVariable(required = false) Boolean update) throws IOException {
+                                                           @PathVariable(required = false) Boolean update) throws IOException {
         ExcelResult<SysUserExcelImportVo> result = ExcelUtils.importAsyncExcel(
                 file.getInputStream(), SysUserExcelImportVo.class,
                 new SysUserImportListener(ObjectUtils.isEmpty(update) || update));
@@ -105,7 +105,7 @@ public class SysUserController extends BaseController {
         List<Label> postLabels = sysPostService.selectPostsAll();
         SysUser user = sysUserService.selectUserById(id);
         Map<String, Object> map = new HashMap<>(3);
-        if(ObjectUtils.isNotEmpty(user)) {
+        if (ObjectUtils.isNotEmpty(user)) {
             user.setRoleIds(user.getRoles().stream().map(SysRole::getRoleId).toList().toArray(new Long[0]));
             user.setPostIds(sysPostService.selectUserPostIds(id).toArray(new Long[0]));
             map.put("user", user);

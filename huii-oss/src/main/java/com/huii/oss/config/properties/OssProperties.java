@@ -4,6 +4,12 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * 文件存储配置--对象
+ * oss
+ *
+ * @author huii
+ */
 @Data
 @Component
 @ConfigurationProperties(prefix = "oss")

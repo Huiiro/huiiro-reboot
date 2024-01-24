@@ -20,6 +20,7 @@ public interface SysRoleService {
 
     /**
      * 获取角色列表
+     *
      * @param sysRole sysRole
      * @return list
      */

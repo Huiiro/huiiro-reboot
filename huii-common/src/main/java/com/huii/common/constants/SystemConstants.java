@@ -1,6 +1,8 @@
 package com.huii.common.constants;
 
 /**
+ * 系统常量
+ *
  * @author huii
  */
 public interface SystemConstants {

@@ -7,6 +7,12 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 默认excel导入结果
+ *
+ * @param <T> clazz
+ * @author huii
+ */
 @Setter
 @AllArgsConstructor
 public class DefaultExcelResult<T> implements ExcelResult<T> {

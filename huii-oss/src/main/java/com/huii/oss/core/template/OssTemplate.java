@@ -25,6 +25,11 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.*;
 
+/**
+ * oss文件操作实现模板
+ *
+ * @author huii
+ */
 @Component
 @RequiredArgsConstructor
 public class OssTemplate implements BaseTemplate {

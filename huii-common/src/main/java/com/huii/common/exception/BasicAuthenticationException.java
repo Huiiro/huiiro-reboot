@@ -6,6 +6,8 @@ import com.huii.common.utils.MessageUtils;
 import org.springframework.security.core.AuthenticationException;
 
 /**
+ * 基本认证异常
+ *
  * @author huii
  */
 public class BasicAuthenticationException extends AuthenticationException {

@@ -19,6 +19,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * 登录用户授权服务实现
+ *
+ * @author huii
+ */
 @Service
 @RequiredArgsConstructor
 public class LoginUserOauthServiceImpl implements LoginUserOauthService {
@@ -44,7 +49,7 @@ public class LoginUserOauthServiceImpl implements LoginUserOauthService {
     @Transactional(rollbackFor = RuntimeException.class)
     public void bindUser(Long userId, LoginVo loginVo) {
         Long newUserId = (Long) loginVo.getUserInfo().get("userId");
-        if(Objects.equals(userId, newUserId)) {
+        if (Objects.equals(userId, newUserId)) {
             throw new RuntimeException("无法绑定至当前帐号");
         }
         //userId 当前登录用户的ID loginVo新登录身份
@@ -60,7 +65,7 @@ public class LoginUserOauthServiceImpl implements LoginUserOauthService {
                 .eq(SysUserOauth::getUserId, userId)
                 .eq(SysUserOauth::getOauthProvider, oauthProvider)
                 .last("limit 1"));
-        if(ObjectUtils.isEmpty(userOauth)) {
+        if (ObjectUtils.isEmpty(userOauth)) {
             throw new RuntimeException("未查询到绑定记录");
         }
         //删除旧绑定信息
@@ -73,7 +78,7 @@ public class LoginUserOauthServiceImpl implements LoginUserOauthService {
 
         //删除旧用户信息
         int deleted = sysUserMapper.realDelete(userId);
-        if(deleted <= 0) {
+        if (deleted <= 0) {
             throw new RuntimeException("解绑失败");
         }
         //删除旧缓存信息

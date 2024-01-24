@@ -17,7 +17,7 @@ import java.util.UUID;
 
 
 /**
- * jwt util
+ * token工具类
  *
  * @author huii
  * @version 2.3

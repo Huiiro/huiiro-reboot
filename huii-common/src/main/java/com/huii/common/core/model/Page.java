@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * 分页实体类
+ *
  * @author huii
  */
 @Data

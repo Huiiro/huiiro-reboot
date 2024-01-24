@@ -46,7 +46,7 @@ public class SysLogLoginController extends BaseController {
 
     @PreAuthorize("@ap.hasAuth('system:log:login:delete')")
     @PostMapping("/delete")
-    @Log(value = "删除登录日志",opType = OpType.DELETE)
+    @Log(value = "删除登录日志", opType = OpType.DELETE)
     public R<Void> deleteLogLogin(@RequestBody Long[] ids) {
         sysLogLoginService.removeBatchByIds(ids);
         return deleteSuccess();
@@ -54,7 +54,7 @@ public class SysLogLoginController extends BaseController {
 
     @PreAuthorize("@ap.hasAuth('system:log:login:delete:all')")
     @PostMapping("/delete/all")
-    @Log(value = "删除全部登录日志",opType = OpType.DELETE)
+    @Log(value = "删除全部登录日志", opType = OpType.DELETE)
     public R<Void> deleteAll() {
         sysLogLoginService.removeAll();
         return deleteSuccess();

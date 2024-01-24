@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
+ * 通用返回结果
+ *
  * @author huii
  */
 @Data

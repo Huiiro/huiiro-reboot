@@ -5,6 +5,11 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * 分页参数实体类
+ *
+ * @author huii
+ */
 @Data
 public class PageParam implements Serializable {
 

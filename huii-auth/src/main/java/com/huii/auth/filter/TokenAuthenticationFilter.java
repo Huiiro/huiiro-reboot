@@ -23,7 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 /**
- * token filter
+ * token认证过滤器
  *
  * @author huii
  */
@@ -70,7 +70,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 }
                 //获取用户信息
                 JSONObject object = redisTemplateUtils.getCacheObject(CacheConstants.USER + id);
-                if(ObjectUtils.isEmpty(object)) {
+                if (ObjectUtils.isEmpty(object)) {
                     return;
                 }
                 LoginUser loginUser = object.toJavaObject(LoginUser.class);

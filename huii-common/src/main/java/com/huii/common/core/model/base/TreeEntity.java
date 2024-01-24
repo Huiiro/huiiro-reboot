@@ -8,6 +8,11 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 树表基类
+ *
+ * @author huii
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TreeEntity<T> extends BaseEntity {

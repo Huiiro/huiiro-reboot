@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+/**
+ * 邮件服务实现
+ *
+ * @author huii
+ */
 @Service
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {

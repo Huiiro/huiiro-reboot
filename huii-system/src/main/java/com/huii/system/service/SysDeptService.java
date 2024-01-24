@@ -47,7 +47,7 @@ public interface SysDeptService {
      * @return sysDept
      */
     SysDept selectDeptById(Long id);
-    
+
     /**
      * 校验添加部门数据
      *

@@ -6,6 +6,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+/**
+ * 生成列信息
+ *
+ * @author huii
+ */
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)

@@ -5,6 +5,11 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
+/**
+ * 账号登录认证token
+ *
+ * @author huii
+ */
 public class AccountToken extends TokenEntity {
     public AccountToken(String username, String password) {
         super(username, password);

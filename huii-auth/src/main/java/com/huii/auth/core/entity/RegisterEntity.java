@@ -5,6 +5,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 注册dto
+ *
+ * @author huii
+ */
 @Data
 public class RegisterEntity implements Serializable {
 

@@ -16,6 +16,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 
+/**
+ * 数据转换
+ *
+ * @author huii
+ */
 public class ExcelDataConvert implements Converter<Object> {
     @Override
     public Class<?> supportJavaTypeKey() {

@@ -5,6 +5,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 重置密码dto
+ *
+ * @author huii
+ */
 @Data
 public class ResetPwdEntity implements Serializable {
 

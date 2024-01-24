@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 登录安全服务实现
+ *
+ * @author huii
+ */
 @Service
 @RequiredArgsConstructor
 public class LoginSecurityServiceImpl implements LoginSecurityService {

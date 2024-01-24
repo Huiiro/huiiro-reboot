@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 路由实体类
+ *
+ * @author huii
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

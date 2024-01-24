@@ -4,6 +4,11 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * oauth2认证信息
+ *
+ * @author huii
+ */
 @Data
 public class Oauth2Client {
 

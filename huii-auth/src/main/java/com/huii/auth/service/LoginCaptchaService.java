@@ -6,6 +6,11 @@ import com.huii.auth.core.entity.PointDto;
 
 import java.util.Map;
 
+/**
+ * 登录验证码服务
+ *
+ * @author huii
+ */
 public interface LoginCaptchaService {
 
     /**
@@ -27,10 +32,11 @@ public interface LoginCaptchaService {
     /**
      * 校验点击文字验证码
      *
-     * @param key   key
+     * @param key    key
      * @param points PointDto[]
      */
     void checkClickTextCode(String key, PointDto[] points);
+
     /**
      * 获取文字验证码
      *

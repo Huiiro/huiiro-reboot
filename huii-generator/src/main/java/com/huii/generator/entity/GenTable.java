@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * 生成表信息
+ *
+ * @author huii
+ */
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)

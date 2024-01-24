@@ -5,6 +5,11 @@ import com.huii.system.domain.SysUserOauth;
 
 import java.util.List;
 
+/**
+ * 登录用户授权服务
+ *
+ * @author huii
+ */
 public interface LoginUserOauthService {
 
 

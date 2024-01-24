@@ -27,6 +27,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+/**
+ * 登录服务实现
+ *
+ * @author huii
+ */
 @Service
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {

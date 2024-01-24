@@ -2,6 +2,11 @@ package com.huii.auth.service;
 
 import com.huii.auth.core.entity.RegisterEntity;
 
+/**
+ * 注册服务
+ *
+ * @author huii
+ */
 public interface RegisterService {
 
     /**

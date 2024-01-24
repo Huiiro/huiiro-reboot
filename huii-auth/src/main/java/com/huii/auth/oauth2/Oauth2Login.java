@@ -5,6 +5,11 @@ import com.huii.auth.core.entity.oauth2.Oauth2User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.InitializingBean;
 
+/**
+ * oauth2登录实现接口
+ *
+ * @author huii
+ */
 public interface Oauth2Login extends InitializingBean {
 
     /**

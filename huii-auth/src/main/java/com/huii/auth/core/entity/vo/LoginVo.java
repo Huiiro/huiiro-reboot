@@ -10,6 +10,8 @@ import java.util.Map;
 
 /**
  * 登录成功返回对象
+ *
+ * @author huii
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)

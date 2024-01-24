@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 实体类基类
+ *
  * @author huii
  */
 @Data

@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 系统 缓存 实体类
+ * 系统缓存 实体类
  *
  * @author huii
  */

@@ -27,6 +27,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * mybatisPlus 数据权限处理器
+ *
+ * @author huii
+ */
 @Slf4j
 public class MybatisDataPermissionHandler {
 

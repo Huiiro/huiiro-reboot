@@ -4,6 +4,12 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * 文件存储配置--本地
+ * local
+ *
+ * @author huii
+ */
 @Data
 @Component
 @ConfigurationProperties(prefix = "local")

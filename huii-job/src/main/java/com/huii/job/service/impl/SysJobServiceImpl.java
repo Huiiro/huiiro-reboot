@@ -93,7 +93,7 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
 
     @Override
     public void checkInsert(SysJob sysJob) {
-        if(!CronUtils.isValid(sysJob.getCron())) {
+        if (!CronUtils.isValid(sysJob.getCron())) {
             throw new JobException("cron表达式不正确");
         }
     }
@@ -110,7 +110,7 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
 
     @Override
     public void checkUpdate(SysJob sysJob) {
-        if(!CronUtils.isValid(sysJob.getCron())) {
+        if (!CronUtils.isValid(sysJob.getCron())) {
             throw new JobException("cron表达式不正确");
         }
     }
@@ -146,7 +146,7 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
         for (Long id : ids) {
             SysJob sysJob = sysJobMapper.selectById(id);
             int deleted = sysJobMapper.deleteById(sysJob);
-            if(deleted > 0) {
+            if (deleted > 0) {
                 scheduler.deleteJob(ScheduleUtils.getJobKey(sysJob.getJobId(), sysJob.getGroupName()));
             }
         }

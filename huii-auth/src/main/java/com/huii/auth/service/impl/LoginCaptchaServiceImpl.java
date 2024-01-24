@@ -30,6 +30,11 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 登录验证码服务实现
+ *
+ * @author huii
+ */
 @Service
 @RequiredArgsConstructor
 public class LoginCaptchaServiceImpl implements LoginCaptchaService {

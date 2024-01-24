@@ -4,6 +4,11 @@ import com.huii.common.exception.ServiceException;
 
 import java.io.Serial;
 
+/**
+ * 任务异常
+ *
+ * @author huii
+ */
 public class JobException extends ServiceException {
 
     @Serial

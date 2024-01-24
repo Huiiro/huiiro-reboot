@@ -4,6 +4,11 @@ import com.huii.common.exception.ServiceException;
 
 import java.io.Serial;
 
+/**
+ * 文件异常
+ *
+ * @author huii
+ */
 public class OssException extends ServiceException {
 
     @Serial

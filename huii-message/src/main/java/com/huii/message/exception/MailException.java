@@ -4,6 +4,11 @@ import com.huii.common.exception.ServiceException;
 
 import java.io.Serial;
 
+/**
+ * 邮件异常
+ *
+ * @author huii
+ */
 public class MailException extends ServiceException {
 
     @Serial

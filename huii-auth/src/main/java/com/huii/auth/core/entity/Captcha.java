@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * captcha entity
+ * 验证码实体
  *
  * @author huii
  */

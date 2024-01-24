@@ -9,6 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
+/**
+ * 默认excel导入结果监听器
+ *
+ * @param <T> clazz
+ * @author huii
+ */
 @Slf4j
 public class DefaultExcelListener<T> extends AnalysisEventListener<T> implements ExcelListener<T> {
 

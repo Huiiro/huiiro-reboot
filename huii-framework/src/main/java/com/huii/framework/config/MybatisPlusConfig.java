@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * mbp 配置
+ * mybatisPlus 配置
  *
  * @author huii
  */

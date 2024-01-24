@@ -7,5 +7,5 @@ import com.huii.system.service.SysRoleDeptService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SysRoleDeptServiceImpl  extends ServiceImpl<SysRoleDeptMapper, SysRoleDept> implements SysRoleDeptService {
+public class SysRoleDeptServiceImpl extends ServiceImpl<SysRoleDeptMapper, SysRoleDept> implements SysRoleDeptService {
 }

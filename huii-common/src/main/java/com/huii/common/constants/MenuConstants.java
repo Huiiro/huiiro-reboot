@@ -1,5 +1,10 @@
 package com.huii.common.constants;
 
+/**
+ * 菜单常量
+ *
+ * @author huii
+ */
 public interface MenuConstants {
 
     /**

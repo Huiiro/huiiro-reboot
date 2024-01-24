@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * token参数配置
+ * jwt参数配置
  * config.jwt
  *
  * @author huii

@@ -18,6 +18,11 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 
+/**
+ * 邮件发送助手
+ *
+ * @author huii
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor

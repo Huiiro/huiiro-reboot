@@ -17,7 +17,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 
-
+/**
+ * 文件读取控制层
+ *
+ * @author huii
+ */
 @RestController
 @RequestMapping("/oss/local")
 @RequiredArgsConstructor

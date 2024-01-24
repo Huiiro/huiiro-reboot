@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 /**
- * token entity
+ * token认证实体
  *
  * @author huii
  */

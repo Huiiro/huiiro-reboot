@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.toolkit.Db;
 import java.util.Collection;
 
 /**
+ * mybatisPlus BaseMapper增强
+ *
  * @param <T> table
  * @author huii
  */

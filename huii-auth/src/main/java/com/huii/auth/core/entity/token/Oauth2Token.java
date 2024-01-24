@@ -7,6 +7,11 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
+/**
+ * oauth2登录认证token
+ *
+ * @author huii
+ */
 @Getter
 public class Oauth2Token extends TokenEntity {
 

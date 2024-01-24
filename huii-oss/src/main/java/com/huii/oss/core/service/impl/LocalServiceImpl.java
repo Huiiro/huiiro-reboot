@@ -25,6 +25,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 本地文件存储服务实现
+ *
+ * @author huii
+ */
 @Service
 @RequiredArgsConstructor
 public class LocalServiceImpl implements LocalService {

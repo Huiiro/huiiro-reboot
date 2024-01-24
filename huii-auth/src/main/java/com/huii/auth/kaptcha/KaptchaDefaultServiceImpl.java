@@ -8,6 +8,11 @@ import java.util.Properties;
 
 import static com.google.code.kaptcha.Constants.*;
 
+/**
+ * kaptcha实现类
+ *
+ * @author huii
+ */
 @Service
 public class KaptchaDefaultServiceImpl implements KaptchaService {
     @Override

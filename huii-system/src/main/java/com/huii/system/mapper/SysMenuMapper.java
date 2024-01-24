@@ -9,6 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface SysMenuMapper extends BaseMapperPlus<SysMenu> {
+
     /**
      * 根据用户ID和查询参数查询菜单
      *

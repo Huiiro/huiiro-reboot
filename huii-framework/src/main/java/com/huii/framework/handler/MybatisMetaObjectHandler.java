@@ -16,7 +16,7 @@ import org.apache.ibatis.reflection.MetaObject;
 import java.time.LocalDateTime;
 
 /**
- * mybatisPlus 数据填充
+ * mybatisPlus 数据填充处理器
  *
  * @author huii
  */

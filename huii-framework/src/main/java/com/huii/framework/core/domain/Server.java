@@ -18,6 +18,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * server
+ *
+ * @author huii
+ */
 @Data
 public class Server {
     private static final int WAIT_SECOND = 1000;

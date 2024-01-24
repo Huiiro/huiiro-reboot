@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 代码生成控制器
+ *
+ * @author huii
+ */
 @Anonymous
 @Validated
 @RestController

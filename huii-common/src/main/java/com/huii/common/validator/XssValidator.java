@@ -9,6 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * xss校验
+ *
+ * @author huii
+ */
 public class XssValidator implements ConstraintValidator<Xss, String> {
 
     private static final String HTML_PATTERN = RegConstants.XSS_MATCHER;

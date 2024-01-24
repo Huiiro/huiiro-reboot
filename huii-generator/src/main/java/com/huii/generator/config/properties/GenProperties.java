@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 生成信息配置
- *gen
+ * gen
  *
  * @author huii
  */

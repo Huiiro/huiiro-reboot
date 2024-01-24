@@ -31,6 +31,11 @@ import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * 系统日志切面
+ *
+ * @author huii
+ */
 @Slf4j
 @Aspect
 @Component

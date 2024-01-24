@@ -15,6 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
+/**
+ * 注册服务实现
+ *
+ * @author huii
+ */
 @Service
 @RequiredArgsConstructor
 public class RegisterServiceImpl implements RegisterService {

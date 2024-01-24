@@ -19,6 +19,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * 登录用户
+ *
+ * @author huii
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

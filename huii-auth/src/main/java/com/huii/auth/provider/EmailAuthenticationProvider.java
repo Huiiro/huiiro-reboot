@@ -12,7 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 /**
- * email provider
+ * 邮箱登录认证核心
  *
  * @author huii
  */

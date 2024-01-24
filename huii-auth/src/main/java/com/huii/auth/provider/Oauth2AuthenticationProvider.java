@@ -28,6 +28,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * oauth2登录认证核心
+ *
+ * @author huii
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor

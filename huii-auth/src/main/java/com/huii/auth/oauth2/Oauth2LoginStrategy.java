@@ -10,6 +10,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * oauth2登录策略
+ *
+ * @author huii
+ */
 public abstract class Oauth2LoginStrategy implements Oauth2Login {
 
     private final RestTemplate restTemplate;

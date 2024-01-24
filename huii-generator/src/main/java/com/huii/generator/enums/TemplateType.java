@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 模板类型
+ *
+ * @author huii
+ */
 @Getter
 @AllArgsConstructor
 public enum TemplateType {
@@ -99,10 +104,10 @@ public enum TemplateType {
             case "3" -> list.add(TemplateType.ORACLE);
             case "4" -> list.add(TemplateType.SQLSERVER);
         }
-        if(SystemConstants.STATUS_1.equals(doExport)) {
+        if (SystemConstants.STATUS_1.equals(doExport)) {
             list.add(TemplateType.EXPORT_VO);
         }
-        if(SystemConstants.STATUS_1.equals(doImport)) {
+        if (SystemConstants.STATUS_1.equals(doImport)) {
             list.add(TemplateType.IMPORT_VO);
         }
         return list;

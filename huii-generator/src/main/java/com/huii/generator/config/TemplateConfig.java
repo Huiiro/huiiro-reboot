@@ -3,6 +3,11 @@ package com.huii.generator.config;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateModelException;
 
+/**
+ * 模板配置
+ *
+ * @author huii
+ */
 public class TemplateConfig {
 
     public static Configuration generator() {

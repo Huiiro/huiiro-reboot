@@ -3,10 +3,10 @@ package com.huii.message.core.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huii.message.config.properties.SmsProperties;
 import com.huii.message.core.entity.SmsResult;
 import com.huii.message.core.service.SmsService;
 import com.huii.message.exception.SmsException;
-import com.huii.message.config.properties.SmsProperties;
 import com.tencentcloudapi.common.Credential;
 import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
@@ -27,6 +27,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * tencentCloud 短信服务实现
+ *
+ * @author huii
+ */
 @Order
 @Slf4j
 @Service

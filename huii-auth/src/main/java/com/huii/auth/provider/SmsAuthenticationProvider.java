@@ -12,7 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 /**
- * sms provider
+ * 手机登录认证核心
  *
  * @author huii
  */

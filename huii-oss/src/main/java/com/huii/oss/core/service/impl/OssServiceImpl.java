@@ -18,6 +18,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * oss文件存储服务实现
+ *
+ * @author huii
+ */
 @Service
 @RequiredArgsConstructor
 public class OssServiceImpl implements OssService {

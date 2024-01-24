@@ -18,6 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * github登录策略
+ *
+ * @author huii
+ */
 @Component
 public class GithubLoginStrategy extends Oauth2LoginStrategy {
 
@@ -67,6 +72,6 @@ public class GithubLoginStrategy extends Oauth2LoginStrategy {
 
     @Override
     public void afterPropertiesSet() {
-        Oauth2StrategyFactory.register("github",this);
+        Oauth2StrategyFactory.register("github", this);
     }
 }

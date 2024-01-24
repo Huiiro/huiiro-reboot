@@ -10,6 +10,11 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 导出任务vo
+ *
+ * @author huii
+ */
 @Data
 @NoArgsConstructor
 public class SysJobLogExportVo implements Serializable {

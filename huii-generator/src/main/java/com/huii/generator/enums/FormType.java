@@ -3,6 +3,11 @@ package com.huii.generator.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 表单类型枚举
+ *
+ * @author huii
+ */
 @Getter
 @AllArgsConstructor
 public enum FormType {

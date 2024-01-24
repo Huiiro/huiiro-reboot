@@ -8,6 +8,11 @@ import org.springframework.beans.factory.InitializingBean;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * 文件操作基本模板
+ *
+ * @author huii
+ */
 public interface BaseTemplate extends InitializingBean {
 
     @Override

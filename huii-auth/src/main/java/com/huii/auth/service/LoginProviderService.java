@@ -2,6 +2,11 @@ package com.huii.auth.service;
 
 import com.huii.common.core.model.LoginUser;
 
+/**
+ * 登录校验服务
+ *
+ * @author huii
+ */
 public interface LoginProviderService {
 
     /**
@@ -48,7 +53,7 @@ public interface LoginProviderService {
     /**
      * 保存登录错误次数
      *
-     * @param username  username
+     * @param username username
      */
     void saveErrorTriedTimes(String username);
 

@@ -17,7 +17,9 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * userDetail Service
+ * springSecurity userDetail 实现
+ *
+ * @author huii
  */
 @Service
 @RequiredArgsConstructor

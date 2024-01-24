@@ -1,6 +1,8 @@
 package com.huii.common.constants;
 
 /**
+ * 缓存常量
+ *
  * @author huii
  */
 public interface CacheConstants {

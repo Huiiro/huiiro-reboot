@@ -5,7 +5,7 @@ import com.huii.common.exception.ServiceException;
 import java.io.Serial;
 
 /**
- * Sms异常
+ * 短信异常
  *
  * @author huii
  */

@@ -2,6 +2,11 @@ package com.huii.framework.core.domain;
 
 import lombok.Data;
 
+/**
+ * jvm
+ *
+ * @author huii
+ */
 @Data
 public class Jvm {
 

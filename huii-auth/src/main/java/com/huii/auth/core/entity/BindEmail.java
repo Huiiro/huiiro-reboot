@@ -6,6 +6,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 绑定邮箱dto
+ *
+ * @author huii
+ */
 @Data
 public class BindEmail implements Serializable {
 

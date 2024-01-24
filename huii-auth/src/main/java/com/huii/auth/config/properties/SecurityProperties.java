@@ -53,7 +53,7 @@ public class SecurityProperties implements InitializingBean, ApplicationContextA
             forbiddens.addAll(Arrays.asList(forbiddensArray));
         }
         String rememberMe = env.getProperty("security.remember", String.class);
-        if(StringUtils.isNoneEmpty(rememberMe)) {
+        if (StringUtils.isNoneEmpty(rememberMe)) {
             rememberMeKey = rememberMe;
         }
     }

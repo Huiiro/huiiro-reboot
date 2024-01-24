@@ -15,6 +15,11 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * gitee登录策略
+ *
+ * @author huii
+ */
 @Component
 public class GiteeLoginStrategy extends Oauth2LoginStrategy {
     @Override
@@ -49,6 +54,6 @@ public class GiteeLoginStrategy extends Oauth2LoginStrategy {
 
     @Override
     public void afterPropertiesSet() {
-        Oauth2StrategyFactory.register("gitee",this);
+        Oauth2StrategyFactory.register("gitee", this);
     }
 }

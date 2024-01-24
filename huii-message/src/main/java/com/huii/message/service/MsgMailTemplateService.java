@@ -17,7 +17,7 @@ public interface MsgMailTemplateService extends IService<MsgMailTemplate> {
      * 查询邮件模板分页
      *
      * @param msgMailTemplate msgMailTemplate
-     * @param pageParam pageParam
+     * @param pageParam       pageParam
      * @return page
      */
     Page selectMsgMailTemplateList(MsgMailTemplate msgMailTemplate, PageParam pageParam);

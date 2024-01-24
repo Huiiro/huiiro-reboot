@@ -6,6 +6,11 @@ import com.huii.common.enums.ResType;
 import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.SecurityUtils;
 
+/**
+ * 控制层基类
+ *
+ * @author huii
+ */
 public class BaseController {
 
     public boolean isAdmin() {

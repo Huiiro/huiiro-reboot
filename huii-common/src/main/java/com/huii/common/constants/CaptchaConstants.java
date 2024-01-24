@@ -1,6 +1,8 @@
 package com.huii.common.constants;
 
 /**
+ * 验证码常量
+ *
  * @author huii
  */
 public interface CaptchaConstants {

@@ -17,6 +17,11 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
+/**
+ * 角色更新事件监听器
+ *
+ * @author huii
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -70,7 +75,7 @@ public class RoleUpdatedEventListener {
      * 授权用户角色事件 更新 LoginUser.user roles 字段
      */
     public void updateWithRoleIdAndUserIds(Long roleId, List<Long> userIds) {
-        if(userIds.isEmpty()){
+        if (userIds.isEmpty()) {
             return;
         }
         SysUser sysUser = sysUserMapper.selectLoginUser("user_id", userIds.get(0));

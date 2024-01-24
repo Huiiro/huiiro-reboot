@@ -5,6 +5,11 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
+/**
+ * 手机登录认证token
+ *
+ * @author huii
+ */
 public class SmsToken extends TokenEntity {
     public SmsToken(String sms, String code) {
         super(sms, code);

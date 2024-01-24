@@ -126,7 +126,7 @@ public enum ResType {
     SYS_USER_PHONE_REPEAT(5181, "sys.user.phone.repeat", "手机号码重复"),
     SYS_USER_EMAIL_REPEAT(5182, "sys.user.email.repeat", "邮箱号码重复"),
 
-    GEN_MULTI_PRIMARY_KEY(5190,"gen.multi.primary.key", "存在多个主键，请检查"),
+    GEN_MULTI_PRIMARY_KEY(5190, "gen.multi.primary.key", "存在多个主键，请检查"),
     ;
 
     private final Integer code;

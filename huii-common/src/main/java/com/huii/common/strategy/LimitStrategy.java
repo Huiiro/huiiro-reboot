@@ -1,5 +1,10 @@
 package com.huii.common.strategy;
 
+/**
+ * 限流策略枚举
+ *
+ * @author huii
+ */
 public enum LimitStrategy {
 
     /**

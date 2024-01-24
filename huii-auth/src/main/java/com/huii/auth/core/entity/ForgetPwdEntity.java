@@ -5,6 +5,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 忘记密码dto
+ *
+ * @author huii
+ */
 @Data
 public class ForgetPwdEntity implements Serializable {
 

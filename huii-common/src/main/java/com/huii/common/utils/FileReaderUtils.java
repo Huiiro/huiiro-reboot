@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * 文件读取工具
+ *
+ * @author huii
+ */
 public class FileReaderUtils {
 
     public static String readResourcesFiles(String filePath) {

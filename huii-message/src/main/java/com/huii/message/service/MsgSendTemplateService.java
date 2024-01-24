@@ -17,7 +17,7 @@ public interface MsgSendTemplateService extends IService<MsgSendTemplate> {
      * 查询发送模板分页
      *
      * @param msgSendTemplate msgSendTemplate
-     * @param pageParam pageParam
+     * @param pageParam       pageParam
      * @return page
      */
     Page selectMsgSendTemplateList(MsgSendTemplate msgSendTemplate, PageParam pageParam);
@@ -32,6 +32,7 @@ public interface MsgSendTemplateService extends IService<MsgSendTemplate> {
 
     /**
      * 执行发送任务
+     *
      * @param msgSendTemplate msgSendTemplate
      */
     void runMessageSend(MsgSendTemplate msgSendTemplate);
