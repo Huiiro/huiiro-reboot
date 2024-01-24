@@ -4,6 +4,7 @@ import com.huii.common.core.model.R;
 import com.huii.common.enums.ResType;
 import com.huii.common.exception.ServiceException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +12,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -57,6 +59,19 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * HttpRequestMethodNotSupportedException
+     * 请求方式不支持 405
+     *
+     * @param response response
+     * @return r
+     */
+    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    public R<Object> httpRequestMethodNotSupportedExceptionHandler(HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        return R.failed(405, "请求方式不支持");
+    }
+
+    /**
      * ServiceException
      * 自定义业务异常 <code>
      *
@@ -77,7 +92,9 @@ public class GlobalExceptionHandler {
     public R<?> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e, HttpServletRequest request) {
         log.error("IllegalArgumentException:请求地址'{}',参数校验失败'{}'", request.getRequestURI(), e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
-        String errorMsg = bindingResult.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(","));
+        String errorMsg = bindingResult.getFieldErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining(","));
         return R.failed(1000, errorMsg);
     }
 

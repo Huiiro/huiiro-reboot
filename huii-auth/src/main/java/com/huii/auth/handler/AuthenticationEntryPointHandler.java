@@ -27,8 +27,17 @@ public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint
         R<Object> result;
         ResType type;
         if (ObjectUtils.isNotEmpty(request.getAttribute("tokenException"))) {
+            //token验证失效
             status = HttpServletResponse.SC_UNAUTHORIZED;
             type = ResType.STATUS_TOKEN_EXPIRED;
+            result = R.failed(type.getCode(), ResType.getI18nMessage(type), null);
+        } else if (status == 404) {
+            //请求地址不存在
+            type = ResType.STATUS_NOT_FOUND;
+            result = R.failed(type.getCode(), ResType.getI18nMessage(type), null);
+        } else if (status == 405) {
+            //请求方式错误
+            type = ResType.STATUS_METHOD_NOT_ALLOWED;
             result = R.failed(type.getCode(), ResType.getI18nMessage(type), null);
         } else if (status == 408) {
             //请求超时
