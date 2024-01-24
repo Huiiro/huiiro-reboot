@@ -36,7 +36,7 @@ public class LoginController extends BaseController {
 
     /**
      * 获取用户权限信息
-     * 获取路由: <a> com.huii.controller.SysMenuController.getRouteList </a>
+     * 获取路由: <link> com.huii.controller.SysMenuController.getRouteList </link>
      */
     @GetMapping("/info")
     public R<LoginVo> getInfo() {

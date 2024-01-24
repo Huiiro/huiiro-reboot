@@ -40,7 +40,6 @@ public class SysUserProfileController extends BaseController {
     private final SysUserService sysUserService;
     private final LoginSecurityService loginSecurityService;
     private final LocalService localService;
-
     private final RedisTemplateUtils redisTemplateUtils;
     private final MailService mailService;
     private final AliyunSmsServiceImpl aliyunSmsService;

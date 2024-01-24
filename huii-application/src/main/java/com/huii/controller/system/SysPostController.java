@@ -41,6 +41,7 @@ public class SysPostController extends BaseController {
         List<SysPostExportVo> vos = BeanCopyUtils.copyList(list, SysPostExportVo.class);
         ExcelUtils.exportExcel(null, vos, SysPostExportVo.class, response);
     }
+
     /**
      * 获取岗位列表
      */

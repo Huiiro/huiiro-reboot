@@ -49,6 +49,14 @@ public class Oauth2CallbackController extends BaseController {
         toggleLogin(LoginType.GITEE, map, request, response);
     }
 
+    /**
+     * 统合登录 参数构建
+     *
+     * @param loginType loginType
+     * @param map       params
+     * @param request   request
+     * @param response  response
+     */
     private void toggleLogin(LoginType loginType, HashMap<String, Object> map,
                              HttpServletRequest request, HttpServletResponse response) {
         Oauth2Dto dto = new Oauth2Dto();

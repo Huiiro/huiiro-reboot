@@ -24,6 +24,9 @@ public class SysConfigController extends BaseController {
 
     private final SysConfigService sysConfigService;
 
+    /**
+     * 刷新缓存
+     */
     @PreAuthorize("@ap.hasAuth('system:config:edit')")
     @GetMapping("/refresh")
     public R<Void> refreshCache() {

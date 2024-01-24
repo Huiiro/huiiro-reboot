@@ -20,6 +20,7 @@ import java.util.Base64;
  * @author huii
  */
 public class SecurityKeyPairFactory {
+
     private static KeyPair keyPair;
 
     private SecurityKeyPairFactory() {

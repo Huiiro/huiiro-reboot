@@ -47,11 +47,5 @@ public class RegisterServiceImpl implements RegisterService {
         sysUser.setUpdateBy(entity.getUsername());
 
         sysUserMapper.insert(sysUser);
-        //todo
-        //insert user
-        //insert userRole
-        //insert userDept
-        //insert userPost
-        //check userSocial
     }
 }
