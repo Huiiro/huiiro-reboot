@@ -7,3 +7,5 @@
 |==|   .-. ,\|==|-   ,   /|==|- ||==|- |
 /==/, //=/  |/==/ , _  .' /==/. //==/. /
 `--`-' `-`--``--`..---'   `--`-` `--`-`
+Application Version: ${huii.version}
+Spring Boot Version: ${spring-boot.version}
