@@ -70,7 +70,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 }
                 //获取用户信息
                 JSONObject object = redisTemplateUtils.getCacheObject(CacheConstants.USER + id);
-                if(object.isEmpty()) {
+                if(ObjectUtils.isEmpty(object)) {
                     return;
                 }
                 LoginUser loginUser = object.toJavaObject(LoginUser.class);

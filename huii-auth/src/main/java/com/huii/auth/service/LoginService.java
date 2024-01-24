@@ -76,6 +76,15 @@ public interface LoginService {
     void defaultOauth2LoginBindResponse(LoginVo loginVo, HttpServletResponse response);
 
     /**
+     * 构建返回参数
+     *
+     * @param loginVo loginVo
+     * @param response response
+     * @param origin origin
+     */
+    void buildOauth2LoginResponseByOrigin(LoginVo loginVo, HttpServletResponse response, String origin);
+
+    /**
      * 获取用户唯一用户名
      *
      * @param username username

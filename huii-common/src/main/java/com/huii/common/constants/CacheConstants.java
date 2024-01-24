@@ -22,6 +22,10 @@ public interface CacheConstants {
 
     String VERIFY_CODE_RESET_PWD_SUFFIX = VERIFY_CODE + "reset_pwd:";
 
+    String VERIFY_CODE_BIND = VERIFY_CODE + "bind:";
+
+    String VERIFY_CODE_BIND_IDENTIFY = VERIFY_CODE + "bind:user";
+
     /**
      * 登录验证次数
      */

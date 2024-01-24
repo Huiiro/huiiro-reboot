@@ -70,7 +70,7 @@ oauth2-key:
     - provider: github
       clientId: c673ed05ca8d98032a1e
       clientSecret: 21e176e17b1c39c73a13232a656e2c395531f63b
-      redirectUri: http://localhost:8080/callback/github
+      redirectUri: ${config.login.default-oauth2-login-redirect-url}/github
       authorizationUri: https://github.com/login/oauth/authorize
       tokenUri: https://github.com/login/oauth/access_token
       userInfoUri: https://api.github.com/user
@@ -80,7 +80,7 @@ oauth2-key:
     - provider: gitee
       clientId: a69c6d6902bb792281a5897ba02d8a5ee2cb7e8f8a6b3a5e5cb1b6a809893ee5
       clientSecret: 9e70df4b139741cd4594bb9d592371936b2de19da349a477ffd4f1ef319498d5
-      redirectUri: http://localhost:8080/callback/gitee
+      redirectUri: ${config.login.default-oauth2-login-redirect-url}/gitee
       authorizationUri: https://gitee.com/oauth/authorize
       tokenUri: https://gitee.com/oauth/token
       userInfoUri: https://gitee.com/api/v5/user

@@ -6,6 +6,7 @@ import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,20 +30,27 @@ public class Oauth2LoginController extends BaseController {
     /**
      * github
      */
-    @RequestMapping("/github")
-    public R<Map<String, String>> github() {
-        String url = "https://github.com/login/oauth/authorize?client_id=c673ed05ca8d98032a1e&redirect_uri=" +
-                loginProperties.getDefaultOauth2LoginRedirectUrl() + "/github&state=" + getUserIdAsState() + "&scope=user";
+    @RequestMapping("/github/{origin}")
+    public R<Map<String, String>> github(@PathVariable String origin) {
+        String url = "https://github.com/login/oauth/authorize?" +
+                "client_id=c673ed05ca8d98032a1e" +
+                "&redirect_uri=" + loginProperties.getDefaultOauth2LoginRedirectUrl() + "/github" +
+                "&state=" + origin + getUserIdAsState() +
+                "&scope=user";
         return buildResult(url);
     }
 
     /**
      * gitee
      */
-    @RequestMapping("/gitee")
-    public R<Map<String, String>> gitee() {
-        String url = "https://gitee.com/oauth/authorize?client_id=a69c6d6902bb792281a5897ba02d8a5ee2cb7e8f8a6b3a5e5cb1b6a809893ee5&redirect_uri=" +
-                loginProperties.getDefaultOauth2LoginRedirectUrl() + "/gitee&state=" + getUserIdAsState() + "&response_type=code&scope=user_info";
+    @RequestMapping("/gitee/{origin}")
+    public R<Map<String, String>> gitee(@PathVariable String origin) {
+        String url = "https://gitee.com/oauth/authorize?" +
+                "client_id=a69c6d6902bb792281a5897ba02d8a5ee2cb7e8f8a6b3a5e5cb1b6a809893ee5" +
+                "&redirect_uri=" + loginProperties.getDefaultOauth2LoginRedirectUrl() + "/gitee" +
+                "&state=" + origin + getUserIdAsState() +
+                "&response_type=code" +
+                "&scope=user_info";
         return buildResult(url);
     }
 

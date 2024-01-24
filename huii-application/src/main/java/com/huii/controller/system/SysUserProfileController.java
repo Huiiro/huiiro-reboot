@@ -1,5 +1,6 @@
 package com.huii.controller.system;
 
+import com.huii.auth.core.entity.BindEmail;
 import com.huii.auth.core.entity.ForgetPwdEntity;
 import com.huii.auth.core.entity.ResetPwdEntity;
 import com.huii.auth.service.LoginSecurityService;
@@ -10,6 +11,7 @@ import com.huii.common.core.domain.SysUser;
 import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.OpType;
+import com.huii.common.exception.ServiceException;
 import com.huii.common.utils.redis.RedisTemplateUtils;
 import com.huii.message.core.service.MailService;
 import com.huii.message.core.service.impl.AliyunSmsServiceImpl;
@@ -18,12 +20,15 @@ import com.huii.oss.entity.UploadResult;
 import com.huii.oss.enums.LocalModules;
 import com.huii.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Validated
@@ -131,5 +136,84 @@ public class SysUserProfileController extends BaseController {
         String decryptPwd = loginSecurityService.decrypt(entity.getPwd());
         sysUserService.updateUserPassword(entity.getIdentify(), entity.getType(), decryptPwd);
         return R.ok("密码已更新");
+    }
+
+    /**
+     * 查询绑定状态
+     */
+    @GetMapping("/bind")
+    public R<Map<String, String>> getBindInfoStatus() {
+        Map<String, String> map = sysUserService.queryUserBindPhoneOrEmail();
+        return R.ok(map);
+    }
+
+    /**
+     * 获取解绑邮箱验证码
+     */
+    @PostMapping("/email/unbind")
+    public R<Void> unbindEmailCode(@RequestBody BindEmail bindEntity) {
+        Long userId = getUserId();
+        sysUserService.checkUserEmail(bindEntity.getEmail(), userId);
+        String code = CaptchaGenerator.createRandom(6);
+        mailService.sendHtml("【huii】解绑邮箱", "您正在解绑邮箱，您的验证码为"
+                + code + "，验证码有效时间为10分钟！", bindEntity.getEmail());
+        redisTemplateUtils.setCacheObject(CacheConstants.VERIFY_CODE_BIND + bindEntity.getEmail(), code,
+                CacheConstants.DEFAULT_CACHE_TIME, TimeUnit.MINUTES);
+        redisTemplateUtils.setCacheObject(CacheConstants.VERIFY_CODE_BIND_IDENTIFY + userId, userId,
+                CacheConstants.DEFAULT_CACHE_TIME, TimeUnit.MINUTES);
+        return R.ok("验证码已发送");
+    }
+
+    /**
+     * 校验解绑邮箱验证码
+     */
+    @PostMapping("/email/unbind/check")
+    public R<Boolean> checkUnbindEmailCode(@RequestBody BindEmail bindEntity) {
+        checkCode(bindEntity);
+        return R.ok(true);
+    }
+
+    /**
+     * 获取绑定邮箱验证码
+     */
+    @PostMapping("/email/bind")
+    public R<Void> bindEmailCode(@RequestBody BindEmail bindEntity) {
+        String code = CaptchaGenerator.createRandom(6);
+        mailService.sendHtml("【huii】绑定邮箱", "您正在绑定邮箱，您的验证码为"
+                + code + "，验证码有效时间为10分钟！", bindEntity.getEmail());
+        redisTemplateUtils.setCacheObject(CacheConstants.VERIFY_CODE_BIND + bindEntity.getEmail(), code,
+                CacheConstants.DEFAULT_CACHE_TIME, TimeUnit.MINUTES);
+        return R.ok("验证码已发送");
+    }
+
+    /**
+     * 校验绑定邮箱验证码
+     */
+    @PostMapping("/email/bind/check")
+    public R<Void> bindEmail(@RequestBody BindEmail bindEntity) {
+        checkCode(bindEntity);
+        //获取是否需要验证提前解绑
+        Map<String, String> map = sysUserService.queryUserBindPhoneOrEmail();
+        //已绑定，需要校验是否已经解绑旧邮箱
+        if (map.get("emailStatus").equals("1")) {
+            Object object = redisTemplateUtils.getCacheObject(CacheConstants.VERIFY_CODE_BIND_IDENTIFY + getUserId());
+            if (ObjectUtils.isEmpty(object)) {
+                throw new ServiceException("非法的操作，请尝试重新绑定");
+            }
+        }
+        sysUserService.bindEmail(getUserId(), bindEntity.getEmail());
+        redisTemplateUtils.deleteObject(CacheConstants.VERIFY_CODE_BIND_IDENTIFY + getUserId());
+        return R.ok("绑定成功");
+    }
+
+    private void checkCode(BindEmail bindEntity) {
+        String code = redisTemplateUtils.getCacheObject(CacheConstants.VERIFY_CODE_BIND + bindEntity.getEmail());
+        if (StringUtils.isBlank(code)) {
+            throw new ServiceException("验证码已过期");
+        }
+        if (!StringUtils.isBlank(bindEntity.getCode()) && !code.equals(bindEntity.getCode())) {
+            throw new ServiceException("验证码错误");
+        }
+        redisTemplateUtils.deleteObject(CacheConstants.VERIFY_CODE_BIND + bindEntity.getEmail());
     }
 }

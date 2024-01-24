@@ -27,11 +27,9 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -231,6 +229,46 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .in(SysUserRole::getUserId, Arrays.asList(userIds)));
     }
 
+    @Override
+    public Map<String, String> queryUserBindPhoneOrEmail() {
+        SysUser sysUser = sysUserMapper.selectById(SecurityUtils.getUserId());
+        if (ObjectUtils.isEmpty(sysUser)) {
+            throw new RuntimeException("用户信息获取失败");
+        }
+        Map<String, String> map = new HashMap<>();
+        if (StringUtils.isBlank(sysUser.getPhone())) {
+            map.put("phone", "未绑定");
+            map.put("phoneStatus", "0");
+        } else {
+            map.put("phone", maskPhoneNumber(sysUser.getPhone()));
+            map.put("phoneStatus", "1");
+        }
+        if (StringUtils.isBlank(sysUser.getEmail())) {
+            map.put("email", "未绑定");
+            map.put("emailStatus", "0");
+        } else {
+            map.put("email", maskEmail(sysUser.getEmail()));
+            map.put("emailStatus", "1");
+        }
+        return map;
+    }
+
+    @Override
+    public void checkUserEmail(String email, Long userId) {
+        SysUser sysUser = sysUserMapper.selectById(userId);
+        if (!sysUser.getEmail().equals(email)) {
+            throw new ServiceException("您提供的邮箱不正确！");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void bindEmail(Long uid, String email) {
+        SysUser sysUser = sysUserMapper.selectById(uid);
+        sysUser.setEmail(email);
+        sysUserMapper.updateById(sysUser);
+    }
+
     private Wrapper<SysUser> wrapperBuilder(SysUser user) {
         QueryWrapper<SysUser> wrapper = Wrappers.query();
         Map<String, Object> params = user.getParams();
@@ -271,6 +309,31 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             list.add(sysUserPost);
         }
         sysUserPostMapper.insertBatch(list);
+    }
+
+    private static String maskEmail(String email) {
+        int atIndex = email.indexOf('@');
+
+        if (atIndex > 1) {
+            String prefix = email.substring(0, 1);
+            String suffix = email.substring(atIndex - 1);
+            String maskedMiddle = "*".repeat(atIndex - 2);
+            return prefix + maskedMiddle + suffix;
+        } else {
+            return email;
+        }
+    }
+
+    private static String maskPhoneNumber(String phoneNumber) {
+        if (phoneNumber.length() < 3) {
+            return phoneNumber;
+        }
+        if (phoneNumber.length() < 11) {
+            phoneNumber = phoneNumber.substring(0, 3) + "******";
+        } else {
+            phoneNumber = phoneNumber.substring(0, 3) + "******" + phoneNumber.substring(7);
+        }
+        return phoneNumber;
     }
 
 }

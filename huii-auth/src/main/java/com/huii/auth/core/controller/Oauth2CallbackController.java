@@ -54,13 +54,20 @@ public class Oauth2CallbackController extends BaseController {
         Oauth2Dto dto = new Oauth2Dto();
         dto.setLoginType(loginType);
         dto.setCode((String) map.get("code"));
-        dto.setState((String) map.get("state"));
-        long state = Long.parseLong((String) map.get("state"));
+        // origin + userId
+        String stateParam = (String) map.get("state");
+        //获取源
+        String origin = String.valueOf(stateParam.charAt(0));
+        //获取state参数
+        String stateString = stateParam.substring(1);
+        dto.setState(stateString);
+        long state = Long.parseLong(stateString);
         if (state != 0) {
             dto.setHasLoginAndDoBind(SystemConstants.STATUS_1);
             dto.setBindId(state);
         }
         LoginVo loginVo = loginService.oauth2Login(dto, request);
-        loginService.defaultOauth2LoginResponse(loginVo, response);
+        //构建返回参数
+        loginService.buildOauth2LoginResponseByOrigin(loginVo, response, origin);
     }
 }

@@ -25,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
@@ -64,17 +66,27 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public void defaultOauth2LoginResponse(LoginVo loginVo, HttpServletResponse response) {
-        String redirectUrl = loginProperties.getDefaultOauth2LoginCallbackUrl() + "?token=" + loginVo.getAccessToken();
-        if (ObjectUtils.isNotEmpty(loginVo.getRefreshToken())) {
-            redirectUrl += "&refreshToken=" + loginVo.getRefreshToken();
-        }
-        response.setStatus(HttpServletResponse.SC_FOUND);
-        response.setHeader("Location", redirectUrl);
+        buildResponse(loginProperties.getDefaultOauth2LoginCallbackUrl(), loginVo, response);
     }
 
     @Override
     public void defaultOauth2LoginBindResponse(LoginVo loginVo, HttpServletResponse response) {
         defaultOauth2LoginResponse(loginVo, response);
+    }
+
+    @Override
+    public void buildOauth2LoginResponseByOrigin(LoginVo loginVo, HttpServletResponse response, String origin) {
+        String url = loginProperties.getDefaultOauth2LoginCallbackUrl();
+        //build more results here
+        //or load in config
+        if (Objects.equals(origin, "1")) {
+            url = "http://localhost:5173/oauth/redirect";
+        } else if (Objects.equals(origin, "2")) {
+            url = "https://static.huii147.xyz/oauth/redirect";
+        } else if (Objects.equals(origin, "3")) {
+            url = "https://www.huii147.xyz/oauth/redirect";
+        }
+        buildResponse(url, loginVo, response);
     }
 
     @Override
@@ -100,5 +112,14 @@ public class LoginServiceImpl implements LoginService {
             throw new ServiceException(type.getCode(), MessageUtils.message(type.getI18n()));
         }
         return sysUser.getUserName();
+    }
+
+    private void buildResponse(String url, LoginVo loginVo, HttpServletResponse response) {
+        String redirectUrl = url + "?token=" + loginVo.getAccessToken();
+        if (ObjectUtils.isNotEmpty(loginVo.getRefreshToken())) {
+            redirectUrl += "&refreshToken=" + loginVo.getRefreshToken();
+        }
+        response.setStatus(HttpServletResponse.SC_FOUND);
+        response.setHeader("Location", redirectUrl);
     }
 }

@@ -1,0 +1,3 @@
+//pgsql 新增自增主键
+CREATE SEQUENCE gen_table_id_seq;
+ALTER TABLE public.gen_table ALTER COLUMN table_id SET DEFAULT nextval('gen_table_id_seq');

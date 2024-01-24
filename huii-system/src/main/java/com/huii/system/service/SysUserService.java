@@ -5,6 +5,7 @@ import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysUserService {
 
@@ -81,7 +82,7 @@ public interface SysUserService {
      * 更新用户密码
      *
      * @param identify 身份
-     * @param column     身份对应字段
+     * @param column   身份对应字段
      * @param pwd      新密码
      */
     void updateUserPassword(String identify, String column, String pwd);
@@ -147,4 +148,24 @@ public interface SysUserService {
      */
     void unauthUser(Long roleId, Long[] userIds);
 
+    /**
+     * 查询用户绑定的手机和邮箱
+     */
+    Map<String, String> queryUserBindPhoneOrEmail();
+
+    /**
+     * 校验本人邮箱
+     *
+     * @param email  email
+     * @param userId userId
+     */
+    void checkUserEmail(String email, Long userId);
+
+    /**
+     * 绑定邮箱
+     *
+     * @param uid   uid
+     * @param email email
+     */
+    void bindEmail(Long uid, String email);
 }

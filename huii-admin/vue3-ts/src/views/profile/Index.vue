@@ -24,16 +24,10 @@
             {{ menu.label }}
           </p>
         </div>
-        <!--        <div>-->
-        <!--          <el-divider/>-->
-        <!--          <p class="header">基本设置</p>-->
-        <!--          <p class="item" ref="个人资料" @click="handleClick('个人资料')">个人资料</p>-->
-        <!--          <p class="item" ref="账号管理" @click="handleClick('账号管理')">账号管理</p>-->
-        <!--        </div>-->
       </el-card>
     </div>
     <div class="right-div">
-      <router-view></router-view>
+      <router-view />
     </div>
   </div>
 
