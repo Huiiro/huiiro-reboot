@@ -34,4 +34,9 @@ public class OssProperties {
 
     private Boolean https = true;
 
+    /**
+     * 用于替换ip+端口号的访问模式
+     * 请自行配置nginx代理用于解析转发
+     */
+    private String accessUrl;
 }

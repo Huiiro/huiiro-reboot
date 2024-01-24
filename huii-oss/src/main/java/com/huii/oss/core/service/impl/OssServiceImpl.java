@@ -92,7 +92,7 @@ public class OssServiceImpl implements OssService {
                 String substring = name.substring(name.indexOf('/', name.indexOf("//") + 2) + 1);
                 String[] parts = substring.split("/");
                 if (parts.length >= 2) {
-                    ossTemplate.deleteObject(parts[0], parts[1]);
+                    ossTemplate.deleteObject(parts[parts.length - 2], parts[parts.length - 1]);
                 }
             }
         } catch (Exception e) {

@@ -148,6 +148,10 @@ public class OssTemplate implements BaseTemplate {
     }
 
     private String getUrl() {
+        if (StringUtils.isNoneEmpty(properties.getAccessUrl())) {
+            //default minio
+            return properties.getAccessUrl() + "/" + properties.getBucketName() + "/";
+        }
         String isHttps = properties.getHttps() ? "https://" : "http://";
         String domain = properties.getDomain();
         String endpoint = properties.getEndpoint();
