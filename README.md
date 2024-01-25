@@ -8,4 +8,4 @@
 ### 更新计划：
 
 * fix remember me service
-* fix generator part
+* fix generator part1
