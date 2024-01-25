@@ -2,6 +2,7 @@ package com.huii.auth.core.controller;
 
 import com.huii.auth.service.LoginSecurityService;
 import com.huii.common.annotation.Anonymous;
+import com.huii.common.annotation.Xss;
 import com.huii.common.core.model.R;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +57,7 @@ public class LoginSecurityController {
      */
     @Anonymous
     @GetMapping("/encrypt")
-    public R<Object> encrypt(@RequestParam String str) {
+    public R<Object> encrypt(@RequestParam @Xss String str) {
         String text = loginSecurityService.encrypt(str);
         Map<String, Object> map = new HashMap<>();
         map.put("encryptText", text);
@@ -68,7 +69,7 @@ public class LoginSecurityController {
      */
     @Anonymous
     @GetMapping("/decrypt")
-    public R<Object> decrypt(@RequestParam String str) {
+    public R<Object> decrypt(@RequestParam @Xss String str) {
         String text = loginSecurityService.decrypt(str.replaceAll(" ", "+"));
         Map<String, Object> map = new HashMap<>();
         map.put("decryptText", text);

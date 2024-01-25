@@ -183,7 +183,6 @@
         <if test="col == 'phone'">
             and u.phone = #{val}
         </if>
-        limit 1
     </select>
 
     <select id="selectUserVoById" resultMap="UserResult">
@@ -211,5 +210,4 @@
         <include refid="selectUser"></include>
         where u.user_name = #{username}
     </select>
-
 </mapper>

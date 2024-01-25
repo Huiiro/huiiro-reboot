@@ -60,7 +60,7 @@ public class SecurityKeyPairFactory {
     public static String encryptRSA(String rawStr) {
         try {
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            PublicKey publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(getPrivateKeyByte()));
+            PublicKey publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(getPublicKeyByte()));
 
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);

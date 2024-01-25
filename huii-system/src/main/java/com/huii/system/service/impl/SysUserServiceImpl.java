@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.constants.SystemConstants;
+import com.huii.common.constants.UserConstants;
 import com.huii.common.core.domain.SysUser;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.enums.ResType;
@@ -78,6 +79,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void insertUser(SysUser sysUser) {
+        sysUser.setDeleteFlag(SystemConstants.STATUS_0);
+        sysUser.setPassword(SecurityUtils.encryptPassword(UserConstants.USER_DEFAULT_PASSWORD));
         Long userId = sysUser.getUserId();
         insertUserRole(userId, sysUser.getRoleIds());
         insertUserPost(userId, sysUser.getPostIds());

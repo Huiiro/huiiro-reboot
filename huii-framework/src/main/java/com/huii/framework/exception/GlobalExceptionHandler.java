@@ -14,6 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -38,7 +39,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(AuthenticationException.class)
     public R<Object> authenticationExceptionHandler(AuthenticationException e, HttpServletRequest request) {
-        log.error("AuthenticationException:请求地址'{}',认证失败'{}'", request.getRequestURI(), e.getMessage());
+        log.error("AuthenticationException:请求地址:'{}',认证失败:'{}'", request.getRequestURI(), e.getMessage());
         String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() : ResType.getI18nMessage(ResType.STATUS_UNAUTHORIZED);
         return R.failed(ResType.STATUS_UNAUTHORIZED.getCode(), message);
     }
@@ -53,7 +54,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(AccessDeniedException.class)
     public R<Object> accessDeniedExceptionHandler(AccessDeniedException e, HttpServletRequest request) {
-        log.error("AccessDeniedException:请求地址'{}',权限校验失败'{}'", request.getRequestURI(), e.getMessage());
+        log.error("AccessDeniedException:请求地址:'{}',权限校验失败:'{}'", request.getRequestURI(), e.getMessage());
         String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() : ResType.getI18nMessage(ResType.STATUS_FORBIDDEN);
         return R.failed(ResType.STATUS_FORBIDDEN.getCode(), message);
     }
@@ -90,12 +91,24 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public R<?> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e, HttpServletRequest request) {
-        log.error("IllegalArgumentException:请求地址'{}',参数校验失败'{}'", request.getRequestURI(), e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
         String errorMsg = bindingResult.getFieldErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.joining(","));
+        log.error("IllegalArgumentException:请求地址:'{}',参数校验失败:'{}'", request.getRequestURI(), errorMsg);
         return R.failed(1000, errorMsg);
+    }
+
+    /**
+     * MissingServletRequestParameterException
+     * 缺参异常处理
+     *
+     * @param e e
+     * @return r
+     */
+    @ExceptionHandler(value = MissingServletRequestParameterException.class)
+    public R<Object> missingServletRequestParameterExceptionHandler(MissingServletRequestParameterException e) {
+        return R.failed(1100, "缺少参数" + e.getParameterName());
     }
 
     /**
@@ -109,7 +122,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = RuntimeException.class)
     public R<Object> runtimeExceptionHandler(RuntimeException e, HttpServletRequest request) {
         String errMsg = ObjectUtils.isEmpty(e.getMessage()) ? e.getCause().getMessage() : e.getMessage();
-        log.error("RuntimeException:请求地址'{}',运行异常'{}'", request.getRequestURI(), errMsg);
+        log.error("RuntimeException:请求地址:'{}',运行异常:'{}'", request.getRequestURI(), errMsg);
         return R.failed(500, errMsg);
     }
 
@@ -124,7 +137,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = NullPointerException.class)
     public R<Object> nullPointerExceptionHandler(NullPointerException e, HttpServletRequest request) {
         String errMsg = ObjectUtils.isEmpty(e.getMessage()) ? e.getCause().getMessage() : e.getMessage();
-        log.error("NullPointerException:请求地址'{}',空指针异常'{}'", request.getRequestURI(), errMsg);
+        log.error("NullPointerException:请求地址:'{}',空指针异常:'{}'", request.getRequestURI(), errMsg);
         return R.failed(9999, "系统异常，请联系管理员");
     }
 

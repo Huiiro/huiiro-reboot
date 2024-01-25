@@ -68,8 +68,6 @@ public class MybatisDataPermissionHandler {
         return invalidCacheSet.contains(mappedStatementId);
     }
 
-    //TODO
-    //TO TEST
     private String buildSql(DataScope dataScope) {
         try {
             SysUser user = SecurityUtils.getUser();
@@ -91,20 +89,19 @@ public class MybatisDataPermissionHandler {
                     sqlString.append(String.format(" %s.dept_id = %s ",
                             dataScope.deptAlias(), user.getDeptId()));
                 } else if (roleScope.equals(DataScopeType.DEPT_AND_CHILD.getCode())) {
-                    //pgsql
-                    sqlString.append(String.format(
-                            "%s.dept_id in (SELECT dept_id FROM sys_dept" +
+                    //default support for postgres
+                    sqlString.append(String.format(" %s.dept_id in (SELECT dept_id FROM sys_dept " +
                                     "WHERE dept_id IN (" +
-                                    "    WITH RECURSIVE DeptHierarchy AS (" +
-                                    "        SELECT dept_id, parent_id" +
-                                    "        FROM sys_dept" +
-                                    "        WHERE dept_id = %s " +
-                                    "        UNION" +
-                                    "        SELECT d.dept_id, d.parent_id" +
-                                    "        FROM sys_dept d" +
-                                    "        JOIN DeptHierarchy h ON d.parent_id = h.dept_id" +
-                                    "    )" +
-                                    "    SELECT dept_id FROM DeptHierarchy" +
+                                    "WITH RECURSIVE DeptHierarchy AS (" +
+                                    "SELECT dept_id, parent_id " +
+                                    "FROM sys_dept " +
+                                    "WHERE dept_id = %s " +
+                                    "UNION " +
+                                    "SELECT d.dept_id, d.parent_id " +
+                                    "FROM sys_dept d " +
+                                    "JOIN DeptHierarchy h ON d.parent_id = h.dept_id" +
+                                    ")" +
+                                    "SELECT dept_id FROM DeptHierarchy" +
                                     ")" +
                                     ")",
                             dataScope.deptAlias(), user.getDeptId()));

@@ -1,6 +1,7 @@
 package com.huii.auth.config;
 
 import com.huii.auth.config.properties.SecurityProperties;
+import com.huii.auth.filter.ResourceFilter;
 import com.huii.auth.filter.TokenAuthenticationFilter;
 import com.huii.auth.handler.AuthenticationAccessDeniedHandler;
 import com.huii.auth.handler.AuthenticationEntryPointHandler;
@@ -49,6 +50,7 @@ public class SecurityConfig {
     private final LogoutSuccessHandler logoutSuccessHandler;
     private final AuthenticationEntryPointHandler authenticationEntryPointHandler;
     private final AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler;
+    private final ResourceFilter resourceFilter;
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
     /**
@@ -69,7 +71,8 @@ public class SecurityConfig {
                 .exceptionHandling(e -> e.authenticationEntryPoint(authenticationEntryPointHandler)
                         .accessDeniedHandler(authenticationAccessDeniedHandler))
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(tokenAuthenticationFilter, LogoutFilter.class);
+                .addFilterBefore(tokenAuthenticationFilter, LogoutFilter.class)
+                .addFilterBefore(resourceFilter, TokenAuthenticationFilter.class);
         return http.build();
     }
 
