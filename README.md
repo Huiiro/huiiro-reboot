@@ -7,6 +7,5 @@
 
 ### 更新计划：
 
-* 多数据源处理
-* sql适配
-* 数据权限校验
+* fix remember me service
+* fix generator part
