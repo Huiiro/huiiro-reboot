@@ -50,23 +50,23 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public LoginVo accountLogin(AccountDto dto, HttpServletRequest request) {
-        return commonLogin(dto, request);
+    public LoginVo accountLogin(AccountDto dto, HttpServletRequest request, HttpServletResponse response) {
+        return commonLogin(dto, request, response);
     }
 
     @Override
-    public LoginVo emailLogin(EmailDto dto, HttpServletRequest request) {
-        return commonLogin(dto, request);
+    public LoginVo emailLogin(EmailDto dto, HttpServletRequest request, HttpServletResponse response) {
+        return commonLogin(dto, request, response);
     }
 
     @Override
-    public LoginVo smsLogin(SmsDto dto, HttpServletRequest request) {
-        return commonLogin(dto, request);
+    public LoginVo smsLogin(SmsDto dto, HttpServletRequest request, HttpServletResponse response) {
+        return commonLogin(dto, request, response);
     }
 
     @Override
-    public LoginVo oauth2Login(Oauth2Dto dto, HttpServletRequest request) {
-        return commonLogin(dto, request);
+    public LoginVo oauth2Login(Oauth2Dto dto, HttpServletRequest request, HttpServletResponse response) {
+        return commonLogin(dto, request, response);
     }
 
     @Override
@@ -105,9 +105,9 @@ public class LoginServiceImpl implements LoginService {
         }
     }
 
-    private LoginVo commonLogin(LoginEntity loginBody, HttpServletRequest request) {
+    private LoginVo commonLogin(LoginEntity loginBody, HttpServletRequest request, HttpServletResponse response) {
         LoginStrategy strategy = LoginStrategyFactory.getStrategy(loginBody.getLoginType());
-        return strategy.login(loginBody, request);
+        return strategy.login(loginBody, request, response);
     }
 
     private String queryUsername(String col, String val) {

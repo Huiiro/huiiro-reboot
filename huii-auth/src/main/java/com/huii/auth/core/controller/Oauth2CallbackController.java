@@ -74,7 +74,7 @@ public class Oauth2CallbackController extends BaseController {
             dto.setHasLoginAndDoBind(SystemConstants.STATUS_1);
             dto.setBindId(state);
         }
-        LoginVo loginVo = loginService.oauth2Login(dto, request);
+        LoginVo loginVo = loginService.oauth2Login(dto, request, response);
         //构建返回参数
         loginService.buildOauth2LoginResponseByOrigin(loginVo, response, origin);
     }

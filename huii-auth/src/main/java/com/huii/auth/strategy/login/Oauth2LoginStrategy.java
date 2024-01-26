@@ -9,6 +9,7 @@ import com.huii.auth.service.LoginSuccessService;
 import com.huii.auth.strategy.AbstractLoginStrategy;
 import com.huii.common.enums.LoginType;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ public class Oauth2LoginStrategy extends AbstractLoginStrategy {
     private final LoginSuccessService loginSuccessService;
 
     @Override
-    public LoginVo login(LoginEntity loginEntity, HttpServletRequest request) {
+    public LoginVo login(LoginEntity loginEntity, HttpServletRequest request, HttpServletResponse response) {
         Oauth2Dto dto = (Oauth2Dto) loginEntity;
         Oauth2Token token = new Oauth2Token(request, null, dto.getCode(),
                 dto.getState(), dto.getScope(), dto.getType(), loginEntity.getLoginType(),

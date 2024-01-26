@@ -26,38 +26,42 @@ public interface LoginService {
     /**
      * accountLogin
      *
-     * @param dto     dto
-     * @param request request
+     * @param dto      dto
+     * @param request  request
+     * @param response response
      * @return LoginVo
      */
-    LoginVo accountLogin(AccountDto dto, HttpServletRequest request);
+    LoginVo accountLogin(AccountDto dto, HttpServletRequest request, HttpServletResponse response);
 
     /**
      * emailLogin
      *
-     * @param dto     dto
-     * @param request request
+     * @param dto      dto
+     * @param request  request
+     * @param response response
      * @return LoginVo
      */
-    LoginVo emailLogin(EmailDto dto, HttpServletRequest request);
+    LoginVo emailLogin(EmailDto dto, HttpServletRequest request, HttpServletResponse response);
 
     /**
      * smsLogin
      *
-     * @param dto     dto
-     * @param request request
+     * @param dto      dto
+     * @param request  request
+     * @param response response
      * @return LoginVo
      */
-    LoginVo smsLogin(SmsDto dto, HttpServletRequest request);
+    LoginVo smsLogin(SmsDto dto, HttpServletRequest request, HttpServletResponse response);
 
     /**
      * oauth2Login
      *
-     * @param dto     dto
-     * @param request request
+     * @param dto      dto
+     * @param request  request
+     * @param response response
      * @return LoginVo
      */
-    LoginVo oauth2Login(Oauth2Dto dto, HttpServletRequest request);
+    LoginVo oauth2Login(Oauth2Dto dto, HttpServletRequest request, HttpServletResponse response);
 
     /**
      * oauth2登录成功返回结果

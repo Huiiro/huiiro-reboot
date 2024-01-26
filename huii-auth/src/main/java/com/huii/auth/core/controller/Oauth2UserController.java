@@ -11,6 +11,7 @@ import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.LoginType;
 import com.huii.system.domain.SysUserOauth;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -57,14 +58,15 @@ public class Oauth2UserController extends BaseController {
      * 绑定至已有账号
      */
     @PostMapping("/bind/has")
-    public R<Object> bindAccountToMy(@RequestBody @Validated AccountDto dto, HttpServletRequest request) {
+    public R<Object> bindAccountToMy(@RequestBody @Validated AccountDto dto, HttpServletRequest request,
+                                     HttpServletResponse response) {
         Long userId = getUserId();
         dto.setLoginType(LoginType.ACCOUNT);
         String username = loginService.getUsername(dto.getUsername());
         dto.setUsername(username);
         String password = loginSecurityService.decrypt(dto.getPassword());
         dto.setPassword(password);
-        LoginVo loginVo = loginService.accountLogin(dto, request);
+        LoginVo loginVo = loginService.accountLogin(dto, request, response);
         loginUserOauthService.bindUser(userId, loginVo);
         return R.ok(loginVo);
     }

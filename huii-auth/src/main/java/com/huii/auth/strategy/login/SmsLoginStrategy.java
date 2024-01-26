@@ -9,6 +9,7 @@ import com.huii.auth.service.LoginSuccessService;
 import com.huii.auth.strategy.AbstractLoginStrategy;
 import com.huii.common.enums.LoginType;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ public class SmsLoginStrategy extends AbstractLoginStrategy {
     private final LoginSuccessService loginSuccessService;
 
     @Override
-    public LoginVo login(LoginEntity loginEntity, HttpServletRequest request) {
+    public LoginVo login(LoginEntity loginEntity, HttpServletRequest request, HttpServletResponse response) {
         SmsDto dto = (SmsDto) loginEntity;
         SmsToken token = new SmsToken(dto.getSms(), dto.getCode());
         return this.authenticate(token, manager, loginSuccessService, request);

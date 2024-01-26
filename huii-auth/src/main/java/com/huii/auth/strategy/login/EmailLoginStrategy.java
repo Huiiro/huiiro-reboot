@@ -9,6 +9,7 @@ import com.huii.auth.service.LoginSuccessService;
 import com.huii.auth.strategy.AbstractLoginStrategy;
 import com.huii.common.enums.LoginType;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ public class EmailLoginStrategy extends AbstractLoginStrategy {
     private final LoginSuccessService loginSuccessService;
 
     @Override
-    public LoginVo login(LoginEntity loginEntity, HttpServletRequest request) {
+    public LoginVo login(LoginEntity loginEntity, HttpServletRequest request, HttpServletResponse response) {
         EmailDto dto = (EmailDto) loginEntity;
         EmailToken token = new EmailToken(dto.getEmail(), dto.getCode());
         return this.authenticate(token, manager, loginSuccessService, request);
