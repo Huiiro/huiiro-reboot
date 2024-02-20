@@ -10,6 +10,7 @@ export const useUserStore = defineStore('user', {
             roles: [],
             tabList: [{name: '首页', title: '首页', icon: '', params: {}}],
             tabValue: '首页',
+            unread: 0,
         }
     },
     actions: {
@@ -36,6 +37,9 @@ export const useUserStore = defineStore('user', {
 
         setRoles(roles: any) {
             this.roles = roles;
+        },
+        setUnread(count: number) {
+            this.unread = count;
         },
         addTab(tab: any) {
             if (tab.name !== null && tab.title !== null && tab.name !== undefined) {

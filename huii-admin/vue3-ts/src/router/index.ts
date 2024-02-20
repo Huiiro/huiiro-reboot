@@ -8,6 +8,7 @@ import settings from "@/settings.ts";
 import nprocess from 'nprogress';
 import "nprogress/nprogress.css";
 import {getInfo} from "@/api/auth/login";
+import {getMessageUnreadCount} from "@/api/system/message";
 
 interface MenuItem {
     path: string;
@@ -71,7 +72,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
         token = queryToken;
     }
     let refreshToken: any = to.query.refreshToken;
-    if(refreshToken) {
+    if (refreshToken) {
         setRefreshToken(refreshToken)
     }
     if (!token && to.path !== '/login') {
@@ -108,6 +109,8 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
             userStore.setPermissions(info.data.permissions)
             userStore.setRoles(info.data.roles)
             setUserInfo(info.data.userInfo)
+            const unreadCount: any = await getMessageUnreadCount();
+            userStore.setUnread(unreadCount.data.count);
             router.addRoute(indexRoute);
             router.addRoute(staticRoute);
             next({path: to.path});

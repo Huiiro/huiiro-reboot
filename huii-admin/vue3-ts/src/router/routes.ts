@@ -63,6 +63,18 @@ export const constRoutes = [
                 component: () => import('@/views/profile/Index.vue'),
                 children: profileConstRoutes
             },
+            {
+                //消息页
+                name: '我的消息',
+                path: '/message',
+                meta: {
+                    keepAlive: false,
+                    breadcrumb: true,
+                    icon: "Message",
+                    title: "我的消息"
+                },
+                component: () => import('@/views/message/Index.vue'),
+            }
         ]
     },
 ]

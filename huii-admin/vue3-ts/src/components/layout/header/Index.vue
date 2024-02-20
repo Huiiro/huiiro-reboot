@@ -15,14 +15,21 @@
           <Refresh/>
         </el-icon>
       </el-tooltip>
-      <el-tooltip content="全屏">
-        <el-icon class="item" :size="18" @click="handleClickFullScreen">
-          <FullScreen/>
-        </el-icon>
+      <el-tooltip content="消息">
+        <el-badge :value="unread" :max="99" :hidden="unread == 0">
+          <el-icon class="item" :size="18" @click="handleClickMessage">
+            <Message/>
+          </el-icon>
+        </el-badge>
       </el-tooltip>
       <el-tooltip content="设置">
         <el-icon class="item" :size="18" @click="handleClickSetting">
           <Setting/>
+        </el-icon>
+      </el-tooltip>
+      <el-tooltip content="全屏">
+        <el-icon class="item" :size="18" @click="handleClickFullScreen">
+          <FullScreen/>
         </el-icon>
       </el-tooltip>
       <el-dropdown>
@@ -58,6 +65,7 @@ import {
   Expand,
   Fold,
   FullScreen,
+  Message,
   Refresh,
   Setting,
   SwitchButton,
@@ -78,7 +86,7 @@ let router = useRouter();
 const avatar = ref();
 const userId = ref()
 const username = ref();
-
+const unread = ref();
 const layoutStore = useLayoutStore();
 const userStore = useUserStore();
 
@@ -87,14 +95,18 @@ onMounted(() => {
   username.value = info.username;
   userId.value = info.userId;
   avatar.value = info.userAvatar || defaultAvatar;
+  unread.value = userStore.unread || 0;
 });
+
 const handleClickExpandIcon = () => {
   layoutStore.setIsFold();
   isFold.value = layoutStore.isFold;
 };
+
 const handleClickRefresh = () => {
   layoutStore.setIsRefresh();
 };
+
 const handleClickFullScreen = () => {
   let isFull = document.fullscreenElement;
   if (!isFull) {
@@ -107,9 +119,21 @@ const handleClickFullScreen = () => {
 const handleClickSetting = () => {
 
 };
+
 const handleClickAvatar = () => {
 
 };
+
+const handleClickMessage = () => {
+  userStore.addTab({
+    name: '我的消息',
+    title: '我的消息',
+    path: '/message',
+    icon: 'Message'
+  });
+  router.push({name: '我的消息'});
+};
+
 const handleClickUserCenter = () => {
   userStore.addTab({
     name: '个人中心',
@@ -119,9 +143,11 @@ const handleClickUserCenter = () => {
   });
   router.push({name: '个人中心'});
 };
+
 const handleClickHelpDoc = () => {
   window.open('https://gitee.com/hu-yi0990/huii-reboot3', '_blank');
 };
+
 const handleLogout = () => {
   ElMessageBox.confirm(
       '确定要退出登录吗', '提示',
