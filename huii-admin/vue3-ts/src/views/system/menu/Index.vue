@@ -82,7 +82,7 @@
     <el-table-column prop="menuVisible" label="是否展示" align="center" width="120">
       <template #default="scope">
         <el-tag v-for="tag in menuVisibleOptions"
-                v-show="tag.value === scope.row.menuStatus"
+                v-show="tag.value === scope.row.menuVisible"
                 :size="size"
                 :key="tag.value"
                 :type="tag.type"> {{ tag.label }}

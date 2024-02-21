@@ -3,6 +3,7 @@ package com.huii.message.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.huii.common.core.model.Label;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.utils.PageParamUtils;
@@ -12,17 +13,13 @@ import com.huii.message.mapper.MsgMailTemplateMapper;
 import com.huii.message.service.MsgMailTemplateService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
-/**
- * 邮件模板服务层实现
- *
- * @author huii
- * @date 2024-01-07T15:31:20
- */
 @Service
 @RequiredArgsConstructor
 public class MsgMailTemplateServiceImpl extends ServiceImpl<MsgMailTemplateMapper, MsgMailTemplate> implements MsgMailTemplateService {
@@ -36,12 +33,21 @@ public class MsgMailTemplateServiceImpl extends ServiceImpl<MsgMailTemplateMappe
     }
 
     @Override
+    public List<Label> getLabelList() {
+        return msgMailTemplateMapper.selectLabelList();
+    }
+
+    @Override
     public MsgMailTemplate selectMsgMailTemplateById(Long id) {
         return msgMailTemplateMapper.selectById(id);
     }
 
     @Override
     public void checkInsert(MsgMailTemplate msgMailTemplate) {
+        if (msgMailTemplateMapper.exists(new LambdaQueryWrapper<MsgMailTemplate>()
+                .eq(MsgMailTemplate::getTempName, msgMailTemplate.getTempName()))) {
+            throw new RuntimeException("模板名称重复");
+        }
     }
 
     @Override
@@ -51,6 +57,13 @@ public class MsgMailTemplateServiceImpl extends ServiceImpl<MsgMailTemplateMappe
 
     @Override
     public void checkUpdate(MsgMailTemplate msgMailTemplate) {
+        MsgMailTemplate oldOne = msgMailTemplateMapper.selectById(msgMailTemplate.getMailTempId());
+        if (!StringUtils.equals(msgMailTemplate.getTempName(), oldOne.getTempName())) {
+            if (msgMailTemplateMapper.exists(new LambdaQueryWrapper<MsgMailTemplate>()
+                    .eq(MsgMailTemplate::getTempName, msgMailTemplate.getTempName()))) {
+                throw new RuntimeException("模板名称重复");
+            }
+        }
     }
 
     @Override

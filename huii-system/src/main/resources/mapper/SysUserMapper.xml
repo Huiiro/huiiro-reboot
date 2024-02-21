@@ -210,4 +210,19 @@
         <include refid="selectUser"></include>
         where u.user_name = #{username}
     </select>
+    <select id="selectTargetUser" parameterType="java.util.Map" resultType="java.lang.String" >
+        SELECT DISTINCT
+        CASE
+        WHEN #{type} = '1' THEN su.phone
+        WHEN #{type} = '2' THEN su.email
+        END AS contact
+        FROM
+        sys_user su
+        WHERE
+        su.user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </select>
+
 </mapper>

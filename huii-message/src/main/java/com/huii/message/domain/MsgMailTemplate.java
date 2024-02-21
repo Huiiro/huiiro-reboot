@@ -25,6 +25,12 @@ public class MsgMailTemplate extends BaseEntity {
     private Long mailTempId;
 
     /**
+     * 模板名称
+     */
+    @NotBlank(message = "模板名称不为空")
+    private String tempName;
+
+    /**
      * 类型(1--text,2--html,3--attach)
      */
     @NotBlank(message = "类型不为空")
@@ -46,11 +52,6 @@ public class MsgMailTemplate extends BaseEntity {
      * 邮件附件
      */
     private String mailAttachFile;
-
-    /**
-     * 模板名称 mailTargets
-     */
-    private String tempName;
 
     /**
      * 模板备注

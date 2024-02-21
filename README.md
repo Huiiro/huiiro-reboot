@@ -7,5 +7,7 @@
 
 ### 更新计划：
 
-* fix remember me service
-* fix generator part1
+### 最近更新：
+
+* v1.2.2 新增消息模块
+* v1.2.3 修复bug，新增消息推送模块

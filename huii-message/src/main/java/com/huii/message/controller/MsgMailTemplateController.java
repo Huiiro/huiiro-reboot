@@ -1,6 +1,7 @@
 package com.huii.message.controller;
 
 import com.huii.common.annotation.Log;
+import com.huii.common.core.model.Label;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.core.model.R;
@@ -14,9 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
- * 邮件模板服务层实现
+ * 邮件模板控制层实现
  *
  * @author huii
  * @date 2024-01-07T15:31:20
@@ -39,6 +42,15 @@ public class MsgMailTemplateController extends BaseController {
     }
 
     /**
+     * 查询邮件模板名称
+     */
+    @GetMapping("/label")
+    public R<List<Label>> getLabel() {
+        List<Label> list = msgMailTemplateService.getLabelList();
+        return R.ok(list);
+    }
+
+    /**
      * 查询邮件模板
      */
     @GetMapping(value = "/{id}")
@@ -53,6 +65,7 @@ public class MsgMailTemplateController extends BaseController {
     @PostMapping("/insert")
     @Log(value = "添加邮件模板", opType = OpType.INSERT)
     public R<Void> insertMsgMailTemplate(@Validated @RequestBody MsgMailTemplate msgMailTemplate) {
+        msgMailTemplateService.checkInsert(msgMailTemplate);
         msgMailTemplateService.insertMsgMailTemplate(msgMailTemplate);
         return saveSuccess();
     }
@@ -65,6 +78,7 @@ public class MsgMailTemplateController extends BaseController {
     @Log(value = "更新邮件模板", opType = OpType.UPDATE)
     @Transactional(rollbackFor = RuntimeException.class)
     public R<Void> updateMsgMailTemplate(@Validated @RequestBody MsgMailTemplate msgMailTemplate) {
+        msgMailTemplateService.checkUpdate(msgMailTemplate);
         msgMailTemplateService.updateMsgMailTemplate(msgMailTemplate);
         return updateSuccess();
     }

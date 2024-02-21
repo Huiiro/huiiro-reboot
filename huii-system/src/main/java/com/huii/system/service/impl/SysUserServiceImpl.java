@@ -233,6 +233,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public com.huii.common.core.model.Page queryUserSubscribe(SysUser sysUser, PageParam pageParam, List<Long> userIds) {
+        if (ObjectUtils.isEmpty(userIds)) {
+            userIds.add(-1L);
+        }
+        IPage<SysUser> iPage = new PageParamUtils<SysUser>().getPageInfo(pageParam);
+        LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(SysUser::getUserId, userIds)
+                .eq(SysUser::getDeleteFlag, SystemConstants.STATUS_0)
+                .like(StringUtils.isNotBlank(sysUser.getUserName()), SysUser::getUserName, sysUser.getUserName());
+        return new com.huii.common.core.model.Page(this.page(iPage, wrapper));
+    }
+
+    @Override
     public Map<String, String> queryUserBindPhoneOrEmail() {
         SysUser sysUser = sysUserMapper.selectById(SecurityUtils.getUserId());
         if (ObjectUtils.isEmpty(sysUser)) {

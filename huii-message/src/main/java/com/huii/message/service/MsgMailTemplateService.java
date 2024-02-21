@@ -1,9 +1,12 @@
 package com.huii.message.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.huii.common.core.model.Label;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.message.domain.MsgMailTemplate;
+
+import java.util.List;
 
 /**
  * 邮件模板服务层接口
@@ -21,6 +24,14 @@ public interface MsgMailTemplateService extends IService<MsgMailTemplate> {
      * @return page
      */
     Page selectMsgMailTemplateList(MsgMailTemplate msgMailTemplate, PageParam pageParam);
+
+
+    /**
+     * 获取label
+     *
+     * @return list
+     */
+    List<Label> getLabelList();
 
     /**
      * 查询邮件模板
@@ -64,4 +75,5 @@ public interface MsgMailTemplateService extends IService<MsgMailTemplate> {
      * @param ids ids
      */
     void deleteMsgMailTemplate(Long[] ids);
+
 }

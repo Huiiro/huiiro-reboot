@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
-
 /**
  * 发送模板实体类
  *
@@ -35,34 +33,34 @@ public class MsgSendTemplate extends BaseEntity {
     /**
      * 模板参数，','分割
      */
-    private String tempParams;
+    private String sendTempParams;
 
     /**
-     * 发送类型，1--sms，2--mail
+     * 模板名称（需要加载的发送模板）
+     * 例如本地邮件模板，sms运营商的模板
      */
+    @NotBlank(message = "待加载模板名称不为空")
+    private String sendTempName;
+
+    /**
+     * 发送类型，1--sms，2--mail， 3--add more types
+     */
+    @NotBlank(message = "请选择发送类型")
     private String sendType;
 
     /**
      * 发送对象，','分割
      * 发送对象为用户ID，为0时代表发送全部对象，为a-b时，代表发送id在a-b的用户
      */
-    @NotBlank(message = "发送的对象不能为空")
     private String sendTargets;
 
     /**
-     * 发送时间
-     * 设置定时任务
+     * 订阅ID（订阅用户组）
      */
-    private LocalDateTime sendTime;
-
-    /**
-     * 发送状态，1--待发送，2--已发送，3--发送失败
-     */
-    private String sendStatus;
+    private Long subId;
 
     /**
      * 模板备注
      */
     private String remark;
-
 }

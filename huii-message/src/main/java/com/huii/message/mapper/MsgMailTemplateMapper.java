@@ -1,8 +1,11 @@
 package com.huii.message.mapper;
 
+import com.huii.common.core.model.Label;
 import com.huii.common.core.model.base.BaseMapperPlus;
 import com.huii.message.domain.MsgMailTemplate;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 邮件模板数据层接口
@@ -20,4 +23,11 @@ public interface MsgMailTemplateMapper extends BaseMapperPlus<MsgMailTemplate> {
      * @return template
      */
     MsgMailTemplate loadTemplate(String template);
+
+    /**
+     * 获取模板名称
+     *
+     * @return list
+     */
+    List<Label> selectLabelList();
 }

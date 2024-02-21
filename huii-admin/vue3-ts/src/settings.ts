@@ -1,7 +1,7 @@
 export default {
     baseUrl: '/',
     logoImg: '../../../assets/icons/logo/vite.svg',
-    logoTitle: '坤坤程序员',
-    headerTitle: 'Huii Admin',
+    logoTitle: 'Huii v1.23',
+    headerTitle: 'Huii控制台',
     headerIcon : ''
 }

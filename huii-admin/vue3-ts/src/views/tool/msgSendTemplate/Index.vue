@@ -6,11 +6,11 @@
       <el-input v-model="query.tempName" placeholder="请输入模板名称"
                 class="global-input" :size="size"/>
     </el-form-item>
-    <el-form-item label="发送状态" class="global-input-item">
-      <el-select v-model="query.sendStatus" placeholder="请选择发送状态"
+    <el-form-item label="发送类型" class="global-input-item">
+      <el-select v-model="query.sendType" placeholder="请选择发送类型"
                  :size="size">
         <el-option
-            v-for="item in sendTemplateStatus"
+            v-for="item in sendTypeStatus"
             :key="item.value"
             :label="item.label"
             :value="item.value"/>
@@ -43,6 +43,12 @@
                  :color="layoutStore.BtnDelete" plain :disabled="selectable">删除模板
       </el-button>
     </el-form-item>
+    <!--log-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('tool:msg:send:edit')">
+      <el-button :size="size" :icon="DocumentRemove" @click="handleLog(null)"
+                 :color="layoutStore.BtnUpload" plain>管理日志
+      </el-button>
+    </el-form-item>
     <!--import-->
     <!--right fixed-->
     <el-form-item class="global-form-item-right">
@@ -65,8 +71,8 @@
             @selection-change="selectionChange">
     <el-table-column type="selection" width="55"/>
     <el-table-column prop="tempId" label="ID" align="center" min-width="120"/>
-    <el-table-column prop="tempName" label="模板名称" align="center" min-width="120"/>
-    <el-table-column prop="remark" label="模板备注" align="center" min-width="120"/>
+    <el-table-column prop="tempName" label="模板名称" align="center" min-width="200"/>
+    <el-table-column prop="sendTempName" label="使用模板名称" align="center" min-width="200"/>
     <el-table-column prop="sendType" label="发送类型" align="center" min-width="120">
       <template #default="scope">
         <el-tag v-for="tag in sendTypeStatus"
@@ -77,20 +83,10 @@
         </el-tag>
       </template>
     </el-table-column>
-    <el-table-column prop="sendStatus" label="发送状态" align="center" min-width="120">
-      <template #default="scope">
-        <el-tag v-for="tag in sendTemplateStatus"
-                v-show="tag.value === scope.row.sendStatus"
-                :size="size"
-                :key="tag.value"
-                :type="tag.type"> {{ tag.label }}
-        </el-tag>
-      </template>
-    </el-table-column>
-    <el-table-column prop="sendTime" label="发送时间" align="center" min-width="120"/>
+    <el-table-column prop="remark" label="模板备注" align="center" min-width="200"/>
     <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
     <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
-    <el-table-column label="发送模板操作" align="center" width="200" fixed="right"
+    <el-table-column label="模板操作" align="center" width="200" fixed="right"
                      v-if="checkPermissions(['tool:msg:send:edit','tool:msg:send:delete'])">
       <template #default="scope">
         <div class="display">
@@ -110,13 +106,21 @@
             </el-button>
             <el-divider direction="vertical"/>
           </div>
-          <div class="display" v-if="checkPermission('tool:msg:send:edit')">
-            <el-button class="global-table-btn"
-                       size="small" type="primary" link :icon="Position"
-                       @click="handleSend(scope.$index, scope.row)">
-              发送
-            </el-button>
-          </div>
+          <!--selectable more actions-->
+          <el-dropdown class="global-table-dropdown" size="small"
+                       v-if="checkPermission('system:job:query')">
+              <span class="display">
+              <el-icon><DArrowRight/></el-icon>
+              更多
+              </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item :icon="Position" @click="handleSend(scope.$index, scope.row)">推送消息</el-dropdown-item>
+                <el-dropdown-item :icon="DocumentRemove" @click="handleLog(scope.row)">查看日志</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+
         </div>
       </template>
     </el-table-column>
@@ -148,7 +152,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="发送类型" label-width="85" prop="sendType">
-            <el-select v-model="form.sendType" placeholder="请选择用户状态" style="width: 100%">
+            <el-select v-model="form.sendType" placeholder="请选择发送类型" style="width: 100%">
               <el-option
                   v-for="item in sendTypeStatus"
                   :key="item.value"
@@ -158,13 +162,36 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="模板参数" label-width="85" prop="tempParams">
-        <el-input v-model="form.tempParams" autocomplete="off" type="textarea" rows="2"
-                  placeholder="请输入模板参数，例如key=value，请参照对应文档"/>
+      <el-form-item label="使用模板" label-width="85" prop="sendTempName">
+        <el-select v-model="form.sendTempName" placeholder="请选择使用的模板" style="width: 100%"
+                   v-if="form.sendType == '2'">
+          <el-option
+              v-for="item in mailTemplateData"
+              :key="item.label"
+              :label="item.label"
+              :value="item.label"/>
+        </el-select>
+        <el-input v-model="form.sendTempName" autocomplete="off" v-else
+                  placeholder="请输入使用的模板的名称"/>
+      </el-form-item>
+      <el-form-item label="模板参数" label-width="85" prop="sendTempParams">
+        <el-input v-model="form.sendTempParams" autocomplete="off" type="textarea" rows="2"
+                  placeholder="请输入模板参数，通常为key=value，使用','分隔，具体请参照服务商文档"/>
       </el-form-item>
       <el-form-item label="发送对象" label-width="85" prop="sendTargets">
         <el-input v-model="form.sendTargets" autocomplete="off"
-                  placeholder="请输入发送对象，使用','分割"/>
+                  placeholder="请输入发送对象ID，使用','分割，批量发送使用'-'连接（例如1-100），全选输入0"/>
+      </el-form-item>
+      <el-form-item label="订阅对象" label-width="85" prop="subId">
+        <el-select v-model="form.subId"
+                   placeholder="请选择订阅对象，订阅对象和发送对象只需输入一个即可，其中，订阅对象优先级更高"
+                   style="width: 100%">
+          <el-option
+              v-for="item in subGroups"
+              :key="item.id"
+              :label="item.label"
+              :value="item.id"/>
+        </el-select>
       </el-form-item>
       <el-row v-show="isEdit">
         <el-col :span="12">
@@ -175,29 +202,6 @@
         <el-col :span="12">
           <el-form-item label="更新时间" label-width="85" prop="updateTime">
             <el-input v-model="form.updateTime" autocomplete="off" readonly="readonly"/>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row v-show="isEdit">
-        <el-col :span="12">
-          <el-form-item label="发送时间" label-width="85" prop="sendTime">
-            <el-date-picker
-                style="width: 100%"
-                v-model="form.sendTime"
-                type="datetime"
-                placeholder="设定发送时间"
-                format="YYYY/MM/DD hh:mm:ss"
-                value-format="YYYY-MM-DD hh:mm:ss"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="发送状态" label-width="85" prop="sendStatus">
-            <el-radio-group v-model="form.sendStatus">
-              <el-radio v-for="option in sendTemplateStatus" :key="option.value" :label="option.value">
-                {{ option.label }}
-              </el-radio>
-            </el-radio-group>
           </el-form-item>
         </el-col>
       </el-row>
@@ -231,10 +235,53 @@ import {
   sendMsgTemplate,
   updateMsgSendTemplate
 } from "@/api/tool/msgSendTemplate";
-import {Delete, Edit, Plus, Position, Refresh, Search, Timer} from "@element-plus/icons-vue";
+import {
+  DArrowRight,
+  Delete,
+  DocumentRemove,
+  Edit,
+  Plus,
+  Position,
+  Refresh,
+  Search,
+  Timer
+} from "@element-plus/icons-vue";
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
-import {sendTemplateStatus, sendTypeStatus} from "@/views/tool/msgSendTemplate/dictionary.ts";
+import {sendTypeStatus} from "@/views/tool/msgSendTemplate/dictionary.ts";
+import {getMsgMailTemplateLabel} from "@/api/tool/msgMailTemplate";
+import {getMsgSubscribeLabel} from "@/api/tool/msgSubscribe";
+import router from "@/router";
 
+/**
+ * 处理日志模块
+ */
+const handleLog = (row: any) => {
+  if (row === null) {
+    router.push({name: '推送日志', params: {name: 'log'}});
+  } else {
+    router.push({name: '推送日志', params: {name: row.tempName}});
+  }
+}
+
+/**
+ * 获取邮件模板
+ */
+const mailTemplateData = ref();
+const getMailTemplateData = () => {
+  getMsgMailTemplateLabel().then(res => {
+    mailTemplateData.value = res.data;
+  })
+}
+
+/**
+ * 获取订阅分组
+ */
+const subGroups = ref();
+const getSubGroupsData = () => {
+  getMsgSubscribeLabel().then(res => {
+    subGroups.value = res.data;
+  })
+}
 //store
 const layoutStore = useLayoutStore();
 //layout
@@ -245,6 +292,8 @@ const pageLayoutSize = computed(() => {
 //mounted
 onMounted(() => {
   getData();
+  getMailTemplateData();
+  getSubGroupsData();
 });
 
 /**
@@ -257,7 +306,7 @@ const tableData = ref();
 //查询参数
 const query = ref({
   tempName: '',
-  sendStatus: '',
+  sendType: '',
 });
 const time = ref();
 
@@ -281,7 +330,7 @@ const getData = () => {
  */
 const handleReset = () => {
   query.value.tempName = '';
-  query.value.sendStatus = '';
+  query.value.sendType = '';
   time.value = '';
   getData();
 };
@@ -357,11 +406,11 @@ const handleRefresh = () => {
 const form = ref({
   tempId: 0,
   tempName: '',
-  tempParams: '',
+  sendTempParams: '',
+  sendTempName: '',
   sendType: '',
   sendTargets: '',
-  sendTime: '',
-  sendStatus: '',
+  subId: '',
   remark: '',
   createBy: '',
   createTime: '',
@@ -373,8 +422,8 @@ const formRules = ref({
   tempName: [
     {required: true, message: '请输入模板名称', trigger: 'blur'},
   ],
-  sendTargets: [
-    {required: true, message: '请输入发送对象', trigger: 'blur'},
+  sendTempName: [
+    {required: true, message: '请输入使用模板的名称', trigger: 'blur'},
   ],
 });
 //表单校验规则ref

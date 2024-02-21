@@ -149,6 +149,16 @@ public interface SysUserService {
     void unauthUser(Long roleId, Long[] userIds);
 
     /**
+     * 查询订阅/未订阅用户
+     *
+     * @param sysUser   sysUser
+     * @param pageParam pageParam
+     * @param userIds   userIds
+     * @return page
+     */
+    Page queryUserSubscribe(SysUser sysUser, PageParam pageParam, List<Long> userIds);
+
+    /**
      * 查询用户绑定的手机和邮箱
      */
     Map<String, String> queryUserBindPhoneOrEmail();
@@ -168,4 +178,6 @@ public interface SysUserService {
      * @param email email
      */
     void bindEmail(Long uid, String email);
+
+
 }

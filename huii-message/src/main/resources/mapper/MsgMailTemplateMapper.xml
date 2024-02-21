@@ -30,9 +30,16 @@
                a.update_time
         from msg_mail_template a
     </sql>
+
     <select id="loadTemplate" resultType="com.huii.message.domain.MsgMailTemplate">
         <include refid="selectMsgMailTemplate"/>
         where a.temp_name = #{template}
+    </select>
+
+    <select id="selectLabelList" resultType="com.huii.common.core.model.Label">
+        select mail_temp_id as id,
+               temp_name as label
+        from msg_mail_template
     </select>
 
 </mapper>

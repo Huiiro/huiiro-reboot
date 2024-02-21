@@ -119,4 +119,13 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser> {
      */
     @DataScope
     List<SysUser> selectUserListWithDept(@Param(Constants.WRAPPER) Wrapper<SysUser> queryWrapper);
+
+    /**
+     * 查询用户邮箱或电话
+     *
+     * @param userIds userIds
+     * @param type       1 (sms) / 2 (mail)
+     * @return list
+     */
+    List<String> selectTargetUser(@Param("userIds") List<Long> userIds, @Param("type") String type);
 }

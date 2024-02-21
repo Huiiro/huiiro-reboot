@@ -7,11 +7,11 @@ const prefix = "/msg/send";
 export interface msgSendTemplate {
     tempId: number
     tempName: string
-    tempParams: string
+    sendTempParams: string
+    sendTempName: string
     sendType: string
     sendTargets: string
-    sendTime: string
-    sendStatus: string
+    subId: string
     remark: string
     createBy: string
     createTime: string

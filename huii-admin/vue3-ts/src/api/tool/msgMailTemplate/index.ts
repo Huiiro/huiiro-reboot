@@ -20,6 +20,7 @@ export interface msgMailTemplate {
 
 enum API {
     GET_LIST = prefix + "/list",
+    GET_LABEL = prefix + "/label",
     GET_ONE = prefix + "/",
     INSERT_ONE = prefix + "/insert",
     UPDATE_ONE = prefix + "/update",
@@ -36,6 +37,11 @@ export const getMsgMailTemplateList = (msgMailTemplate: msgMailTemplate) =>
             return qs.stringify(params, {arrayFormat: 'comma'})
         }
     });
+
+/**
+ * 获取邮件模板列表
+ */
+export const getMsgMailTemplateLabel = () => request.get(API.GET_LABEL);
 
 /**
  * 获取单个邮件模板
