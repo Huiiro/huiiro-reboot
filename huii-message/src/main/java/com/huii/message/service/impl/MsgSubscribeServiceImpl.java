@@ -100,7 +100,7 @@ public class MsgSubscribeServiceImpl extends ServiceImpl<MsgSubscribeMapper, Msg
         MsgSubscribeUser subOne = msgSubscribeUserMapper.selectOne(new LambdaQueryWrapper<MsgSubscribeUser>()
                 .eq(MsgSubscribeUser::getUserId, userId)
                 .eq(MsgSubscribeUser::getSubId, id));
-        if (ObjectUtils.isNotEmpty(msgSubscribe)) {
+        if (ObjectUtils.isNotEmpty(subOne)) {
             msgSubscribeUserMapper.deleteById(subOne);
             return false;
         } else {
