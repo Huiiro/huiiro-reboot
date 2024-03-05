@@ -101,7 +101,7 @@ public class MsgSubscribeServiceImpl extends ServiceImpl<MsgSubscribeMapper, Msg
                 .eq(MsgSubscribeUser::getUserId, userId)
                 .eq(MsgSubscribeUser::getSubId, id));
         if (ObjectUtils.isNotEmpty(msgSubscribe)) {
-            msgSubscribeMapper.deleteById(subOne);
+            msgSubscribeUserMapper.deleteById(subOne);
             return false;
         } else {
             MsgSubscribeUser subscribeUser = new MsgSubscribeUser();
