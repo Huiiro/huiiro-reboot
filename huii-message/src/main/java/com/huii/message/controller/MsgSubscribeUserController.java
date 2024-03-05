@@ -40,8 +40,17 @@ public class MsgSubscribeUserController extends BaseController {
      * 订阅/取消订阅
      */
     @GetMapping("/{id}")
-    public R<Void> subscribe(@PathVariable Long id) {
-        msgSubscribeService.subscribe(getUserId(), id);
-        return R.ok();
+    public R<Boolean> subscribe(@PathVariable Long id) {
+        Boolean b = msgSubscribeService.subscribe(getUserId(), id);
+        return R.ok(b);
+    }
+
+    /**
+     * 查询订阅状态
+     */
+    @GetMapping("/status/{id}")
+    public R<Boolean> querySubscribeStatus(@PathVariable Long id) {
+        Boolean b = msgSubscribeService.querySubscribeStatus(getUserId(), id);
+        return R.ok(b);
     }
 }

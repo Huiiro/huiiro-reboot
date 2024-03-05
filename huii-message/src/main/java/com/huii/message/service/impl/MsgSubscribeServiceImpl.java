@@ -89,7 +89,7 @@ public class MsgSubscribeServiceImpl extends ServiceImpl<MsgSubscribeMapper, Msg
     }
 
     @Override
-    public void subscribe(Long userId, Long id) {
+    public Boolean subscribe(Long userId, Long id) {
         MsgSubscribe msgSubscribe = msgSubscribeMapper.selectById(id);
         if (ObjectUtils.isEmpty(msgSubscribe)) {
             throw new ServiceException("订阅不存在");
@@ -102,12 +102,22 @@ public class MsgSubscribeServiceImpl extends ServiceImpl<MsgSubscribeMapper, Msg
                 .eq(MsgSubscribeUser::getSubId, id));
         if (ObjectUtils.isNotEmpty(msgSubscribe)) {
             msgSubscribeMapper.deleteById(subOne);
+            return false;
         } else {
             MsgSubscribeUser subscribeUser = new MsgSubscribeUser();
             subscribeUser.setSubId(id);
             subscribeUser.setUserId(userId);
             msgSubscribeUserMapper.insert(subscribeUser);
+            return true;
         }
+    }
+
+    @Override
+    public Boolean querySubscribeStatus(Long userId, Long id) {
+        MsgSubscribeUser subOne = msgSubscribeUserMapper.selectOne(new LambdaQueryWrapper<MsgSubscribeUser>()
+                .eq(MsgSubscribeUser::getUserId, userId)
+                .eq(MsgSubscribeUser::getSubId, id));
+        return ObjectUtils.isNotEmpty(subOne);
     }
 
     @Override

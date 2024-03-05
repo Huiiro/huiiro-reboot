@@ -1,0 +1,80 @@
+version: '3'
+
+services:
+  postgresql:
+    image: postgres:14
+    container_name: postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: huii-pro
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    volumes:
+      - /docker/postgres/data:/var/lib/postgresql/data
+    network_mode: "host"
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - /docker/redis/conf:/redis/config
+      - /docker/redis/data/:/redis/data/
+    privileged: true
+    network_mode: "host"
+    command: "redis-server /redis/config/redis.conf"
+
+  minio:
+    image: minio/minio:RELEASE.2023-03-24T21-41-23Z
+    container_name: minio
+    ports:
+      # api 端口
+      - "9000:9000"
+      # 控制台端口
+      - "9001:9001"
+    environment:
+      # 时区上海
+      TZ: Asia/Shanghai
+      # 管理后台用户名
+      MINIO_ROOT_USER: ruoyi
+      # 管理后台密码，最小8个字符
+      MINIO_ROOT_PASSWORD: ruoyi123
+      # https需要指定域名
+      #MINIO_SERVER_URL: "https://xxx.com:9000"
+      #MINIO_BROWSER_REDIRECT_URL: "https://xxx.com:9001"
+      # 开启压缩 on 开启 off 关闭
+      MINIO_COMPRESS: "off"
+      # 扩展名 .pdf,.doc 为空 所有类型均压缩
+      MINIO_COMPRESS_EXTENSIONS: ""
+      # mime 类型 application/pdf 为空 所有类型均压缩
+      MINIO_COMPRESS_MIME_TYPES: ""
+    volumes:
+      # 映射当前目录下的data目录至容器内/data目录
+      - /docker/minio/data:/data
+      # 映射配置目录
+      - /docker/minio/config:/root/.minio/
+    command: server --address ':9000' --console-address ':9001' /data  # 指定容器中的目录 /data
+    privileged: true
+    network_mode: "host"
+
+  springboot-web:
+    image: your_spring_boot_image_name:latest
+    container_name: springboot-web
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresql
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/huii-pro
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+
+volumes:
+  postgresql_data:

@@ -34,7 +34,9 @@ public interface MsgSubscribeService extends IService<MsgSubscribe> {
 
     void deleteMsgSubscribe(Long[] ids);
 
-    void subscribe(Long userId, Long id);
+    Boolean subscribe(Long userId, Long id);
+
+    Boolean querySubscribeStatus(Long userId, Long id);
 
     List<Long> queryNonSubscribeUserIds(Long sid);
 
