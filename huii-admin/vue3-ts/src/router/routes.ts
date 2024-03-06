@@ -24,7 +24,7 @@ export const constRoutes = [
             keepAlive: false,
             breadcrumb: false
         },
-        component: () => import('@/views/login/Login.vue')
+        component: () => import('@/views/login/Login_v2.vue')
     },
     {
         //注册页面
@@ -35,6 +35,16 @@ export const constRoutes = [
             breadcrumb: false
         },
         component: () => import('@/views/register/Register.vue')
+    },
+    {
+        //找回密码页面
+        name: 'forgetPwd',
+        path: '/forgetPwd',
+        meta: {
+            keepAlive: false,
+            breadcrumb: false
+        },
+        component: () => import('@/views/forgetPwd/ForgetPwd.vue')
     },
     {
         path: '/',
@@ -83,7 +93,7 @@ export const constRoutes = [
  * 放行白名单
  * 不需要认证 token
  */
-export const whiteList = ["/register"]
+export const whiteList = ["/register","/forgetPwd"]
 
 /**
  * 校验是否在白名单内

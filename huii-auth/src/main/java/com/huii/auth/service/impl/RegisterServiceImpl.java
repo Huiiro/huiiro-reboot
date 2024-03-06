@@ -38,6 +38,9 @@ public class RegisterServiceImpl implements RegisterService {
         if (!checkUsername(entity.getUsername())) {
             throw new ServiceException(MessageUtils.message(ResType.USER_REGISTER_NAME_REPEAT.getI18n()));
         }
+        if (entity.getUsername().contains("@") || entity.getUsername().contains("$")) {
+            throw new ServiceException(MessageUtils.message(ResType.USER_REGISTER_NAME_ILLEGAL.getI18n()));
+        }
         String decryptPassword = loginSecurityService.decrypt(entity.getPassword());
         String encryptPassword = SecurityUtils.encryptPassword(decryptPassword);
         SysUser sysUser = new SysUser();

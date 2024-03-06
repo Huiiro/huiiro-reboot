@@ -4,30 +4,30 @@
       <el-form :model="registerForm" :rules="registerRules" status-icon ref="registerFormRef">
         <el-form-item>
           <div>
-            <p class="title">{{ settings.headerTitle }} Register</p>
+            <p class="title">{{ settings.headerTitle }} 注册账号</p>
           </div>
         </el-form-item>
         <el-form-item prop="username" class="register-form-item">
           <el-input v-model=registerForm.username
-                    placeholder="username" :prefix-icon="User"
+                    placeholder="输入用户名" :prefix-icon="User"
                     size="large"/>
         </el-form-item>
         <el-form-item prop="password" class="register-form-item">
           <el-input v-model=registerForm.password
-                    placeholder="password" :prefix-icon="Lock"
+                    placeholder="输入密码" :prefix-icon="Lock"
                     size="large"
                     type="password"/>
         </el-form-item>
         <el-form-item prop="confirmPassword" class="register-form-item">
           <el-input v-model=registerForm.confirmPassword
-                    placeholder="confirm password" :prefix-icon="Lock"
+                    placeholder="确认密码" :prefix-icon="Lock"
                     size="large"
                     type="password"/>
         </el-form-item>
         <el-form-item class="register-form-item-button">
           <el-button type="primary" class="register-button"
                      :loading="loadingWait" :disabled="loadingWait"
-                     @click="handleRegister">Register
+                     @click="handleRegister">注 册
           </el-button>
         </el-form-item>
         <el-form-item>
@@ -49,7 +49,7 @@
 import clickTextCaptcha from "@/components/captcha/ClickTextCaptcha.vue";
 import {Lock, User} from "@element-plus/icons-vue";
 import {nextTick, reactive, ref} from "vue";
-import {useRoute, useRouter} from "vue-router";
+import {useRouter} from "vue-router";
 import {checkSlideCaptcha} from "@/api/auth/captcha";
 import {encryptFiled} from "@/utils/encrypt.ts";
 import {useLayoutStore} from "@/store/modules/layout.ts";
@@ -59,7 +59,6 @@ import {checkUsername, register} from "@/api/auth/register";
 
 const layoutStore = useLayoutStore();
 let router = useRouter();
-let route = useRoute();
 let registerForm = reactive({username: '', password: '', confirmPassword: ''});
 let captchaForm = reactive({nonceStr: '', value: 0});
 
@@ -67,44 +66,95 @@ let loadingWait = ref(false);
 let showVerify: any = ref(false);
 let registerFormRef = ref();
 let verifyRef = ref();
+
+const onSuccess = (captcha: any) => {
+  Object.assign(captchaForm, captcha);
+  handleRealRegister();
+};
+
+const refresh = () => {
+  verifyRef.value.refresh();
+};
+
+const handleRegister = () => {
+  registerFormRef.value.validate().then(() => {
+    nextTick(() => {
+      showVerify.value = true;
+    });
+  });
+};
+
+const handleRealRegister = () => {
+  checkSlideCaptcha(captchaForm.nonceStr, captchaForm.value).then((res: any) => {
+    if (res.code === 0) {
+      showVerify.value = false;
+      loadingWait.value = true;
+
+      let pwd = registerForm.password;
+      registerForm.confirmPassword = '';
+
+      encryptFiled(registerForm.password).then(encryptPassword => {
+        registerForm.password = encryptPassword;
+
+        register(registerForm).then((res: any) => {
+          if (res.code === 0) {
+            setTimeout(() => {
+              handleBackLogin();
+            }, 2600);
+          }
+        });
+
+        registerForm.password = pwd;
+        loadingWait.value = false;
+      });
+    } else {
+      verifyRef.value.refresh();
+    }
+  });
+};
+
+/**
+ * 校验参数
+ */
+//@ts-ignore
 const validateUsername = (rule: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('请输入用户名'))
+    callback(new Error('请输入用户名'));
   } else {
     checkUsername(value).then(res => {
       if (res.data) {
         callback();
       } else {
-        callback(new Error('该账号已被注册'))
+        callback(new Error('该账号已被注册'));
       }
-    })
+    });
   }
-}
-const checkUserNameUnique = async (username: any) => {
-  const r = await checkUsername(username);
-  console.log(r.data)
-  return r.data;
-}
+};
+
+//@ts-ignore
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('请输入密码'))
+    callback(new Error('请输入密码'));
   } else {
     if (registerForm.confirmPassword !== '') {
       if (!registerFormRef.value) return
-      registerFormRef.value.validateField('confirmPassword', () => null)
+      registerFormRef.value.validateField('confirmPassword', () => null);
     }
-    callback()
+    callback();
   }
-}
+};
+
+//@ts-ignore
 const validatePassConfirm = (rule: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('请确认密码'))
+    callback(new Error('请确认密码'));
   } else if (value !== registerForm.password) {
-    callback(new Error("两次密码不一致"))
+    callback(new Error("两次密码不一致"));
   } else {
-    callback()
+    callback();
   }
-}
+};
+
 const registerRules = {
   username: [
     {validator: validateUsername, trigger: 'blur'},
@@ -122,55 +172,14 @@ const registerRules = {
     {min: 1, max: 20, message: '密码长度不超过20位', trigger: 'blur'},
   ]
 };
-const onSuccess = (captcha: any) => {
-  Object.assign(captchaForm, captcha)
-  handleRealRegister()
-};
-const refresh = () => {
-  verifyRef.value.refresh();
-};
-const handleRegister = () => {
-  registerFormRef.value.validate().then(() => {
-    nextTick(() => {
-      showVerify.value = true;
-    });
-  })
-};
-const handleRealRegister = () => {
-  checkSlideCaptcha(captchaForm.nonceStr, captchaForm.value).then((res: any) => {
-    if (res.code === 0) {
-      showVerify.value = false;
-      loadingWait.value = true;
-      let pwd = registerForm.password;
-      registerForm.confirmPassword = '';
-      encryptFiled(registerForm.password).then(encryptPassword => {
-        registerForm.password = encryptPassword;
-        register(registerForm).then((res: any) => {
-          if (res.code === 0) {
-            setTimeout(() => {
-              handleBackLogin();
-            }, 2600);
-          }
-        });
-        registerForm.password = pwd;
-        loadingWait.value = false;
-      });
-    } else {
-      verifyRef.value.refresh();
-    }
-  })
-};
+
 const handleBackLogin = () => {
   router.push('login')
-}
+};
 </script>
 
 <style scoped lang="scss">
 :deep(.el-input__validateIcon) {
-  /*成功icon样式设置*/
-  /*.el-icon el-input__icon el-input__validateIcon*/
-  /*失败icon样式设置*/
-  /*.el-form-item.is-error .el-input__validateIcon*/
   color: $global-success-color;
 }
 
@@ -189,7 +198,7 @@ const handleBackLogin = () => {
 .register-container {
   width: 100%;
   height: 100vh;
-  background: url('@/assets/imgs/background/login-background.jpg') no-repeat center center;
+  background: url('@/assets/imgs/background/login-background.png') no-repeat center center;
   background-size: cover;
   display: flex;
   justify-content: center;
@@ -252,6 +261,5 @@ const handleBackLogin = () => {
   flex: 2;
   padding: 20px;
 }
-
 
 </style>

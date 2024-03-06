@@ -2,7 +2,11 @@
   <div class="login-container">
     <div class="login-form" :class="{mobile: layoutStore.isMobile}">
       <div class="left-content" v-if="!layoutStore.isMobile">
-        Im Huang Wei Ming King
+        <el-carousel height="260px">
+          <el-carousel-item v-for="item in 1" :key="item">
+            <el-image :src="carouselImg"></el-image>
+          </el-carousel-item>
+        </el-carousel>
       </div>
       <div v-if="!layoutStore.isMobile">
         <el-divider style="height: 100%" direction="vertical"/>
@@ -11,14 +15,17 @@
         <el-form :model="loginForm" :rules="loginRules" ref="loginFormRef">
           <el-form-item prop="username" class="login-form-item">
             <el-input v-model=loginForm.username
-                      placeholder="username" :prefix-icon="User"
-                      size="large" />
+                      placeholder="用户名"
+                      :prefix-icon="User"
+                      size="large"/>
           </el-form-item>
           <el-form-item prop="password" class="login-form-item">
             <el-input v-model=loginForm.password
-                      placeholder="password" :prefix-icon="Lock"
+                      placeholder="密码"
+                      :prefix-icon="Lock"
                       size="large"
-                      type="password" show-password />
+                      type="password"
+                      show-password/>
           </el-form-item>
           <el-form-item class="login-form-item-oauth">
             <div class="login-form-item-spec-form">
@@ -76,11 +83,14 @@ import {checkClickTextCaptcha} from "@/api/auth/captcha";
 import {encryptFiled} from "@/utils/encrypt.ts";
 import {useLayoutStore} from "@/store/modules/layout.ts";
 import {useUserStore} from "@/store/modules/user.ts";
+import {giteeLogin, githubLogin} from "@/api/auth/oauth2";
 
 const layoutStore = useLayoutStore();
 const userStore = useUserStore();
+
 let router = useRouter();
 let route = useRoute();
+
 let loginForm = reactive({username: '', password: '', rememberMe: false});
 let captchaForm = reactive({nonceStr: '', value: 0});
 
@@ -88,6 +98,7 @@ let loadingWait = ref(false);
 let showVerify: any = ref(false);
 let loginFormRef = ref();
 let verifyRef = ref();
+const carouselImg = ref('https://api.huiiro.com/oss/local?module=default&fileName=202401162120c372520dc43d.jpeg')
 const loginRules = {
   username: [
     {required: true, message: '请输入用户名', trigger: 'blur'},
@@ -98,13 +109,16 @@ const loginRules = {
     {min: 1, max: 20, message: '密码长度不超过20位', trigger: 'blur'},
   ]
 };
+
 const onSuccess = (captcha: any) => {
-  Object.assign(captchaForm, captcha)
-  handleRealLogin()
+  Object.assign(captchaForm, captcha);
+  handleRealLogin();
 };
+
 const refresh = () => {
   verifyRef.value.refresh();
 };
+
 const handleLogin = () => {
   loginFormRef.value.validate().then(() => {
     nextTick(() => {
@@ -112,39 +126,55 @@ const handleLogin = () => {
     });
   })
 };
+
 const handleRealLogin = () => {
   checkClickTextCaptcha(captchaForm.nonceStr, captchaForm.value).then((res: any) => {
     if (res.code === 0) {
       showVerify.value = false;
       loadingWait.value = true;
-      let pwd = loginForm.password
+
+      let pwd = loginForm.password;
+
       encryptFiled(loginForm.password).then(encryptPassword => {
         loginForm.password = encryptPassword;
+
         accountLogin(loginForm).then((res: any) => {
           if (res.code === 0) {
             const data = res.data;
             setUserInfo(data.userInfo);
             setAccessToken(data.accessToken);
             setRefreshToken(data.refreshToken);
-            userStore.setPermissions(data.permissions)
-            userStore.setRoles(data.roles)
+
+            userStore.setPermissions(data.permissions);
+            userStore.setRoles(data.roles);
+
             let redirect: any = route.query.redirect;
             router.push({path: redirect || "/index"});
           }
         });
-        loginForm.password = pwd
+        loginForm.password = pwd;
         loadingWait.value = false;
       });
     } else {
       verifyRef.value.refresh();
     }
-  })
+  });
 };
-const handleForgetPassword = () => {
-  console.log('forgetPassword')
-};
+
 const handleOauthLogin = (type: String) => {
-  console.log(type)
+  if (type == 'gitee') {
+    giteeLogin().then(res => {
+      window.location.href = res.data.url;
+    });
+  } else if (type == 'github') {
+    githubLogin().then(res => {
+      window.location.href = res.data.url;
+    });
+  }
+};
+
+const handleForgetPassword = () => {
+  router.push('forgetPwd');
 };
 </script>
 
@@ -156,7 +186,7 @@ const handleOauthLogin = (type: String) => {
 .login-container {
   width: 100%;
   height: 100vh;
-  background: url('@/assets/imgs/background/login-background.jpg') no-repeat center center;
+  background: url('@/assets/imgs/background/login-background.png') no-repeat center center;
   background-size: cover;
   display: flex;
   justify-content: center;

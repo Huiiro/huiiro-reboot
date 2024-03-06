@@ -44,7 +44,7 @@ public enum ResType {
     USER_REGISTER_FAIL(1301, "user.register.fail", "注册失败"),
     USER_REGISTER_CLOSE(1302, "user.register.close", "暂未开放注册功能"),
     USER_REGISTER_NAME_REPEAT(1303, "user.register.name.repeat", "该名称已被注册"),
-
+    USER_REGISTER_NAME_ILLEGAL(1304,"user.register.name.illegal","账号名称含有非法字符"),
     USER_LOGIN_SUCCESS(0, "user.login.success", "登录成功"),
     USER_LOGIN_PASSWORD_ERROR(1401, "user.login.password.error", "用户名或密码错误"),
     USER_LOGIN_TRY_MAX(1402, "user.login.try.max", "账号已暂时冻结，请{var1}分钟后再试"),

@@ -96,7 +96,7 @@ public class SysUserProfileController extends BaseController {
     }
 
     /**
-     * 忘记密码验证
+     * 获取 忘记密码 验证码
      */
     @GetMapping("/forget/pwd/check")
     @Log(value = "忘记密码", opType = OpType.UPDATE)
@@ -106,12 +106,12 @@ public class SysUserProfileController extends BaseController {
         if (type.equals("phone")) {
             HashMap<String, String> map = new HashMap<>();
             map.put("code", code);
-            aliyunSmsService.send(identify, "toto_your_sms_template", map);
+            aliyunSmsService.send(identify, "todo_your_sms_template", map);
         } else if (type.equals("email")) {
             mailService.sendHtml("【huii】找回密码", "您正在找回密码，您的验证码为"
                     + code + "，验证码有效时间为10分钟！", identify);
         } else {
-            return R.failed("验证失败");
+            return R.failed("验证方式有误，请重新选择");
         }
         redisTemplateUtils.setCacheObject(CacheConstants.VERIFY_CODE_RESET_PWD_SUFFIX + identify, code,
                 CacheConstants.DEFAULT_CACHE_TIME, TimeUnit.MINUTES);
@@ -119,7 +119,7 @@ public class SysUserProfileController extends BaseController {
     }
 
     /**
-     * 忘记密码
+     * 忘记密码/重置密码
      */
     @PostMapping("/forget/pwd")
     @Log(value = "忘记密码", opType = OpType.UPDATE)
