@@ -18,29 +18,29 @@ import java.util.List;
 @AllArgsConstructor
 public enum TemplateType {
 
-    CONTROLLER("backend/controller.ftl", "controller/", "Controller.java", "0", "1"),
-    DOMAIN("backend/domain.ftl", "domain/", ".java", "0", "1"),
-    MAPPER("backend/mapper.ftl", "mapper/", "Mapper.java", "0", "1"),
-    SERVICE("backend/service.ftl", "service/", "Service.java", "0", "1"),
-    SERVICE_IMPL("backend/serviceImpl.ftl", "service/impl/", "ServiceImpl.java", "0", "1"),
-    XML("backend/xml.ftl", "mapper/", "Mapper.xml", "0", "1"),
-    EXPORT_VO("backend/exportVo.ftl", "domain/vo/", "ExcelExportVo.java", "0", "0"),
-    IMPORT_VO("backend/importVo.ftl", "domain/vo/", "ExcelImportVo.java", "0", "0"),
+    CONTROLLER("backend/controller.ftl", "controller/", "Controller.java", "1", "1"),
+    DOMAIN("backend/domain.ftl", "domain/", ".java", "1", "1"),
+    MAPPER("backend/mapper.ftl", "mapper/", "Mapper.java", "1", "1"),
+    SERVICE("backend/service.ftl", "service/", "Service.java", "1", "1"),
+    SERVICE_IMPL("backend/serviceImpl.ftl", "service/impl/", "ServiceImpl.java", "1", "1"),
+    XML("backend/xml.ftl", "mapper/", "Mapper.xml", "1", "1"),
+    EXPORT_VO("backend/exportVo.ftl", "domain/vo/", "ExcelExportVo.java", "1", "0"),
+    IMPORT_VO("backend/importVo.ftl", "domain/vo/", "ExcelImportVo.java", "1", "0"),
 
-    V2_API("frontend/vue2/api.ftl", "api/", "index.js", "1", "0"),
-    V2_DICTIONARY("frontend/vue2/dictionary.ftl", "views/", "dictionary.js", "1", "0"),
-    V2_INDEX("frontend/vue2/index.ftl", "views/", "Index.vue", "1", "0"),
-    V2_INDEX_TREE("frontend/vue2/index-tree.ftl", "views/", "Index.vue", "1", "0"),
+    V2_API("frontend/vue2/api.ftl", "api/", "index.js", "2", "0"),
+    V2_DICTIONARY("frontend/vue2/dictionary.ftl", "views/", "dictionary.js", "2", "0"),
+    V2_INDEX("frontend/vue2/index.ftl", "views/", "Index.vue", "2", "0"),
+    V2_INDEX_TREE("frontend/vue2/index-tree.ftl", "views/", "Index.vue", "2", "0"),
 
-    V3_API("frontend/vue3/api.ftl", "api/", "index.ts", "1", "0"),
-    V3_DICTIONARY("frontend/vue3/dictionary.ftl", "views/", "dictionary.ts", "1", "0"),
-    V3_INDEX("frontend/vue3/index.ftl", "views/", "Index.vue", "1", "0"),
-    V3_INDEX_TREE("frontend/vue3/index-tree.ftl", "views/", "Index.vue", "1", "0"),
+    V3_API("frontend/vue3/api.ftl", "api/", "index.ts", "2", "0"),
+    V3_DICTIONARY("frontend/vue3/dictionary.ftl", "views/", "dictionary.ts", "2", "0"),
+    V3_INDEX("frontend/vue3/index.ftl", "views/", "Index.vue", "2", "0"),
+    V3_INDEX_TREE("frontend/vue3/index-tree.ftl", "views/", "Index.vue", "2", "0"),
 
-    MYSQL("sql/mysql.ftl", "sql/", ".sql", "0", "0"),
-    ORACLE("sql/oracle.ftl", "sql/", ".sql", "0", "0"),
-    POSTGRESQL("sql/postgresql.ftl", "sql/", ".sql", "0", "0"),
-    SQLSERVER("sql/sqlserver.ftl", "sql/", ".sql", "0", "0");
+    MYSQL("sql/mysql.ftl", "sql/", ".sql", "1", "0"),
+    ORACLE("sql/oracle.ftl", "sql/", ".sql", "1", "0"),
+    POSTGRESQL("sql/postgresql.ftl", "sql/", ".sql", "1", "0"),
+    SQLSERVER("sql/sqlserver.ftl", "sql/", ".sql", "1", "0");
 
     /**
      * 模板文件
@@ -57,7 +57,13 @@ public enum TemplateType {
      */
     private final String suffix;
 
-    private final String isFull;
+    /**
+     * 支持类型 
+     * 1-- 后端文件
+     * 2--前端文件
+     * 0--不做处理
+     */
+    private final String supportType;
 
     private final String isBasic;
 

@@ -120,7 +120,7 @@
           <el-row>
             <el-col :span="11">
               <el-form-item label="表名称" prop="tableName" class="global-input-item">
-                <el-input v-model="form.tableName" autocomplete="off" placeholder="请输入表名称"/>
+                <el-input v-model="form.tableName" autocomplete="off" placeholder="请输入表名称" readonly/>
               </el-form-item>
             </el-col>
             <el-col :span="2"/>
@@ -305,7 +305,7 @@
                   <el-tooltip
                       class="box-item"
                       effect="dark"
-                      content="模块名称，该类所属的模块，仅支持一级分类。例如system模块"
+                      content="模块名称，该类所属的模块，格式为xx/yy/zz。例如system/role模块"
                       placement="top-start"
                   ><span>模块名称
               <el-icon><QuestionFilled/></el-icon>

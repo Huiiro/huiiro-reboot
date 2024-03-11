@@ -40,8 +40,8 @@
     <!--formButton-->
     <el-form :inline="true" :size="size">
       <!--left select-->
-      <!--add-->
       <#if genAddInterface == "1">
+      <!--add-->
       <el-form-item class="global-form-item-margin" v-if="checkPermission('${authPrefix}:add')">
         <el-button :size="size" :icon="Plus" @click="handleInsert"
                    :color="layoutStore.BtnInsert" plain>添加${moduleFunctionName}
@@ -79,7 +79,9 @@
               class="global-table"
               stripe>
         <#list columns as col>
+        <#if col.javaField !="updateBy" && col.javaField !="createBy" && col.javaField != "createTime" && col.javaField != "updateTime">
         <el-table-column prop="${col.javaField}" label="<#if col.columnComment?has_content>${col.columnComment}<#else>${col.javaField}</#if>" align="center" min-width="120"/>
+        </#if>
         </#list>
         <el-table-column v-if="showTimeColumn" prop="createTime" label="创建日期" align="center" sortable width="170"/>
         <el-table-column v-if="showTimeColumn" prop="updateTime" label="更新日期" align="center" sortable width="170"/>
@@ -117,7 +119,7 @@
   </el-card>
 
   <el-dialog class="global-dialog-iu"
-           title=${moduleFunctionName}管理" v-model="dialogVisible"
+           title="${moduleFunctionName}管理" v-model="dialogVisible"
            :close-on-click-modal="false"
            @close="handleCloseForm">
     <el-form :model="form"
@@ -125,6 +127,7 @@
              ref="formRuleRef">
       <el-row>
       <#list columns as col>
+        <#if col.javaField !="updateBy" && col.javaField !="createBy" && col.javaField != "createTime" && col.javaField != "updateTime">
         <el-form-item label="<#if col.columnComment?has_content>${col.columnComment}<#else>${col.javaField}</#if>" label-width="85" prop="${col.javaField}">
           <#if col.formType == "input">
             <el-input v-model="form.${col.javaField}" autocomplete="off"/>
@@ -170,6 +173,7 @@
                             style="width: 100%;"/>
           </#if>
         </el-form-item>
+        </#if>
       </#list>
       </el-row>
       <el-row v-show="isEdit">
@@ -194,13 +198,32 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref, shallowRef} from "vue";
-import {useLayoutStore} from "@/store/modules/layout.ts";
-import {Check, Close} from "@element-plus/icons-vue";
-import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
-import {delete${className}, export${className}, import${className}, insert${className}, update${className}} from "@/api";
+    import {onMounted, ref, shallowRef} from "vue";
+    import {useLayoutStore} from "@/store/modules/layout.ts";
+    import {Check, Close} from "@element-plus/icons-vue";
+    import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
+    import {delete$
 
-//store
+    {
+        className
+    }
+    </#if>,
+    insert$
+    {
+        className
+    }
+    </#if>
+    <#if genEditInterface == "1" >,
+    update${
+        className
+    }
+    </#if>
+    <#if genDeleteInterface == "1" >
+    }
+    from
+    "@/api/";
+
+    //store
 const layoutStore = useLayoutStore();
 //layout
 const size = layoutStore.tableSize;
@@ -224,9 +247,11 @@ const query = ref({
     </#if>
     </#list>
 });
+<#assign timeAssign = false>
 <#list columns as col>
-<#if col.formType == "datetime">
+<#if col.formType == "datetime" && !timeAssign>
 const time = ref();
+<#assign timeAssign = true>
 </#if>
 </#list>
 
@@ -324,7 +349,9 @@ const handleRefresh = () => {
 //表单数据
 const form = ref({
     <#list columns as col>
+    <#if col.javaField !="updateBy" && col.javaField !="createBy" && col.javaField != "createTime" && col.javaField != "updateTime">
     ${col.javaField}: <#if col.javaType == "Long" || col.javaType == "Integer" || col.javaType == "Double">0<#else>''</#if>,
+    </#if>
     </#list>
     createTime: '',
     updateTime: ''
@@ -395,7 +422,9 @@ const doInsert = () => {
 const handleInsert = (index, row) => {
     form.value = {
         <#list columns as col>
+        <#if col.javaField !="updateBy" && col.javaField !="createBy" && col.javaField != "createTime" && col.javaField != "updateTime">
         ${col.javaField}: <#if col.javaType == "Long" || col.javaType == "Integer" || col.javaType == "Double">0<#else>''</#if>,
+        </#if>
         </#list>
         createTime: "",
         updateTime: ""

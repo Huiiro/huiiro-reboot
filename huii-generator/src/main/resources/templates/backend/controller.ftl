@@ -42,7 +42,9 @@ import org.springframework.web.bind.annotation.*;
 <#if genImportInterface == "1">
 import org.springframework.web.multipart.MultipartFile;
 </#if>
+<#if genImportInterface == "1" || tableTemplate == "2" || genExportInterface == "1">
 
+</#if>
 <#if genImportInterface == "1">
 import java.io.IOException;
 </#if>
@@ -68,6 +70,7 @@ public class ${className}Controller extends BaseController {
     private final ${className}Service ${variableName}Service;
     <#if genExportInterface == "1">
 
+    <#--导出接口-->
     /**
      * 导出<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>
      */
@@ -92,6 +95,7 @@ public class ${className}Controller extends BaseController {
         ExcelUtils.exportExcel("<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>导入模板", new ArrayList<>(), ${className}ExcelImportVo.class, response);
     }
 
+    <#--导入接口-->
     /**
      * 导入<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>
      */
@@ -108,6 +112,7 @@ public class ${className}Controller extends BaseController {
     </#if>
     <#if tableTemplate != "2">
 
+    <#--查询接口-->
     /**
      * 查询<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>分页
      */
@@ -117,6 +122,7 @@ public class ${className}Controller extends BaseController {
         return R.ok(page);
     }
     </#if>
+    <#--树表接口-->
     <#if tableTemplate == "2">
 
     /**
@@ -150,6 +156,7 @@ public class ${className}Controller extends BaseController {
     }
     </#if>
 
+    <#--查询单条接口-->
     /**
      * 查询<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>
      */
@@ -157,19 +164,21 @@ public class ${className}Controller extends BaseController {
     public R<${className}> get${className}(@PathVariable Long id) {
         return R.ok(${variableName}Service.select${className}ById(id));
     }
+    <#--新增接口-->
     <#if genAddInterface == "1">
 
     /**
-     * 添加<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>
+     * 新增<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>
      */
     @PreAuthorize("@ap.hasAuth('${authPrefix}:add')")
     @PostMapping("/insert")
-    @Log(value = "添加<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>", opType = OpType.INSERT)
+    @Log(value = "新增<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>", opType = OpType.INSERT)
     public R<Void> insert${className}(@Validated @RequestBody ${className} ${variableName}) {
         ${variableName}Service.insert${className}(${variableName});
         return saveSuccess();
     }
     </#if>
+    <#--更新接口-->
     <#if genEditInterface == "1">
 
     /**
@@ -184,6 +193,7 @@ public class ${className}Controller extends BaseController {
         return updateSuccess();
     }
     </#if>
+    <#--删除接口-->
     <#if genDeleteInterface == "1">
 
     <#if tableTemplate == "2">

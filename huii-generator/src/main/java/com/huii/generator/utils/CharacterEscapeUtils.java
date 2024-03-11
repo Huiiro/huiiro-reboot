@@ -20,6 +20,8 @@ public class CharacterEscapeUtils {
 
     public static final String PACKAGE_NAME_REGEX = "^([a-zA-Z_$][a-zA-Z\\d_$]*\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*$";
 
+    public static final String MODULE_NAME_REGEX = "^[^/].*[^/]$|^[^/].*[^/]/$";
+
     private static final List<String> MYSQL_DATA_BASE_TYPES = Arrays.asList(
             "int", "bigint", "decimal", "double", "char",
             "varchar", "text", "longtext", "blob", "longblob",
@@ -217,6 +219,13 @@ public class CharacterEscapeUtils {
      */
     public static boolean isValidPackageName(String name) {
         return name.matches(PACKAGE_NAME_REGEX);
+    }
+
+    /**
+     * 验证是否符合模块名称规范 xx/yy/zz
+     */
+    public static boolean isValidModuleName(String name) {
+        return name.matches(MODULE_NAME_REGEX);
     }
 
     /**

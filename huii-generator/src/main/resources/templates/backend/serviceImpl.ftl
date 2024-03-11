@@ -63,6 +63,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 
     private final ${className}Mapper ${variableName}Mapper;
 
+    <#--查询分页数据-->
     <#if tableTemplate != "2">
     @Override
     public Page select${className}List(${className} ${variableName}, PageParam pageParam) {
@@ -77,10 +78,12 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
     }
     </#if>
 
+    <#--查询单条数据-->
     @Override
     public ${className} select${className}ById(Long id) {
         return ${variableName}Mapper.selectById(id);
     }
+    <#--树表查询实现-->
     <#if tableTemplate == "2">
 
     @Override
@@ -100,6 +103,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
         return children;
     }
     </#if>
+    <#--新增接口实现-->
     <#if genAddInterface == "1">
 
     @Override
@@ -119,6 +123,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
         ${variableName}Mapper.insert(${variableName});
     }
     </#if>
+    <#--修改接口实现-->
     <#if genEditInterface == "1">
 
     @Override
@@ -149,6 +154,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
         ${variableName}Mapper.updateById(${variableName});
     }
     </#if>
+    <#--删除接口实现-->
     <#if genDeleteInterface == "1">
 
     <#if tableTemplate == "2">
@@ -176,6 +182,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
     }
     </#if>
     </#if>
+    <#--build query params-->
 
     private LambdaQueryWrapper<${className}> wrapperBuilder(${className} ${variableName}) {
         Map<String, Object> params = ${variableName}.getParams();
@@ -198,6 +205,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
                 .orderByAsc(${className}::getCreateTime);
         return wrapper;
     }
+    <#--build tree-->
     <#if tableTemplate == "2">
 
     private List<${className}> treeBuilder(Long pid, List<${className}> list) {

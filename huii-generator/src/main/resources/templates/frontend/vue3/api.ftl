@@ -6,7 +6,9 @@ const prefix = "${requestUrl}";
 
 export interface ${variableName} {
 <#list columns as col>
+    <#if col.javaField !="updateBy" && col.javaField !="createBy" && col.javaField != "createTime" && col.javaField != "updateTime">
     ${col.javaField}: <#if col.javaType == "Long" || col.javaType == "Integer" || col.javaType == "Double">number<#else>string</#if>
+    </#if>
 </#list>
 }
 

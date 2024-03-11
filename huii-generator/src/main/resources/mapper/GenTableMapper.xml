@@ -70,7 +70,7 @@
         AND n.nspname = 'public'::name
 
         ) list_table
-                                                            --         TODO
+        -- TODO
         where table_name NOT LIKE 'xxl_job_%' AND table_name NOT LIKE 'gentest_%'
         AND table_name NOT IN (select table_name from gen_table)
         <if test="genTable.tableName != null and genTable.tableName != ''">

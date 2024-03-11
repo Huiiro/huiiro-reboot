@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.enums.ResType;
-import com.huii.common.exception.ServiceException;
 import com.huii.common.utils.MessageUtils;
 import com.huii.common.utils.PageParamUtils;
 import com.huii.generator.config.TemplateConfig;
@@ -17,6 +16,7 @@ import com.huii.generator.entity.GenTable;
 import com.huii.generator.enums.FormType;
 import com.huii.generator.enums.TemplateType;
 import com.huii.generator.enums.WrapperType;
+import com.huii.generator.exception.GenGeneratorException;
 import com.huii.generator.mapper.GenColumnMapper;
 import com.huii.generator.mapper.GenTableMapper;
 import com.huii.generator.service.GenTableService;
@@ -62,7 +62,8 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
     @Override
     public GenTable selectOne(Long id) {
         List<GenColumn> columns = genColumnMapper.selectList(new LambdaQueryWrapper<GenColumn>()
-                .eq(GenColumn::getTableId, id));
+                .eq(GenColumn::getTableId, id)
+                .orderByAsc(GenColumn::getColumnId));
         GenTable table = genTableMapper.selectById(id);
         table.setColumns(columns);
         return table;
@@ -78,6 +79,9 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
         List<GenTable> tables = new ArrayList<>(ids.length);
         for (Long id : ids) {
             GenTable table = genTableMapper.selectTableAndColumns(id);
+            //将树表参数从下划线转为驼峰
+            table.setTreeLabelName(CharacterEscapeUtils.underscoreToCamel(table.getTreeLabelName()));
+            table.setTreeId(CharacterEscapeUtils.underscoreToCamel(table.getTreeId()));
             tables.add(table);
         }
         return tables;
@@ -137,20 +141,18 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
 
     @Override
     public void updateTable(GenTable genTable) {
-        //校验内容包括 主键唯一
-        //字段属性是否对应 ... ?? 等等
-        genTableMapper.updateById(genTable);
-        List<GenColumn> columns = genTable.getColumns();
         int pk = 0;
+        List<GenColumn> columns = genTable.getColumns();
         for (GenColumn column : columns) {
             if (column.getIsPrimaryKey().equals(SystemConstants.STATUS_1)) {
                 pk++;
             }
             if (pk > 1) {
                 ResType resType = ResType.GEN_MULTI_PRIMARY_KEY;
-                throw new ServiceException(resType.getCode(), MessageUtils.message(resType.getI18n()));
+                throw new GenGeneratorException(resType.getCode(), MessageUtils.message(resType.getI18n()));
             }
         }
+        genTableMapper.updateById(genTable);
         for (GenColumn column : columns) {
             genColumnMapper.updateById(column);
         }
@@ -171,8 +173,19 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
             setResponse(response, bytes.length, genProperties.getGenPackageName() + ".zip");
             IOUtils.write(bytes, response.getOutputStream());
         } catch (IOException | TemplateException e) {
-            throw new RuntimeException(e);
+            throw new GenGeneratorException(e.getMessage());
         }
+    }
+
+    @Override
+    public void sync(Long id) {
+        //load table
+
+        //load from db
+
+        //if empty return
+
+        //try sync db
     }
 
     private byte[] generateCode(List<GenTable> list) throws IOException, TemplateException {
@@ -193,8 +206,12 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
             Template template = TemplateConfig.generator().getTemplate(templateType.getTemplate());
             StringWriter writer = new StringWriter();
             template.process(table, writer);
-            String name = templateType.getPrefix() + table.getClassName() + templateType.getSuffix();
-            if (SystemConstants.STATUS_1.equals(templateType.getIsFull())) {
+            String name;
+            if ("1".equals(templateType.getSupportType())) {
+                name = templateType.getPrefix() + table.getClassName() + templateType.getSuffix();
+            } else if ("2".equals(templateType.getSupportType())) {
+                name = templateType.getPrefix() + table.getModuleName() + "/" + templateType.getSuffix();
+            } else {
                 name = templateType.getPrefix() + templateType.getSuffix();
             }
             zip.putNextEntry(new ZipEntry(name));

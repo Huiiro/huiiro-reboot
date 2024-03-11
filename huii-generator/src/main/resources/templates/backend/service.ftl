@@ -9,10 +9,11 @@ import ${packageName}.domain.${className};
 <#if tableTemplate == "2">
 import com.huii.common.core.model.Tree;
 </#if>
-
 <#if tableTemplate == "2" || genExportInterface == "1">
+
 import java.util.List;
 </#if>
+
 /**
  * <#if moduleFunctionDesc?has_content>${moduleFunctionDesc}</#if>服务层接口
  *
@@ -20,8 +21,9 @@ import java.util.List;
  * @date ${createTime}
  */
 public interface ${className}Service extends IService<${className}> {
-
+    <#--普通查询接口-->
     <#if tableTemplate != "2">
+
     /**
      * 查询<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>分页
      *
@@ -31,7 +33,9 @@ public interface ${className}Service extends IService<${className}> {
      */
     Page select${className}List(${className} ${variableName}, PageParam pageParam);
     </#if>
+    <#--查询导出数据接口-->
     <#if tableTemplate == "2" || genExportInterface == "1">
+
     /**
      * 查询<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>列表
      *
@@ -40,6 +44,7 @@ public interface ${className}Service extends IService<${className}> {
      */
     List<${className}> select${className}List(${className} ${variableName});
     </#if>
+    <#--查询单条数据接口-->
 
     /**
      * 查询<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>
@@ -48,6 +53,7 @@ public interface ${className}Service extends IService<${className}> {
      * @return ${variableName}
      */
     ${className} select${className}ById(Long id);
+    <#--构造树形结果接口-->
     <#if tableTemplate == "2">
 
     /**
@@ -58,6 +64,7 @@ public interface ${className}Service extends IService<${className}> {
      */
     List<${className}> buildTree(List<${className}> list);
 
+    <#--构造选项结果接口-->
     /**
      * 获取<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>下拉框选项
      *
@@ -67,9 +74,9 @@ public interface ${className}Service extends IService<${className}> {
      */
     List<Tree> buildSelect(List<${className}> list, Boolean addHeadNode);
     </#if>
-    <#--生成添加接口-->
-    <#if genAddInterface == "1">
+    <#--新增接口-->
 
+    <#if genAddInterface == "1">
     /**
      * 校验添加<#if moduleFunctionName?has_content>${moduleFunctionName}</#if>数据
      *
@@ -84,7 +91,7 @@ public interface ${className}Service extends IService<${className}> {
      */
     void insert${className}(${className} ${variableName});
     </#if>
-    <#--生成修改接口-->
+    <#--修改接口-->
     <#if genEditInterface == "1">
 
     /**
@@ -101,7 +108,7 @@ public interface ${className}Service extends IService<${className}> {
      */
     void update${className}(${className} ${variableName});
     </#if>
-    <#--生成删除接口-->
+    <#--删除接口-->
     <#if genDeleteInterface == "1">
 
     <#if tableTemplate == "2">

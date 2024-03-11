@@ -7,9 +7,14 @@ import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import com.huii.generator.entity.GenColumn;
 import com.huii.generator.entity.GenTable;
+import com.huii.generator.enums.SqlType;
+import com.huii.generator.enums.VueType;
+import com.huii.generator.exception.GenGeneratorException;
 import com.huii.generator.service.GenTableService;
+import com.huii.generator.utils.CharacterEscapeUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -85,6 +90,29 @@ public class GenGeneratorController extends BaseController {
     @PostMapping("/update")
     @Transactional(rollbackFor = RuntimeException.class)
     public R<Void> updateTable(@Validated @RequestBody GenTable genTable) {
+        if (genTable.getClassName().equals(genTable.getVariableName())) {
+            throw new GenGeneratorException("变量名称不能与实体类名称相同");
+        }
+        if (!genTable.getRequestUrl().startsWith("/") || genTable.getRequestUrl().endsWith("/")) {
+            throw new GenGeneratorException("请求路径不符合规范，必须为\"/api/example\"的形式");
+        }
+        if (StringUtils.isNotBlank(genTable.getPackageName())
+                && !CharacterEscapeUtils.isValidPackageName(genTable.getPackageName())) {
+            throw new GenGeneratorException("包名不符合规范，必须为\"com.huii.example\"的形式");
+        }
+        if (StringUtils.isNotBlank(genTable.getModuleName())
+                && !CharacterEscapeUtils.isValidModuleName(genTable.getModuleName())) {
+            throw new GenGeneratorException("模块名称不符合规范，必须为\"module.example\"的形式");
+        }
+        if (StringUtils.isBlank(genTable.getModuleFunctionDesc())) {
+            throw new GenGeneratorException("模块作用描述不能为空");
+        }
+        if (StringUtils.isNotBlank(genTable.getSqlType()) && !SqlType.support(genTable.getSqlType())) {
+            throw new GenGeneratorException("不支持的数据库类型");
+        }
+        if (StringUtils.isNotBlank(genTable.getFrontendType()) && !VueType.support(genTable.getFrontendType())) {
+            throw new GenGeneratorException("不支持的前端版本类型");
+        }
         genTableService.updateTable(genTable);
         return updateSuccess();
     }
@@ -115,7 +143,8 @@ public class GenGeneratorController extends BaseController {
      */
     @PreAuthorize("@ap.hasAuth('tool:gen:sync')")
     @GetMapping("/sync/{id}")
-    public void sync(@PathVariable Long id) {
-
+    public R<Void> sync(@PathVariable Long id) {
+        genTableService.sync(id);
+        return R.failed("暂不支持该功能");
     }
 }

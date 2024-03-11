@@ -1,30 +1,45 @@
 package ${packageName}.domain;
 
+<#--导入mbp注解-->
 import com.baomidou.mybatisplus.annotation.*;
+<#--导入基类实体-->
 <#if tableTemplate == "2">
 import com.huii.common.core.model.base.TreeEntity;
 <#else>
 import com.huii.common.core.model.base.BaseEntity;
 </#if>
+<#--导入非空注解-->
+<#assign importedNotBlank = false>
+<#assign importedNotNull = false>
 <#list columns as col>
 <#if col.isRequired == "1">
-<#if col.javaType == "String">
+<#if col.javaType == "String" && !importedNotBlank>
 import jakarta.validation.constraints.NotBlank;
-<#else>
+<#assign importedNotBlank = true>
+<#elseif col.javaType != "String" && !importedNotNull>
 import jakarta.validation.constraints.NotNull;
+<#assign importedNotNull = true>
 </#if>
 </#if>
 </#list>
+<#--导入lombok注解-->
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+<#--导入java包-->
+<#assign importedBigDecimal = false>
+<#assign importedLocalDateTime = false>
+<#assign importedDate = false>
 <#list columns as col>
-<#if col.javaType == "BigDecimal">
+<#if col.javaType == "BigDecimal" && !importedBigDecimal>
 import java.math.BigDecimal;
-<#elseif col.javaType == "LocalDateTime">
-import java.util.LocalDateTime;
+<#assign importedBigDecimal = true>
+<#elseif col.javaType == "LocalDateTime" && !importedLocalDateTime>
+import java.time.LocalDateTime;
+<#assign importedLocalDateTime = true && !importedDate>
 <#elseif col.javaType == "Date">
 import java.util.Date;
+<#assign importedDate = true>
 </#if>
 </#list>
 
@@ -38,16 +53,18 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @TableName("${tableName}")
 <#--主键相关注解-->
-<#if sqlType == "2"><#--postgres-->
+<#--postgres-->
+<#if sqlType == "2">
 @KeySequence(value = "${tableName}_id_seq", dbType = DbType.POSTGRE_SQL)
 </#if>
-<#--是否是树表-->
+<#--实体类继承信息-->
 <#if tableTemplate == "2">
 public class ${className} extends TreeEntity<${className}> {
 <#else>
 public class ${className} extends BaseEntity {
 </#if>
 <#list columns as col>
+<#if col.javaField !="updateBy" && col.javaField !="createBy" && col.javaField != "createTime" && col.javaField != "updateTime">
 
     /**
      * <#if col.columnComment?has_content>${col.columnComment}<#else>${col.javaField}</#if>
@@ -69,5 +86,6 @@ public class ${className} extends BaseEntity {
     </#if>
     </#if>
     private ${col.javaType} ${col.javaField};
+</#if>
 </#list>
 }

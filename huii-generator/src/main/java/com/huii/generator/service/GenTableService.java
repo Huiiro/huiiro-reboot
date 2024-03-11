@@ -81,4 +81,10 @@ public interface GenTableService {
      */
     void genCode(List<GenTable> list, HttpServletResponse response);
 
+    /**
+     * 同步表结构
+     *
+     * @param id gemTable id
+     */
+    void sync(Long id);
 }
