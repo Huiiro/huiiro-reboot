@@ -1,25 +1,28 @@
 <template>
   <div class="msg-container">
     <div class="msg-main">
-      <ul v-infinite-scroll="getMyMessage"
-          :infinite-scroll-disabled="disabled"
-          class="infinite-list" style="overflow: auto">
-        <li v-for="i in tableData" :key="i" class="infinite-list-item">
-          <div>
-            <div class="user-info">
-              <el-avatar :src="i.sendUserAvatar"></el-avatar>
-              {{ i.sendUserName }}
+      <el-empty description="没有更多消息啦！" v-if="!hasData"/>
+      <template v-if="hasData">
+        <ul v-infinite-scroll="getMyMessage"
+            :infinite-scroll-disabled="disabled"
+            class="infinite-list" style="overflow: auto">
+          <li v-for="i in tableData" :key="i" class="infinite-list-item">
+            <div>
+              <div class="user-info">
+                <el-avatar :src="i.sendUserAvatar"></el-avatar>
+                {{ i.sendUserName }}
+              </div>
+              <div class="message">{{ i.message }}</div>
+              <div class="btn-container">
+                {{ i.createTime }}
+                <el-icon @click="handleClickDelete(i.messageId)">
+                  <Delete/>
+                </el-icon>
+              </div>
             </div>
-            <div class="message">{{ i.message }}</div>
-            <div class="btn-container">
-              {{ i.createTime }}
-              <el-icon @click="handleClickDelete(i.messageId)">
-                <Delete/>
-              </el-icon>
-            </div>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </template>
     </div>
   </div>
 </template>
@@ -45,11 +48,14 @@ const page = ref({
   total: 0
 });
 const count = ref(0);
-
+const hasData = ref(false);
 const getMyMessage = async () => {
   try {
     loading.value = true;
     const response = await getMessageListMy(paramBuilder({}, page.value, null, null));
+    if (response.data.total > 0) {
+      hasData.value = true;
+    }
     tableData.value = [...tableData.value, ...response.data.data];
     count.value = page.value.current * page.value.size;
     page.value.total = response.data.total;
