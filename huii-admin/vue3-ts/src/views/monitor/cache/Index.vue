@@ -2,69 +2,69 @@
   <el-tabs type="border-card">
     <el-tab-pane label="缓存监控">
       <div class="main-info cache">
-       <el-card>
-         <el-divider/>
-         <el-row>
-           <el-col :span="6">
-             Redis版本： {{ cacheProperties.redis_version }}
-           </el-col>
-           <el-col :span="6">
-             运行时间(秒)： {{ cacheProperties.uptime_in_seconds }}
-           </el-col>
-           <el-col :span="6">
-             运行时间(天)： {{ cacheProperties.uptime_in_days }}
-           </el-col>
-           <el-col :span="6">
-             运行模式： {{ cacheProperties.redis_mode === 'standalone' ? '单机部署' : '集群部署' }}
-           </el-col>
-         </el-row>
-         <el-divider/>
-         <el-row>
-           <el-col :span="6">
-             连接客户端数量： {{ cacheProperties.connected_clients }}
-           </el-col>
-           <el-col :span="6">
-             阻塞客户端数量：{{ cacheProperties.blocked_clients }}
-           </el-col>
-           <el-col :span="6">
-             是否启用集群：{{ cacheProperties.cluster_enabled === '0' ? '否' : '是' }}
-           </el-col>
-           <el-col :span="6">
-             集群节点数量：<span v-if="cacheProperties.cluster_size">{{ cacheProperties.cluster_size }}</span><span
-               v-else>N/A</span>
-           </el-col>
-         </el-row>
-         <el-divider/>
-         <el-row>
-           <el-col :span="6">
-             使用内存： {{ cacheProperties.used_memory_human }}
-           </el-col>
-           <el-col :span="6">
-             使用CPU(%)： {{ parseFloat(cacheProperties.used_cpu_user_children).toFixed(3) }}
-           </el-col>
-           <el-col :span="6">
-             网络出口：{{ cacheProperties.instantaneous_output_kbps }}kps
-           </el-col>
-           <el-col :span="6">
-             网络入口： {{ cacheProperties.instantaneous_input_kbps }}kps
-           </el-col>
-         </el-row>
-         <el-divider/>
-         <el-row>
-           <el-col :span="6">
-             是否开启AOF： {{ cacheProperties.aof_enabled === '0' ? '否' : '是' }}
-           </el-col>
-           <el-col :span="6">
-             是否开启RDB： {{ cacheProperties.rdb_last_bgsave_status === 'ok' ? '是' : '否' }}
-           </el-col>
-           <el-col :span="6">
-             key数量： {{ cacheSize }}
-           </el-col>
-           <el-col :span="6">
-           </el-col>
-         </el-row>
-         <el-divider/>
-       </el-card>
+        <el-card>
+          <el-divider/>
+          <el-row>
+            <el-col :span="6">
+              Redis版本： {{ cacheProperties.redis_version }}
+            </el-col>
+            <el-col :span="6">
+              运行时间(秒)： {{ cacheProperties.uptime_in_seconds }}
+            </el-col>
+            <el-col :span="6">
+              运行时间(天)： {{ cacheProperties.uptime_in_days }}
+            </el-col>
+            <el-col :span="6">
+              运行模式： {{ cacheProperties.redis_mode === 'standalone' ? '单机部署' : '集群部署' }}
+            </el-col>
+          </el-row>
+          <el-divider/>
+          <el-row>
+            <el-col :span="6">
+              连接客户端数量： {{ cacheProperties.connected_clients }}
+            </el-col>
+            <el-col :span="6">
+              阻塞客户端数量：{{ cacheProperties.blocked_clients }}
+            </el-col>
+            <el-col :span="6">
+              是否启用集群：{{ cacheProperties.cluster_enabled === '0' ? '否' : '是' }}
+            </el-col>
+            <el-col :span="6">
+              集群节点数量：<span v-if="cacheProperties.cluster_size">{{ cacheProperties.cluster_size }}</span><span
+                v-else>N/A</span>
+            </el-col>
+          </el-row>
+          <el-divider/>
+          <el-row>
+            <el-col :span="6">
+              使用内存： {{ cacheProperties.used_memory_human }}
+            </el-col>
+            <el-col :span="6">
+              使用CPU(%)： {{ parseFloat(cacheProperties.used_cpu_user_children).toFixed(3) }}
+            </el-col>
+            <el-col :span="6">
+              网络出口：{{ cacheProperties.instantaneous_output_kbps }}kps
+            </el-col>
+            <el-col :span="6">
+              网络入口： {{ cacheProperties.instantaneous_input_kbps }}kps
+            </el-col>
+          </el-row>
+          <el-divider/>
+          <el-row>
+            <el-col :span="6">
+              是否开启AOF： {{ cacheProperties.aof_enabled === '0' ? '否' : '是' }}
+            </el-col>
+            <el-col :span="6">
+              是否开启RDB： {{ cacheProperties.rdb_last_bgsave_status === 'ok' ? '是' : '否' }}
+            </el-col>
+            <el-col :span="6">
+              key数量： {{ cacheSize }}
+            </el-col>
+            <el-col :span="6">
+            </el-col>
+          </el-row>
+          <el-divider/>
+        </el-card>
       </div>
       <div class="db-info cache" v-if="false">
         <el-card>
@@ -188,7 +188,7 @@ import {
   getCacheList
 } from "@/api/monitor/cache";
 import {Delete, Odometer, Refresh} from "@element-plus/icons-vue";
-import * as echarts from "echarts";
+import echarts from "@/utils/echarts.ts";
 import {checkPermission} from "@/utils/permission.ts";
 import {useLayoutStore} from "@/store/modules/layout.ts";
 import {ElMessage, ElMessageBox} from "element-plus";
@@ -365,7 +365,7 @@ const handleRowClickKey = (row) => {
 }
 const getCacheValue = (key) => {
   getCacheKeyValue(key).then(res => {
-    if(res.code === 0) {
+    if (res.code === 0) {
       cacheData.value = res.data;
       dialogVisible.value = true;
     }

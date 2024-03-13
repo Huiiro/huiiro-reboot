@@ -1,0 +1,1 @@
+docker run -d --name huii-reboot-frontend -p 80:80 huii00147/huii-reboot-frontend:1.2.5

@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import SidebarItem from './index.vue';
+import SidebarItem from './Index.vue';
 import {useUserStore} from "@/store/modules/user.ts";
 import router from "@/router";
 

@@ -15,20 +15,21 @@ import '@kangc/v-md-editor/lib/style/base-editor.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
 //github 高亮插件
+//全部引入
 import hljs from 'highlight.js';
-//引入github主题
-// VMdEditor.use(githubTheme, {
-//     Hljs: hljs,
-// });
 //vuepress主题
-import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
-import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
+// import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
+// import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
 //vuepress 高亮插件
-import Prism from 'prismjs';
+//引入vuepress主题
+// VMdEditor.use(vuepressTheme, {
+//     Prism,
+// });
 //emoji 插件
 //使用：  <v-md-editor v-model="text" left-toolbar="undo redo | emoji" height="500px" />
-import createEmojiPlugin from '@kangc/v-md-editor/lib/plugins/emoji/index';
-import '@kangc/v-md-editor/lib/plugins/emoji/emoji.css';
+// import createEmojiPlugin from '@kangc/v-md-editor/lib/plugins/emoji/index';
+// import '@kangc/v-md-editor/lib/plugins/emoji/emoji.css';
+// VMdEditor.use(createEmojiPlugin());
 //行号插件
 import createLineNumbertPlugin from '@kangc/v-md-editor/lib/plugins/line-number/index';
 //快速复制插件
@@ -42,12 +43,13 @@ import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
 //使用：<v-md-preview :text="text"></v-md-preview>
 import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/preview.css';
-//引入vuepress主题
-VMdEditor.use(vuepressTheme, {
-    Prism,
-});
+//按需引入
+// import hljs from '@/utils/highlight.ts'
 
-VMdEditor.use(createEmojiPlugin());
+//引入github主题
+VMdEditor.use(githubTheme, {
+    Hljs: hljs,
+});
 
 VMdEditor.use(createLineNumbertPlugin());
 
@@ -87,8 +89,5 @@ VMdEditor.use(createCopyCodePlugin());
 // VMdEditor.use(githubTheme, {
 //     Hljs: hljs,
 // });
-//引入
-VMdPreview.use(githubTheme, {
-    Hljs: hljs,
-});
+
 export default {VMdEditor, VMdPreview}

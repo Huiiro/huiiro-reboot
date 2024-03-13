@@ -1,7 +1,7 @@
 export default {
     baseUrl: '/',
     logoImg: '../../../assets/icons/logo/vite.svg',
-    logoTitle: 'Huii v1.23',
+    logoTitle: 'Huiiro v1.2.5',
     headerTitle: 'Huiiro ',
     headerIcon : ''
 }
