@@ -82,10 +82,16 @@ export default defineConfig({
         host: '0.0.0.0',
         port: 5173,
         cors: true,
-        open: true,
+        //构建镜像时，请关闭此选项
+        open: false,
         proxy: {
             '/api': {
-                target: 'http://localhost:8080',
+                //基于docker-compose构建
+                target: 'http://backend:8080',
+                //本地构建
+                //target: 'http://localhost:8080',
+                //远程构建
+                //target: 'https://yourDomain:port',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, ''),
             }

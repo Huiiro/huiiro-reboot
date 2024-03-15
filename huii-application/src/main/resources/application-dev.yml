@@ -49,12 +49,18 @@ oss:
   accessKey: minio
   secretKey: admin123
   https: false
-  access-policy: 1
-  #域名访问链接，需自行配置替换
-  access-url: https://admin.huii147.xyz/ofs1
+  accessPolicy: 1
+  #直接访问地址
+  #需要通过nginx转发到minio
+  access-url: http://127.0.0.1:8080/ofs1
 local:
+  #接口访问地址
   endPoint: http://127.0.0.1:8080/oss/local
-  base-path: D:/huii/file
+  #本地文件存储路径
+  #docker路径
+  #basePath: /huii/data
+  #本地路径
+  basePath: D:/huii/file
 
 #邮箱服务配置
 mail:

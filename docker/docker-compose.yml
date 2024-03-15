@@ -1,80 +1,140 @@
-version: '3'
+version: '3.8'
+
+networks:
+  huii-reboot:
+    driver: bridge
 
 services:
-  postgresql:
+  # nginx服务
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    networks:
+      - huii-reboot
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/cert:/etc/nginx/cert
+      - ./nginx/log:/var/log/nginx
+      - ./nginx/html:/usr/share/nginx/html
+    restart: always
+    privileged: true
+
+  # 后端服务
+  backend:
+    image: huii00147/huii-reboot-backend:1.2.5
+    container_name: huii-reboot-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVER_PORT=8080
+      # redis
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+      # datasource
+      - SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_URL=jdbc:postgresql://postgres:5432/huii-reboot
+      - SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_USERNAME=root
+      - SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_PASSWORD=postgres
+      # - SPRING_DATASOURCE_DYNAMIC_DATASOURCE_SLAVE_URL=jdbc:postgresql://postgres:5432/huii-reboot
+      # - SPRING_DATASOURCE_DYNAMIC_DATASOURCE_SLAVE_USERNAME=root
+      # - SPRING_DATASOURCE_DYNAMIC_DATASOURCE_SLAVE_PASSWORD=postgres
+      # minio
+      - OSS_ENDPOINT=minio:9000
+      - OSS_BUCKET=local
+      - OSS_ACCESSKEY=minio
+      - OSS_SECRETKEY=minioadmin
+      - LOCAL_BASEPATH=/huii/data
+    networks:
+      - huii-reboot
+    volumes:
+      - ./logs/:/huii/logs/
+      - ./data/:/huii/data/
+    depends_on:
+      - postgres
+      - redis
+      - minio
+    restart: always
+
+  # 前端服务
+  frontend:
+    image: huii00147/huii-reboot-frontend:1.2.5
+    container_name: huii-reboot-frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - huii-reboot
+    depends_on:
+      - backend
+      - nginx
+
+  # 依赖服务--postgresql
+  postgres:
     image: postgres:14
-    container_name: postgresql
+    container_name: postgres
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: huii-pro
+      POSTGRES_DB: huii-reboot
       POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - huii-reboot
     volumes:
-      - /docker/postgres/data:/var/lib/postgresql/data
-    network_mode: "host"
+      - ./sql/data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-d", "huii-reboot", "-U", "root" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
+  # 依赖服务--redis 单机
   redis:
     image: redis:7
     container_name: redis
+    hostname: redis
     ports:
-      - "6379:6379"
-    environment:
-      TZ: Asia/Shanghai
+      # windows下会保留6379端口
+      - "16379:6379"
+    networks:
+      - huii-reboot
     volumes:
-      - /docker/redis/conf:/redis/config
-      - /docker/redis/data/:/redis/data/
+      - ./redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/data/:/usr/local/etc/redis/data
+    restart: always
     privileged: true
-    network_mode: "host"
-    command: "redis-server /redis/config/redis.conf"
+    command: redis-server /usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
+  # 依赖服务--minio 单机
   minio:
-    image: minio/minio:RELEASE.2023-03-24T21-41-23Z
+    image: minio/minio:latest
     container_name: minio
     ports:
-      # api 端口
+      # API
       - "9000:9000"
-      # 控制台端口
+      # CONSOLE
       - "9001:9001"
     environment:
-      # 时区上海
-      TZ: Asia/Shanghai
-      # 管理后台用户名
-      MINIO_ROOT_USER: ruoyi
-      # 管理后台密码，最小8个字符
-      MINIO_ROOT_PASSWORD: ruoyi123
-      # https需要指定域名
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minioadmin
       #MINIO_SERVER_URL: "https://xxx.com:9000"
       #MINIO_BROWSER_REDIRECT_URL: "https://xxx.com:9001"
-      # 开启压缩 on 开启 off 关闭
-      MINIO_COMPRESS: "off"
-      # 扩展名 .pdf,.doc 为空 所有类型均压缩
-      MINIO_COMPRESS_EXTENSIONS: ""
-      # mime 类型 application/pdf 为空 所有类型均压缩
-      MINIO_COMPRESS_MIME_TYPES: ""
+    networks:
+      - huii-reboot
     volumes:
-      # 映射当前目录下的data目录至容器内/data目录
-      - /docker/minio/data:/data
-      # 映射配置目录
-      - /docker/minio/config:/root/.minio/
-    command: server --address ':9000' --console-address ':9001' /data  # 指定容器中的目录 /data
+      - ./minio/data:/data
+      - ./minio/config:/root/.minio/
+    restart: always
     privileged: true
-    network_mode: "host"
-
-  springboot-web:
-    image: your_spring_boot_image_name:latest
-    container_name: springboot-web
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgresql
-      - redis
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/huii-pro
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-      SPRING_REDIS_HOST: redis
-      SPRING_REDIS_PORT: 6379
-
-volumes:
-  postgresql_data:
+    command: server --address ':9000' --console-address ':9001' /data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3

@@ -1,0 +1,1 @@
+docker run -d --name huii-reboot-backend -p 8080:8080 huii00147/huii-reboot-backend:1.2.5
