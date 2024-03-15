@@ -12,7 +12,7 @@
  Target Server Version : 140001
  File Encoding         : 65001
 
- Date: 15/03/2024 02:27:05
+ Date: 16/03/2024 00:43:40
 */
 
 
@@ -273,26 +273,15 @@ CREATE TABLE "public"."gen_column" (
   "dic_type" varchar(255) COLLATE "pg_catalog"."default",
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of gen_column
 -- ----------------------------
-INSERT INTO "public"."gen_column" VALUES (187, 28, 'role_id', '1', 'bigint', NULL, NULL, '1', 'Long', 'roleId', '1', '1', '0', NULL, '0', 'eq', '0', 'input', NULL, NULL, 'admin', '2024-03-11 20:26:13', 'admin', '2024-03-12 00:29:43.559987');
-INSERT INTO "public"."gen_column" VALUES (188, 28, 'role_name', '2', 'character varying', NULL, '50', '2', 'String', 'roleName', '0', '0', '1', NULL, '1', 'like', '1', 'input', NULL, NULL, 'admin', '2024-03-11 20:26:13', 'admin', '2024-03-12 00:29:43.560837');
-INSERT INTO "public"."gen_column" VALUES (189, 28, 'role_key', '3', 'character varying', NULL, '50', '3', 'String', 'roleKey', '0', '0', '1', NULL, '1', 'like', '1', 'input', NULL, NULL, 'admin', '2024-03-11 20:26:13', 'admin', '2024-03-12 00:29:43.562339');
-INSERT INTO "public"."gen_column" VALUES (190, 28, 'role_scope', '4', 'character', NULL, '1', '4', 'String', 'roleScope', '0', '0', '0', NULL, '0', 'eq', '0', 'input', NULL, NULL, 'admin', '2024-03-11 20:26:13', 'admin', '2024-03-12 00:29:43.5632');
-INSERT INTO "public"."gen_column" VALUES (191, 28, 'role_seq', '5', 'smallint', NULL, NULL, '5', 'String', 'roleSeq', '0', '0', '0', NULL, '0', 'eq', '0', 'input', NULL, NULL, 'admin', '2024-03-11 20:26:13', 'admin', '2024-03-12 00:29:43.5642');
-INSERT INTO "public"."gen_column" VALUES (192, 28, 'role_status', '6', 'character', NULL, '1', '6', 'String', 'roleStatus', '0', '0', '0', NULL, '0', 'eq', '1', 'checkbox', NULL, NULL, 'admin', '2024-03-11 20:26:13', 'admin', '2024-03-12 00:29:43.566091');
-INSERT INTO "public"."gen_column" VALUES (193, 28, 'remark', '7', 'character varying', NULL, '255', '7', 'String', 'remark', '0', '0', '0', NULL, '0', '', '0', '', NULL, NULL, 'admin', '2024-03-11 20:26:13', 'admin', '2024-03-12 00:29:43.566091');
-INSERT INTO "public"."gen_column" VALUES (194, 28, 'create_by', '8', 'character varying', NULL, '20', '8', 'String', 'createBy', '0', '0', '0', NULL, '0', '', '0', '', NULL, NULL, 'admin', '2024-03-11 20:26:13', 'admin', '2024-03-12 00:29:43.567072');
-INSERT INTO "public"."gen_column" VALUES (195, 28, 'create_time', '9', 'timestamp without time zone', NULL, NULL, '9', 'LocalDateTime', 'createTime', '0', '0', '0', NULL, '0', '', '0', '', NULL, NULL, 'admin', '2024-03-11 20:26:13', 'admin', '2024-03-12 00:29:43.568189');
-INSERT INTO "public"."gen_column" VALUES (196, 28, 'update_by', '00', 'character varying', NULL, '20', '10', 'String', 'updateBy', '0', '0', '0', NULL, '0', '', '0', '', NULL, NULL, 'admin', '2024-03-11 20:26:13', 'admin', '2024-03-12 00:29:43.568189');
-INSERT INTO "public"."gen_column" VALUES (197, 28, 'update_time', '000', 'timestamp without time zone', NULL, NULL, '11', 'LocalDateTime', 'updateTime', '0', '0', '0', NULL, '0', '', '0', '', NULL, NULL, 'admin', '2024-03-11 20:26:13', 'admin', '2024-03-12 00:29:43.56935');
 
 -- ----------------------------
 -- Table structure for gen_table
@@ -326,16 +315,15 @@ CREATE TABLE "public"."gen_table" (
   "parent_menu_id" int8,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of gen_table
 -- ----------------------------
-INSERT INTO "public"."gen_table" VALUES (28, 'sys_role', NULL, '1', 'SysRole', 'sysRole', '2', '2', 'huii', 'com.huii.system', 'xx/yy/zz', '13', 'classDescName', 'system:role', '/url', '1', '1', '1', '0', '0', NULL, NULL, 'role_id', 'role_key', 0, NULL, 'admin', '2024-03-11 20:26:13', 'admin', '2024-03-12 00:29:43.559516');
 
 -- ----------------------------
 -- Table structure for msg_mail_template
@@ -347,12 +335,12 @@ CREATE TABLE "public"."msg_mail_template" (
   "mail_subject" varchar(255) COLLATE "pg_catalog"."default",
   "mail_content" text COLLATE "pg_catalog"."default",
   "mail_attach_file" varchar(255) COLLATE "pg_catalog"."default",
-  "temp_name" varchar COLLATE "pg_catalog"."default",
+  "temp_name" varchar(255) COLLATE "pg_catalog"."default",
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
@@ -368,10 +356,10 @@ CREATE TABLE "public"."msg_send_log" (
   "log_id" int8 NOT NULL DEFAULT nextval('msg_send_log_id_seq'::regclass),
   "temp_name" varchar(255) COLLATE "pg_catalog"."default",
   "send_type" varchar(255) COLLATE "pg_catalog"."default",
-  "send_target" varchar(255) COLLATE "pg_catalog"."default",
-  "send_time" timestamp(6),
+  "send_target" varchar(500) COLLATE "pg_catalog"."default",
+  "send_time" timestamp(2),
   "send_status" char(1) COLLATE "pg_catalog"."default",
-  "err_info" varchar(255) COLLATE "pg_catalog"."default"
+  "err_info" varchar(500) COLLATE "pg_catalog"."default"
 )
 ;
 
@@ -393,9 +381,9 @@ CREATE TABLE "public"."msg_send_template" (
   "sub_id" int8,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
@@ -413,9 +401,9 @@ CREATE TABLE "public"."msg_subscribe" (
   "sub_desc" varchar(255) COLLATE "pg_catalog"."default",
   "sub_status" char(1) COLLATE "pg_catalog"."default",
   "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
+  "update_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default"
 )
 ;
@@ -446,12 +434,12 @@ CREATE TABLE "public"."sys_config" (
   "config_id" int8 NOT NULL DEFAULT nextval('sys_config_id_seq'::regclass),
   "config_name" varchar(50) COLLATE "pg_catalog"."default",
   "config_key" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
-  "config_value" varchar(1000) COLLATE "pg_catalog"."default",
+  "config_value" varchar(2000) COLLATE "pg_catalog"."default",
   "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "create_by" varchar(20) COLLATE "pg_catalog"."default",
+  "create_time" timestamp(2),
+  "update_by" varchar(20) COLLATE "pg_catalog"."default",
+  "update_time" timestamp(2)
 )
 ;
 
@@ -472,17 +460,17 @@ CREATE TABLE "public"."sys_dept" (
   "dept_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO "public"."sys_dept" VALUES (9, 1, '分公司', 'huii', 1, '1', '', 'admin', '2024-01-25 22:29:11', 'admin', '2024-01-25 22:29:26.036818');
-INSERT INTO "public"."sys_dept" VALUES (1, 0, '总公司', 'huiiro', 1, '1', '', 'admin', '2024-01-24 14:31:43.85', 'admin', '2024-01-24 14:31:43.857773');
+INSERT INTO "public"."sys_dept" VALUES (9, 1, '分公司', 'huii', 1, '1', '', 'admin', '2024-01-25 22:29:11', 'admin', '2024-01-25 22:29:26.04');
+INSERT INTO "public"."sys_dept" VALUES (1, 0, '总公司', 'huiiro', 1, '1', '', 'admin', '2024-01-24 14:31:43.85', 'admin', '2024-01-24 14:31:43.86');
 
 -- ----------------------------
 -- Table structure for sys_dic_data
@@ -491,26 +479,26 @@ DROP TABLE IF EXISTS "public"."sys_dic_data";
 CREATE TABLE "public"."sys_dic_data" (
   "data_id" int8 NOT NULL DEFAULT nextval('sys_dic_data_id_seq'::regclass),
   "data_type" varchar(50) COLLATE "pg_catalog"."default",
-  "data_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "data_name" varchar(50) COLLATE "pg_catalog"."default",
   "data_key" varchar(50) COLLATE "pg_catalog"."default",
-  "data_value" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "data_value" varchar(255) COLLATE "pg_catalog"."default",
   "data_label" varchar(50) COLLATE "pg_catalog"."default",
   "data_seq" int2,
   "data_type_info" varchar(255) COLLATE "pg_catalog"."default",
   "data_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_dic_data
 -- ----------------------------
-INSERT INTO "public"."sys_dic_data" VALUES (1, 'dic_type', 'test', '具体值', '1', '1', 1, 'default', '1', '', NULL, NULL, 'admin', '2024-01-24 14:37:59.087696');
-INSERT INTO "public"."sys_dic_data" VALUES (2, 'test_type1234', 'test', '具体值', '1', '1', 1, '1', '1', '', NULL, NULL, 'admin', '2023-12-11 19:42:19.380701');
+INSERT INTO "public"."sys_dic_data" VALUES (1, 'dic_type', 'test', '具体值', '1', '1', 1, 'default', '1', '', NULL, NULL, 'admin', '2024-01-24 14:37:59.09');
+INSERT INTO "public"."sys_dic_data" VALUES (2, 'test_type1234', 'test', '具体值', '1', '1', 1, '1', '1', '', NULL, NULL, 'admin', '2023-12-11 19:42:19.38');
 
 -- ----------------------------
 -- Table structure for sys_dic_type
@@ -523,16 +511,16 @@ CREATE TABLE "public"."sys_dic_type" (
   "type_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_dic_type
 -- ----------------------------
-INSERT INTO "public"."sys_dic_type" VALUES (1, 'test', 'dic_type', '1', '123', NULL, NULL, 'admin', '2024-01-24 14:37:59.089196');
+INSERT INTO "public"."sys_dic_type" VALUES (1, 'test', 'dic_type', '1', '123', NULL, NULL, 'admin', '2024-01-24 14:37:59.09');
 
 -- ----------------------------
 -- Table structure for sys_file
@@ -551,9 +539,9 @@ CREATE TABLE "public"."sys_file" (
   "file_server" varchar(255) COLLATE "pg_catalog"."default",
   "file_status" varchar(1) COLLATE "pg_catalog"."default",
   "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
+  "update_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default"
 )
 ;
@@ -572,21 +560,21 @@ CREATE TABLE "public"."sys_job" (
   "group_name" varchar(255) COLLATE "pg_catalog"."default",
   "cron" varchar(255) COLLATE "pg_catalog"."default",
   "target" varchar(255) COLLATE "pg_catalog"."default",
-  "job_status" varchar(255) COLLATE "pg_catalog"."default",
-  "concurrent_status" varchar(255) COLLATE "pg_catalog"."default",
-  "misfire_policy" varchar(255) COLLATE "pg_catalog"."default",
+  "job_status" char(1) COLLATE "pg_catalog"."default",
+  "concurrent_status" char(1) COLLATE "pg_catalog"."default",
+  "misfire_policy" char(1) COLLATE "pg_catalog"."default",
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_job
 -- ----------------------------
-INSERT INTO "public"."sys_job" VALUES (1, '测试任务', 'DEFAULT', '*/10 * * * * ?', 'com.huii.job.task.DemoTask.demoTaskWithoutParams', '0', '0', '3', '', 'admin', '2024-01-06 22:18:05', 'admin', '2024-01-06 23:37:05.659797');
+INSERT INTO "public"."sys_job" VALUES (1, '测试任务', 'DEFAULT', '*/10 * * * * ?', 'com.huii.job.task.DemoTask.demoTaskWithoutParams', '0', '0', '3', '', 'admin', '2024-01-06 22:18:05', 'admin', '2024-01-06 23:37:05.66');
 
 -- ----------------------------
 -- Table structure for sys_job_log
@@ -600,8 +588,8 @@ CREATE TABLE "public"."sys_job_log" (
   "job_status" varchar(1) COLLATE "pg_catalog"."default",
   "job_message" varchar(255) COLLATE "pg_catalog"."default",
   "error_info" varchar(255) COLLATE "pg_catalog"."default",
-  "begin_time" timestamp(6),
-  "end_time" timestamp(6),
+  "begin_time" timestamp(2),
+  "end_time" timestamp(2),
   "cost" int4
 )
 ;
@@ -619,11 +607,11 @@ CREATE TABLE "public"."sys_log_login" (
   "login_user_name" varchar(20) COLLATE "pg_catalog"."default",
   "login_ip" varchar(255) COLLATE "pg_catalog"."default",
   "login_address" varchar(255) COLLATE "pg_catalog"."default",
-  "login_time" timestamp(6),
+  "login_time" timestamp(2),
   "login_browser" varchar(255) COLLATE "pg_catalog"."default",
   "login_os" varchar(255) COLLATE "pg_catalog"."default",
   "login_type" int2,
-  "login_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+  "login_status" char(1) COLLATE "pg_catalog"."default",
   "login_message" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
@@ -631,8 +619,6 @@ CREATE TABLE "public"."sys_log_login" (
 -- ----------------------------
 -- Records of sys_log_login
 -- ----------------------------
-INSERT INTO "public"."sys_log_login" VALUES (82, 'admin', NULL, '', '2024-03-11 20:23:20.147908', 'Chrome 12', 'Windows 10', 1, '0', '用户名或密码错误');
-INSERT INTO "public"."sys_log_login" VALUES (83, 'admin', '0:0:0:0:0:0:0:1', '', '2024-03-11 20:23:30.023874', 'Chrome 12', 'Windows 10', 1, '1', '登录成功');
 
 -- ----------------------------
 -- Table structure for sys_log_op
@@ -643,7 +629,7 @@ CREATE TABLE "public"."sys_log_op" (
   "op_user_name" varchar(255) COLLATE "pg_catalog"."default",
   "op_method_name" varchar(255) COLLATE "pg_catalog"."default",
   "op_type" int2,
-  "op_time" timestamp(6),
+  "op_time" timestamp(2),
   "op_cost_time" int8,
   "op_ip" varchar(255) COLLATE "pg_catalog"."default",
   "op_address" varchar(255) COLLATE "pg_catalog"."default",
@@ -661,7 +647,8 @@ CREATE TABLE "public"."sys_log_op" (
 -- ----------------------------
 -- Records of sys_log_op
 -- ----------------------------
-INSERT INTO "public"."sys_log_op" VALUES (936, 'admin', 'deleteMessage', 6, '2024-03-12 01:07:38.732471', 12, '0:0:0:0:0:0:0:1', '', 'POST', 'com.huii.controller.system.SysMessageControllerdeleteMessage', '[1]', '{"code":0,"message":"删除成功"}', '1', '0', '', '删除消息');
+INSERT INTO "public"."sys_log_op" VALUES (939, 'admin', 'deleteAll', 6, '2024-03-16 00:29:19.7', 10, '0:0:0:0:0:0:0:1', '', 'POST', 'com.huii.controller.monitor.SysLogOpControllerdeleteAll', '', '{"code":0,"message":"删除成功"}', '1', '0', '', '删除全部接口日志');
+INSERT INTO "public"."sys_log_op" VALUES (940, 'admin', 'deleteAll', 6, '2024-03-16 00:29:24.49', 2, '0:0:0:0:0:0:0:1', '', 'POST', 'com.huii.controller.monitor.SysLogLoginControllerdeleteAll', '', '{"code":0,"message":"删除成功"}', '1', '0', '', '删除全部登录日志');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -682,125 +669,125 @@ CREATE TABLE "public"."sys_menu" (
   "query_param" varchar(255) COLLATE "pg_catalog"."default",
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO "public"."sys_menu" VALUES (34, 6, 3, '添加岗位', 'system:post:add', '', '/system/post/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (21, 4, 3, '查询用户', 'system:user:query', '', '/system/user/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (22, 4, 3, '添加用户', 'system:user:add', '', '/system/user/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
+INSERT INTO "public"."sys_menu" VALUES (34, 6, 3, '添加岗位', 'system:post:add', '', '/system/post/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (21, 4, 3, '查询用户', 'system:user:query', '', '/system/user/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (22, 4, 3, '添加用户', 'system:user:add', '', '/system/user/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
 INSERT INTO "public"."sys_menu" VALUES (4, 1, 1, '用户管理', 'system:user', 'UserFilled', '/system/user', 'system/user/Index', 1, '1', '1', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "public"."sys_menu" VALUES (23, 4, 3, '修改用户', 'system:user:edit', '', '/system/user/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (24, 4, 3, '删除用户', 'system:user:delete', '', '/system/user/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
+INSERT INTO "public"."sys_menu" VALUES (23, 4, 3, '修改用户', 'system:user:edit', '', '/system/user/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (24, 4, 3, '删除用户', 'system:user:delete', '', '/system/user/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
 INSERT INTO "public"."sys_menu" VALUES (5, 1, 1, '角色管理', 'system:role', 'Avatar', '/system/role', 'system/role/Index', 2, '1', '1', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "public"."sys_menu" VALUES (25, 4, 3, '导入用户', 'system:user:import', '', '/system/user/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (26, 4, 3, '导出用户', 'system:user:export', '', '/system/user/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (14, 2, 1, '服务监控', 'system:monitor:server', 'Cpu', '/monitor/server', 'monitor/server/Index', 4, '1', '1', NULL, NULL, 'admin', '2023-12-12 08:35:10', 'admin', '2024-01-07 14:24:04.821111');
-INSERT INTO "public"."sys_menu" VALUES (6, 1, 1, '岗位管理', 'sytem:post', 'Management', '/system/post', 'system/post/Index', 3, '1', '1', NULL, NULL, NULL, NULL, 'admin', '2023-12-06 20:06:57.605597');
-INSERT INTO "public"."sys_menu" VALUES (79, 18, 3, '添加表', 'tool:gen:add', '', '/tool/gen/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (19, 98, 1, '字典详情', 'system:dictionary:Data', 'Memo', '/system/dic/data/:typeId', 'system/dictionary/Data', 99, '0', '1', NULL, NULL, 'admin', '2023-12-11 20:07:22', 'admin', '2024-01-06 23:02:57.484387');
-INSERT INTO "public"."sys_menu" VALUES (28, 5, 3, '添加角色', 'system:role:add', '', '/system/role/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (29, 5, 3, '修改角色', 'system:role:edit', '', '/system/role/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (30, 5, 3, '删除角色', 'system:role:delete', '', '/system/role/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (31, 5, 3, '导入角色', 'system:role:import', '', '/system/role/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (32, 5, 3, '导出角色', 'system:role:export', '', '/system/role/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (35, 6, 3, '修改岗位', 'system:post:edit', '', '/system/post/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (7, 1, 1, '部门管理', 'sytem:dept', 'DataBoard', '/system/dept', 'system/dept/Index', 4, '1', '1', NULL, NULL, NULL, NULL, 'admin', '2023-11-28 17:19:19.691728');
+INSERT INTO "public"."sys_menu" VALUES (25, 4, 3, '导入用户', 'system:user:import', '', '/system/user/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (26, 4, 3, '导出用户', 'system:user:export', '', '/system/user/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (14, 2, 1, '服务监控', 'system:monitor:server', 'Cpu', '/monitor/server', 'monitor/server/Index', 4, '1', '1', NULL, NULL, 'admin', '2023-12-12 08:35:10', 'admin', '2024-01-07 14:24:04.82');
+INSERT INTO "public"."sys_menu" VALUES (6, 1, 1, '岗位管理', 'sytem:post', 'Management', '/system/post', 'system/post/Index', 3, '1', '1', NULL, NULL, NULL, NULL, 'admin', '2023-12-06 20:06:57.61');
+INSERT INTO "public"."sys_menu" VALUES (79, 18, 3, '添加表', 'tool:gen:add', '', '/tool/gen/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (19, 98, 1, '字典详情', 'system:dictionary:Data', 'Memo', '/system/dic/data/:typeId', 'system/dictionary/Data', 99, '0', '1', NULL, NULL, 'admin', '2023-12-11 20:07:22', 'admin', '2024-01-06 23:02:57.48');
+INSERT INTO "public"."sys_menu" VALUES (28, 5, 3, '添加角色', 'system:role:add', '', '/system/role/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (29, 5, 3, '修改角色', 'system:role:edit', '', '/system/role/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (30, 5, 3, '删除角色', 'system:role:delete', '', '/system/role/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (31, 5, 3, '导入角色', 'system:role:import', '', '/system/role/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (32, 5, 3, '导出角色', 'system:role:export', '', '/system/role/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (35, 6, 3, '修改岗位', 'system:post:edit', '', '/system/post/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (7, 1, 1, '部门管理', 'sytem:dept', 'DataBoard', '/system/dept', 'system/dept/Index', 4, '1', '1', NULL, NULL, NULL, NULL, 'admin', '2023-11-28 17:19:19.69');
 INSERT INTO "public"."sys_menu" VALUES (8, 1, 1, '菜单管理', 'system:menu', 'Menu', '/system/menu', 'system/menu/Index', 5, '1', '1', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "public"."sys_menu" VALUES (2, 0, 1, '系统监控', 'system:monitor', 'Monitor', '/monitor', '', 2, '1', '1', NULL, NULL, 'admin', '2023-12-12 08:23:00', 'admin', '2023-12-12 08:23:55.869854');
-INSERT INTO "public"."sys_menu" VALUES (17, 2, 1, '任务监控', 'system:monitor:job', 'AlarmClock', '/monitor/job', 'monitor/job/Index', 3, '1', '1', NULL, NULL, 'admin', '2023-12-12 08:37:21', 'admin', '2024-01-07 14:23:55.376118');
+INSERT INTO "public"."sys_menu" VALUES (2, 0, 1, '系统监控', 'system:monitor', 'Monitor', '/monitor', '', 2, '1', '1', NULL, NULL, 'admin', '2023-12-12 08:23:00', 'admin', '2023-12-12 08:23:55.87');
+INSERT INTO "public"."sys_menu" VALUES (17, 2, 1, '任务监控', 'system:monitor:job', 'AlarmClock', '/monitor/job', 'monitor/job/Index', 3, '1', '1', NULL, NULL, 'admin', '2023-12-12 08:37:21', 'admin', '2024-01-07 14:23:55.38');
 INSERT INTO "public"."sys_menu" VALUES (9, 1, 1, '字典管理', 'system:dic', 'Reading', '/system/dic', 'system/dictionary/Index', 6, '1', '1', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "public"."sys_menu" VALUES (36, 6, 3, '删除岗位', 'system:post:delete', '', '/system/post/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (27, 5, 3, '查询角色', 'system:role:query', '', '/system/role/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (16, 2, 1, '数据监控', 'system:monitor:data', 'Histogram', '/monitor/data', 'monitor/data/Index', 5, '0', '0', NULL, NULL, 'admin', '2023-12-12 08:36:38', 'admin', '2024-01-10 20:20:08.949521');
-INSERT INTO "public"."sys_menu" VALUES (18, 3, 1, '代码生成', 'system:tool:generate', 'DocumentAdd', '/tool/generator', 'tool/generator/Index', 9, '1', '1', NULL, NULL, 'admin', '2023-12-13 19:03:58', 'admin', '2024-01-07 19:29:17.175203');
-INSERT INTO "public"."sys_menu" VALUES (33, 6, 3, '查询岗位', 'system:post:query', '', '/system/post/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (37, 6, 3, '导入岗位', 'system:post:import', '', '/system/post/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (38, 6, 3, '导出岗位', 'system:post:export', '', '/system/post/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (13, 2, 1, '登录日志', 'system:monitor:log:login', 'Cellphone', '/monitor/log/login', 'monitor/logLogin/Index', 2, '1', '1', NULL, NULL, 'admin', '2023-12-12 08:28:04', 'admin', '2023-12-12 17:06:09.709732');
-INSERT INTO "public"."sys_menu" VALUES (39, 7, 3, '查询部门', 'system:dept:query', '', '/system/dept/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (40, 7, 3, '添加部门', 'system:dept:add', '', '/system/dept/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (41, 7, 3, '修改部门', 'system:dept:edit', '', '/system/dept/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (42, 7, 3, '删除部门', 'system:dept:delete', '', '/system/dept/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (43, 8, 3, '查询菜单', 'system:menu:query', '', '/system/menu/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (44, 8, 3, '添加菜单', 'system:menu:add', '', '/system/menu/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (45, 8, 3, '修改菜单', 'system:menu:edit', '', '/system/menu/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (46, 8, 3, '删除菜单', 'system:menu:delete', '', '/system/menu/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (47, 9, 3, '查询字典', 'system:dic:query', '', '/system/dic/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (48, 9, 3, '添加字典', 'system:dic:add', '', '/system/dic/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (49, 9, 3, '修改字典', 'system:dic:edit', '', '/system/dic/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (50, 9, 3, '删除字典', 'system:dic:delete', '', '/system/dic/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (15, 2, 1, '缓存监控', 'system:monitor:cache', 'Coin', '/monitor/cache', 'monitor/cache/Index', 6, '1', '1', NULL, NULL, 'admin', '2023-12-12 08:30:27', 'admin', '2024-01-07 14:24:13.270065');
-INSERT INTO "public"."sys_menu" VALUES (11, 1, 1, '通知管理', ' system:notice', 'ChatLineRound', '/system/notice', 'system/notice/Index', 10, '1', '1', NULL, NULL, 'admin', '2023-12-12 18:06:54', 'admin', '2024-02-20 16:01:25.617347');
-INSERT INTO "public"."sys_menu" VALUES (10, 1, 1, '参数管理', 'system:config', 'SetUp', '/system/config', 'system/config/Index', 8, '1', '1', NULL, NULL, 'admin', '2023-12-11 21:20:29', 'admin', '2024-02-20 16:01:48.789011');
-INSERT INTO "public"."sys_menu" VALUES (51, 9, 3, '导入字典', 'system:dic:import', '', '/system/dic/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (52, 9, 3, '导出字典', 'system:dic:export', '', '/system/dic/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (12, 2, 1, '接口日志', 'system:monitor:log:op', 'Memo', '/monitor/log/op', 'monitor/logOp/Index', 1, '1', '1', NULL, NULL, 'admin', '2023-12-12 08:27:06', 'admin', '2023-12-12 17:06:02.474428');
-INSERT INTO "public"."sys_menu" VALUES (1, 0, 1, '系统管理', 'system:system', 'Promotion', '/system', '', 1, '1', '1', NULL, NULL, NULL, '2023-11-22 21:59:22', 'admin', '2023-11-22 22:28:39.34689');
-INSERT INTO "public"."sys_menu" VALUES (3, 0, 1, '系统工具', 'system:tool', 'Operation', '/tool', '', 3, '1', '1', NULL, NULL, 'admin', '2023-12-13 18:59:10', 'admin', '2023-12-13 18:59:18.657212');
-INSERT INTO "public"."sys_menu" VALUES (59, 11, 3, '查询通知', 'system:notice:query', '', '/system/notice/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (60, 11, 3, '添加通知', 'system:notice:add', '', '/system/notice/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (61, 11, 3, '修改通知', 'system:notice:edit', '', '/system/notice/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (62, 11, 3, '删除通知', 'system:notice:delete', '', '/system/notice/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (64, 11, 3, '导出通知', 'system:notice:export', '', '/system/notice/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (53, 10, 3, '查询参数', 'system:config:query', '', '/system/config/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (54, 10, 3, '添加参数', 'system:config:add', '', '/system/config/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (55, 10, 3, '修改参数', 'system:config:edit', '', '/system/config/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (56, 10, 3, '删除参数', 'system:config:delete', '', '/system/config/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (57, 10, 3, '导入参数', 'system:config:import', '', '/system/config/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (58, 10, 3, '导出参数', 'system:config:export', '', '/system/config/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (63, 11, 3, '导入通知', 'system:notice:import', '', '/system/notice/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (65, 12, 3, '查询接口日志', 'system:log:op:query', '', '/system/logOp/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (66, 12, 3, '修改接口日志', 'system:log:op:edit', '', '/system/logOp/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (67, 12, 3, '删除接口日志', 'system:log:op:delete', '', '/system/logOp/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (68, 12, 3, '删除全部接口日志', 'system:log:op:delete:all', '', '/system/logOp/deleteAll', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (69, 12, 3, '导入接口日志', 'system:log:op:import', '', '/system/logOp/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (70, 12, 3, '导出接口日志', 'system:log:op:export', '', '/system/logOp/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (71, 13, 3, '查询登录日志', 'system:log:login:query', '', '/system/logLogin/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (72, 13, 3, '修改登录日志', 'system:log:login:edit', '', '/system/logLogin/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (73, 13, 3, '删除登录日志', 'system:log:login:delete', '', '/system/logLogin/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (74, 13, 3, '删除全部登录日志', 'system:log:login:delete:all', '', '/system/logLogin/deleteAll', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (75, 13, 3, '导入登录日志', 'system:log:login:import', '', '/system/logLogin/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (76, 13, 3, '导出登录日志', 'system:log:login:export', '', '/system/logLogin/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (78, 18, 3, '查询表', 'tool:gen:query', '', '/tool/gen/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (80, 18, 3, '修改表', 'tool:gen:edit', '', '/tool/gen/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (81, 18, 3, '删除表', 'tool:gen:delete', '', '/tool/gen/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (82, 18, 3, '导出代码', 'tool:gen:export', '', '/tool/gen/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
-INSERT INTO "public"."sys_menu" VALUES (83, 18, 3, '同步代码', 'tool:gen:sync', '', '/tool/gen/sync', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.758442', 'admin', '2023-12-13 22:28:41.758442');
+INSERT INTO "public"."sys_menu" VALUES (36, 6, 3, '删除岗位', 'system:post:delete', '', '/system/post/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (27, 5, 3, '查询角色', 'system:role:query', '', '/system/role/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (16, 2, 1, '数据监控', 'system:monitor:data', 'Histogram', '/monitor/data', 'monitor/data/Index', 5, '0', '0', NULL, NULL, 'admin', '2023-12-12 08:36:38', 'admin', '2024-01-10 20:20:08.95');
+INSERT INTO "public"."sys_menu" VALUES (18, 3, 1, '代码生成', 'system:tool:generate', 'DocumentAdd', '/tool/generator', 'tool/generator/Index', 9, '1', '1', NULL, NULL, 'admin', '2023-12-13 19:03:58', 'admin', '2024-01-07 19:29:17.18');
+INSERT INTO "public"."sys_menu" VALUES (33, 6, 3, '查询岗位', 'system:post:query', '', '/system/post/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (37, 6, 3, '导入岗位', 'system:post:import', '', '/system/post/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (38, 6, 3, '导出岗位', 'system:post:export', '', '/system/post/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (13, 2, 1, '登录日志', 'system:monitor:log:login', 'Cellphone', '/monitor/log/login', 'monitor/logLogin/Index', 2, '1', '1', NULL, NULL, 'admin', '2023-12-12 08:28:04', 'admin', '2023-12-12 17:06:09.71');
+INSERT INTO "public"."sys_menu" VALUES (39, 7, 3, '查询部门', 'system:dept:query', '', '/system/dept/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (40, 7, 3, '添加部门', 'system:dept:add', '', '/system/dept/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (41, 7, 3, '修改部门', 'system:dept:edit', '', '/system/dept/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (42, 7, 3, '删除部门', 'system:dept:delete', '', '/system/dept/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (43, 8, 3, '查询菜单', 'system:menu:query', '', '/system/menu/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (44, 8, 3, '添加菜单', 'system:menu:add', '', '/system/menu/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (45, 8, 3, '修改菜单', 'system:menu:edit', '', '/system/menu/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (46, 8, 3, '删除菜单', 'system:menu:delete', '', '/system/menu/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (47, 9, 3, '查询字典', 'system:dic:query', '', '/system/dic/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (48, 9, 3, '添加字典', 'system:dic:add', '', '/system/dic/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (49, 9, 3, '修改字典', 'system:dic:edit', '', '/system/dic/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (50, 9, 3, '删除字典', 'system:dic:delete', '', '/system/dic/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (15, 2, 1, '缓存监控', 'system:monitor:cache', 'Coin', '/monitor/cache', 'monitor/cache/Index', 6, '1', '1', NULL, NULL, 'admin', '2023-12-12 08:30:27', 'admin', '2024-01-07 14:24:13.27');
+INSERT INTO "public"."sys_menu" VALUES (11, 1, 1, '通知管理', ' system:notice', 'ChatLineRound', '/system/notice', 'system/notice/Index', 10, '1', '1', NULL, NULL, 'admin', '2023-12-12 18:06:54', 'admin', '2024-02-20 16:01:25.62');
+INSERT INTO "public"."sys_menu" VALUES (10, 1, 1, '参数管理', 'system:config', 'SetUp', '/system/config', 'system/config/Index', 8, '1', '1', NULL, NULL, 'admin', '2023-12-11 21:20:29', 'admin', '2024-02-20 16:01:48.79');
+INSERT INTO "public"."sys_menu" VALUES (51, 9, 3, '导入字典', 'system:dic:import', '', '/system/dic/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (52, 9, 3, '导出字典', 'system:dic:export', '', '/system/dic/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (12, 2, 1, '接口日志', 'system:monitor:log:op', 'Memo', '/monitor/log/op', 'monitor/logOp/Index', 1, '1', '1', NULL, NULL, 'admin', '2023-12-12 08:27:06', 'admin', '2023-12-12 17:06:02.47');
+INSERT INTO "public"."sys_menu" VALUES (1, 0, 1, '系统管理', 'system:system', 'Promotion', '/system', '', 1, '1', '1', NULL, NULL, NULL, '2023-11-22 21:59:22', 'admin', '2023-11-22 22:28:39.35');
+INSERT INTO "public"."sys_menu" VALUES (3, 0, 1, '系统工具', 'system:tool', 'Operation', '/tool', '', 3, '1', '1', NULL, NULL, 'admin', '2023-12-13 18:59:10', 'admin', '2023-12-13 18:59:18.66');
+INSERT INTO "public"."sys_menu" VALUES (59, 11, 3, '查询通知', 'system:notice:query', '', '/system/notice/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (60, 11, 3, '添加通知', 'system:notice:add', '', '/system/notice/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (61, 11, 3, '修改通知', 'system:notice:edit', '', '/system/notice/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (62, 11, 3, '删除通知', 'system:notice:delete', '', '/system/notice/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (64, 11, 3, '导出通知', 'system:notice:export', '', '/system/notice/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (53, 10, 3, '查询参数', 'system:config:query', '', '/system/config/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (54, 10, 3, '添加参数', 'system:config:add', '', '/system/config/add', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (55, 10, 3, '修改参数', 'system:config:edit', '', '/system/config/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (56, 10, 3, '删除参数', 'system:config:delete', '', '/system/config/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (57, 10, 3, '导入参数', 'system:config:import', '', '/system/config/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (58, 10, 3, '导出参数', 'system:config:export', '', '/system/config/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (63, 11, 3, '导入通知', 'system:notice:import', '', '/system/notice/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (65, 12, 3, '查询接口日志', 'system:log:op:query', '', '/system/logOp/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (66, 12, 3, '修改接口日志', 'system:log:op:edit', '', '/system/logOp/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (67, 12, 3, '删除接口日志', 'system:log:op:delete', '', '/system/logOp/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (68, 12, 3, '删除全部接口日志', 'system:log:op:delete:all', '', '/system/logOp/deleteAll', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (69, 12, 3, '导入接口日志', 'system:log:op:import', '', '/system/logOp/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (70, 12, 3, '导出接口日志', 'system:log:op:export', '', '/system/logOp/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (71, 13, 3, '查询登录日志', 'system:log:login:query', '', '/system/logLogin/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (72, 13, 3, '修改登录日志', 'system:log:login:edit', '', '/system/logLogin/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (73, 13, 3, '删除登录日志', 'system:log:login:delete', '', '/system/logLogin/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (74, 13, 3, '删除全部登录日志', 'system:log:login:delete:all', '', '/system/logLogin/deleteAll', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (75, 13, 3, '导入登录日志', 'system:log:login:import', '', '/system/logLogin/import', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (76, 13, 3, '导出登录日志', 'system:log:login:export', '', '/system/logLogin/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (78, 18, 3, '查询表', 'tool:gen:query', '', '/tool/gen/query', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (80, 18, 3, '修改表', 'tool:gen:edit', '', '/tool/gen/edit', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (81, 18, 3, '删除表', 'tool:gen:delete', '', '/tool/gen/delete', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (82, 18, 3, '导出代码', 'tool:gen:export', '', '/tool/gen/export', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
+INSERT INTO "public"."sys_menu" VALUES (83, 18, 3, '同步代码', 'tool:gen:sync', '', '/tool/gen/sync', '', 1, '0', '1', NULL, NULL, 'admin', '2023-12-13 22:28:41.76', 'admin', '2023-12-13 22:28:41.76');
 INSERT INTO "public"."sys_menu" VALUES (106, 105, 3, '查询邮件模板', 'tool:msg:mail:query', '', '/msg/mail/query', '', 1, '1', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-01-07 15:31:20');
 INSERT INTO "public"."sys_menu" VALUES (107, 105, 3, '新增邮件模板', 'tool:msg:mail:add', '', '/msg/mail/add', '', 1, '1', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-01-07 15:31:20');
 INSERT INTO "public"."sys_menu" VALUES (108, 105, 3, '修改邮件模板', 'tool:msg:mail:edit', '', '/msg/mail/edit', '', 1, '1', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-01-07 15:31:20');
 INSERT INTO "public"."sys_menu" VALUES (109, 105, 3, '删除邮件模板', 'tool:msg:mail:delete', '', '/msg/mail/delete', '', 1, '1', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-01-07 15:31:20');
-INSERT INTO "public"."sys_menu" VALUES (105, 3, 1, '邮件模板', 'tool:msg:mail', 'Management', '/msg/mail', 'tool/msgMailTemplate/Index', 2, '1', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-02-21 02:52:50.784202');
-INSERT INTO "public"."sys_menu" VALUES (116, 98, 1, '推送日志', 'msg:send:log', 'DocumentRemove', '/msg/send/log/:name', 'tool/msgSendTemplate/SendLog', 20, '0', '1', NULL, '', 'admin', '2024-02-21 03:55:06', 'admin', '2024-02-21 15:08:27.383302');
-INSERT INTO "public"."sys_menu" VALUES (114, 110, 3, '删除消息', 'system:message:delete', '', '/system/message/delete', '', 1, '0', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-02-21 04:10:57.071409');
-INSERT INTO "public"."sys_menu" VALUES (111, 110, 3, '查询消息', 'system:message:query', '', '/system/message/query', '', 1, '0', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-02-21 04:11:05.657389');
-INSERT INTO "public"."sys_menu" VALUES (113, 110, 3, '修改消息', 'system:message:edit', '', '/system/message/edit', '', 1, '0', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-02-21 04:11:10.310519');
-INSERT INTO "public"."sys_menu" VALUES (112, 110, 3, '新增消息', 'system:message:add', '', '/system/message/add', '', 1, '0', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-02-21 04:11:16.43373');
-INSERT INTO "public"."sys_menu" VALUES (115, 3, 1, '订阅管理', 'tool:msg:sub', 'Bell', '/msg/sub', 'tool/msgSubscribe/Index', 1, '1', '1', NULL, '', 'admin', '2024-02-21 02:31:20', 'admin', '2024-02-21 02:31:36.974996');
-INSERT INTO "public"."sys_menu" VALUES (100, 3, 1, '消息模板', 'tool:msg:send', 'SetUp', '/msg/send', 'tool/msgSendTemplate/Index', 3, '1', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-02-21 02:53:04.629024');
-INSERT INTO "public"."sys_menu" VALUES (91, 1, 1, '文件管理', 'system:file', 'Folder', '/system/file', 'system/file/Index', 7, '1', '1', '', '', 'admin', '2024-01-03 16:32:39', 'admin', '2024-01-03 17:04:41.15164');
+INSERT INTO "public"."sys_menu" VALUES (105, 3, 1, '邮件模板', 'tool:msg:mail', 'Management', '/msg/mail', 'tool/msgMailTemplate/Index', 2, '1', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-02-21 02:52:50.78');
+INSERT INTO "public"."sys_menu" VALUES (116, 98, 1, '推送日志', 'msg:send:log', 'DocumentRemove', '/msg/send/log/:name', 'tool/msgSendTemplate/SendLog', 20, '0', '1', NULL, '', 'admin', '2024-02-21 03:55:06', 'admin', '2024-02-21 15:08:27.38');
+INSERT INTO "public"."sys_menu" VALUES (114, 110, 3, '删除消息', 'system:message:delete', '', '/system/message/delete', '', 1, '0', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-02-21 04:10:57.07');
+INSERT INTO "public"."sys_menu" VALUES (111, 110, 3, '查询消息', 'system:message:query', '', '/system/message/query', '', 1, '0', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-02-21 04:11:05.66');
+INSERT INTO "public"."sys_menu" VALUES (113, 110, 3, '修改消息', 'system:message:edit', '', '/system/message/edit', '', 1, '0', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-02-21 04:11:10.31');
+INSERT INTO "public"."sys_menu" VALUES (112, 110, 3, '新增消息', 'system:message:add', '', '/system/message/add', '', 1, '0', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-02-21 04:11:16.43');
+INSERT INTO "public"."sys_menu" VALUES (115, 3, 1, '订阅管理', 'tool:msg:sub', 'Bell', '/msg/sub', 'tool/msgSubscribe/Index', 1, '1', '1', NULL, '', 'admin', '2024-02-21 02:31:20', 'admin', '2024-02-21 02:31:36.97');
+INSERT INTO "public"."sys_menu" VALUES (100, 3, 1, '消息模板', 'tool:msg:send', 'SetUp', '/msg/send', 'tool/msgSendTemplate/Index', 3, '1', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-02-21 02:53:04.63');
+INSERT INTO "public"."sys_menu" VALUES (91, 1, 1, '文件管理', 'system:file', 'Folder', '/system/file', 'system/file/Index', 7, '1', '1', '', '', 'admin', '2024-01-03 16:32:39', 'admin', '2024-01-03 17:04:41.15');
 INSERT INTO "public"."sys_menu" VALUES (92, 91, 3, '查询文件', 'system:file:query', '', '/system/file/query', '', 1, '0', '1', '', '', 'admin', '2024-01-03 16:32:39', 'admin', '2024-01-03 16:32:39');
 INSERT INTO "public"."sys_menu" VALUES (93, 91, 3, '新增文件', 'system:file:add', '', '/system/file/add', '', 1, '0', '1', '', '', 'admin', '2024-01-03 16:32:39', 'admin', '2024-01-03 16:32:39');
 INSERT INTO "public"."sys_menu" VALUES (94, 91, 3, '修改文件', 'system:file:edit', '', '/system/file/edit', '', 1, '0', '1', '', '', 'admin', '2024-01-03 16:32:39', 'admin', '2024-01-03 16:32:39');
 INSERT INTO "public"."sys_menu" VALUES (95, 91, 3, '删除文件', 'system:file:delete', '', '/system/file/delete', '', 1, '0', '1', '', '', 'admin', '2024-01-03 16:32:39', 'admin', '2024-01-03 16:32:39');
 INSERT INTO "public"."sys_menu" VALUES (96, 91, 3, '导入文件', 'system:file:import', '', '/system/file/import', '', 1, '0', '1', '', '', 'admin', '2024-01-03 16:32:39', 'admin', '2024-01-03 16:32:39');
 INSERT INTO "public"."sys_menu" VALUES (97, 91, 3, '导出文件', 'system:file:export', '', '/system/file/export', '', 1, '0', '1', '', '', 'admin', '2024-01-03 16:32:39', 'admin', '2024-01-03 16:32:39');
-INSERT INTO "public"."sys_menu" VALUES (98, 0, 2, '二级菜单', 'sub:all', '', '/sub', '', 99, '0', '1', NULL, '', 'admin', '2024-01-06 23:02:11.474489', 'admin', '2024-01-06 23:02:11.474489');
-INSERT INTO "public"."sys_menu" VALUES (77, 98, 1, '字段详情', 'gen:column', 'Document', '/gen/column/:tableId', 'tool/generator/Column', 97, '0', '1', NULL, NULL, 'admin', '2023-12-15 17:16:21', 'admin', '2024-02-21 15:07:34.371242');
+INSERT INTO "public"."sys_menu" VALUES (98, 0, 2, '二级菜单', 'sub:all', '', '/sub', '', 99, '0', '1', NULL, '', 'admin', '2024-01-06 23:02:11.47', 'admin', '2024-01-06 23:02:11.47');
+INSERT INTO "public"."sys_menu" VALUES (77, 98, 1, '字段详情', 'gen:column', 'Document', '/gen/column/:tableId', 'tool/generator/Column', 97, '0', '1', NULL, NULL, 'admin', '2023-12-15 17:16:21', 'admin', '2024-02-21 15:07:34.37');
 INSERT INTO "public"."sys_menu" VALUES (101, 100, 3, '查询发送模板', 'tool:msg:send:query', '', '/msg/send/query', '', 1, '1', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-01-07 15:31:20');
 INSERT INTO "public"."sys_menu" VALUES (102, 100, 3, '新增发送模板', 'tool:msg:send:add', '', '/msg/send/add', '', 1, '1', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-01-07 15:31:20');
 INSERT INTO "public"."sys_menu" VALUES (103, 100, 3, '修改发送模板', 'tool:msg:send:edit', '', '/msg/send/edit', '', 1, '1', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-01-07 15:31:20');
 INSERT INTO "public"."sys_menu" VALUES (104, 100, 3, '删除发送模板', 'tool:msg:send:delete', '', '/msg/send/delete', '', 1, '1', '1', '', '', 'admin', '2024-01-07 15:31:20', 'admin', '2024-01-07 15:31:20');
-INSERT INTO "public"."sys_menu" VALUES (117, 98, 1, '订阅用户', 'tool:msg:sub:user', 'Plus', '/msg/sub/user/:sid', 'tool/msgSubscribe/SubUser', 10, '0', '1', NULL, '', 'admin', '2024-02-21 15:05:17', 'admin', '2024-02-21 15:08:14.295968');
-INSERT INTO "public"."sys_menu" VALUES (20, 98, 1, '分配角色', 'system:role:auth:user', 'Plus', '/system/role/auth/user/:roleId', 'system/role/AuthUser', 11, '0', '1', NULL, NULL, 'admin', '2023-11-29 15:08:49', 'admin', '2024-02-21 15:08:18.683755');
-INSERT INTO "public"."sys_menu" VALUES (99, 98, 1, '任务日志', 'system:job:log', 'DocumentRemove', '/system/job/log/:name', 'monitor/job/JobLog', 21, '0', '1', NULL, '', 'admin', '2024-01-06 23:04:45', 'admin', '2024-02-21 15:08:31.164403');
-INSERT INTO "public"."sys_menu" VALUES (110, 1, 1, '消息管理', 'system:message', 'ChatLineSquare', '/system/message', 'system/message/Index', 9, '1', '1', NULL, '', 'admin', '2024-02-20 16:00:09', 'admin', '2024-02-20 16:02:23.364172');
+INSERT INTO "public"."sys_menu" VALUES (117, 98, 1, '订阅用户', 'tool:msg:sub:user', 'Plus', '/msg/sub/user/:sid', 'tool/msgSubscribe/SubUser', 10, '0', '1', NULL, '', 'admin', '2024-02-21 15:05:17', 'admin', '2024-02-21 15:08:14.3');
+INSERT INTO "public"."sys_menu" VALUES (20, 98, 1, '分配角色', 'system:role:auth:user', 'Plus', '/system/role/auth/user/:roleId', 'system/role/AuthUser', 11, '0', '1', NULL, NULL, 'admin', '2023-11-29 15:08:49', 'admin', '2024-02-21 15:08:18.68');
+INSERT INTO "public"."sys_menu" VALUES (99, 98, 1, '任务日志', 'system:job:log', 'DocumentRemove', '/system/job/log/:name', 'monitor/job/JobLog', 21, '0', '1', NULL, '', 'admin', '2024-01-06 23:04:45', 'admin', '2024-02-21 15:08:31.16');
+INSERT INTO "public"."sys_menu" VALUES (110, 1, 1, '消息管理', 'system:message', 'ChatLineSquare', '/system/message', 'system/message/Index', 9, '1', '1', NULL, '', 'admin', '2024-02-20 16:00:09', 'admin', '2024-02-20 16:02:23.36');
 
 -- ----------------------------
 -- Table structure for sys_message
@@ -811,20 +798,22 @@ CREATE TABLE "public"."sys_message" (
   "send_id" int8,
   "receive_id" int8,
   "message" text COLLATE "pg_catalog"."default",
-  "message_status" varchar(1) COLLATE "pg_catalog"."default",
-  "message_type" varchar(255) COLLATE "pg_catalog"."default",
+  "message_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+  "message_type" char(1) COLLATE "pg_catalog"."default",
   "message_read" varchar(1) COLLATE "pg_catalog"."default",
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_message
 -- ----------------------------
+INSERT INTO "public"."sys_message" VALUES (9, 1, 51, '测试消息', '1', '1', '1', NULL, 'admin', '2024-03-15 23:45:55.38', 'admin', '2024-03-15 23:49:46.44');
+INSERT INTO "public"."sys_message" VALUES (10, 1, 1, '测试消息', '1', '1', '1', NULL, 'admin', '2024-03-15 23:45:55.38', 'admin', '2024-03-15 23:49:46.45');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -835,19 +824,19 @@ CREATE TABLE "public"."sys_notice" (
   "notice_title" varchar(255) COLLATE "pg_catalog"."default",
   "notice_content" text COLLATE "pg_catalog"."default",
   "notice_type" int2,
-  "notice_status" char(1) COLLATE "pg_catalog"."default",
+  "notice_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_notice
 -- ----------------------------
-INSERT INTO "public"."sys_notice" VALUES (2, '测试', '123', 1, '1', '', 'admin', '2023-12-14 02:59:54.473352', 'admin', '2023-12-14 02:59:54.473352');
+INSERT INTO "public"."sys_notice" VALUES (2, '测试', '123', 1, '1', '', 'admin', '2023-12-14 02:59:54.47', 'admin', '2023-12-14 02:59:54.47');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -862,16 +851,16 @@ CREATE TABLE "public"."sys_post" (
   "post_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_post
 -- ----------------------------
-INSERT INTO "public"."sys_post" VALUES (1, 'CEO', 'CEO', '123666', 1, '1', NULL, NULL, NULL, 'admin', '2023-11-30 16:23:18.15764');
+INSERT INTO "public"."sys_post" VALUES (1, 'CEO', 'CEO', '123666', 1, '1', NULL, NULL, NULL, 'admin', '2023-11-30 16:23:18.16');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -886,9 +875,9 @@ CREATE TABLE "public"."sys_role" (
   "role_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
@@ -896,8 +885,8 @@ CREATE TABLE "public"."sys_role" (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO "public"."sys_role" VALUES (1, '管理员', 'ADMIN', '1', 1, '1', NULL, NULL, '2023-11-19 17:09:16', NULL, NULL);
-INSERT INTO "public"."sys_role" VALUES (19, '测试员2', 'TEST2', '5', 3, '1', '', 'admin', '2023-12-14 03:59:34.769731', 'admin', '2023-12-14 03:59:34.769731');
-INSERT INTO "public"."sys_role" VALUES (18, '测试员', 'TEST', '4', 2, '1', NULL, 'admin', '2023-11-24 18:21:20', 'admin', '2024-01-25 22:53:28.990016');
+INSERT INTO "public"."sys_role" VALUES (19, '测试员2', 'TEST2', '5', 3, '1', '', 'admin', '2023-12-14 03:59:34.77', 'admin', '2023-12-14 03:59:34.77');
+INSERT INTO "public"."sys_role" VALUES (18, '测试员', 'TEST', '4', 2, '1', NULL, 'admin', '2023-11-24 18:21:20', 'admin', '2024-01-25 22:53:28.99');
 
 -- ----------------------------
 -- Table structure for sys_role_dept
@@ -1070,17 +1059,17 @@ CREATE TABLE "public"."sys_user" (
   "user_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
   "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
+  "create_time" timestamp(2),
   "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6)
+  "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO "public"."sys_user" VALUES (51, 1, 'huii', 'huii', '$2a$10$Tt68.t/JevKsB7rKG/12bOudxvDz9LHOHlEII/.2uPzsdSig9YEOe', '12345678911', 'huii00147@gmail.com', '1', '', '0:0:0:0:0:0:0:1', '2024-01-26 22:57:41.395312', '0', '1', NULL, 'admin', '2024-01-25 19:50:55', 'huii', '2024-01-26 22:57:41.398812');
-INSERT INTO "public"."sys_user" VALUES (1, 1, 'admin', 'huii', '$2a$10$Tt68.t/JevKsB7rKG/12bOudxvDz9LHOHlEII/.2uPzsdSig9YEOe', '19923352758', '1659009445@qq.com', '1', 'http://127.0.0.1:8080/oss/local?module=avatar&fileName=202401241441e7cfdc292522.jpg', '0:0:0:0:0:0:0:1', '2024-03-11 20:23:30.013644', '0', '1', NULL, NULL, '2023-11-29 16:09:15', NULL, '2024-03-11 20:23:30.016635');
+INSERT INTO "public"."sys_user" VALUES (51, 1, 'huii', 'huii', '$2a$10$Tt68.t/JevKsB7rKG/12bOudxvDz9LHOHlEII/.2uPzsdSig9YEOe', '12345678911', 'huii00147@gmail.com', '1', '', '0:0:0:0:0:0:0:1', '2024-01-26 22:57:41.395312', '0', '1', NULL, 'admin', '2024-01-25 19:50:55', 'huii', '2024-01-26 22:57:41.4');
+INSERT INTO "public"."sys_user" VALUES (1, 1, 'admin', 'huii', '$2a$10$Tt68.t/JevKsB7rKG/12bOudxvDz9LHOHlEII/.2uPzsdSig9YEOe', '19923352758', '1659009445@qq.com', '1', 'http://127.0.0.1:8080/oss/local?module=avatar&fileName=202401241441e7cfdc292522.jpg', '0:0:0:0:0:0:0:1', '2024-03-15 23:19:42.793914', '0', '1', NULL, NULL, '2023-11-29 16:09:15', NULL, '2024-03-15 23:19:42.79');
 
 -- ----------------------------
 -- Table structure for sys_user_oauth
@@ -1092,15 +1081,15 @@ CREATE TABLE "public"."sys_user_oauth" (
   "oauth_identify" int8,
   "oauth_user_name" varchar(255) COLLATE "pg_catalog"."default",
   "oauth_user_avatar" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6)
+  "create_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_user_oauth
 -- ----------------------------
-INSERT INTO "public"."sys_user_oauth" VALUES (1, 'gitee', 8520863, 'HuYi', 'https://gitee.com/assets/no_portrait.png', '2024-01-08 19:39:04.727431');
-INSERT INTO "public"."sys_user_oauth" VALUES (1, 'github', 71134144, '1659009445', 'https://avatars.githubusercontent.com/u/71134144?v=4', '2024-01-08 19:44:08.220718');
+INSERT INTO "public"."sys_user_oauth" VALUES (1, 'gitee', 8520863, 'HuYi', 'https://gitee.com/assets/no_portrait.png', '2024-01-08 19:39:04.73');
+INSERT INTO "public"."sys_user_oauth" VALUES (1, 'github', 71134144, '1659009445', 'https://avatars.githubusercontent.com/u/71134144?v=4', '2024-01-08 19:44:08.22');
 
 -- ----------------------------
 -- Table structure for sys_user_post
@@ -1205,14 +1194,14 @@ SELECT setval('"public"."sys_job_log_id_seq"', 308, true);
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-SELECT setval('"public"."sys_log_login_id_seq"', 84, true);
+SELECT setval('"public"."sys_log_login_id_seq"', 88, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."sys_log_op_id_seq"
 OWNED BY "public"."sys_log_op"."op_id";
-SELECT setval('"public"."sys_log_op_id_seq"', 937, true);
+SELECT setval('"public"."sys_log_op_id_seq"', 941, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -1222,7 +1211,7 @@ SELECT setval('"public"."sys_menu_id_seq"', 118, true);
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-SELECT setval('"public"."sys_message_id_seq"', 9, true);
+SELECT setval('"public"."sys_message_id_seq"', 11, true);
 
 -- ----------------------------
 -- Alter sequences owned by
