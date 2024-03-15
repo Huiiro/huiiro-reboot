@@ -3,6 +3,7 @@ package com.huii.system.service;
 import com.huii.common.core.model.Page;
 import com.huii.common.core.model.PageParam;
 import com.huii.system.domain.SysMessage;
+import com.huii.system.domain.dto.SysMessageDto;
 
 public interface SysMessageService {
 
@@ -42,10 +43,17 @@ public interface SysMessageService {
      *
      * @param sysMessage sysMessage
      */
-    void checkInsert(SysMessage sysMessage);
+    void checkInsert(SysMessageDto sysMessage);
 
     /**
      * 添加系统消息
+     *
+     * @param sysMessage sysMessageDto
+     */
+    void insertMessage(SysMessageDto sysMessage);
+
+    /**
+     * 添加系统消息（内部API 不对外调用）
      *
      * @param sysMessage sysMessage
      */

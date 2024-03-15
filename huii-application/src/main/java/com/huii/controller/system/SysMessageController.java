@@ -7,6 +7,7 @@ import com.huii.common.core.model.R;
 import com.huii.common.core.model.base.BaseController;
 import com.huii.common.enums.OpType;
 import com.huii.system.domain.SysMessage;
+import com.huii.system.domain.dto.SysMessageDto;
 import com.huii.system.service.SysMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -72,7 +73,9 @@ public class SysMessageController extends BaseController {
     @PreAuthorize("@ap.hasAuth('system:message:add')")
     @PostMapping("/insert")
     @Log(value = "添加消息", opType = OpType.INSERT)
-    public R<Void> insertMessage(@Validated @RequestBody SysMessage sysMessage) {
+    @Transactional(rollbackFor = RuntimeException.class)
+    public R<Void> insertMessage(@Validated @RequestBody SysMessageDto sysMessage) {
+        sysMessage.setSendId(getUserId());
         sysMessageService.checkInsert(sysMessage);
         sysMessageService.insertMessage(sysMessage);
         return saveSuccess();

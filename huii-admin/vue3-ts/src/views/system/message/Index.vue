@@ -2,6 +2,40 @@
   <!--formSearch-->
   <el-form :inline="true" :size="size" v-show="showSearch">
     <!--searchParam-->
+    <el-form-item label="消息内容" class="global-input-item">
+      <el-input v-model="query.message" placeholder="请输入消息内容"
+                class="global-input" :size="size"/>
+    </el-form-item>
+    <el-form-item label="消息类型" class="global-input-item">
+      <el-select v-model="query.messageType" placeholder="请选择消息类型"
+                 :size="size">
+        <el-option
+            v-for="item in messageTypeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="消息状态" class="global-input-item">
+      <el-select v-model="query.messageStatus" placeholder="请选择消息状态"
+                 :size="size">
+        <el-option
+            v-for="item in messageStatusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="消息是否已读" class="global-input-item">
+      <el-select v-model="query.messageRead" placeholder="请选择消息是否已读"
+                 :size="size">
+        <el-option
+            v-for="item in messageReadStatusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+      </el-select>
+    </el-form-item>
     <!--fixed-->
     <el-form-item>
       <el-button :size="size" :icon="Search" type="primary" plain @click="getData">查询</el-button>
@@ -11,6 +45,12 @@
   <!--formButton-->
   <el-form :inline="true" :size="size">
     <!--left select-->
+    <!--add-->
+    <el-form-item class="global-form-item-margin" v-if="checkPermission('system:notice:add')">
+      <el-button :size="size" :icon="Plus" @click="handleInsert"
+                 :color="layoutStore.BtnInsert" plain>发送消息
+      </el-button>
+    </el-form-item>
     <!--delete-->
     <el-form-item class="global-form-item-margin" v-if="checkPermission('system:message:delete')">
       <el-button :size="size" :icon="Delete" @click="handleDelete"
@@ -43,7 +83,12 @@
     <el-table-column prop="message" label="消息" align="center" min-width="300"/>
     <el-table-column prop="messageType" label="消息类型" align="center" width="120">
       <template #default="scope">
-        <el-tag type="info"> {{ scope.row.messageType }}</el-tag>
+        <el-tag v-for="tag in messageTypeOptions"
+                v-show="tag.value === scope.row.messageStatus"
+                :size="size"
+                :key="tag.value"
+                :type="tag.type"> {{ tag.label }}
+        </el-tag>
       </template>
     </el-table-column>
     <el-table-column prop="messageStatus" label="消息状态" align="center" width="120">
@@ -95,17 +140,94 @@
       :page-size="pageSize"
       :total="pageTotal"/>
 
+  <el-dialog class="global-dialog-iu"
+             title="发送消息" v-model="dialogVisible"
+             :close-on-click-modal="false"
+             @close="handleCloseForm">
+    <el-form :model="form"
+             :rules="formRules"
+             ref="formRuleRef">
+      <el-form-item label="消息内容" label-width="85" prop="message">
+        <el-input v-model="form.message"
+                  autocomplete="off"
+                  type="textarea"
+                  show-word-limit
+                  maxlength="255"
+                  :rows="4"
+        />
+      </el-form-item>
+      <el-form-item label="消息类型" label-width="85" prop="messageType">
+        <el-select
+            v-model="form.messageType"
+            placeholder="请选择通知类型"
+            style="width: 240px"
+        >
+          <el-option
+              v-for="item in messageTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="接收对象" label-width="85" prop="receiveId">
+        <el-form :inline="true" :size="size">
+          <el-form-item label="用户名称" class="global-input-item">
+            <el-input v-model="query2.userName" placeholder="请输入用户名称"
+                      class="global-input" :size="size"/>
+          </el-form-item>
+          <el-form-item>
+            <el-button :size="size" :icon="Search" type="primary" plain @click="getData2">查询</el-button>
+            <el-button :size="size" :icon="Refresh" @click="handleReset2">重置</el-button>
+          </el-form-item>
+        </el-form>
+        <el-table :data="tableData2"
+                  v-loading="loading2"
+                  :size="size"
+                  :highlight-current-row="true"
+                  header-cell-class-name="global-table-header"
+                  class="global-table"
+                  stripe
+                  @selection-change="selectionChange2">
+          <el-table-column type="selection" width="55"/>
+          <el-table-column prop="userName" label="用户名称" align="left"/>
+          <el-table-column prop="nickName" label="用户昵称" align="center"/>
+          <el-table-column prop="phone" label="用户手机" align="center"/>
+          <el-table-column prop="email" label="用户邮箱" align="center"/>
+        </el-table>
+        <el-pagination
+            class="global-pagination"
+            @size-change="handleSizeChange2"
+            @current-change="handleCurrentChange2"
+            :small="pageLayoutSize"
+            :layout="pageLayout2"
+            :page-sizes="pageSizes2"
+            :current-page="pageCurrent2"
+            :page-size="pageSize2"
+            :total="pageTotal2"/>
+      </el-form-item>
+    </el-form>
+    <div>
+
+    </div>
+    <template #footer>
+      <div style="clear: both"/>
+      <el-button @click="handleCloseForm">取 消</el-button>
+      <el-button type="primary" @click="handleSubmitForm(formRuleRef)">确 定</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
 import {useLayoutStore} from "@/store/modules/layout.ts";
-import {Delete, Refresh, Search, Timer} from "@element-plus/icons-vue";
-import {ElMessage, ElMessageBox} from "element-plus";
+import {Delete, Plus, Refresh, Search, Timer} from "@element-plus/icons-vue";
+import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {paramBuilder} from "@/utils/common.ts";
 import {checkPermission, checkPermissions} from "@/utils/permission.ts";
-import {deleteMessage, getMessageList} from "@/api/system/message";
-import {messageReadStatusOptions, messageStatusOptions} from "@/views/system/message/dictionary.ts";
+import {deleteMessage, getMessageList, insertMessage} from "@/api/system/message";
+import {messageReadStatusOptions, messageStatusOptions, messageTypeOptions} from "@/views/system/message/dictionary.ts";
+import {getUserList} from "@/api/system/user";
 
 //store
 const layoutStore = useLayoutStore();
@@ -124,10 +246,21 @@ onMounted(() => {
  */
 //加载标志
 const loading = ref(false);
+const loading2 = ref(false);
 //表格数据
 const tableData = ref();
+//表格数据2 用户信息
+const tableData2 = ref();
 //查询参数
-const query = ref({});
+const query = ref({
+  message: '',
+  messageType: '',
+  messageStatus: '',
+  messageRead: ''
+});
+const query2 = ref({
+  userName: ''
+});
 
 /**
  * 查询数据
@@ -144,12 +277,33 @@ const getData = () => {
   });
 };
 
+const getData2 = () => {
+  loading2.value = true;
+  getUserList(paramBuilder(query2.value, queryPage2.value, null, null)).then(res => {
+    const response = res.data;
+    tableData2.value = response.data;
+    pageCurrent2.value = response.current;
+    pageTotal2.value = response.total;
+    pageSize2.value = response.size;
+    loading2.value = false;
+  })
+};
+
 /**
  * 重置查询参数按钮
  */
 const handleReset = () => {
+  query.value.message = '';
+  query.value.messageType = '';
+  query.value.messageStatus = '';
+  query.value.messageRead = '';
   getData();
 };
+
+const handleReset2 = () => {
+  query2.value.userName = '';
+  getData2();
+}
 
 /**
  * 分页参数配置
@@ -173,6 +327,33 @@ const handleCurrentChange = (page: any) => {
   pageCurrent.value = page
   queryPage.value.current = page
   getData();
+};
+
+//分页2 用户信息
+const queryPage2 = ref({
+  current: 1,
+  size: 10,
+  total: 0
+});
+const pageLayout2 = ref("total, sizes, prev, pager, next");
+const pageSizes2 = ref([10, 20]);
+const pageTotal2 = ref(0);
+const pageCurrent2 = ref(1);
+const pageSize2 = ref(pageSizes2.value[0] | 10);
+const handleSizeChange2 = (page: any) => {
+  pageSize2.value = page
+  queryPage2.value.size = page
+  getData2();
+};
+const handleCurrentChange2 = (page: any) => {
+  pageCurrent2.value = page
+  queryPage2.value.current = page
+  getData2();
+};
+//多选数据2 未授权用户
+const multiSelectData2 = ref();
+const selectionChange2 = (value: any) => {
+  multiSelectData2.value = value
 };
 
 /**
@@ -214,6 +395,64 @@ const handleRefresh = () => {
   getData();
   ElMessage.info('已刷新');
 };
+
+const form = ref({
+  messageId: 0,
+  sendId: '',
+  receiveId: '',
+  message: '',
+  messageType: '1',
+  messageStatus: '1',
+  createTime: '',
+  updateTime: ''
+});
+const formRules = ref({
+  message: [
+    {required: true, message: '请输入消息内容', trigger: 'blur'},
+    {min: 1, max: 60, message: '消息内容不超过255个字', trigger: 'blur'}
+  ],
+});
+const formRuleRef = ref<FormInstance>();
+//是否编辑
+const isEdit = ref(false);
+//对话框
+const dialogVisible = ref(false);
+const handleInsert = () => {
+  form.value = {
+    messageId: 0,
+    sendId: '',
+    receiveId: '',
+    message: '',
+    messageType: '1',
+    messageStatus: '1',
+    createTime: '',
+    updateTime: ''
+  };
+  isEdit.value = false;
+  dialogVisible.value = true;
+  getData2();
+}
+
+const handleCloseForm = () => {
+  isEdit.value = false;
+  dialogVisible.value = false;
+};
+
+//@ts-ignore
+const handleSubmitForm = (fr: FormInstance | undefined) => {
+  let ids: any = [];
+  multiSelectData2.value.forEach(i => {
+    ids.push(i.userId);
+  })
+  form.value.receiveId = ids.toString();
+  insertMessage(form.value).then(res => {
+    if (res.code === 0) {
+      getData();
+      isEdit.value = false;
+      dialogVisible.value = false;
+    }
+  })
+}
 
 /**
  * 删除

@@ -8,10 +8,12 @@ import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.model.PageParam;
 import com.huii.common.utils.PageParamUtils;
 import com.huii.system.domain.SysMessage;
+import com.huii.system.domain.dto.SysMessageDto;
 import com.huii.system.domain.vo.SysMessageVo;
 import com.huii.system.mapper.SysMessageMapper;
 import com.huii.system.service.SysMessageService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -56,12 +58,30 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     }
 
     @Override
-    public void checkInsert(SysMessage sysMessage) {
+    public void checkInsert(SysMessageDto sysMessage) {
 
     }
 
     @Override
+    public void insertMessage(SysMessageDto dto) {
+        String[] split = dto.getReceiveId().split(",");
+        SysMessage sysMessage = new SysMessage();
+        sysMessage.setMessage(dto.getMessage());
+        sysMessage.setMessageType(dto.getMessageType());
+        sysMessage.setMessageRead(SystemConstants.STATUS_0);
+        sysMessage.setMessageStatus(SystemConstants.STATUS_1);
+        for (String receive : split) {
+            sysMessage.setReceiveId(Long.valueOf(receive));
+            sysMessageMapper.insert(sysMessage);
+        }
+    }
+
+    @Override
     public void insertMessage(SysMessage sysMessage) {
+        //default message type using magic 1
+        sysMessage.setMessageType("1");
+        sysMessage.setMessageRead(SystemConstants.STATUS_0);
+        sysMessage.setMessageStatus(SystemConstants.STATUS_1);
         sysMessageMapper.insert(sysMessage);
     }
 
@@ -82,6 +102,11 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
 
     private LambdaQueryWrapper<SysMessage> wrapperBuilder(SysMessage sysMessage) {
         LambdaQueryWrapper<SysMessage> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(ObjectUtils.isNotEmpty(sysMessage.getMessage()), SysMessage::getMessage, sysMessage.getMessage());
+        wrapper.eq(ObjectUtils.isNotEmpty(sysMessage.getReceiveId()), SysMessage::getReceiveId, sysMessage.getReceiveId());
+        wrapper.eq(ObjectUtils.isNotEmpty(sysMessage.getMessageType()), SysMessage::getMessageType, sysMessage.getMessageType());
+        wrapper.eq(ObjectUtils.isNotEmpty(sysMessage.getMessageRead()), SysMessage::getMessageRead, sysMessage.getMessageRead());
+        wrapper.eq(ObjectUtils.isNotEmpty(sysMessage.getMessageStatus()), SysMessage::getMessageStatus, sysMessage.getMessageStatus());
         wrapper.orderByAsc(SysMessage::getCreateTime);
         return wrapper;
     }

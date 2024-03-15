@@ -8,3 +8,6 @@ export const messageStatusOptions = [
     {value: '0', label: '异常', type: 'danger'},
 ];
 
+export const messageTypeOptions = [
+    {value: '1', label: '普通消息', type: ''},
+];

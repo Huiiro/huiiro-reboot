@@ -24,7 +24,7 @@ export const constRoutes = [
             keepAlive: false,
             breadcrumb: false
         },
-        component: () => import('@/views/login/Login_v2.vue')
+        component: () => import('@/views/login/Login.vue')
     },
     {
         //注册页面

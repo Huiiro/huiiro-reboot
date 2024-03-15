@@ -6,8 +6,7 @@ import com.huii.common.annotation.Xss;
 import com.huii.common.core.model.base.BaseEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * 系统消息 实体类
@@ -16,6 +15,9 @@ import lombok.EqualsAndHashCode;
  * @author huii
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_message")
 @KeySequence(value = "sys_message_id_seq", dbType = DbType.POSTGRE_SQL)
