@@ -27,7 +27,7 @@ public class SysUserOauth implements Serializable {
     private String oauthProvider;
 
     @ExcelProperty(value = "第三方应用身份凭证")
-    private Long oauthIdentify;
+    private String oauthIdentify;
 
     @ExcelProperty(value = "第三方应用名称")
     private String oauthUserName;

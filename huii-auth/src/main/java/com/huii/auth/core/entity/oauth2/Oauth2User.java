@@ -16,7 +16,10 @@ public class Oauth2User {
     @JsonIgnore
     private String type;
 
-    private Long id;
+    /**
+     * fit apps like WeChat using string instead
+     */
+    private String id;
 
     private String name;
 
