@@ -1,7 +1,7 @@
 package com.huii.auth.listener;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.huii.auth.service.LoginSuccessService;
+import com.huii.auth.core.service.LoginSuccessService;
 import com.huii.common.core.domain.SysRole;
 import com.huii.common.core.domain.SysUser;
 import com.huii.system.domain.SysUserRole;

@@ -1,6 +1,6 @@
 package com.huii.auth.core.controller;
 
-import com.huii.auth.service.LoginSecurityService;
+import com.huii.auth.core.service.LoginSecurityService;
 import com.huii.common.annotation.Anonymous;
 import com.huii.common.annotation.Xss;
 import com.huii.common.core.model.R;

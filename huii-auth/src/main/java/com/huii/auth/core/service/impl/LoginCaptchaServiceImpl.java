@@ -1,4 +1,4 @@
-package com.huii.auth.service.impl;
+package com.huii.auth.core.service.impl;
 
 import cn.hutool.core.codec.Base64Encoder;
 import com.google.code.kaptcha.Producer;
@@ -7,8 +7,8 @@ import com.huii.auth.core.entity.Captcha;
 import com.huii.auth.core.entity.LoginEntity;
 import com.huii.auth.core.entity.PointDto;
 import com.huii.auth.core.entity.RectangleDto;
+import com.huii.auth.core.service.LoginCaptchaService;
 import com.huii.auth.kaptcha.KaptchaService;
-import com.huii.auth.service.LoginCaptchaService;
 import com.huii.auth.utils.CaptchaGenerator;
 import com.huii.auth.utils.ExpressionGenerator;
 import com.huii.common.constants.CacheConstants;

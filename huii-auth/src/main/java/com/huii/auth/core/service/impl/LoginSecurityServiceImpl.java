@@ -1,7 +1,7 @@
-package com.huii.auth.service.impl;
+package com.huii.auth.core.service.impl;
 
+import com.huii.auth.core.service.LoginSecurityService;
 import com.huii.auth.factory.SecurityKeyPairFactory;
-import com.huii.auth.service.LoginSecurityService;
 import com.huii.auth.utils.JwtUtils;
 import com.huii.common.constants.CacheConstants;
 import com.huii.common.enums.ResType;

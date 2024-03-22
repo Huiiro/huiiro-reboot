@@ -2,7 +2,7 @@ package com.huii.auth.strategy;
 
 import com.huii.auth.core.entity.LoginEntity;
 import com.huii.auth.core.entity.vo.LoginVo;
-import com.huii.auth.service.LoginSuccessService;
+import com.huii.auth.core.service.LoginSuccessService;
 import com.huii.common.core.model.LoginUser;
 import com.huii.common.exception.BasicAuthenticationException;
 import jakarta.servlet.http.HttpServletRequest;

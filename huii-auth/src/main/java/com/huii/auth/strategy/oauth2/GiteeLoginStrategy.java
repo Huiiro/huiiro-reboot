@@ -1,4 +1,4 @@
-package com.huii.auth.oauth2.strategy;
+package com.huii.auth.strategy.oauth2;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -6,7 +6,7 @@ import com.huii.auth.core.entity.oauth2.GiteeUser;
 import com.huii.auth.core.entity.oauth2.Oauth2Client;
 import com.huii.auth.core.entity.oauth2.Oauth2User;
 import com.huii.auth.factory.Oauth2StrategyFactory;
-import com.huii.auth.oauth2.Oauth2LoginStrategy;
+import com.huii.auth.strategy.AbstractOauth2LoginStrategy;
 import com.huii.common.exception.BasicAuthenticationException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import java.util.Map;
  * @author huii
  */
 @Component
-public class GiteeLoginStrategy extends Oauth2LoginStrategy {
+public class GiteeLoginStrategy extends AbstractOauth2LoginStrategy {
     @Override
     public String getAccessToken(Oauth2Client oauth2Client, HttpServletRequest request, String... params) {
         Map<String, String> queryParams = new HashMap<>();

@@ -1,4 +1,4 @@
-package com.huii.auth.oauth2;
+package com.huii.auth.strategy;
 
 import com.huii.auth.core.entity.oauth2.Oauth2Client;
 import com.huii.auth.core.entity.oauth2.Oauth2User;

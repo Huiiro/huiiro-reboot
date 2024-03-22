@@ -21,14 +21,18 @@ import java.util.Base64;
  */
 public class SecurityKeyPairFactory {
 
-    private static KeyPair keyPair;
+    private static volatile KeyPair keyPair;
 
     private SecurityKeyPairFactory() {
     }
 
     public static KeyPair getKeyPair() {
         if (keyPair == null) {
-            keyPair = initKeyPair();
+            synchronized (SecurityKeyPairFactory.class) {
+                if (keyPair == null) {
+                    keyPair = initKeyPair();
+                }
+            }
         }
         return keyPair;
     }

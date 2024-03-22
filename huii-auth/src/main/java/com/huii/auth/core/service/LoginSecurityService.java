@@ -1,4 +1,4 @@
-package com.huii.auth.service;
+package com.huii.auth.core.service;
 
 /**
  * 登录安全服务

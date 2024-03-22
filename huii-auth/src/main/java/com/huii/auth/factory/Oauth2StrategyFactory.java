@@ -1,6 +1,6 @@
 package com.huii.auth.factory;
 
-import com.huii.auth.oauth2.Oauth2Login;
+import com.huii.auth.strategy.Oauth2Login;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -15,6 +15,13 @@ public class Oauth2StrategyFactory {
 
     private static final Map<String, Oauth2Login> map = new HashMap<>();
 
+    /**
+     * to register all the oauth2 type
+     *
+     * @param key           key
+     * @param oauthStrategy oauthStrategy
+     * @see com.huii.auth.strategy.login.Oauth2LoginStrategy
+     */
     public static void register(String key, Oauth2Login oauthStrategy) {
         if (StringUtils.isEmpty(key) && null == oauthStrategy) {
             return;

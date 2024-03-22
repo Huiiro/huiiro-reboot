@@ -2,7 +2,7 @@ package com.huii.auth.core.controller;
 
 import com.huii.auth.core.entity.dto.Oauth2Dto;
 import com.huii.auth.core.entity.vo.LoginVo;
-import com.huii.auth.service.LoginService;
+import com.huii.auth.core.service.LoginService;
 import com.huii.common.annotation.Anonymous;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.model.base.BaseController;

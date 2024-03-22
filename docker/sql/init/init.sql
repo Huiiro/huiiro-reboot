@@ -12,7 +12,7 @@
  Target Server Version : 140001
  File Encoding         : 65001
 
- Date: 16/03/2024 00:43:40
+ Date: 23/03/2024 03:59:41
 */
 
 
@@ -20,8 +20,8 @@
 -- Sequence structure for dic_type_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."dic_type_id_seq";
-CREATE SEQUENCE "public"."dic_type_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."dic_type_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -31,8 +31,8 @@ CACHE 1;
 -- Sequence structure for gen_column_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."gen_column_id_seq";
-CREATE SEQUENCE "public"."gen_column_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."gen_column_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -42,8 +42,8 @@ CACHE 1;
 -- Sequence structure for gen_table_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."gen_table_id_seq";
-CREATE SEQUENCE "public"."gen_table_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."gen_table_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -53,8 +53,8 @@ CACHE 1;
 -- Sequence structure for msg_mail_template_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."msg_mail_template_id_seq";
-CREATE SEQUENCE "public"."msg_mail_template_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."msg_mail_template_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -64,8 +64,8 @@ CACHE 1;
 -- Sequence structure for msg_send_log_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."msg_send_log_id_seq";
-CREATE SEQUENCE "public"."msg_send_log_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."msg_send_log_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -75,8 +75,8 @@ CACHE 1;
 -- Sequence structure for msg_send_template_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."msg_send_template_id_seq";
-CREATE SEQUENCE "public"."msg_send_template_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."msg_send_template_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -86,8 +86,8 @@ CACHE 1;
 -- Sequence structure for msg_subscribe_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."msg_subscribe_id_seq";
-CREATE SEQUENCE "public"."msg_subscribe_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."msg_subscribe_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -97,8 +97,8 @@ CACHE 1;
 -- Sequence structure for sys_config_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_config_id_seq";
-CREATE SEQUENCE "public"."sys_config_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_config_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -108,8 +108,8 @@ CACHE 1;
 -- Sequence structure for sys_dept_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_dept_id_seq";
-CREATE SEQUENCE "public"."sys_dept_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_dept_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -119,8 +119,8 @@ CACHE 1;
 -- Sequence structure for sys_dic_data_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_dic_data_id_seq";
-CREATE SEQUENCE "public"."sys_dic_data_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_dic_data_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -130,8 +130,8 @@ CACHE 1;
 -- Sequence structure for sys_dic_type_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_dic_type_id_seq";
-CREATE SEQUENCE "public"."sys_dic_type_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_dic_type_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -141,8 +141,8 @@ CACHE 1;
 -- Sequence structure for sys_job_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_job_id_seq";
-CREATE SEQUENCE "public"."sys_job_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_job_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -152,8 +152,8 @@ CACHE 1;
 -- Sequence structure for sys_job_log_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_job_log_id_seq";
-CREATE SEQUENCE "public"."sys_job_log_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_job_log_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -163,8 +163,8 @@ CACHE 1;
 -- Sequence structure for sys_log_login_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_log_login_id_seq";
-CREATE SEQUENCE "public"."sys_log_login_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_log_login_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -174,8 +174,8 @@ CACHE 1;
 -- Sequence structure for sys_log_op_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_log_op_id_seq";
-CREATE SEQUENCE "public"."sys_log_op_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_log_op_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -185,8 +185,8 @@ CACHE 1;
 -- Sequence structure for sys_menu_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_menu_id_seq";
-CREATE SEQUENCE "public"."sys_menu_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_menu_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -196,8 +196,8 @@ CACHE 1;
 -- Sequence structure for sys_message_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_message_id_seq";
-CREATE SEQUENCE "public"."sys_message_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_message_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -207,8 +207,8 @@ CACHE 1;
 -- Sequence structure for sys_notice_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_notice_id_seq";
-CREATE SEQUENCE "public"."sys_notice_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_notice_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -218,8 +218,8 @@ CACHE 1;
 -- Sequence structure for sys_post_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_post_id_seq";
-CREATE SEQUENCE "public"."sys_post_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_post_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -229,8 +229,8 @@ CACHE 1;
 -- Sequence structure for sys_role_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_role_id_seq";
-CREATE SEQUENCE "public"."sys_role_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_role_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -240,8 +240,8 @@ CACHE 1;
 -- Sequence structure for sys_user_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."sys_user_id_seq";
-CREATE SEQUENCE "public"."sys_user_id_seq" 
-INCREMENT 1
+CREATE SEQUENCE "public"."sys_user_id_seq"
+    INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
 START 1
@@ -252,30 +252,30 @@ CACHE 1;
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."gen_column";
 CREATE TABLE "public"."gen_column" (
-  "column_id" int8 NOT NULL DEFAULT nextval('gen_column_id_seq'::regclass),
-  "table_id" int8,
-  "column_name" varchar(255) COLLATE "pg_catalog"."default",
-  "column_comment" varchar(255) COLLATE "pg_catalog"."default",
-  "sql_type" varchar(255) COLLATE "pg_catalog"."default",
-  "sql_field" varchar(255) COLLATE "pg_catalog"."default",
-  "sql_char_length" varchar(255) COLLATE "pg_catalog"."default",
-  "sql_order" varchar(255) COLLATE "pg_catalog"."default",
-  "java_type" varchar(255) COLLATE "pg_catalog"."default",
-  "java_field" varchar(255) COLLATE "pg_catalog"."default",
-  "is_primary_key" varchar(255) COLLATE "pg_catalog"."default",
-  "is_increment" varchar(255) COLLATE "pg_catalog"."default",
-  "is_required" varchar(255) COLLATE "pg_catalog"."default",
-  "check_size" varchar(255) COLLATE "pg_catalog"."default",
-  "check_unique" varchar(255) COLLATE "pg_catalog"."default",
-  "query_type" varchar(255) COLLATE "pg_catalog"."default",
-  "is_query_field" varchar(255) COLLATE "pg_catalog"."default",
-  "form_type" varchar(255) COLLATE "pg_catalog"."default",
-  "dic_type" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                       "column_id" int8 NOT NULL DEFAULT nextval('gen_column_id_seq'::regclass),
+                                       "table_id" int8,
+                                       "column_name" varchar(255) COLLATE "pg_catalog"."default",
+                                       "column_comment" varchar(255) COLLATE "pg_catalog"."default",
+                                       "sql_type" varchar(255) COLLATE "pg_catalog"."default",
+                                       "sql_field" varchar(255) COLLATE "pg_catalog"."default",
+                                       "sql_char_length" varchar(255) COLLATE "pg_catalog"."default",
+                                       "sql_order" varchar(255) COLLATE "pg_catalog"."default",
+                                       "java_type" varchar(255) COLLATE "pg_catalog"."default",
+                                       "java_field" varchar(255) COLLATE "pg_catalog"."default",
+                                       "is_primary_key" varchar(255) COLLATE "pg_catalog"."default",
+                                       "is_increment" varchar(255) COLLATE "pg_catalog"."default",
+                                       "is_required" varchar(255) COLLATE "pg_catalog"."default",
+                                       "check_size" varchar(255) COLLATE "pg_catalog"."default",
+                                       "check_unique" varchar(255) COLLATE "pg_catalog"."default",
+                                       "query_type" varchar(255) COLLATE "pg_catalog"."default",
+                                       "is_query_field" varchar(255) COLLATE "pg_catalog"."default",
+                                       "form_type" varchar(255) COLLATE "pg_catalog"."default",
+                                       "dic_type" varchar(255) COLLATE "pg_catalog"."default",
+                                       "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                       "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                       "create_time" timestamp(2),
+                                       "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                       "update_time" timestamp(2)
 )
 ;
 
@@ -288,36 +288,36 @@ CREATE TABLE "public"."gen_column" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."gen_table";
 CREATE TABLE "public"."gen_table" (
-  "table_id" int8 NOT NULL DEFAULT nextval('gen_table_id_seq'::regclass),
-  "table_name" varchar(255) COLLATE "pg_catalog"."default",
-  "table_comment" varchar(255) COLLATE "pg_catalog"."default",
-  "table_template" varchar(255) COLLATE "pg_catalog"."default",
-  "class_name" varchar(255) COLLATE "pg_catalog"."default",
-  "variable_name" varchar(255) COLLATE "pg_catalog"."default",
-  "frontend_type" varchar(255) COLLATE "pg_catalog"."default",
-  "sql_type" varchar(255) COLLATE "pg_catalog"."default",
-  "author_name" varchar(255) COLLATE "pg_catalog"."default",
-  "package_name" varchar(255) COLLATE "pg_catalog"."default",
-  "module_name" varchar(255) COLLATE "pg_catalog"."default",
-  "module_function_desc" varchar(255) COLLATE "pg_catalog"."default",
-  "module_function_name" varchar(255) COLLATE "pg_catalog"."default",
-  "auth_prefix" varchar(255) COLLATE "pg_catalog"."default",
-  "request_url" varchar(255) COLLATE "pg_catalog"."default",
-  "gen_add_interface" varchar(255) COLLATE "pg_catalog"."default",
-  "gen_edit_interface" varchar(255) COLLATE "pg_catalog"."default",
-  "gen_delete_interface" varchar(255) COLLATE "pg_catalog"."default",
-  "gen_import_interface" varchar(255) COLLATE "pg_catalog"."default",
-  "gen_export_interface" varchar(255) COLLATE "pg_catalog"."default",
-  "sub_table_name" varchar(255) COLLATE "pg_catalog"."default",
-  "sub_table_foreign_key" varchar(255) COLLATE "pg_catalog"."default",
-  "tree_id" varchar(255) COLLATE "pg_catalog"."default",
-  "tree_label_name" varchar(255) COLLATE "pg_catalog"."default",
-  "parent_menu_id" int8,
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                      "table_id" int8 NOT NULL DEFAULT nextval('gen_table_id_seq'::regclass),
+                                      "table_name" varchar(255) COLLATE "pg_catalog"."default",
+                                      "table_comment" varchar(255) COLLATE "pg_catalog"."default",
+                                      "table_template" varchar(255) COLLATE "pg_catalog"."default",
+                                      "class_name" varchar(255) COLLATE "pg_catalog"."default",
+                                      "variable_name" varchar(255) COLLATE "pg_catalog"."default",
+                                      "frontend_type" varchar(255) COLLATE "pg_catalog"."default",
+                                      "sql_type" varchar(255) COLLATE "pg_catalog"."default",
+                                      "author_name" varchar(255) COLLATE "pg_catalog"."default",
+                                      "package_name" varchar(255) COLLATE "pg_catalog"."default",
+                                      "module_name" varchar(255) COLLATE "pg_catalog"."default",
+                                      "module_function_desc" varchar(255) COLLATE "pg_catalog"."default",
+                                      "module_function_name" varchar(255) COLLATE "pg_catalog"."default",
+                                      "auth_prefix" varchar(255) COLLATE "pg_catalog"."default",
+                                      "request_url" varchar(255) COLLATE "pg_catalog"."default",
+                                      "gen_add_interface" varchar(255) COLLATE "pg_catalog"."default",
+                                      "gen_edit_interface" varchar(255) COLLATE "pg_catalog"."default",
+                                      "gen_delete_interface" varchar(255) COLLATE "pg_catalog"."default",
+                                      "gen_import_interface" varchar(255) COLLATE "pg_catalog"."default",
+                                      "gen_export_interface" varchar(255) COLLATE "pg_catalog"."default",
+                                      "sub_table_name" varchar(255) COLLATE "pg_catalog"."default",
+                                      "sub_table_foreign_key" varchar(255) COLLATE "pg_catalog"."default",
+                                      "tree_id" varchar(255) COLLATE "pg_catalog"."default",
+                                      "tree_label_name" varchar(255) COLLATE "pg_catalog"."default",
+                                      "parent_menu_id" int8,
+                                      "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                      "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                      "create_time" timestamp(2),
+                                      "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                      "update_time" timestamp(2)
 )
 ;
 
@@ -330,17 +330,17 @@ CREATE TABLE "public"."gen_table" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."msg_mail_template";
 CREATE TABLE "public"."msg_mail_template" (
-  "mail_temp_id" int8 NOT NULL DEFAULT nextval('msg_mail_template_id_seq'::regclass),
-  "mail_type" varchar(255) COLLATE "pg_catalog"."default",
-  "mail_subject" varchar(255) COLLATE "pg_catalog"."default",
-  "mail_content" text COLLATE "pg_catalog"."default",
-  "mail_attach_file" varchar(255) COLLATE "pg_catalog"."default",
-  "temp_name" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                              "mail_temp_id" int8 NOT NULL DEFAULT nextval('msg_mail_template_id_seq'::regclass),
+                                              "mail_type" varchar(255) COLLATE "pg_catalog"."default",
+                                              "mail_subject" varchar(255) COLLATE "pg_catalog"."default",
+                                              "mail_content" text COLLATE "pg_catalog"."default",
+                                              "mail_attach_file" varchar(255) COLLATE "pg_catalog"."default",
+                                              "temp_name" varchar(255) COLLATE "pg_catalog"."default",
+                                              "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                              "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                              "create_time" timestamp(2),
+                                              "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                              "update_time" timestamp(2)
 )
 ;
 
@@ -353,13 +353,13 @@ CREATE TABLE "public"."msg_mail_template" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."msg_send_log";
 CREATE TABLE "public"."msg_send_log" (
-  "log_id" int8 NOT NULL DEFAULT nextval('msg_send_log_id_seq'::regclass),
-  "temp_name" varchar(255) COLLATE "pg_catalog"."default",
-  "send_type" varchar(255) COLLATE "pg_catalog"."default",
-  "send_target" varchar(500) COLLATE "pg_catalog"."default",
-  "send_time" timestamp(2),
-  "send_status" char(1) COLLATE "pg_catalog"."default",
-  "err_info" varchar(500) COLLATE "pg_catalog"."default"
+                                         "log_id" int8 NOT NULL DEFAULT nextval('msg_send_log_id_seq'::regclass),
+                                         "temp_name" varchar(255) COLLATE "pg_catalog"."default",
+                                         "send_type" varchar(255) COLLATE "pg_catalog"."default",
+                                         "send_target" varchar(500) COLLATE "pg_catalog"."default",
+                                         "send_time" timestamp(2),
+                                         "send_status" char(1) COLLATE "pg_catalog"."default",
+                                         "err_info" varchar(500) COLLATE "pg_catalog"."default"
 )
 ;
 
@@ -372,18 +372,18 @@ CREATE TABLE "public"."msg_send_log" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."msg_send_template";
 CREATE TABLE "public"."msg_send_template" (
-  "temp_id" int8 NOT NULL DEFAULT nextval('msg_send_template_id_seq'::regclass),
-  "temp_name" varchar(255) COLLATE "pg_catalog"."default",
-  "send_temp_params" varchar(255) COLLATE "pg_catalog"."default",
-  "send_temp_name" varchar(255) COLLATE "pg_catalog"."default",
-  "send_type" char(1) COLLATE "pg_catalog"."default",
-  "send_targets" text COLLATE "pg_catalog"."default",
-  "sub_id" int8,
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                              "temp_id" int8 NOT NULL DEFAULT nextval('msg_send_template_id_seq'::regclass),
+                                              "temp_name" varchar(255) COLLATE "pg_catalog"."default",
+                                              "send_temp_params" varchar(255) COLLATE "pg_catalog"."default",
+                                              "send_temp_name" varchar(255) COLLATE "pg_catalog"."default",
+                                              "send_type" char(1) COLLATE "pg_catalog"."default",
+                                              "send_targets" text COLLATE "pg_catalog"."default",
+                                              "sub_id" int8,
+                                              "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                              "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                              "create_time" timestamp(2),
+                                              "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                              "update_time" timestamp(2)
 )
 ;
 
@@ -396,15 +396,15 @@ CREATE TABLE "public"."msg_send_template" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."msg_subscribe";
 CREATE TABLE "public"."msg_subscribe" (
-  "sub_id" int8 NOT NULL DEFAULT nextval('msg_subscribe_id_seq'::regclass),
-  "sub_name" varchar(255) COLLATE "pg_catalog"."default",
-  "sub_desc" varchar(255) COLLATE "pg_catalog"."default",
-  "sub_status" char(1) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default"
+                                          "sub_id" int8 NOT NULL DEFAULT nextval('msg_subscribe_id_seq'::regclass),
+                                          "sub_name" varchar(255) COLLATE "pg_catalog"."default",
+                                          "sub_desc" varchar(255) COLLATE "pg_catalog"."default",
+                                          "sub_status" char(1) COLLATE "pg_catalog"."default",
+                                          "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                          "create_time" timestamp(2),
+                                          "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                          "update_time" timestamp(2),
+                                          "update_by" varchar(20) COLLATE "pg_catalog"."default"
 )
 ;
 
@@ -417,8 +417,8 @@ CREATE TABLE "public"."msg_subscribe" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."msg_subscribe_user";
 CREATE TABLE "public"."msg_subscribe_user" (
-  "sub_id" int8 NOT NULL,
-  "user_id" int8 NOT NULL
+                                               "sub_id" int8 NOT NULL,
+                                               "user_id" int8 NOT NULL
 )
 ;
 
@@ -431,15 +431,15 @@ CREATE TABLE "public"."msg_subscribe_user" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_config";
 CREATE TABLE "public"."sys_config" (
-  "config_id" int8 NOT NULL DEFAULT nextval('sys_config_id_seq'::regclass),
-  "config_name" varchar(50) COLLATE "pg_catalog"."default",
-  "config_key" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
-  "config_value" varchar(2000) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                       "config_id" int8 NOT NULL DEFAULT nextval('sys_config_id_seq'::regclass),
+                                       "config_name" varchar(50) COLLATE "pg_catalog"."default",
+                                       "config_key" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
+                                       "config_value" varchar(2000) COLLATE "pg_catalog"."default",
+                                       "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                       "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                       "create_time" timestamp(2),
+                                       "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                       "update_time" timestamp(2)
 )
 ;
 
@@ -452,17 +452,17 @@ CREATE TABLE "public"."sys_config" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_dept";
 CREATE TABLE "public"."sys_dept" (
-  "dept_id" int8 NOT NULL DEFAULT nextval('sys_dept_id_seq'::regclass),
-  "parent_id" int8 NOT NULL,
-  "dept_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-  "dept_leader" varchar(255) COLLATE "pg_catalog"."default",
-  "dept_seq" int2,
-  "dept_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                     "dept_id" int8 NOT NULL DEFAULT nextval('sys_dept_id_seq'::regclass),
+                                     "parent_id" int8 NOT NULL,
+                                     "dept_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "dept_leader" varchar(255) COLLATE "pg_catalog"."default",
+                                     "dept_seq" int2,
+                                     "dept_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                     "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                     "create_time" timestamp(2),
+                                     "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                     "update_time" timestamp(2)
 )
 ;
 
@@ -477,72 +477,71 @@ INSERT INTO "public"."sys_dept" VALUES (1, 0, '总公司', 'huiiro', 1, '1', '',
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_dic_data";
 CREATE TABLE "public"."sys_dic_data" (
-  "data_id" int8 NOT NULL DEFAULT nextval('sys_dic_data_id_seq'::regclass),
-  "data_type" varchar(50) COLLATE "pg_catalog"."default",
-  "data_name" varchar(50) COLLATE "pg_catalog"."default",
-  "data_key" varchar(50) COLLATE "pg_catalog"."default",
-  "data_value" varchar(255) COLLATE "pg_catalog"."default",
-  "data_label" varchar(50) COLLATE "pg_catalog"."default",
-  "data_seq" int2,
-  "data_type_info" varchar(255) COLLATE "pg_catalog"."default",
-  "data_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                         "data_id" int8 NOT NULL DEFAULT nextval('sys_dic_data_id_seq'::regclass),
+                                         "data_type" varchar(50) COLLATE "pg_catalog"."default",
+                                         "data_name" varchar(50) COLLATE "pg_catalog"."default",
+                                         "data_key" varchar(50) COLLATE "pg_catalog"."default",
+                                         "data_value" varchar(255) COLLATE "pg_catalog"."default",
+                                         "data_label" varchar(50) COLLATE "pg_catalog"."default",
+                                         "data_seq" int2,
+                                         "data_type_info" varchar(255) COLLATE "pg_catalog"."default",
+                                         "data_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+                                         "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                         "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                         "create_time" timestamp(2),
+                                         "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                         "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_dic_data
 -- ----------------------------
-INSERT INTO "public"."sys_dic_data" VALUES (1, 'dic_type', 'test', '具体值', '1', '1', 1, 'default', '1', '', NULL, NULL, 'admin', '2024-01-24 14:37:59.09');
-INSERT INTO "public"."sys_dic_data" VALUES (2, 'test_type1234', 'test', '具体值', '1', '1', 1, '1', '1', '', NULL, NULL, 'admin', '2023-12-11 19:42:19.38');
+INSERT INTO "public"."sys_dic_data" VALUES (1, 'dic_type', 'test', '测试数据值', '1', '1', 1, 'default', '1', '', NULL, NULL, 'admin', '2024-01-24 14:37:59.09');
 
 -- ----------------------------
 -- Table structure for sys_dic_type
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_dic_type";
 CREATE TABLE "public"."sys_dic_type" (
-  "type_id" int8 NOT NULL DEFAULT nextval('sys_dic_type_id_seq'::regclass),
-  "type_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-  "dic_type" varchar(50) COLLATE "pg_catalog"."default",
-  "type_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                         "type_id" int8 NOT NULL DEFAULT nextval('sys_dic_type_id_seq'::regclass),
+                                         "type_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+                                         "dic_type" varchar(50) COLLATE "pg_catalog"."default",
+                                         "type_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+                                         "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                         "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                         "create_time" timestamp(2),
+                                         "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                         "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_dic_type
 -- ----------------------------
-INSERT INTO "public"."sys_dic_type" VALUES (1, 'test', 'dic_type', '1', '123', NULL, NULL, 'admin', '2024-01-24 14:37:59.09');
+INSERT INTO "public"."sys_dic_type" VALUES (1, '测试数据', 'dic_type', '1', '123', NULL, NULL, 'admin', '2024-01-24 14:37:59.09');
 
 -- ----------------------------
 -- Table structure for sys_file
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_file";
 CREATE TABLE "public"."sys_file" (
-  "file_id" int8 NOT NULL,
-  "file_name" varchar(255) COLLATE "pg_catalog"."default",
-  "origin_name" varchar(255) COLLATE "pg_catalog"."default",
-  "file_size" varchar(255) COLLATE "pg_catalog"."default",
-  "file_suffix" varchar(255) COLLATE "pg_catalog"."default",
-  "file_acl" varchar(255) COLLATE "pg_catalog"."default",
-  "file_md5" varchar(255) COLLATE "pg_catalog"."default",
-  "file_price" numeric,
-  "access_url" varchar(255) COLLATE "pg_catalog"."default",
-  "file_server" varchar(255) COLLATE "pg_catalog"."default",
-  "file_status" varchar(1) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default"
+                                     "file_id" int8 NOT NULL,
+                                     "file_name" varchar(255) COLLATE "pg_catalog"."default",
+                                     "origin_name" varchar(255) COLLATE "pg_catalog"."default",
+                                     "file_size" varchar(255) COLLATE "pg_catalog"."default",
+                                     "file_suffix" varchar(255) COLLATE "pg_catalog"."default",
+                                     "file_acl" varchar(255) COLLATE "pg_catalog"."default",
+                                     "file_md5" varchar(255) COLLATE "pg_catalog"."default",
+                                     "file_price" numeric,
+                                     "access_url" varchar(255) COLLATE "pg_catalog"."default",
+                                     "file_server" varchar(255) COLLATE "pg_catalog"."default",
+                                     "file_status" varchar(1) COLLATE "pg_catalog"."default",
+                                     "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                     "create_time" timestamp(2),
+                                     "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                     "update_time" timestamp(2),
+                                     "update_by" varchar(20) COLLATE "pg_catalog"."default"
 )
 ;
 
@@ -555,19 +554,19 @@ CREATE TABLE "public"."sys_file" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_job";
 CREATE TABLE "public"."sys_job" (
-  "job_id" int8 NOT NULL DEFAULT nextval('sys_job_id_seq'::regclass),
-  "job_name" varchar(255) COLLATE "pg_catalog"."default",
-  "group_name" varchar(255) COLLATE "pg_catalog"."default",
-  "cron" varchar(255) COLLATE "pg_catalog"."default",
-  "target" varchar(255) COLLATE "pg_catalog"."default",
-  "job_status" char(1) COLLATE "pg_catalog"."default",
-  "concurrent_status" char(1) COLLATE "pg_catalog"."default",
-  "misfire_policy" char(1) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                    "job_id" int8 NOT NULL DEFAULT nextval('sys_job_id_seq'::regclass),
+                                    "job_name" varchar(255) COLLATE "pg_catalog"."default",
+                                    "group_name" varchar(255) COLLATE "pg_catalog"."default",
+                                    "cron" varchar(255) COLLATE "pg_catalog"."default",
+                                    "target" varchar(255) COLLATE "pg_catalog"."default",
+                                    "job_status" char(1) COLLATE "pg_catalog"."default",
+                                    "concurrent_status" char(1) COLLATE "pg_catalog"."default",
+                                    "misfire_policy" char(1) COLLATE "pg_catalog"."default",
+                                    "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                    "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                    "create_time" timestamp(2),
+                                    "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                    "update_time" timestamp(2)
 )
 ;
 
@@ -581,16 +580,16 @@ INSERT INTO "public"."sys_job" VALUES (1, '测试任务', 'DEFAULT', '*/10 * * *
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_job_log";
 CREATE TABLE "public"."sys_job_log" (
-  "log_id" int8 NOT NULL DEFAULT nextval('sys_job_log_id_seq'::regclass),
-  "job_name" varchar(255) COLLATE "pg_catalog"."default",
-  "group_name" varchar(255) COLLATE "pg_catalog"."default",
-  "target" varchar(255) COLLATE "pg_catalog"."default",
-  "job_status" varchar(1) COLLATE "pg_catalog"."default",
-  "job_message" varchar(255) COLLATE "pg_catalog"."default",
-  "error_info" varchar(255) COLLATE "pg_catalog"."default",
-  "begin_time" timestamp(2),
-  "end_time" timestamp(2),
-  "cost" int4
+                                        "log_id" int8 NOT NULL DEFAULT nextval('sys_job_log_id_seq'::regclass),
+                                        "job_name" varchar(255) COLLATE "pg_catalog"."default",
+                                        "group_name" varchar(255) COLLATE "pg_catalog"."default",
+                                        "target" varchar(255) COLLATE "pg_catalog"."default",
+                                        "job_status" varchar(1) COLLATE "pg_catalog"."default",
+                                        "job_message" varchar(255) COLLATE "pg_catalog"."default",
+                                        "error_info" varchar(255) COLLATE "pg_catalog"."default",
+                                        "begin_time" timestamp(2),
+                                        "end_time" timestamp(2),
+                                        "cost" int4
 )
 ;
 
@@ -603,16 +602,16 @@ CREATE TABLE "public"."sys_job_log" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_log_login";
 CREATE TABLE "public"."sys_log_login" (
-  "login_id" int8 NOT NULL DEFAULT nextval('sys_log_login_id_seq'::regclass),
-  "login_user_name" varchar(20) COLLATE "pg_catalog"."default",
-  "login_ip" varchar(255) COLLATE "pg_catalog"."default",
-  "login_address" varchar(255) COLLATE "pg_catalog"."default",
-  "login_time" timestamp(2),
-  "login_browser" varchar(255) COLLATE "pg_catalog"."default",
-  "login_os" varchar(255) COLLATE "pg_catalog"."default",
-  "login_type" int2,
-  "login_status" char(1) COLLATE "pg_catalog"."default",
-  "login_message" varchar(255) COLLATE "pg_catalog"."default"
+                                          "login_id" int8 NOT NULL DEFAULT nextval('sys_log_login_id_seq'::regclass),
+                                          "login_user_name" varchar(20) COLLATE "pg_catalog"."default",
+                                          "login_ip" varchar(255) COLLATE "pg_catalog"."default",
+                                          "login_address" varchar(255) COLLATE "pg_catalog"."default",
+                                          "login_time" timestamp(2),
+                                          "login_browser" varchar(255) COLLATE "pg_catalog"."default",
+                                          "login_os" varchar(255) COLLATE "pg_catalog"."default",
+                                          "login_type" int2,
+                                          "login_status" char(1) COLLATE "pg_catalog"."default",
+                                          "login_message" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
 
@@ -625,53 +624,51 @@ CREATE TABLE "public"."sys_log_login" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_log_op";
 CREATE TABLE "public"."sys_log_op" (
-  "op_id" int8 NOT NULL DEFAULT nextval('sys_log_op_id_seq'::regclass),
-  "op_user_name" varchar(255) COLLATE "pg_catalog"."default",
-  "op_method_name" varchar(255) COLLATE "pg_catalog"."default",
-  "op_type" int2,
-  "op_time" timestamp(2),
-  "op_cost_time" int8,
-  "op_ip" varchar(255) COLLATE "pg_catalog"."default",
-  "op_address" varchar(255) COLLATE "pg_catalog"."default",
-  "op_request" varchar(255) COLLATE "pg_catalog"."default",
-  "op_url" varchar(255) COLLATE "pg_catalog"."default",
-  "op_req_param" varchar(2000) COLLATE "pg_catalog"."default",
-  "op_res_param" varchar(2000) COLLATE "pg_catalog"."default",
-  "op_status" char(1) COLLATE "pg_catalog"."default",
-  "op_mark_flag" char(1) COLLATE "pg_catalog"."default",
-  "op_message" varchar(2000) COLLATE "pg_catalog"."default",
-  "op_desc" varchar(255) COLLATE "pg_catalog"."default"
+                                       "op_id" int8 NOT NULL DEFAULT nextval('sys_log_op_id_seq'::regclass),
+                                       "op_user_name" varchar(255) COLLATE "pg_catalog"."default",
+                                       "op_method_name" varchar(255) COLLATE "pg_catalog"."default",
+                                       "op_type" int2,
+                                       "op_time" timestamp(2),
+                                       "op_cost_time" int8,
+                                       "op_ip" varchar(255) COLLATE "pg_catalog"."default",
+                                       "op_address" varchar(255) COLLATE "pg_catalog"."default",
+                                       "op_request" varchar(255) COLLATE "pg_catalog"."default",
+                                       "op_url" varchar(255) COLLATE "pg_catalog"."default",
+                                       "op_req_param" varchar(2000) COLLATE "pg_catalog"."default",
+                                       "op_res_param" varchar(2000) COLLATE "pg_catalog"."default",
+                                       "op_status" char(1) COLLATE "pg_catalog"."default",
+                                       "op_mark_flag" char(1) COLLATE "pg_catalog"."default",
+                                       "op_message" varchar(2000) COLLATE "pg_catalog"."default",
+                                       "op_desc" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
 
 -- ----------------------------
 -- Records of sys_log_op
 -- ----------------------------
-INSERT INTO "public"."sys_log_op" VALUES (939, 'admin', 'deleteAll', 6, '2024-03-16 00:29:19.7', 10, '0:0:0:0:0:0:0:1', '', 'POST', 'com.huii.controller.monitor.SysLogOpControllerdeleteAll', '', '{"code":0,"message":"删除成功"}', '1', '0', '', '删除全部接口日志');
-INSERT INTO "public"."sys_log_op" VALUES (940, 'admin', 'deleteAll', 6, '2024-03-16 00:29:24.49', 2, '0:0:0:0:0:0:0:1', '', 'POST', 'com.huii.controller.monitor.SysLogLoginControllerdeleteAll', '', '{"code":0,"message":"删除成功"}', '1', '0', '', '删除全部登录日志');
 
 -- ----------------------------
 -- Table structure for sys_menu
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_menu";
 CREATE TABLE "public"."sys_menu" (
-  "menu_id" int8 NOT NULL DEFAULT nextval('sys_menu_id_seq'::regclass),
-  "parent_id" int8 NOT NULL,
-  "menu_type" int2,
-  "menu_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-  "menu_auth" varchar(255) COLLATE "pg_catalog"."default",
-  "menu_icon" varchar(255) COLLATE "pg_catalog"."default",
-  "menu_path" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "menu_component" varchar(255) COLLATE "pg_catalog"."default",
-  "menu_seq" int2,
-  "menu_visible" char(1) COLLATE "pg_catalog"."default" NOT NULL,
-  "menu_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
-  "query_param" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                     "menu_id" int8 NOT NULL DEFAULT nextval('sys_menu_id_seq'::regclass),
+                                     "parent_id" int8 NOT NULL,
+                                     "menu_type" int2,
+                                     "menu_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "menu_auth" varchar(255) COLLATE "pg_catalog"."default",
+                                     "menu_icon" varchar(255) COLLATE "pg_catalog"."default",
+                                     "menu_path" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "menu_component" varchar(255) COLLATE "pg_catalog"."default",
+                                     "menu_seq" int2,
+                                     "menu_visible" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "menu_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "query_param" varchar(255) COLLATE "pg_catalog"."default",
+                                     "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                     "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                     "create_time" timestamp(2),
+                                     "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                     "update_time" timestamp(2)
 )
 ;
 
@@ -794,107 +791,104 @@ INSERT INTO "public"."sys_menu" VALUES (110, 1, 1, '消息管理', 'system:messa
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_message";
 CREATE TABLE "public"."sys_message" (
-  "message_id" int8 NOT NULL DEFAULT nextval('sys_message_id_seq'::regclass),
-  "send_id" int8,
-  "receive_id" int8,
-  "message" text COLLATE "pg_catalog"."default",
-  "message_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
-  "message_type" char(1) COLLATE "pg_catalog"."default",
-  "message_read" varchar(1) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                        "message_id" int8 NOT NULL DEFAULT nextval('sys_message_id_seq'::regclass),
+                                        "send_id" int8,
+                                        "receive_id" int8,
+                                        "message" text COLLATE "pg_catalog"."default",
+                                        "message_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+                                        "message_type" char(1) COLLATE "pg_catalog"."default",
+                                        "message_read" varchar(1) COLLATE "pg_catalog"."default",
+                                        "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                        "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                        "create_time" timestamp(2),
+                                        "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                        "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_message
 -- ----------------------------
-INSERT INTO "public"."sys_message" VALUES (9, 1, 51, '测试消息', '1', '1', '1', NULL, 'admin', '2024-03-15 23:45:55.38', 'admin', '2024-03-15 23:49:46.44');
-INSERT INTO "public"."sys_message" VALUES (10, 1, 1, '测试消息', '1', '1', '1', NULL, 'admin', '2024-03-15 23:45:55.38', 'admin', '2024-03-15 23:49:46.45');
 
 -- ----------------------------
 -- Table structure for sys_notice
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_notice";
 CREATE TABLE "public"."sys_notice" (
-  "notice_id" int8 NOT NULL DEFAULT nextval('sys_notice_id_seq'::regclass),
-  "notice_title" varchar(255) COLLATE "pg_catalog"."default",
-  "notice_content" text COLLATE "pg_catalog"."default",
-  "notice_type" int2,
-  "notice_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                       "notice_id" int8 NOT NULL DEFAULT nextval('sys_notice_id_seq'::regclass),
+                                       "notice_title" varchar(255) COLLATE "pg_catalog"."default",
+                                       "notice_content" text COLLATE "pg_catalog"."default",
+                                       "notice_type" int2,
+                                       "notice_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+                                       "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                       "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                       "create_time" timestamp(2),
+                                       "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                       "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_notice
 -- ----------------------------
-INSERT INTO "public"."sys_notice" VALUES (2, '测试', '123', 1, '1', '', 'admin', '2023-12-14 02:59:54.47', 'admin', '2023-12-14 02:59:54.47');
 
 -- ----------------------------
 -- Table structure for sys_post
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_post";
 CREATE TABLE "public"."sys_post" (
-  "post_id" int8 NOT NULL DEFAULT nextval('sys_post_id_seq'::regclass),
-  "post_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-  "post_key" varchar(50) COLLATE "pg_catalog"."default",
-  "post_duty" varchar(255) COLLATE "pg_catalog"."default",
-  "post_seq" int2,
-  "post_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                     "post_id" int8 NOT NULL DEFAULT nextval('sys_post_id_seq'::regclass),
+                                     "post_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "post_key" varchar(50) COLLATE "pg_catalog"."default",
+                                     "post_duty" varchar(255) COLLATE "pg_catalog"."default",
+                                     "post_seq" int2,
+                                     "post_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                     "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                     "create_time" timestamp(2),
+                                     "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                     "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_post
 -- ----------------------------
-INSERT INTO "public"."sys_post" VALUES (1, 'CEO', 'CEO', '123666', 1, '1', NULL, NULL, NULL, 'admin', '2023-11-30 16:23:18.16');
+INSERT INTO "public"."sys_post" VALUES (1, 'CEO', 'CEO', '', 1, '1', NULL, 'admin', '2023-11-30 16:23:18.16', 'admin', '2023-11-30 16:23:18.16');
 
 -- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_role";
 CREATE TABLE "public"."sys_role" (
-  "role_id" int8 NOT NULL DEFAULT nextval('sys_role_id_seq'::regclass),
-  "role_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-  "role_key" varchar(50) COLLATE "pg_catalog"."default",
-  "role_scope" char(1) COLLATE "pg_catalog"."default",
-  "role_seq" int2,
-  "role_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                     "role_id" int8 NOT NULL DEFAULT nextval('sys_role_id_seq'::regclass),
+                                     "role_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "role_key" varchar(50) COLLATE "pg_catalog"."default",
+                                     "role_scope" char(1) COLLATE "pg_catalog"."default",
+                                     "role_seq" int2,
+                                     "role_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                     "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                     "create_time" timestamp(2),
+                                     "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                     "update_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO "public"."sys_role" VALUES (1, '管理员', 'ADMIN', '1', 1, '1', NULL, NULL, '2023-11-19 17:09:16', NULL, NULL);
 INSERT INTO "public"."sys_role" VALUES (19, '测试员2', 'TEST2', '5', 3, '1', '', 'admin', '2023-12-14 03:59:34.77', 'admin', '2023-12-14 03:59:34.77');
 INSERT INTO "public"."sys_role" VALUES (18, '测试员', 'TEST', '4', 2, '1', NULL, 'admin', '2023-11-24 18:21:20', 'admin', '2024-01-25 22:53:28.99');
+INSERT INTO "public"."sys_role" VALUES (1, '管理员', 'ADMIN', '1', 1, '1', NULL, 'admin', '2023-11-19 17:09:16', 'admin', '2023-11-19 17:09:16');
 
 -- ----------------------------
 -- Table structure for sys_role_dept
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_role_dept";
 CREATE TABLE "public"."sys_role_dept" (
-  "role_id" int8 NOT NULL,
-  "dept_id" int8 NOT NULL
+                                          "role_id" int8 NOT NULL,
+                                          "dept_id" int8 NOT NULL
 )
 ;
 
@@ -908,8 +902,8 @@ INSERT INTO "public"."sys_role_dept" VALUES (1, 1);
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_role_menu";
 CREATE TABLE "public"."sys_role_menu" (
-  "role_id" int8 NOT NULL,
-  "menu_id" int8 NOT NULL
+                                          "role_id" int8 NOT NULL,
+                                          "menu_id" int8 NOT NULL
 )
 ;
 
@@ -1044,24 +1038,24 @@ INSERT INTO "public"."sys_role_menu" VALUES (18, 19);
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_user";
 CREATE TABLE "public"."sys_user" (
-  "user_id" int8 NOT NULL DEFAULT nextval('sys_user_id_seq'::regclass),
-  "dept_id" int8,
-  "user_name" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
-  "nick_name" varchar(20) COLLATE "pg_catalog"."default",
-  "password" varchar(255) COLLATE "pg_catalog"."default",
-  "phone" varchar(20) COLLATE "pg_catalog"."default",
-  "email" varchar(40) COLLATE "pg_catalog"."default",
-  "sexual" char(1) COLLATE "pg_catalog"."default",
-  "avatar" varchar(255) COLLATE "pg_catalog"."default",
-  "login_ip" varchar(255) COLLATE "pg_catalog"."default",
-  "login_time" timestamp(6),
-  "delete_flag" char(1) COLLATE "pg_catalog"."default" NOT NULL,
-  "user_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "create_by" varchar(20) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2),
-  "update_by" varchar(20) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(2)
+                                     "user_id" int8 NOT NULL DEFAULT nextval('sys_user_id_seq'::regclass),
+                                     "dept_id" int8,
+                                     "user_name" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "nick_name" varchar(20) COLLATE "pg_catalog"."default",
+                                     "password" varchar(255) COLLATE "pg_catalog"."default",
+                                     "phone" varchar(20) COLLATE "pg_catalog"."default",
+                                     "email" varchar(40) COLLATE "pg_catalog"."default",
+                                     "sexual" char(1) COLLATE "pg_catalog"."default",
+                                     "avatar" varchar(255) COLLATE "pg_catalog"."default",
+                                     "login_ip" varchar(255) COLLATE "pg_catalog"."default",
+                                     "login_time" timestamp(6),
+                                     "delete_flag" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "user_status" char(1) COLLATE "pg_catalog"."default" NOT NULL,
+                                     "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                     "create_by" varchar(20) COLLATE "pg_catalog"."default",
+                                     "create_time" timestamp(2),
+                                     "update_by" varchar(20) COLLATE "pg_catalog"."default",
+                                     "update_time" timestamp(2)
 )
 ;
 
@@ -1076,28 +1070,28 @@ INSERT INTO "public"."sys_user" VALUES (1, 1, 'admin', 'huii', '$2a$10$Tt68.t/Je
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_user_oauth";
 CREATE TABLE "public"."sys_user_oauth" (
-  "user_id" int8 NOT NULL,
-  "oauth_provider" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "oauth_identify" int8,
-  "oauth_user_name" varchar(255) COLLATE "pg_catalog"."default",
-  "oauth_user_avatar" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(2)
+                                           "user_id" int8 NOT NULL,
+                                           "oauth_provider" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                           "oauth_identify" varchar(64) COLLATE "pg_catalog"."default",
+                                           "oauth_user_name" varchar(255) COLLATE "pg_catalog"."default",
+                                           "oauth_user_avatar" varchar(255) COLLATE "pg_catalog"."default",
+                                           "create_time" timestamp(2)
 )
 ;
 
 -- ----------------------------
 -- Records of sys_user_oauth
 -- ----------------------------
-INSERT INTO "public"."sys_user_oauth" VALUES (1, 'gitee', 8520863, 'HuYi', 'https://gitee.com/assets/no_portrait.png', '2024-01-08 19:39:04.73');
-INSERT INTO "public"."sys_user_oauth" VALUES (1, 'github', 71134144, '1659009445', 'https://avatars.githubusercontent.com/u/71134144?v=4', '2024-01-08 19:44:08.22');
+INSERT INTO "public"."sys_user_oauth" VALUES (1, 'gitee', '8520863', 'HuYi', 'https://gitee.com/assets/no_portrait.png', '2024-01-08 19:39:04.73');
+INSERT INTO "public"."sys_user_oauth" VALUES (1, 'github', '71134144', '1659009445', 'https://avatars.githubusercontent.com/u/71134144?v=4', '2024-01-08 19:44:08.22');
 
 -- ----------------------------
 -- Table structure for sys_user_post
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_user_post";
 CREATE TABLE "public"."sys_user_post" (
-  "user_id" int8 NOT NULL,
-  "post_id" int8 NOT NULL
+                                          "user_id" int8 NOT NULL,
+                                          "post_id" int8 NOT NULL
 )
 ;
 
@@ -1110,8 +1104,8 @@ CREATE TABLE "public"."sys_user_post" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_user_role";
 CREATE TABLE "public"."sys_user_role" (
-  "user_id" int8 NOT NULL,
-  "role_id" int8 NOT NULL
+                                          "user_id" int8 NOT NULL,
+                                          "role_id" int8 NOT NULL
 )
 ;
 
@@ -1126,7 +1120,7 @@ INSERT INTO "public"."sys_user_role" VALUES (1, 1);
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."dic_type_id_seq"
-OWNED BY "public"."sys_dic_type"."type_id";
+    OWNED BY "public"."sys_dic_type"."type_id";
 SELECT setval('"public"."dic_type_id_seq"', 2, false);
 
 -- ----------------------------
@@ -1173,7 +1167,7 @@ SELECT setval('"public"."sys_dept_id_seq"', 10, true);
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."sys_dic_data_id_seq"
-OWNED BY "public"."sys_dic_data"."data_id";
+    OWNED BY "public"."sys_dic_data"."data_id";
 SELECT setval('"public"."sys_dic_data_id_seq"', 2, false);
 
 -- ----------------------------
@@ -1200,7 +1194,7 @@ SELECT setval('"public"."sys_log_login_id_seq"', 88, true);
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."sys_log_op_id_seq"
-OWNED BY "public"."sys_log_op"."op_id";
+    OWNED BY "public"."sys_log_op"."op_id";
 SELECT setval('"public"."sys_log_op_id_seq"', 941, true);
 
 -- ----------------------------
@@ -1217,7 +1211,7 @@ SELECT setval('"public"."sys_message_id_seq"', 11, true);
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."sys_notice_id_seq"
-OWNED BY "public"."sys_notice"."notice_id";
+    OWNED BY "public"."sys_notice"."notice_id";
 SELECT setval('"public"."sys_notice_id_seq"', 3, true);
 
 -- ----------------------------

@@ -3,7 +3,7 @@ package com.huii.auth.core.controller;
 import com.alibaba.fastjson2.JSON;
 import com.huii.auth.core.entity.Captcha;
 import com.huii.auth.core.entity.PointDto;
-import com.huii.auth.service.LoginCaptchaService;
+import com.huii.auth.core.service.LoginCaptchaService;
 import com.huii.common.annotation.Anonymous;
 import com.huii.common.annotation.RateLimit;
 import com.huii.common.constants.CacheConstants;

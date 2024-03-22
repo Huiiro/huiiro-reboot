@@ -3,7 +3,7 @@ package com.huii.controller.system;
 import com.huii.auth.core.entity.BindEmail;
 import com.huii.auth.core.entity.ForgetPwdEntity;
 import com.huii.auth.core.entity.ResetPwdEntity;
-import com.huii.auth.service.LoginSecurityService;
+import com.huii.auth.core.service.LoginSecurityService;
 import com.huii.auth.utils.CaptchaGenerator;
 import com.huii.common.annotation.Log;
 import com.huii.common.constants.CacheConstants;

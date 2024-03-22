@@ -1,9 +1,9 @@
 package com.huii.auth.core.controller;
 
 import com.huii.auth.core.entity.ForgetPwdEntity;
-import com.huii.auth.service.ForgetPwdService;
-import com.huii.auth.service.LoginSecurityService;
-import com.huii.auth.service.LoginService;
+import com.huii.auth.core.service.ForgetPwdService;
+import com.huii.auth.core.service.LoginSecurityService;
+import com.huii.auth.core.service.LoginService;
 import com.huii.auth.utils.CaptchaGenerator;
 import com.huii.common.annotation.Anonymous;
 import com.huii.common.constants.CacheConstants;

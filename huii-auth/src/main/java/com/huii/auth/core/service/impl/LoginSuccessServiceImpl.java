@@ -1,11 +1,11 @@
-package com.huii.auth.service.impl;
+package com.huii.auth.core.service.impl;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.huii.auth.config.properties.JwtProperties;
 import com.huii.auth.core.entity.oauth2.Oauth2User;
 import com.huii.auth.core.entity.vo.LoginVo;
-import com.huii.auth.service.LoginSuccessService;
+import com.huii.auth.core.service.LoginSuccessService;
 import com.huii.auth.utils.JwtUtils;
 import com.huii.common.constants.CacheConstants;
 import com.huii.common.constants.SystemConstants;

@@ -1,4 +1,4 @@
-package com.huii.auth.oauth2;
+package com.huii.auth.strategy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huii.common.exception.BasicAuthenticationException;
@@ -15,12 +15,12 @@ import java.util.Objects;
  *
  * @author huii
  */
-public abstract class Oauth2LoginStrategy implements Oauth2Login {
+public abstract class AbstractOauth2LoginStrategy implements Oauth2Login {
 
     private final RestTemplate restTemplate;
     public final ObjectMapper objectMapper;
 
-    public Oauth2LoginStrategy() {
+    public AbstractOauth2LoginStrategy() {
         this.restTemplate = new RestTemplate();
         this.objectMapper = new ObjectMapper();
     }

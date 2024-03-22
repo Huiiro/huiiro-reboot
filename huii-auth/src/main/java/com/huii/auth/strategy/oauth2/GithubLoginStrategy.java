@@ -1,4 +1,4 @@
-package com.huii.auth.oauth2.strategy;
+package com.huii.auth.strategy.oauth2;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -6,7 +6,7 @@ import com.huii.auth.core.entity.oauth2.GithubUser;
 import com.huii.auth.core.entity.oauth2.Oauth2Client;
 import com.huii.auth.core.entity.oauth2.Oauth2User;
 import com.huii.auth.factory.Oauth2StrategyFactory;
-import com.huii.auth.oauth2.Oauth2LoginStrategy;
+import com.huii.auth.strategy.AbstractOauth2LoginStrategy;
 import com.huii.common.exception.BasicAuthenticationException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
@@ -24,7 +24,7 @@ import java.util.Objects;
  * @author huii
  */
 @Component
-public class GithubLoginStrategy extends Oauth2LoginStrategy {
+public class GithubLoginStrategy extends AbstractOauth2LoginStrategy {
 
     @Override
     public String getAccessToken(Oauth2Client oauth2Client, HttpServletRequest request, String... params) {

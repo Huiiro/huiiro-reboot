@@ -1,4 +1,4 @@
-package com.huii.auth.service.impl;
+package com.huii.auth.core.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.huii.auth.config.properties.LoginProperties;
@@ -8,8 +8,8 @@ import com.huii.auth.core.entity.dto.EmailDto;
 import com.huii.auth.core.entity.dto.Oauth2Dto;
 import com.huii.auth.core.entity.dto.SmsDto;
 import com.huii.auth.core.entity.vo.LoginVo;
+import com.huii.auth.core.service.LoginService;
 import com.huii.auth.factory.LoginStrategyFactory;
-import com.huii.auth.service.LoginService;
 import com.huii.auth.strategy.LoginStrategy;
 import com.huii.common.constants.RegConstants;
 import com.huii.common.core.domain.SysUser;

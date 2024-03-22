@@ -1,8 +1,8 @@
 package com.huii.auth.provider;
 
 import com.huii.auth.core.entity.token.SmsToken;
-import com.huii.auth.service.LoginProviderService;
-import com.huii.auth.service.impl.UserDetailServiceImpl;
+import com.huii.auth.core.service.LoginProviderService;
+import com.huii.auth.core.service.impl.UserDetailServiceImpl;
 import com.huii.common.core.model.LoginUser;
 import com.huii.common.enums.LoginType;
 import lombok.RequiredArgsConstructor;

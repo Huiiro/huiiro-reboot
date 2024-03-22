@@ -1,4 +1,4 @@
-package com.huii.auth.service;
+package com.huii.auth.core.service;
 
 import com.huii.auth.core.entity.vo.LoginVo;
 import com.huii.system.domain.SysUserOauth;

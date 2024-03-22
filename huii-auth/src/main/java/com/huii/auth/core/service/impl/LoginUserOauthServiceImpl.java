@@ -1,9 +1,9 @@
-package com.huii.auth.service.impl;
+package com.huii.auth.core.service.impl;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.huii.auth.core.entity.vo.LoginVo;
-import com.huii.auth.service.LoginUserOauthService;
+import com.huii.auth.core.service.LoginUserOauthService;
 import com.huii.common.constants.CacheConstants;
 import com.huii.common.core.model.LoginUser;
 import com.huii.common.utils.redis.RedisTemplateUtils;

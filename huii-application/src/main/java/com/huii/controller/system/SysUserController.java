@@ -1,6 +1,6 @@
 package com.huii.controller.system;
 
-import com.huii.auth.service.LoginSecurityService;
+import com.huii.auth.core.service.LoginSecurityService;
 import com.huii.common.annotation.Log;
 import com.huii.common.annotation.RepeatSubmit;
 import com.huii.common.core.domain.SysRole;

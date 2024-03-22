@@ -1,9 +1,9 @@
-package com.huii.auth.service.impl;
+package com.huii.auth.core.service.impl;
 
 import com.huii.async.factory.AsyncFactory;
 import com.huii.async.manager.AsyncManager;
 import com.huii.auth.config.properties.LoginProperties;
-import com.huii.auth.service.LoginProviderService;
+import com.huii.auth.core.service.LoginProviderService;
 import com.huii.common.constants.CacheConstants;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.model.LoginUser;

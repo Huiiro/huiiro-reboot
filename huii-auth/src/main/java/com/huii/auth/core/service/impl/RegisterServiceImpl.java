@@ -1,8 +1,8 @@
-package com.huii.auth.service.impl;
+package com.huii.auth.core.service.impl;
 
 import com.huii.auth.core.entity.RegisterEntity;
-import com.huii.auth.service.LoginSecurityService;
-import com.huii.auth.service.RegisterService;
+import com.huii.auth.core.service.LoginSecurityService;
+import com.huii.auth.core.service.RegisterService;
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.constants.UserConstants;
 import com.huii.common.core.domain.SysUser;

@@ -1,4 +1,4 @@
-package com.huii.auth.service.impl;
+package com.huii.auth.core.service.impl;
 
 import com.huii.common.constants.SystemConstants;
 import com.huii.common.core.domain.SysUser;

@@ -1,7 +1,7 @@
 package com.huii.auth.core.controller;
 
 import com.huii.auth.core.entity.RegisterEntity;
-import com.huii.auth.service.RegisterService;
+import com.huii.auth.core.service.RegisterService;
 import com.huii.common.annotation.Anonymous;
 import com.huii.common.core.model.R;
 import com.huii.common.enums.ResType;
