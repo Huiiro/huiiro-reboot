@@ -12,7 +12,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum SqlType {
 
-    MYSQL("1", "mysql", false),
+    MYSQL("1", "mysql", true),
     POSTGRESQL("2", "postgresql", true),
     ORACLE("3", "oracle", false),
     SQLSERVER("4", "sqlserver", false);

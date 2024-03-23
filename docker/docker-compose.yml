@@ -89,6 +89,9 @@ services:
       timeout: 5s
       retries: 3
 
+  # 依赖服务--mysql
+  # todo
+
   # 依赖服务--redis 单机
   redis:
     image: redis:7

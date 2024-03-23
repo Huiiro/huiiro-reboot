@@ -10,6 +10,7 @@ import com.huii.common.core.domain.SysRole;
 import com.huii.common.core.domain.SysUser;
 import com.huii.common.enums.DataScopeType;
 import com.huii.common.exception.BasicAuthenticationException;
+import com.huii.common.utils.DataSourceUtils;
 import com.huii.common.utils.SecurityUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -89,22 +90,37 @@ public class MybatisDataPermissionHandler {
                     sqlString.append(String.format(" %s.dept_id = %s ",
                             dataScope.deptAlias(), user.getDeptId()));
                 } else if (roleScope.equals(DataScopeType.DEPT_AND_CHILD.getCode())) {
-                    //default support for postgres
-                    sqlString.append(String.format(" %s.dept_id in (SELECT dept_id FROM sys_dept " +
-                                    "WHERE dept_id IN (" +
-                                    "WITH RECURSIVE DeptHierarchy AS (" +
-                                    "SELECT dept_id, parent_id " +
-                                    "FROM sys_dept " +
-                                    "WHERE dept_id = %s " +
-                                    "UNION " +
-                                    "SELECT d.dept_id, d.parent_id " +
-                                    "FROM sys_dept d " +
-                                    "JOIN DeptHierarchy h ON d.parent_id = h.dept_id" +
-                                    ")" +
-                                    "SELECT dept_id FROM DeptHierarchy" +
-                                    ")" +
-                                    ")",
-                            dataScope.deptAlias(), user.getDeptId()));
+                    if (DataSourceUtils.isPostgreSql()) {
+                        sqlString.append(String.format(" %s.dept_id in (SELECT dept_id FROM sys_dept " +
+                                        "WHERE dept_id IN (" +
+                                        "WITH RECURSIVE DeptHierarchy AS (" +
+                                        "SELECT dept_id, parent_id " +
+                                        "FROM sys_dept " +
+                                        "WHERE dept_id = %s " +
+                                        "UNION " +
+                                        "SELECT d.dept_id, d.parent_id " +
+                                        "FROM sys_dept d " +
+                                        "JOIN DeptHierarchy h ON d.parent_id = h.dept_id" +
+                                        ")" +
+                                        "SELECT dept_id FROM DeptHierarchy" +
+                                        ")" +
+                                        ")",
+                                dataScope.deptAlias(), user.getDeptId()));
+                    } else if (DataSourceUtils.isMySql()) {
+                        sqlString.append(String.format(" %s.dept_id in (" +
+                                "WITH RECURSIVE DeptHierarchy AS (" +
+                                "SELECT dept_id, parent_id " +
+                                "FROM sys_dept " +
+                                "WHERE dept_id = %s " +
+                                "UNION ALL " +
+                                "SELECT d.dept_id, d.parent_id " +
+                                "FROM sys_dept d " +
+                                "JOIN DeptHierarchy h ON d.parent_id = h.dept_id " +
+                                ")" +
+                                "SELECT dept_id " +
+                                "FROM DeptHierarchy" +
+                                ")", dataScope.deptAlias(), user.getDeptId()));
+                    }
                 } else if (roleScope.equals(DataScopeType.SELF.getCode())) {
                     sqlString.append(String.format(" %s.user_id = %s ",
                             dataScope.userAlias(), user.getUserId()));

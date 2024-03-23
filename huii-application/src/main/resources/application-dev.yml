@@ -16,18 +16,28 @@ spring:
         #主数据库
         master:
           type: com.zaxxer.hikari.HikariDataSource
-          url: jdbc:postgresql://192.168.24.77:5432/huii-pro
+          driver-class-name: org.postgresql.Driver
+          url: jdbc:postgresql://192.168.24.77:5432/huii-reboot
           username: root
           password: root
-          driver-class-name: org.postgresql.Driver
-        #从数据库
+          #type: com.zaxxer.hikari.HikariDataSource
+          #driver-class-name: com.mysql.cj.jdbc.Driver
+          #url: jdbc:mysql://192.168.24.77:3306/huii-reboot?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+          #username: root
+          #password: root
+          #从数据库
         slave:
           lazy: true
           type: com.zaxxer.hikari.HikariDataSource
-          url: jdbc:postgresql://192.168.24.77:5432/huii-pro
+          driver-class-name: org.postgresql.Driver
+          url: jdbc:postgresql://192.168.24.77:5432/huii-reboot
           username: root
           password: root
-          driver-class-name: org.postgresql.Driver
+          #type: com.zaxxer.hikari.HikariDataSource
+          # driver-class-name: com.mysql.cj.jdbc.Driver
+          #url: jdbc:mysql://192.168.24.77:3306/huii-reboot?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+          #username: root
+          #password: root
   data:
     redis:
       host: 192.168.24.77

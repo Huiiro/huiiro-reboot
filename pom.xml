@@ -69,6 +69,7 @@
         <mybatis-plus.version>3.5.3.2</mybatis-plus.version>
         <mybatis-dynamic-datasource.version>4.2.0</mybatis-dynamic-datasource.version>
         <postgres.version>42.6.0</postgres.version>
+        <mysql.version>8.0.33</mysql.version>
         <jwt.version>0.9.1</jwt.version>
         <kaptcha.version>0.0.9</kaptcha.version>
         <swagger.version>3.0.0</swagger.version>
@@ -201,6 +202,13 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${postgres.version}</version>
+            </dependency>
+
+            <!--mysql-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
             </dependency>
 
             <!-- Jwt依赖 -->

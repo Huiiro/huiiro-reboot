@@ -83,6 +83,12 @@
             <artifactId>postgresql</artifactId>
         </dependency>
 
+        <!--mysql-->
+        <!--        <dependency>-->
+        <!--            <groupId>mysql</groupId>-->
+        <!--            <artifactId>mysql-connector-java</artifactId>-->
+        <!--        </dependency>-->
+
         <!--mybatis-->
         <dependency>
             <groupId>com.baomidou</groupId>

@@ -18,5 +18,4 @@
 
 ##### docker
 
-* 运行Dockerfile
-* 运行build.sh
+> 运行build.sh
