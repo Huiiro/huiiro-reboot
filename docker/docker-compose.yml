@@ -24,7 +24,7 @@ services:
 
   # 后端服务
   backend:
-    image: huii00147/huii-reboot-backend:1.2.5
+    image: huii00147/huii-reboot-backend:1.2.6
     container_name: huii-reboot-backend
     ports:
       - "8080:8080"
@@ -59,7 +59,7 @@ services:
 
   # 前端服务
   frontend:
-    image: huii00147/huii-reboot-frontend:1.2.5
+    image: huii00147/huii-reboot-frontend:1.2.6
     container_name: huii-reboot-frontend
     ports:
       - "5173:5173"
