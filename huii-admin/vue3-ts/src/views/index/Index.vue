@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-alert title="欢迎访问Huiiro！" type="success" style="margin-bottom: 20px"/>
-    <el-divider/>
     <p class="header-text">系统导航：</p>
     <el-row class="header-row">
       <el-col class="header-col" :span="8">
@@ -38,17 +37,17 @@
       </el-col>
       <el-col class="header-col" :span="8"/>
     </el-row>
-    <el-divider/>
+
     <p class="header-text">系统消息：</p>
     <p v-for="item in news" class="item-text">
       {{ item }}
     </p>
-    <el-divider/>
+
     <p class="header-text">更新日志：</p>
     <p v-for="item in updates" class="item-text">
       {{ item }}
     </p>
-    <el-divider/>
+
     <p class="header-text">版本支持：</p>
     <p v-for="item in supports" class="item-text">
       {{ item }}
@@ -76,7 +75,8 @@ const updates = ref([
   "2. v1.2.3 修复bug，新增消息推送模块。",
   "3. v1.2.4 完善并修复代码生成模块的部分bug，优化体验和模板文件。后续会补充字段查询方式和更多方式的支持。",
   "4. v1.2.5 支持docker-compose一键部署，修复部分bug，优化部分显示。",
-  "5. v1.2.6 加入mysql8支持。"
+  "5. v1.2.6 加入mysql8支持。",
+  "6. v1.3.0 加入api文档支持，加入springboot admin支持，并修复部分版本问题导致的bug。"
 ]);
 const supports = ref([
   "1. java17+",
@@ -106,9 +106,9 @@ const supports = ref([
 .guide-container {
   border: 1px #b9b9b9 solid;
   border-radius: 10px;
-  padding: 20px;
+  padding: 16px;
   width: 280px;
-  background: linear-gradient(to right, #bbcafd, #d3adfd);
+  background: linear-gradient(to right, #cad6ff, #e1c6ff);
 }
 
 .guide-container:hover {
@@ -119,7 +119,7 @@ const supports = ref([
   width: 180px;
   height: 40px;
   color: #626262;
-  background: linear-gradient(to right, #bbcafd, #d3adfd);
+  background: linear-gradient(to right, #cad6ff, #e1c6ff);
 }
 
 .guide-button:hover {
@@ -128,7 +128,7 @@ const supports = ref([
 
 .header-text {
   font-size: 20px;
-  margin: 20px 0;
+  margin: 40px 0 20px;
 }
 
 .item-text {

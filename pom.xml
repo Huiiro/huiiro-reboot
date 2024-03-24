@@ -12,6 +12,7 @@
         <module>huii-application</module>
         <module>huii-auth</module>
         <module>huii-common</module>
+        <module>huii-extend</module>
         <module>huii-framework</module>
         <module>huii-system</module>
         <module>huii-oss</module>

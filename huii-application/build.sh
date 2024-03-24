@@ -1,1 +1,1 @@
-docker build -t huii00147/huii-reboot-backend:1.2.6 .
+docker build -t huii00147/huii-reboot-backend:1.3.0 .

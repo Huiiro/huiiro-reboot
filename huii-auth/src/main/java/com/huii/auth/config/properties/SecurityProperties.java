@@ -2,11 +2,13 @@ package com.huii.auth.config.properties;
 
 import com.huii.common.annotation.Anonymous;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +43,9 @@ public class SecurityProperties implements InitializingBean, ApplicationContextA
     private final Set<String> forbiddens = new HashSet<>();
     private ApplicationContext applicationContext;
     private final Environment env;
+    @Resource
+    @Qualifier("requestMappingHandlerMapping")
+    private RequestMappingHandlerMapping mapping;
 
     @PostConstruct
     public void init() {
@@ -65,7 +70,7 @@ public class SecurityProperties implements InitializingBean, ApplicationContextA
 
     @Override
     public void afterPropertiesSet() {
-        RequestMappingHandlerMapping mapping = (RequestMappingHandlerMapping) applicationContext.getBean(RequestMappingHandlerMapping.class);
+        //RequestMappingHandlerMapping mapping = (RequestMappingHandlerMapping) applicationContext.getBean(RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> map = mapping.getHandlerMethods();
         map.keySet().forEach(i -> {
             HandlerMethod handlerMethod = map.get(i);

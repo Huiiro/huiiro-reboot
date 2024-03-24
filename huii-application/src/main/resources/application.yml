@@ -38,6 +38,38 @@ spring:
       fail_on_empty_beans: false
     deserialization:
       fail_on_unknown_properties: false
+  devtools:
+    restart:
+      enabled: true
+  boot:
+    admin:
+      client:
+        username: admin
+        password: admin
+        instance:
+          service-host-type: ip
+        url: http://localhost:9100
+
+#监控信息配置
+management:
+  health:
+    mail:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    enabled-by-default: true
+  endpoint:
+    health:
+      show-details: always
+      enabled: true
+    beans:
+      enabled: true
+    logfile:
+      #日志文件分析
+      enabled: true
+      external-file: ./logs/sys-info.log
 
 logging:
   level:
@@ -99,7 +131,14 @@ security:
     /swagger-resources/**,
     /profile/**,
     /v3/**,
-    /druid/**
+    /druid/**,
+    /favicon.ico,
+    /error,
+    /login",
+    /logout",
+    /assets/**,
+    /actuator,
+    /actuator/**
 
 config:
   #token配置

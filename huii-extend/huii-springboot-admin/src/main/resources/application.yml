@@ -1,0 +1,41 @@
+server:
+  port: 9100
+
+spring:
+  application:
+    name: huii-springboot-admin
+  profiles:
+    active: info
+  security:
+    user:
+      name: admin
+      password: admin
+  boot:
+    admin:
+      #服务端配置
+      ui:
+        title: huii服务监控中心
+      monitor:
+        default-timeout: 20000
+      context-path:
+      #客户端配置
+      client:
+        username: admin
+        password: admin
+        instance:
+          service-host-type: ip
+        url: http://localhost:9100
+
+#监控信息配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    enabled-by-default: true
+  endpoint:
+    health:
+      show-details: always
+      enabled: true
+    beans:
+      enabled: true

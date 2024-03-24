@@ -24,6 +24,18 @@
             </exclusions>
         </dependency>
 
+        <!-- springboot-admin -->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>${spring-boot-dependencies.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!--aop-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -12,6 +12,12 @@
     <artifactId>huii-application</artifactId>
 
     <dependencies>
+        <!-- springboot-devtools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>com.huii</groupId>
             <artifactId>huii-framework</artifactId>
@@ -52,6 +58,36 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <!--基于java doc的文档生成插件-->
+                <!--https://smart-doc-group.github.io/#/-->
+                <groupId>com.github.shalousun</groupId>
+                <artifactId>smart-doc-maven-plugin</artifactId>
+                <version>2.7.7</version>
+                <configuration>
+                    <configFile>./src/main/resources/smart-doc.json</configFile>
+                    <projectName>${project.description}</projectName>
+                    <includes>
+                        <!-- 使用了mybatis-plus的Page分页需要include所使用的源码包 -->
+                        <include>com.baomidou:mybatis-plus-extension</include>
+                        <!-- 使用了mybatis-plus的IPage分页需要include mybatis-plus-core-->
+                        <include>com.baomidou:mybatis-plus-core</include>
+                        <!-- 使用了jpa的分页需要include所使用的源码包 -->
+                        <include>org.springframework.data:spring-data-commons</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <!--如果需要编译时输出文档，打开phase开关-->
+                        <!--<phase>compile</phase>-->
+                        <goals>
+                            <!--html、openapi、markdown etc-->
+                            <goal>html</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
         <finalName>${project.artifactId}</finalName>
     </build>

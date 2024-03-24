@@ -1,12 +1,14 @@
 package com.huii.auth.filter;
 
+import com.huii.auth.config.properties.SecurityProperties;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,42 +27,53 @@ import java.util.stream.Collectors;
  * @author huii
  */
 @Component
-@RequiredArgsConstructor
 public class ResourceFilter extends OncePerRequestFilter {
 
-    private final RequestMappingHandlerMapping mapping;
-    private final PathMatcher pathMatcher;
+    @Resource
+    @Qualifier("requestMappingHandlerMapping")
+    private RequestMappingHandlerMapping mapping;
+    @Resource
+    private PathMatcher pathMatcher;
     private static Set<String> patternStrings;
+    @Resource
+    private SecurityProperties securityProperties;
 
     @PostConstruct
     public void init() {
-        patternStrings = mapping.getHandlerMethods().keySet().stream()
-                .map(handlerMethod -> {
-                    if (handlerMethod.getPathPatternsCondition() != null) {
-                        return handlerMethod.getPathPatternsCondition().getPatterns();
-                    } else {
-                        return Collections.<PathPattern>emptySet();
-                    }
-                })
-                .flatMap(Collection::stream)
-                .map(PathPattern::getPatternString)
-                .collect(Collectors.toSet());
-
+        patternStrings = mapping.getHandlerMethods().keySet().stream().map(handlerMethod -> {
+            if (handlerMethod.getPathPatternsCondition() != null) {
+                return handlerMethod.getPathPatternsCondition().getPatterns();
+            } else {
+                return Collections.<PathPattern>emptySet();
+            }
+        }).flatMap(Collection::stream).map(PathPattern::getPatternString).collect(Collectors.toSet());
     }
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         String requestMethod = request.getMethod();
         if (requestMethod.equals("OPTIONS")) {
             filterChain.doFilter(request, response);
         }
+
         String requestedResource = request.getRequestURI();
-        boolean isMatched = patternStrings.stream()
-                .anyMatch(pattern -> pathMatcher.match(pattern, requestedResource));
+        boolean allowFlag = false;
+        for (String allow : securityProperties.getAllows()) {
+            if (pathMatcher.match(allow, requestedResource)) {
+                allowFlag = true;
+                break;
+            }
+        }
+        if (allowFlag) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        boolean isMatched = patternStrings.stream().anyMatch(pattern -> pathMatcher.match(pattern, requestedResource));
         if (!isMatched) {
             response.setStatus(404);
         }
+
         filterChain.doFilter(request, response);
     }
 }
