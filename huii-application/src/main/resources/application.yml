@@ -44,6 +44,8 @@ spring:
   boot:
     admin:
       client:
+        #监控开关
+        enabled: false
         username: admin
         password: admin
         instance:
