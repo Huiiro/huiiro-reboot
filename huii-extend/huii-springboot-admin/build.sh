@@ -1,0 +1,1 @@
+docker build -t huii00147/huii-springboot-admin:1.0.0 .
