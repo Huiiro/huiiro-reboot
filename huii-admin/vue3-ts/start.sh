@@ -1,1 +1,1 @@
-docker run -d --name huii-reboot-frontend -p 5173:5173 huii00147/huii-reboot-frontend:1.3.0
+docker run -d --name huii-reboot-frontend -p 5173:5173 huii00147/huii-reboot-frontend:1.3.1

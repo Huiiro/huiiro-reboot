@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -69,6 +70,9 @@ public class CaptchaGenerator {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
+    /**
+     * 生成滑动验证码
+     */
     public static Captcha createImgSlideCaptcha(Captcha captcha) {
         checkCaptcha(captcha);
         int canvasWidth = captcha.getCanvasWidth();
@@ -95,6 +99,9 @@ public class CaptchaGenerator {
         return captcha;
     }
 
+    /**
+     * 生成点击验证码
+     */
     public static Captcha createClickTextCaptcha(Captcha captcha) {
         checkCaptcha(captcha);
         int canvasWidth = captcha.getCanvasWidth();
@@ -116,6 +123,32 @@ public class CaptchaGenerator {
         return captcha;
     }
 
+    /**
+     * 生成旋转验证码
+     */
+    public static Captcha createRotateCaptcha(Captcha captcha) {
+        checkCaptcha(captcha);
+        BufferedImage canvasImage = getBufferedImage(captcha.getPlace());
+        canvasImage = imageResizeLimit(canvasImage, 160, 160);
+
+        Random random = new Random();
+        int rotationAngle = random.nextInt(90) + 180;
+        canvasImage = rotateImage(canvasImage, rotationAngle);
+
+        canvasImage = cropToCircle(canvasImage, 80);
+
+        String nonceStr = UUID.randomUUID().toString().replace("-", "");
+        captcha.setCanvasHeight(160);
+        captcha.setCanvasWidth(160);
+        captcha.setNonceStr(nonceStr);
+        captcha.setCanvasSrc(toBase64(canvasImage, "png"));
+        captcha.setBlockX(rotationAngle);
+        return captcha;
+    }
+
+    /**
+     * 校验 captcha 参数
+     */
     public static void checkCaptcha(Captcha captcha) {
         if (captcha.getCanvasWidth() == null) {
             captcha.setCanvasWidth(320);
@@ -137,6 +170,9 @@ public class CaptchaGenerator {
         }
     }
 
+    /**
+     * 获取图像
+     */
     public static BufferedImage getBufferedImage(Integer place) {
         try {
             int nonce = createRandom(0, 1000);
@@ -155,6 +191,9 @@ public class CaptchaGenerator {
         }
     }
 
+    /**
+     * 缩放图像
+     */
     public static BufferedImage imageResize(BufferedImage bufferedImage, int width, int height) {
         Image image = bufferedImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -162,6 +201,61 @@ public class CaptchaGenerator {
         graphics2D.drawImage(image, 0, 0, null);
         graphics2D.dispose();
         return resultImage;
+    }
+
+    /**
+     * 缩放图像 按照给定限制宽度、高度
+     */
+    public static BufferedImage imageResizeLimit(BufferedImage inputImage, int newWidth, int newHeight) {
+        int type = inputImage.getColorModel().getTransparency();
+        int width = inputImage.getWidth();
+        int height = inputImage.getHeight();
+        RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        BufferedImage img = new BufferedImage(newWidth, newHeight, type);
+        Graphics2D graphics2d = img.createGraphics();
+        graphics2d.setRenderingHints(renderingHints);
+        graphics2d.drawImage(inputImage, 0, 0, newWidth, newHeight, 0, 0, width, height, null);
+        graphics2d.dispose();
+        return img;
+    }
+
+    /**
+     * 旋转图像
+     */
+    static BufferedImage rotateImage(BufferedImage image, int randomAngle) {
+        BufferedImage rotatedImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+        Graphics2D g2d = rotatedImage.createGraphics();
+
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        AffineTransform transform = new AffineTransform();
+        transform.rotate(Math.toRadians(randomAngle), image.getWidth() / 2.0, image.getHeight() / 2.0);
+        g2d.setTransform(transform);
+
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        return rotatedImage;
+    }
+
+    /**
+     * 裁剪图像为圆形
+     */
+    private static BufferedImage cropToCircle(BufferedImage originalImage, int radius) {
+        BufferedImage circularImage = new BufferedImage(radius * 2, radius * 2, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = circularImage.createGraphics();
+
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        Ellipse2D.Double clip = new Ellipse2D.Double(0, 0, radius * 2, radius * 2);
+
+        g2d.setClip(clip);
+
+        g2d.drawImage(originalImage, 0, 0, radius * 2, radius * 2, null);
+        g2d.dispose();
+
+        return circularImage;
     }
 
     public static void cutByTemplate(BufferedImage canvasImage, BufferedImage blockImage, int blockWidth, int blockHeight, int blockRadius, int blockX, int blockY) {
@@ -191,11 +285,9 @@ public class CaptchaGenerator {
     private static int[][] getBlockData(int blockWidth, int blockHeight, int blockRadius) {
         int[][] data = new int[blockWidth][blockHeight];
         double po = Math.pow(blockRadius, 2);
-        //int face1 = RandomUtils.nextInt(0, 4);
         int face1 = ThreadLocalRandom.current().nextInt(0, 4);
         int face2;
         do {
-            //face2 = RandomUtils.nextInt(0, 4);
             face2 = ThreadLocalRandom.current().nextInt(0, 4);
         } while (face1 == face2);
         int[] circle1 = getCircleCoords(face1, blockWidth, blockHeight, blockRadius);
@@ -237,7 +329,6 @@ public class CaptchaGenerator {
         graphics2D.dispose();
     }
 
-
     private static String textBuilder() {
         Collections.shuffle(letters);
         StringBuilder text = new StringBuilder();
@@ -248,7 +339,7 @@ public class CaptchaGenerator {
     }
 
     private static Font createRandomFont(Random random) {
-        int fontSize = random.nextInt(16) + 26;
+        int fontSize = random.nextInt(20) + 26;
         int fontWeight = random.nextBoolean() ? Font.BOLD : Font.PLAIN;
         return new Font("Arial", fontWeight, fontSize);
     }
@@ -277,13 +368,13 @@ public class CaptchaGenerator {
             int x, y;
             Rectangle textArea;
             do {
-                x = createRandom(random, textWidth + 24, canvasWidth - 24, 46);
-                y = createRandom(random, textHeight + 16, canvasHeight - 16, 34);
-                textArea = new Rectangle(x - textWidth / 2, y - textHeight / 2, textWidth, textHeight);
+                x = createRandom(random, textWidth + 26, canvasWidth - 26, 48);
+                y = createRandom(random, textHeight + 18, canvasHeight - 18, 36);
+                textArea = new Rectangle(x - textWidth / 2, y - textHeight / 2, textWidth + 12, textHeight + 12);
             } while (isOverlapping(textArea, occupiedAreas));
 
             Color textColor = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
-            int rotationAngle = random.nextInt(360);
+            int rotationAngle = random.nextInt(270);
 
             AffineTransform affineTransform = new AffineTransform();
             affineTransform.rotate(Math.toRadians(rotationAngle), x, y);

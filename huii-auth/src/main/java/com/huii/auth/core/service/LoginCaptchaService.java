@@ -38,6 +38,14 @@ public interface LoginCaptchaService {
     void checkClickTextCode(String key, PointDto[] points);
 
     /**
+     * 校验旋转验证码
+     *
+     * @param imageKey  key
+     * @param imageCode value
+     */
+    void checkRotateCode(String imageKey, Integer imageCode);
+
+    /**
      * 获取文字验证码
      *
      * @param minute minute
@@ -70,6 +78,15 @@ public interface LoginCaptchaService {
      * @return captcha
      */
     Captcha createClickTextCaptcha(Captcha captcha, Integer minute);
+
+    /**
+     * 获取旋转验证码
+     *
+     * @param captcha captcha
+     * @param minute  minute
+     * @return captcha
+     */
+    Captcha createRotateCaptcha(Captcha captcha, Integer minute);
 
     /**
      * 获取手机登录验证码

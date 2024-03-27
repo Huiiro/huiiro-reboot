@@ -1,24 +1,25 @@
 <template>
-  <div class="slide-verify no-transition" :style="{width: canvasWidth + 'px'}" onselectstart="return false;">
+  <div class="rotate-verify no-transition" :style="{width: canvasWidth + 'px'}" onselectstart="return false;">
     <div :class="{'img-loading': isLoading}" :style="{height: canvasHeight + 'px'}" v-if="isLoading"/>
     <div class="success-hint" :style="{height: canvasHeight + 'px'}" v-if="verifySuccess">{{ successHint }}</div>
     <div class="refresh-icon" @click="refresh"/>
-    <img ref="canvas" class="slide-canvas" :width="canvasWidth" :height="canvasHeight"/>
-    <img ref="block" :class="['slide-block', {'verify-fail': verifyFail}]"/>
-    <div class="slider"
+    <img ref="canvas" class="rotate-canvas" :width="canvasHeight" :height="canvasHeight"
+         :style="{ transform: `rotate(${rotationAngle}deg)` }"/>
+    <img ref="block" :class="['rotate-block', {'verify-fail': verifyFail}]"/>
+    <div class="rotate"
          :class="{'verify-active': verifyActive, 'verify-success': verifySuccess, 'verify-fail': verifyFail}">
-      <div class="slider-box" :style="{width: sliderBoxWidth}">
-        <div class="slider-button" id="slider-button" :style="{left: sliderButtonLeft}">
-          <div class="slider-button-icon"/>
+      <div class="rotate-box" :style="{width: rotateBoxWidth}">
+        <div class="rotate-button" id="rotate-button" :style="{left: rotateButtonLeft}">
+          <div class="rotate-button-icon"/>
         </div>
       </div>
-      <span class="slider-hint">{{ sliderHint }}</span>
+      <span class="rotate-hint">{{ rotateHint }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import {genSlideCaptcha} from "@/api/auth/captcha/index.ts";
+import {genRotateCaptcha} from "@/api/auth/captcha/index.ts";
 
 function sum(x, y) {
   return x + y;
@@ -29,7 +30,7 @@ function square(x) {
 }
 
 export default {
-  name: 'sliderVerify',
+  name: 'rotateVerify',
   props: {
     blockLength: {
       type: Number,
@@ -45,11 +46,11 @@ export default {
     },
     canvasHeight: {
       type: Number,
-      default: 155,
+      default: 160,
     },
-    sliderHint: {
+    rotateHint: {
       type: String,
-      default: '向右滑动',
+      default: '向右滑动使图片水平',
     },
     accuracy: {
       type: Number,
@@ -89,9 +90,9 @@ export default {
       // 拖动距离数组
       dragDistanceList: [],
       // 滑块箱拖动宽度
-      sliderBoxWidth: 0,
+      rotateBoxWidth: 0,
       // 滑块按钮距离左侧起点位置
-      sliderButtonLeft: 0,
+      rotateButtonLeft: 0,
       // 鼠标按下状态
       isMouseDown: false,
       // 图片加载提示，防止图片没加载完就开始验证
@@ -102,6 +103,7 @@ export default {
       successHint: '',
       // 随机字符串
       nonceStr: undefined,
+      rotationAngle: 0,
     };
   },
   mounted() {
@@ -119,18 +121,16 @@ export default {
     getCaptcha() {
       let self = this;
       const data = {};
-      genSlideCaptcha(data).then((response) => {
+      genRotateCaptcha(data).then((response) => {
         const data = response.data;
         self.nonceStr = data.nonceStr;
-        self.$refs.block.src = data.blockSrc;
-        self.$refs.block.style.top = data.blockY + 'px';
         self.$refs.canvas.src = data.canvasSrc;
       }).finally(() => {
         self.isLoading = false;
       });
     },
     bindEvents() {
-      document.getElementById('slider-button').addEventListener('mousedown', (event) => {
+      document.getElementById('rotate-button').addEventListener('mousedown', (event) => {
         this.startEvent(event.clientX, event.clientY);
       });
       document.addEventListener('mousemove', (event) => {
@@ -139,7 +139,7 @@ export default {
       document.addEventListener('mouseup', (event) => {
         this.endEvent(event.clientX);
       });
-      document.getElementById('slider-button').addEventListener('touchstart', (event) => {
+      document.getElementById('rotate-button').addEventListener('touchstart', (event) => {
         this.startEvent(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
       });
       document.addEventListener('touchmove', (event) => {
@@ -170,12 +170,13 @@ export default {
       if (moveX < 0 || moveX + 40 >= this.canvasWidth) {
         return false;
       }
-      this.sliderButtonLeft = moveX + 'px';
+      this.rotateButtonLeft = moveX + 'px';
       let blockLeft = (this.canvasWidth - 40 - 20) / (this.canvasWidth - 40) * moveX;
       this.blockObj.style.left = blockLeft + 'px';
       this.verifyActive = true;
-      this.sliderBoxWidth = moveX + 'px';
+      this.rotateBoxWidth = moveX + 'px';
       this.dragDistanceList.push(moveY);
+      this.rotationAngle = moveX * (280 / 360);
     },
     endEvent(originX) {
       if (!this.isMouseDown) {
@@ -230,8 +231,8 @@ export default {
       this.verifyActive = false;
       this.verifySuccess = false;
       this.blockObj.style.left = 0;
-      this.sliderBoxWidth = 0;
-      this.sliderButtonLeft = 0;
+      this.rotateBoxWidth = 0;
+      this.rotateButtonLeft = 0;
       this.getCaptcha();
     },
   },
@@ -239,7 +240,7 @@ export default {
 </script>
 
 <style scoped>
-.slide-verify {
+.rotate-verify {
   position: relative;
 }
 
@@ -293,21 +294,22 @@ export default {
   background-size: 35px 470px;
 }
 
-.slide-canvas {
+.rotate-canvas {
   border-radius: 5px;
+  margin-left: 80px;
 }
 
-.slide-block {
+.rotate-block {
   position: absolute;
   left: 0;
   top: 0;
 }
 
-.slide-block.verify-fail {
+.rotate-block.verify-fail {
   transition: left 0.5s linear;
 }
 
-.slider {
+.rotate {
   position: relative;
   text-align: center;
   width: 100%;
@@ -320,7 +322,7 @@ export default {
   border-radius: 5px;
 }
 
-.slider-box {
+.rotate-box {
   position: absolute;
   left: 0;
   top: 0;
@@ -330,7 +332,7 @@ export default {
   border-radius: 5px;
 }
 
-.slider-button {
+.rotate-button {
   position: absolute;
   top: 0;
   left: 0;
@@ -343,15 +345,15 @@ export default {
   border-radius: 5px;
 }
 
-.slider-button:hover {
+.rotate-button:hover {
   background: #1991FA
 }
 
-.slider-button:hover .slider-button-icon {
+.rotate-button:hover .rotate-button-icon {
   background-position: 0 -13px
 }
 
-.slider-button-icon {
+.rotate-button-icon {
   position: absolute;
   top: 15px;
   left: 13px;
@@ -361,42 +363,42 @@ export default {
   background-size: 35px 470px
 }
 
-.verify-active .slider-button {
+.verify-active .rotate-button {
   height: 38px;
   top: -1px;
   border: 1px solid #1991FA;
 }
 
-.verify-active .slider-box {
+.verify-active .rotate-box {
   height: 38px;
   border-width: 1px;
 }
 
-.verify-success .slider-box {
+.verify-success .rotate-box {
   height: 38px;
   border: 1px solid #52CCBA;
   background-color: #D2F4EF;
 }
 
-.verify-success .slider-button {
+.verify-success .rotate-button {
   height: 38px;
   top: -1px;
   border: 1px solid #52CCBA;
   background-color: #52CCBA !important;
 }
 
-.verify-success .slider-button-icon {
+.verify-success .rotate-button-icon {
   background-position: 0 0 !important;
 }
 
-.verify-fail .slider-box {
+.verify-fail .rotate-box {
   height: 38px;
   border: 1px solid #f57a7a;
   background-color: #fce1e1;
   transition: width 0.5s linear;
 }
 
-.verify-fail .slider-button {
+.verify-fail .rotate-button {
   height: 38px;
   top: -1px;
   border: 1px solid #f57a7a;
@@ -404,14 +406,14 @@ export default {
   transition: left 0.5s linear;
 }
 
-.verify-fail .slider-button-icon {
+.verify-fail .rotate-button-icon {
   top: 14px;
   background-position: 0 -82px !important;
 }
 
-.verify-active .slider-hint,
-.verify-success .slider-hint,
-.verify-fail .slider-hint {
+.verify-active .rotate-hint,
+.verify-success .rotate-hint,
+.verify-fail .rotate-hint {
   display: none;
 }
 

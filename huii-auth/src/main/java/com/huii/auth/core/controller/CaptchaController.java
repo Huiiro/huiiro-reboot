@@ -95,6 +95,29 @@ public class CaptchaController extends BaseController {
         return R.ok();
     }
 
+    /**
+     * 获取旋转验证码
+     *
+     * @since v1.3.1 new add
+     */
+    @RateLimit
+    @PostMapping("/gen/rotate")
+    public R<Captcha> getRotateCaptcha(@RequestBody(required = false) Captcha captcha) {
+        return R.ok(loginCaptchaService.createRotateCaptcha(new Captcha(), CacheConstants.DEFAULT_CACHE_TIME));
+    }
+
+    /**
+     * 校验旋转验证码
+     *
+     * @since v1.3.1 new add
+     */
+    @SneakyThrows
+    @PostMapping("/check/rotate")
+    public R<Void> checkRotateCaptcha(@NotBlank @RequestParam String imageKey,
+                                      @NotNull @RequestParam Integer imageCode) {
+        loginCaptchaService.checkRotateCode(imageKey, imageCode);
+        return R.ok();
+    }
 
     /**
      * 短信验证码模板

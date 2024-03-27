@@ -109,6 +109,21 @@ public class LoginCaptchaServiceImpl implements LoginCaptchaService {
     }
 
     @Override
+    public void checkRotateCode(String key, Integer value) {
+        Integer text = redisTemplateUtils.getCacheObject(CacheConstants.VERIFY_CODE + key);
+
+        if (ObjectUtils.isEmpty(text)) {
+            ResType rs = ResType.USER_CAPTCHA_EXPIRED;
+            throw new ServiceException(rs.getCode(), MessageUtils.message(rs.getI18n()));
+        }
+
+        if (Math.abs(((text - 180) + value) - 180) > CaptchaConstants.CAPTCHA_ROTATE_ALLOW_DEVIATION) {
+            ResType rs = ResType.USER_CAPTCHA_NOT_PASS;
+            throw new ServiceException(rs.getCode(), MessageUtils.message(rs.getI18n()));
+        }
+    }
+
+    @Override
     public Map<String, Object> createTextCaptcha(Integer minute) {
         Producer producer = kaptchaService.kaptchaProvider();
         String key = UUID.randomUUID().toString();
@@ -144,6 +159,14 @@ public class LoginCaptchaServiceImpl implements LoginCaptchaService {
         List<RectangleDto> list = Arrays.stream(captcha.getRectangles()).toList();
         saveCode(captcha.getNonceStr(), buildClickData(list), minute);
         captcha.setRectangles(null);
+        return clickCaptcha;
+    }
+
+    @Override
+    public Captcha createRotateCaptcha(Captcha captcha, Integer minute) {
+        Captcha clickCaptcha = CaptchaGenerator.createRotateCaptcha(captcha);
+        saveCode(captcha.getNonceStr(), captcha.getBlockX(), minute);
+        clickCaptcha.setBlockX(null);
         return clickCaptcha;
     }
 

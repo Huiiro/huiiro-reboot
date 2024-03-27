@@ -5,8 +5,10 @@ enum API {
     GEN_CALC = "/auth/v1/captcha/gen/calc",
     GEN_SLIDE = "/auth/v1/captcha/gen/slide",
     GEN_CLICK_TEXT = "/auth/v1/captcha/gen/click/text",
+    GEN_ROTATE = "/auth/v1/captcha/gen/rotate",
     CHECK_SLIDE = "/auth/v1/captcha/check/slide",
     CHECK_CLICK_TEXT = "/auth/v1/captcha/check/click/text",
+    CHECK_ROTATE = "/auth/v1/captcha/check/rotate",
     GEN_SMS = "/auth/v1/captcha/gen/sms",
     GEN_MAIL = "/auth/v1/captcha/gen/mail",
 }
@@ -46,6 +48,19 @@ export const genClickTextCaptcha = () => request.post(API.GEN_CLICK_TEXT);
  */
 export const checkClickTextCaptcha = (imageKey: string, clickValue: number) =>
     request.post(API.CHECK_CLICK_TEXT, null, {params: {imageKey, clickValue}});
+
+/**
+ * 获取旋转验证码
+ */
+export const genRotateCaptcha = () => request.post(API.GEN_ROTATE);
+
+/**
+ * 校验旋转验证码
+ * @param imageKey
+ * @param imageCode
+ */
+export const checkRotateCaptcha = (imageKey: string, imageCode: number) =>
+    request.post(API.CHECK_ROTATE, null, {params: {imageKey, imageCode}});
 
 /**
  * 获取手机登录验证码

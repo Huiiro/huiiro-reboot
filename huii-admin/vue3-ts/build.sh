@@ -1,1 +1,1 @@
-docker build -t huii00147/huii-reboot-frontend:1.3.0 .
+docker build -t huii00147/huii-reboot-frontend:1.3.1 .

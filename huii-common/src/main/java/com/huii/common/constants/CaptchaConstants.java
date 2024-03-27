@@ -15,12 +15,12 @@ public interface CaptchaConstants {
     /**
      * 点击验证码校验允许误差
      */
-    Integer CAPTCHA_CLICK_ALLOW_WIDTH_DEVIATION = 52;
+    Integer CAPTCHA_CLICK_ALLOW_WIDTH_DEVIATION = 50;
 
     /**
      * 点击验证码校验允许误差
      */
-    Integer CAPTCHA_CLICK_ALLOW_HEIGHT_DEVIATION = 32;
+    Integer CAPTCHA_CLICK_ALLOW_HEIGHT_DEVIATION = 30;
 
     /**
      * 点击验证码单次生成字符数
@@ -31,4 +31,9 @@ public interface CaptchaConstants {
      * 点击验证码单次生成有效字符数
      */
     Integer CAPTCHA_CLICK_TEXT_GEN_EFFECT = 3;
+
+    /**
+     * 旋转验证码校验允许误差
+     */
+    Integer CAPTCHA_ROTATE_ALLOW_DEVIATION = 28;
 }

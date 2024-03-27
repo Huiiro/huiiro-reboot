@@ -76,7 +76,8 @@ const updates = ref([
   "3. v1.2.4 完善并修复代码生成模块的部分bug，优化体验和模板文件。后续会补充字段查询方式和更多方式的支持。",
   "4. v1.2.5 支持docker-compose一键部署，修复部分bug，优化部分显示。",
   "5. v1.2.6 加入mysql8支持。",
-  "6. v1.3.0 加入api文档支持，加入springboot admin支持，并修复部分版本问题导致的bug。"
+  "6. v1.3.0 加入api文档支持，加入springboot admin支持，并修复部分版本问题导致的bug。",
+  "7. v1.3.1 修复bug，支持更多的验证码，使我的验证码旋转。"
 ]);
 const supports = ref([
   "1. java17+",

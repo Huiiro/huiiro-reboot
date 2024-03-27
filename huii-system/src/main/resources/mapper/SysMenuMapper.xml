@@ -26,7 +26,7 @@
         <include refid="selectFields"></include>
         where u.user_id = #{userId}
         <if test="menu.menuName != null and menu.menuName != ''">
-            and m.menu_name = #{menu.menuName}
+            and m.menu_name like concat('%', #{menu.menuName}, '%')
         </if>
         <if test="menu.menuVisible != null and menu.menuVisible != ''">
             and m.menu_visible = #{menu.menuVisible}
