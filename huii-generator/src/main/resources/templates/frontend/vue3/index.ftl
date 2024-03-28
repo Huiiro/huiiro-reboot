@@ -264,30 +264,29 @@
   {
     className
   }
-  </#if>
-  <#if genExportInterface == "1" >,
-  export${
-    className
-  }
-          </#if>
-          <#if genImportInterface == "1" >, import${
-    className
-  }
-          ,
-          insert$
+  ,
+  export$
   {
     className
   }
-  </#if>
-  <#if genEditInterface == "1" >,
-  update${
+  ,
+  import$
+  {
     className
   }
-  </#if>
-  <#if genDeleteInterface == "1" >
+  ,
+  insert$
+  {
+    className
+  }
+  ,
+  update$
+  {
+    className
+  }
   }
   from
-  "@/api/";
+  "@/api";
   import {download} from "@/utils/download.ts";
 
   //store

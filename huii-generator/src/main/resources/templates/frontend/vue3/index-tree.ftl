@@ -207,21 +207,19 @@
     {
         className
     }
-    </#if>,
+    ,
     insert$
     {
         className
     }
-    </#if>
-    <#if genEditInterface == "1" >,
-    update${
+    ,
+    update$
+    {
         className
     }
-    </#if>
-    <#if genDeleteInterface == "1" >
     }
     from
-    "@/api/";
+    "@/api";
 
     //store
 const layoutStore = useLayoutStore();
