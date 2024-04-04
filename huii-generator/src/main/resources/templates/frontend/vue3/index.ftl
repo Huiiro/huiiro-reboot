@@ -286,7 +286,7 @@
   }
   }
   from
-  "@/api";
+  "@/api/";
   import {download} from "@/utils/download.ts";
 
   //store

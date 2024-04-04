@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HuiiApplication {
 
     public static void main(String[] args) {
+        System.setProperty("spring.devtools.restart.enabled", "false");
+        System.out.println("spring.devtools closed");
         SpringApplication.run(HuiiApplication.class, args);
         System.out.println("HUII-APPLICATION-START-SUCCESS");
         System.out.println("-------------------------------");

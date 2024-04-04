@@ -219,7 +219,7 @@
     }
     }
     from
-    "@/api";
+    "@/api/";
 
     //store
 const layoutStore = useLayoutStore();
