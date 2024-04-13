@@ -18,6 +18,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 系统菜单控制层
+ *
+ * @author huii
+ */
 @Validated
 @RestController
 @RequestMapping("/system/menu")

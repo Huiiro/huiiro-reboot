@@ -257,39 +257,24 @@
 <script setup lang="ts">
   import {computed, onMounted, ref} from "vue";
   import {useLayoutStore} from "@/store/modules/layout.ts";
+  import {Delete, Edit, Plus, Refresh, Search, Timer, Upload} from "@element-plus/icons-vue";
   import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
   import {paramBuilder} from "@/utils/common.ts";
-  import {delete$
+  import {
+    <#if genExportInterface == "1">
+    delete${className},
+    </#if>
+    export${className},
+    get${className},
+    get${className}Singleton,
+    import${className},
+    insert${className},
+    update${className}
+  } from "@/api/${moduleName}/Index.ts";
+  import {checkPermission, checkPermissions} from "@/utils/permission.ts";
+  import {downloadExport} from "@/utils/download.ts";
 
-  {
-    className
-  }
-  ,
-  export$
-  {
-    className
-  }
-  ,
-  import$
-  {
-    className
-  }
-  ,
-  insert$
-  {
-    className
-  }
-  ,
-  update$
-  {
-    className
-  }
-  }
-  from
-  "@/api/";
-  import {download} from "@/utils/download.ts";
-
-  //store
+//store
 const layoutStore = useLayoutStore();
 //layout
 const size = layoutStore.tableSize;
@@ -581,7 +566,7 @@ const handleImport = () => {
 }
 const handleDownloadTemplate = () => {
     getExport${className}Template().then(res => {
-        download(res);
+      downloadExport(res);
     });
 };
 </#if>
@@ -592,7 +577,7 @@ const handleDownloadTemplate = () => {
  */
 const handleExport = () => {
     export${className}(null).then(res => {
-        download(res);
+      downloadExport(res);
     });
 }
 </#if>

@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 系统服务器监控控制层
+ *
+ * @author huii
+ */
 @Validated
 @RestController
 @RequestMapping("/system/server")

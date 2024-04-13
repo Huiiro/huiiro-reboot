@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+/**
+ * 系统缓存监控控制层
+ *
+ * @author huii
+ */
 @Validated
 @RestController
 @RequestMapping("/system/cache")

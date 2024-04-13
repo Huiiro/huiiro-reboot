@@ -17,6 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 系统部门控制层
+ *
+ * @author huii
+ */
 @Validated
 @RestController
 @RequestMapping("/system/dept")

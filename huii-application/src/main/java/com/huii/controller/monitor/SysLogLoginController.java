@@ -20,6 +20,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 系统登录日志控制层
+ *
+ * @author huii
+ */
 @Validated
 @RestController
 @RequestMapping("/system/log/login")

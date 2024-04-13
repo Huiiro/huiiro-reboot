@@ -31,6 +31,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 系统用户资料控制层
+ *
+ * @author huii
+ */
 @Validated
 @RestController
 @RequestMapping("/system/user/profile")

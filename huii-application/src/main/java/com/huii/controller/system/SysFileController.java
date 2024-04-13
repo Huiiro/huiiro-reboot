@@ -11,6 +11,7 @@ import com.huii.oss.core.service.LocalService;
 import com.huii.oss.core.service.OssService;
 import com.huii.oss.entity.UploadResult;
 import com.huii.oss.enums.UploadType;
+import com.huii.oss.utils.ImageWatermarkUtils;
 import com.huii.system.domain.SysFile;
 import com.huii.system.service.SysFileService;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 文件服务层实现
+ * 系统文件控制层
  *
  * @author huii
- * @date 2024-01-03T16:32:39
  */
 @Validated
 @RestController
@@ -47,17 +47,24 @@ public class SysFileController extends BaseController {
     @RequestMapping("/upload/{type}")
     @Log(value = "上传文件", opType = OpType.IMPORT)
     @Transactional(rollbackFor = RuntimeException.class)
-    public R<Void> uploadSysFile(@RequestPart("file") MultipartFile file, @PathVariable String type) {
+    public R<UploadResult> uploadSysFile(@RequestPart("file") MultipartFile file, @PathVariable String type,
+                                         @RequestParam(required = false) String watermark) {
+        MultipartFile multipartFile = file;
+        if (null != watermark) {
+            Long userId = getUserId();
+            String wmText = "Huii-Reboot3 UID：" + userId;
+            multipartFile = ImageWatermarkUtils.markWithContent(file, wmText);
+        }
         UploadResult uploadResult;
         type = type.trim();
         if (UploadType.OSS.getName().equals(type)) {
-            uploadResult = ossService.uploadFile(file);
+            uploadResult = ossService.uploadFile(multipartFile);
         } else {
-            uploadResult = localService.uploadFile(file);
+            uploadResult = localService.uploadFile(multipartFile);
         }
         sysFileService.uploadSysFile(uploadResult.getFilename(), uploadResult.getFileOriginName(),
                 uploadResult.getUrl(), uploadResult.getFileSize(), uploadResult.getMd5(), type);
-        return R.ok();
+        return R.ok(uploadResult);
     }
 
     /**

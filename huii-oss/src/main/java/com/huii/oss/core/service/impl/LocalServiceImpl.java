@@ -52,7 +52,10 @@ public class LocalServiceImpl implements LocalService {
             //网页访问路径，如：https:api.huii147.xyz/oss/local?module=default&fileName=fa98ft91g981.jpg
             String fileUrl = properties.getEndPoint() + "?module=" + module + "&fileName=" + fileName;
             //检查文件目录是否存在
-            FileUtils.createDirectory(savePath);
+            if (!DEFAULT_MODULE.equals(module)) {
+                FileUtils.createDirectory(properties.getBasePath() + "/" + module);
+            }
+            //保存文件
             File file = new File(savePath);
             //计算md5
             String md5 = DigestUtils.md5Hex(multipartFile.getInputStream());

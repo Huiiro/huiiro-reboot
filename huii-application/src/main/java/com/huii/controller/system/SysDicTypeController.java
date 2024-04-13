@@ -24,6 +24,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 字典类型控制层
+ *
+ * @author huii
+ */
 @Validated
 @RestController
 @RequestMapping("/system/dic/type")

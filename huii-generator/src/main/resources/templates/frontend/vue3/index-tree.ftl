@@ -198,30 +198,24 @@
 </template>
 
 <script setup lang="ts">
-    import {onMounted, ref, shallowRef} from "vue";
-    import {useLayoutStore} from "@/store/modules/layout.ts";
-    import {Check, Close} from "@element-plus/icons-vue";
-    import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
-    import {delete$
+import {computed, onMounted, ref} from "vue";
+import {useLayoutStore} from "@/store/modules/layout.ts";
+import {Delete, Edit, Plus, Refresh, Search, Timer, Upload} from "@element-plus/icons-vue";
+import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
+import {paramBuilder} from "@/utils/common.ts";
+import {
+    delete${className},
+    export${className},
+    get${className},
+    get${className}Singleton,
+    import${className},
+    insert${className},
+    update${className}
+} from "@/api/${moduleName}/Index.ts";
+import {checkPermission, checkPermissions} from "@/utils/permission.ts";
+import {downloadExport} from "@/utils/download.ts";
 
-    {
-        className
-    }
-    ,
-    insert$
-    {
-        className
-    }
-    ,
-    update$
-    {
-        className
-    }
-    }
-    from
-    "@/api/";
-
-    //store
+//store
 const layoutStore = useLayoutStore();
 //layout
 const size = layoutStore.tableSize;

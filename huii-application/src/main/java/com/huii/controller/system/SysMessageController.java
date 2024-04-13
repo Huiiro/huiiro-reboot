@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 系统消息控制层
+ *
+ * @author huii
+ */
 @Validated
 @RestController
 @RequestMapping("/system/message")

@@ -8,8 +8,8 @@
       :auto-upload="autoUpload"
       :show-file-list="showList"
       :before-upload="beforeUploadInternal"
-      :on-success="success"
-      :on-error="error"
+      :on-success="onSuccessInternal"
+      :on-error="onErrorInternal"
   >
     <el-icon class="el-icon--upload">
       <upload-filled/>
@@ -95,7 +95,7 @@ const beforeUploadInternal = (rawFile: any) => {
   if (props.beforeUpload) {
     props.beforeUpload();
   }
-  if(props.type === "" || props.type === null) {
+  if (props.type === "") {
     return true;
   }
   if (!checkFileSuffix(rawFile.name, props.type)) {
@@ -115,14 +115,25 @@ const getFileExtension = (fileName: any) => {
 const checkFileSuffix = (filename: any, suffix: any) => {
   return suffix.toString().split('/').includes(getFileExtension(filename));
 }
+
+const onSuccessInternal = (response: any) => {
+  const onSuccessCallback = props.onSuccess || success;
+  onSuccessCallback(response);
+};
+
+const onErrorInternal = (response: any) => {
+  const onFailCallback = props.onFail || error;
+  onFailCallback(response);
+};
+
 /**
- * 成功回调
+ * 默认成功回调
  * @param response
  */
 const success = (response: any) => {
   if (response.code === 0) {
     ElMessage({type: 'success', message: response.message == 'ok' ? '文件已成功上传' : response.message});
-    if (response.data.analysis) {
+    if (response.data && response.data.analysis) {
       msg.value = response.data.analysis;
     }
   } else {
@@ -131,7 +142,7 @@ const success = (response: any) => {
 };
 
 /**
- * 失败回调
+ * 默认失败回调
  * @param response
  */
 const error = (response: any) => {

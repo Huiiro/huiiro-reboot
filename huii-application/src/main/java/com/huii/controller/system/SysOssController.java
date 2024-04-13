@@ -6,6 +6,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 系统OSS控制层
+ *
+ * @author huii
+ */
 @Validated
 @RestController
 @RequestMapping("/system/oss")

@@ -51,7 +51,7 @@ public class LoginVo {
     private List<String> permissions = new ArrayList<>();
 
     /**
-     * 用户角色TODO8
+     * 用户角色
      */
     private List<String> roles = new ArrayList<>();
 

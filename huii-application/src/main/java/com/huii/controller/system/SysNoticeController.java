@@ -14,6 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 系统通知控制层
+ *
+ * @author huii
+ */
 @Validated
 @RestController
 @RequestMapping("/system/notice")

@@ -28,7 +28,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/**
+ * 系统角色控制层
+ *
+ * @author huii
+ */
 @Validated
 @RestController
 @RequestMapping("/system/role")
